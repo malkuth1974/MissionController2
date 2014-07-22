@@ -1,0 +1,9 @@
+C:\kerbal\(testMods)\GameData\MissionControllerEC\MissionControllerEC.dll
+C:\kerbal\(testMods)\GameData\MissionControllerEC\MissionControllerEC.pdb
+C:\kerbal\MissionControllerEC\MissionControllerEC\obj\Debug\MissionControllerEC.csprojResolveAssemblyReference.cache
+C:\kerbal\MissionControllerEC\MissionControllerEC\obj\Debug\MissionControllerEC.dll
+C:\kerbal\MissionControllerEC\MissionControllerEC\obj\Debug\MissionControllerEC.pdb
+C:\kerbal\MissionControllerEC\(testMods)\GameData\MissionControllerEC\MissionControllerEC.dll
+C:\kerbal\MissionControllerEC\(testMods)\GameData\MissionControllerEC\MissionControllerEC.pdb
+C:\kerbal\MissionControllerEC\MissionControllerEC\MissionControllerEC\obj\Debug\MissionControllerEC.dll
+C:\kerbal\MissionControllerEC\MissionControllerEC\MissionControllerEC\obj\Debug\MissionControllerEC.pdb

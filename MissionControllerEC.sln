@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Express 2012 for Windows Desktop
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MissionControllerEC", "MissionControllerEC\MissionControllerEC.csproj", "{A7D9CABD-D71A-4AD0-B7F0-A37BC1541180}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A7D9CABD-D71A-4AD0-B7F0-A37BC1541180}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7D9CABD-D71A-4AD0-B7F0-A37BC1541180}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7D9CABD-D71A-4AD0-B7F0-A37BC1541180}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7D9CABD-D71A-4AD0-B7F0-A37BC1541180}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
