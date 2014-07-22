@@ -1,4 +1,4 @@
-﻿#region Using Directives
+﻿#region 
 using System;
 using UnityEngine;
 using System.Linq;
@@ -31,6 +31,8 @@ namespace MissionControllerEC
         {
             get { return SettingsManager.Manager.getSettings(); }
         }
+
+        SaveInfo saveinfo = new SaveInfo(HighLogic.CurrentGame.Title + "SaveFile.cfg");
                 
         public void Start()
         {
@@ -45,6 +47,11 @@ namespace MissionControllerEC
         }
         void Awake()
         {
+            if (saveinfo.FileExists)
+            {
+                saveinfo.Load(); Debug.LogWarning("Found saveFile Loading File");
+            }
+            else { saveinfo.Save(); saveinfo.Load(); Debug.LogWarning("Did not find SaveInfo File, created new on and loaded file"); }
             DontDestroyOnLoad(this);
         }
         void OnDestroy()

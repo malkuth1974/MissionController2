@@ -7,3 +7,6 @@ C:\kerbal\MissionControllerEC\(testMods)\GameData\MissionControllerEC\MissionCon
 C:\kerbal\MissionControllerEC\(testMods)\GameData\MissionControllerEC\MissionControllerEC.pdb
 C:\kerbal\MissionControllerEC\MissionControllerEC\MissionControllerEC\obj\Debug\MissionControllerEC.dll
 C:\kerbal\MissionControllerEC\MissionControllerEC\MissionControllerEC\obj\Debug\MissionControllerEC.pdb
+C:\kerbal\MissionControllerEC\MissionControllerEC\MissionController2\MissionControllerEC\obj\Debug\MissionControllerEC.csprojResolveAssemblyReference.cache
+C:\kerbal\MissionControllerEC\MissionControllerEC\MissionController2\MissionControllerEC\obj\Debug\MissionControllerEC.dll
+C:\kerbal\MissionControllerEC\MissionControllerEC\MissionController2\MissionControllerEC\obj\Debug\MissionControllerEC.pdb
