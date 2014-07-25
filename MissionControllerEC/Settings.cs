@@ -6,35 +6,17 @@ using System.Threading.Tasks;
 
 namespace MissionControllerEC
 {
-    public class Settings
-    {
-        public double HireCost = (Tools.Setting("HireCost",1000.0));
-        public int difficutlylevel = (Tools.Setting("DifficultyMode", 1));
+    public class Settings : ConfigNodeStorage
+    {       
+        public Settings(String FilePath) : base(FilePath) { }
 
-        public float EasyMode = (Tools.Setting("EasyMode", 1.0f));
-        public float MediumMode = (Tools.Setting("MediumMode", 1.5f));
-        public float HardCoreMode = (Tools.Setting("HardCoreMode", 2.0f));
-
-        public double totalKerbalCost;
-        public List<CurrentHires> NewHires = new List<CurrentHires>();
+        //[Persistent]internal double TimeCheckDays = 604800;
+        [Persistent]internal int difficutlylevel = 1;
+        [Persistent]internal double HireCost = 1000;
+        //[Persistent]internal double SaleryCost = 100;
+        [Persistent]internal float EasyMode = 1.0f;
+        [Persistent]internal float MediumMode = 2.0f;
+        [Persistent]internal float HardCoreMode = 4.0f;
+        //[Persistent]internal bool cheatsTrue = false;       
     }
-   
-    public class SettingsManager
-    {
-
-        private static SettingsManager manager = new SettingsManager();
-
-        public static SettingsManager Manager
-        {
-            get
-            { return manager; }
-        }
-
-        private Settings settings = new Settings();
-
-        public Settings getSettings()
-        {
-            return manager.settings;
-        }
-    }   
 }

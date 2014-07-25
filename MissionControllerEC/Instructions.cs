@@ -7,21 +7,20 @@ using UnityEngine;
 
 namespace MissionControllerEC
 {
-    public class Instructions
+    public partial class MissionControllerEC
     {
-        private bool TempCheck = false;       
+        private bool TempCheck = false; 
         public List<CurrentHires> currentHires = new List<CurrentHires>();
-
-        private Settings settings
-        {
-            get { return SettingsManager.Manager.getSettings(); }
-        }
-                
+        public double totalKerbalCost;
+        public List<CurrentHires> NewHires = new List<CurrentHires>();
+        public List<CurrentHires> totalActiveKerbals = new List<CurrentHires>();
+        
+             
         public bool MceRDScience
         {
             get { return ResearchAndDevelopment.Instance != null; }
         }
-       
+
         public float MceScience
         {
             get
@@ -89,10 +88,10 @@ namespace MissionControllerEC
 
                     if (!currentHires.Exists(H => H.hiredKerbalName == CrewMember.name) && !HighLogic.LoadedSceneIsFlight)
                     {
-                        settings.totalKerbalCost += 1000; 
-                        settings.NewHires.Add(new CurrentHires(CrewMember.name));
+                        totalKerbalCost += settings.HireCost; 
+                        NewHires.Add(new CurrentHires(CrewMember.name));
                         Debug.LogWarning("This Kerbal Was Just Hired: " + CrewMember.name + " At " + Planetarium.GetUniversalTime() + " Crew Roster CurrentHires Re-Populated!");
-                        Debug.LogWarning("totalKerbalFunds is: " + settings.totalKerbalCost);
+                        Debug.LogWarning("totalKerbalFunds is: " + totalKerbalCost);
                         TempCheck = true;                      
                     }
 
@@ -101,10 +100,102 @@ namespace MissionControllerEC
             if (TempCheck)
             {
                 GetHiredKerbals();
-                MissionControllerEC.ShowPopUpWindow = !MissionControllerEC.ShowPopUpWindow;
+                StringBuilder Message = new StringBuilder();
+                Message.AppendLine("The Following Kerbals Were Hired");
+                Message.AppendLine();
+                foreach (CurrentHires ch in NewHires)
+                {
+                    Message.AppendLine(ch.hiredKerbalName + "For Cost of: " + settings.HireCost);
+                }
+                Message.AppendLine();
+                Message.AppendLine("Total Cost Of New Recruits: " + totalKerbalCost);
+                Message.AppendLine("Hired On Date: " + Tools.formatTime(Planetarium.GetUniversalTime()));
+                while (HighLogic.LoadedScene == GameScenes.LOADING) { Debug.Log("Test"); }
+                Funding.Instance.Funds -= totalKerbalCost;
+                saveinfo.TotalSpentKerbals += totalKerbalCost;
+                MessageSystem.Message m = new MessageSystem.Message(
+                "Hired New Kerbals",
+                Message.ToString(),
+                MessageSystemButton.MessageButtonColor.YELLOW,
+                MessageSystemButton.ButtonIcons.MESSAGE);
+                MessageSystem.Instance.AddMessage(m);
+                NewHires.Clear();
+                totalKerbalCost = 0;
+                saveinfo.Save();
             }
  
-        }       
+        }
+        //public void GetTimeCheck()
+        //{
+        //    saveinfo.CurrentTimeCheck = 0;
+        //    double currenttime = Planetarium.GetUniversalTime();
+        //    saveinfo.CurrentTimeCheck = currenttime + settings.TimeCheckDays;
+        //    Debug.Log("Setting Clock countdown to next 30 days");
+        //    saveinfo.Save();
+        //}
+
+        //public void Check30DaySaleries()
+        //{
+        //    double currentTime = 0;
+        //    double amountOfTime= 0;
+        //    double chargeMultiplier= 0;
+        //    double timecheckdayssettings = 0;
+        //    double totalPayPeriodCost = 0;
+                        
+        //    currentTime = Planetarium.GetUniversalTime();
+        //    amountOfTime = currentTime - saveinfo.CurrentTimeCheck + settings.TimeCheckDays;
+        //    if (currentTime > saveinfo.CurrentTimeCheck && HighLogic.LoadedScene != GameScenes.LOADING && HighLogic.LoadedScene != GameScenes.LOADINGBUFFER)
+        //    {
+        //        chargeMultiplier = Tools.ConvertDays(amountOfTime);
+        //        Debug.Log("chargeMultiplier = " + chargeMultiplier);
+        //        timecheckdayssettings = Tools.ConvertDays(settings.TimeCheckDays);
+        //        Debug.Log("timecheckdayssettings = " + timecheckdayssettings);
+        //        chargeMultiplier = Tools.DivisionBy2Numbers(chargeMultiplier,timecheckdayssettings);
+        //        Debug.Log("After Division chargeMultiplier is " + chargeMultiplier);
+        //        getActiveKerbals();
+        //        foreach (CurrentHires ch in totalActiveKerbals)
+        //            {
+        //            Debug.Log(ch.hiredKerbalName + " Was paid for his services " + settings.SaleryCost + " For " + chargeMultiplier + " days of work. The Total came to " + chargeMultiplier * settings.SaleryCost);
+        //            totalPayPeriodCost += settings.SaleryCost * chargeMultiplier;
+        //            Debug.Log("total pay period cost is " + totalPayPeriodCost);
+        //            }
+        //        Funding.Instance.Funds -= totalPayPeriodCost;
+        //        StringBuilder message = new StringBuilder();
+        //        message.AppendLine("New Pay Period has Arrived");
+        //        message.AppendLine("Total Amount of Payperiods You will be charged: " + String.Format("{0:0}", chargeMultiplier));
+        //        message.AppendLine();
+        //        message.AppendLine("Kerbals Paid During These Periods");
+        //        message.AppendLine();
+        //        foreach (CurrentHires ch in totalActiveKerbals)
+        //            {
+        //            message.AppendLine(ch.hiredKerbalName + " Base Payment Made " + String.Format("{0:0}", settings.SaleryCost));
+        //            }
+        //        message.AppendLine("Total Charged For PayPeriods: " + String.Format("{0:0}", totalPayPeriodCost));
+        //        MessageSystem.Message m = new MessageSystem.Message(
+        //        "Kerbal Pay Period Has Arrived",
+        //        message.ToString(),
+        //        MessageSystemButton.MessageButtonColor.YELLOW,
+        //        MessageSystemButton.ButtonIcons.MESSAGE);
+        //        MessageSystem.Instance.AddMessage(m);
+        //        Debug.Log("At closing these are values of all involved " + " TotalpayPeriodCost " + totalPayPeriodCost + " ChargeMultiplier " + chargeMultiplier);                
+        //        saveinfo.TotalSpentOnSaleries += totalPayPeriodCost;
+        //        //GetTimeCheck();
+        //        saveinfo.Save();
+        //    }
+        //    else
+        //    { }
+        //}
+        public void getActiveKerbals()
+        {
+            totalActiveKerbals.Clear();
+            foreach (ProtoCrewMember CrewMember in HighLogic.CurrentGame.CrewRoster.Crew)
+            {
+                if (CrewMember.rosterStatus == ProtoCrewMember.RosterStatus.Available || CrewMember.rosterStatus == ProtoCrewMember.RosterStatus.Assigned)
+                {
+                    totalActiveKerbals.Add(new CurrentHires(CrewMember.name));
+                }
+            }
+        }
     }
 
     public class CurrentHires

@@ -15,47 +15,67 @@ namespace MissionControllerEC
     {        
         private Rect MainWindowPosition;
         public static bool ShowMainWindow = false;
-
-        private Rect PopUpWindowPosition;
-        public static bool ShowPopUpWindow = false;
+        
+        private Rect FinanceWindowPosition;
+        public static bool ShowfinanaceWindow = false;
+        
+        private Rect PopUpWindowPosition3;
+        public static bool ShowPopUpWindow3;
         
         
         private bool DifficultyLevelCheck = false;
         private float cst;
 
-
         StockToolbar stb = new StockToolbar();
-        Instructions mci = new Instructions();
 
-        private Settings settings
-        {
-            get { return SettingsManager.Manager.getSettings(); }
-        }
-
+        Settings settings = new Settings("Config.cfg");
         SaveInfo saveinfo = new SaveInfo(HighLogic.CurrentGame.Title + "SaveFile.cfg");
                 
         public void Start()
         {
             Debug.LogError("MCE has been Loaded");           
-            mci.GetHiredKerbals();
+            GetHiredKerbals();
             stb.CreateButtons();                  
         }
 
         void OnLevelWasLoaded()
+        {             
+        }
+        void Update()
         {
-            mci.isKerbalHired();
+            //if (saveinfo.CurrentTimeCheck < Planetarium.GetUniversalTime())
+            //{               
+            //    mci.Check30DaySaleries();
+            //}
+            if (HighLogic.LoadedScene == GameScenes.SPACECENTER)
+            {
+                isKerbalHired();
+            }
         }
         void Awake()
         {
             if (saveinfo.FileExists)
             {
-                saveinfo.Load(); Debug.LogWarning("Found saveFile Loading File");
+                saveinfo.Load();               
             }
-            else { saveinfo.Save(); saveinfo.Load(); Debug.LogWarning("Did not find SaveInfo File, created new on and loaded file"); }
-            DontDestroyOnLoad(this);
+            else 
+            { 
+                saveinfo.Save(); saveinfo.Load();                              
+            }
+
+            if (settings.FileExists)
+            {
+                settings.Load();
+            }
+            else
+            {
+                settings.Save(); settings.Load();
+            }
+            
+            DontDestroyOnLoad(this);          
         }
         void OnDestroy()
-        {                    
+        {
         }
       
         public void OnGUI()
@@ -63,8 +83,6 @@ namespace MissionControllerEC
             if (!DifficultyLevelCheck)
             {
                 DifficultyLevelCheck = true;
-
-                Tools.FindSettings();
 
                 Debug.LogWarning("** MCE2 Is Checking Difficulty Level and Adjusting Prices Parts set difficulties in Settings.cfg file to raise");
                 if (settings.difficutlylevel == 1) { cst = settings.EasyMode; Debug.Log("Difficulty is easyMode"); }
@@ -88,15 +106,19 @@ namespace MissionControllerEC
 
             if (ShowMainWindow)
             {
-                MainWindowPosition = GUILayout.Window(981974, MainWindowPosition, DrawMainWindow, "Maine MCE Window", GUILayout.MaxHeight(600), GUILayout.MaxWidth(400), GUILayout.MinHeight(300), GUILayout.MinWidth(200));
+                MainWindowPosition = GUILayout.Window(971974, MainWindowPosition, DrawMainWindow, "Maine MCE Window", GUILayout.MaxHeight(600), GUILayout.MaxWidth(400), GUILayout.MinHeight(300), GUILayout.MinWidth(200));
                 MainWindowPosition.x = Mathf.Clamp(MainWindowPosition.x, 0, Screen.width - MainWindowPosition.width);
                 MainWindowPosition.y = Mathf.Clamp(MainWindowPosition.y, 0, Screen.height - MainWindowPosition.height);
             }
-            if (ShowPopUpWindow)
+            if (ShowfinanaceWindow)
             {
-                PopUpWindowPosition = GUILayout.Window(991974, new Rect(Screen.width / 2 - 200, Screen.height / 2 - 100, 450, 150), drawPopUpWindow, "MCE Information Window");
-                PopUpWindowPosition.x = Mathf.Clamp(PopUpWindowPosition.x, 0, Screen.width - PopUpWindowPosition.width);
-                PopUpWindowPosition.y = Mathf.Clamp(PopUpWindowPosition.y, 0, Screen.height - PopUpWindowPosition.height);
+                FinanceWindowPosition = GUILayout.Window(981974, FinanceWindowPosition, drawFinanceWind, "MCE Finances", GUILayout.MaxHeight(800), GUILayout.MaxWidth(400), GUILayout.MinHeight(250), GUILayout.MinWidth(390));
+                FinanceWindowPosition.x = Mathf.Clamp(FinanceWindowPosition.x, 0, Screen.width - FinanceWindowPosition.width);
+                FinanceWindowPosition.y = Mathf.Clamp(FinanceWindowPosition.y, 0, Screen.height - FinanceWindowPosition.height);
+            }                       
+            if (ShowPopUpWindow3)
+            {
+                PopUpWindowPosition3 = GUILayout.Window(1011974, new Rect(Screen.width / 2 - 200, Screen.height / 2 - 100, 450, 150), drawPopUpWindow3, "MCE Information Window");
             }
         }
 
@@ -105,23 +127,30 @@ namespace MissionControllerEC
             GUI.skin = HighLogic.Skin;
             GUILayout.BeginVertical();
 
-            GUILayout.Label("Current Funds: " + mci.MceFunds);
+            
+            GUILayout.Label("Current Funds: " + MceFunds);
 
             if (GUILayout.Button("Add Money"))
             {
-                mci.MceFunds -= 1000;
+                MceFunds += 1000;
             }
 
-            GUILayout.Label("Current Science: " + mci.MceScience);
+            GUILayout.Label("Current Science: " + MceScience);
             if (GUILayout.Button("Add Science"))
             {
-                mci.MceScience += 1000;
+                MceScience += 1000;
             }
 
-            GUILayout.Label("Current Reputation: " + mci.MceReputation);
-                               
+            if (GUILayout.Button("Finance Window"))
+            {
+                ShowfinanaceWindow = true;
+            }
+
+            GUILayout.Label("Current Reputation: " + MceReputation);
+
+
             GUILayout.EndVertical();
-            if (GUILayout.Button("Exit Window"))
+            if (GUILayout.Button("Exit Save Settings"))
             {
                 ShowMainWindow = false;
             }

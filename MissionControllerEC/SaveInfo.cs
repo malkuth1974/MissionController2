@@ -9,6 +9,9 @@ namespace MissionControllerEC
     public class SaveInfo : ConfigNodeStorage
     {
         public SaveInfo(String FilePath) : base(FilePath) { }
-        [Persistent] internal Boolean TestBoolean = true;
+        [Persistent]internal double TotalSpentKerbals = 0;
+        [Persistent]internal double CurrentTimeCheck = 604800;
+        [Persistent]internal double TotalSpentOnSaleries = 0;
+        [Persistent]internal double TotalSpentOnRocketTest = 0;
     }
 }
