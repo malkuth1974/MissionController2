@@ -6,7 +6,17 @@ using System.Linq;
 namespace MissionControllerEC
 {
     class Tools
-    {       
+    {
+        public static bool RandomBool(bool value)
+        {
+            int test = 0;
+            test = UnityEngine.Random.Range(0, 1);
+            if (test == 1)
+                return true;
+            else
+                return false;
+        }
+
         public static double ConvertDays(double seconds)
         {
             double newValue;
@@ -65,6 +75,7 @@ namespace MissionControllerEC
             {
                 return "0s";
             }
-        }               
-    }                
+        }
+    }
+                
 }

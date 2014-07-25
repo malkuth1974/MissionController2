@@ -35,16 +35,7 @@ namespace MissionControllerEC
         {
             return "Enter Orbit Around: " + targetBody.theName + "  MaxApA: " + maxApA + "  MinPeA: " + minPeA;
         }
-
-        //protected override void OnRegister()
-        //{
-        //    GameEvents.onVesselWasModified.Add(Orbits);
-        //}
-        //protected override void OnUnregister()
-        //{
-        //    GameEvents.onVesselWasModified.Remove(Orbits);
-        //}
-
+       
         protected override void OnUpdate()
         {
             Orbits(FlightGlobals.ActiveVessel);
@@ -88,65 +79,196 @@ namespace MissionControllerEC
 
 
     }
-
-    public class StageEvent : ContractParameter
+    
+    public class Inclination : ContractParameter
     {
-        public string StEvent = "";
-        public string sTitle = "";
+        public double minInclination = 0.0;
+        public double maxInclination = 0.0;
 
-        public StageEvent()
+        public Inclination()
         {
         }
 
-        public StageEvent(string sevent, string title)
+        public Inclination(double minInc, double maxInc)
         {
-            this.StEvent = sevent;
-            this.sTitle = title;
+            this.minInclination = minInc;
+            this.maxInclination = maxInc;
         }
 
         protected override string GetHashString()
         {
-            return StEvent;
+            return "Launch to Inclination" + maxInclination + minInclination;
         }
         protected override string GetTitle()
         {
-            return sTitle;
+            return "Reach Max Inclination Between: " + maxInclination + " and: " + minInclination;
         }
-
-        protected override void OnRegister()
+       
+        protected override void OnUpdate()
         {
-            GameEvents.onVesselWasModified.Add(stageEvent);
-        }
-        protected override void OnUnregister()
-        {
-            GameEvents.onVesselWasModified.Remove(stageEvent);
+            CheckInclination(FlightGlobals.ActiveVessel);        
         }
 
         protected override void OnLoad(ConfigNode node)
         {
-            
-            string stageID = (node.GetValue("stageID"));
-            StEvent = stageID;
-            string titleID = (node.GetValue("titleID"));
-            sTitle = titleID;
-
+                       
+            double maxincID = double.Parse(node.GetValue("maxincID"));
+            maxInclination = maxincID;
+            double minincID = double.Parse(node.GetValue("minincID"));
+            minInclination = minincID;
         }
         protected override void OnSave(ConfigNode node)
         {
-            string stageID = StEvent;
-            node.AddValue("stageID", stageID);
-            string titleID = sTitle;
-            node.AddValue("titleID", titleID);
+            double maxincID = maxInclination;
+            node.AddValue("maxincID", maxInclination);
+            double minincID = minInclination;
+            node.AddValue("minincID", minInclination);
         }
 
-        public void stageEvent(Vessel vessel)
+        public void CheckInclination(Vessel vessel)
         {     
             if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel)
             {
-                base.SetComplete();
+                if (vessel.orbit.inclination <= maxInclination && vessel.orbit.inclination >= minInclination)
+                    base.SetComplete();
             }
         }
+    }
 
+    public class OrbitalPeriod : ContractParameter
+    {
+        public double minOrbitalPeriod = 0.0;
+        public double maxOrbitalPeriod = 0.0;
+
+        public OrbitalPeriod()
+        {
+        }
+
+        public OrbitalPeriod(double minOrb, double maxOrb)
+        {
+            this.minOrbitalPeriod = minOrb;
+            this.maxOrbitalPeriod = maxOrb;
+        }
+
+        protected override string GetHashString()
+        {
+            return "Launch to Orbital Period" + maxOrbitalPeriod + minOrbitalPeriod;
+        }
+        protected override string GetTitle()
+        {
+            return "Reach Orbital Period Between: " + Tools.formatTime(maxOrbitalPeriod) + " and: " + Tools.formatTime(minOrbitalPeriod);
+        }
         
+        protected override void OnUpdate()
+        {
+            CheckOrbitalPeriod(FlightGlobals.ActiveVessel);
+        }
+
+        protected override void OnLoad(ConfigNode node)
+        {
+
+            double maxOrbID = double.Parse(node.GetValue("maxOrbID"));
+            maxOrbitalPeriod = maxOrbID;
+            double minOrbID = double.Parse(node.GetValue("minOrbID"));
+            minOrbitalPeriod = minOrbID;
+        }
+        protected override void OnSave(ConfigNode node)
+        {
+            double maxOrbID = maxOrbitalPeriod;
+            node.AddValue("maxOrbID", maxOrbitalPeriod);
+            double minOrbID = minOrbitalPeriod;
+            node.AddValue("minOrbID", minOrbitalPeriod);
+        }
+
+        public void CheckOrbitalPeriod(Vessel vessel)
+        {
+            if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel)
+            {
+                if (vessel.orbit.period <= maxOrbitalPeriod && vessel.orbit.period >= minOrbitalPeriod)
+                    base.SetComplete();
+            }
+        }
+    }
+    public class PartGoal : ContractParameter
+    {
+        public String partName = "";
+        public int partCount = 0;
+        public int maxPartCount = 0;
+
+        public PartGoal()
+        {
+        }
+
+        public PartGoal(string name, int Pcount, int maxCount)
+        {
+            this.partName = name;
+            this.partCount = Pcount;
+            this.maxPartCount = maxCount;
+                
+        }
+
+        protected override string GetHashString()
+        {
+            return "You Must Have " + maxPartCount + " Part Type " + partName + "On your vessel"; 
+        }
+        protected override string GetTitle()
+        {
+            return "Have partType " + partName;
+        }
+
+        protected override void OnUpdate()
+        {
+            CheckPartGoal(FlightGlobals.ActiveVessel);
+        }
+        protected override void OnRegister()
+        {
+            GameEvents.onVesselLoaded.Add(CheckPartGoal);
+        }
+        protected override void OnUnregister()
+        {
+            GameEvents.onVesselLoaded.Remove(CheckPartGoal);
+        }
+
+        protected override void OnLoad(ConfigNode node)
+        {
+
+            string partname = (node.GetValue("partname"));
+            partName = partname;
+            int maxcount = int.Parse(node.GetValue("maxcount"));
+            maxPartCount = maxcount;
+        }
+        protected override void OnSave(ConfigNode node)
+        {
+            string partname = partName;
+            node.AddValue("partname", partName);
+            int maxcount = maxPartCount;
+            node.AddValue("maxcount", maxPartCount);
+        }
+
+        public void CheckPartGoal(Vessel vessel)
+        {
+            if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel)
+            {               
+                if (vessel != null)
+                {
+                    foreach (Part p in vessel.Parts)
+                    {
+                        if (p.partInfo.name.Equals(partName))
+                        {
+                            ++partCount;
+                        }
+                    }
+                }
+                if (partCount > 0)
+                {
+                    if (partCount >= maxPartCount)
+                    {
+                        base.SetComplete();
+                    }
+                }
+                                
+                
+            }
+        }
     }
 }

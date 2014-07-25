@@ -29,9 +29,7 @@ namespace MissionControllerEC
                 texture2 = new Texture2D(36, 36, TextureFormat.RGBA32, false);
                 texture2.LoadImage(File.ReadAllBytes(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "MCERevert.png")));
             }
-            this.MCEButton.SetTrue();
-            this.MCERevert.SetTrue();
-
+            GameEvents.onGUIApplicationLauncherReady.Add(this.CreateButtons);          
         }
         
         public void CreateButtons()
@@ -62,6 +60,11 @@ namespace MissionControllerEC
                     texture2
                     );
             }
+        }
+        void Update()
+        {
+            this.MCEButton.SetTrue();
+            this.MCERevert.SetTrue();
         }
 
         private void MCEOn()

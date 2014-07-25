@@ -26,6 +26,9 @@ namespace MissionControllerEC
         private bool DifficultyLevelCheck = false;
         private float cst;
 
+        public static bool TestThis = false;
+        public static bool TestThis2 = false;
+
         StockToolbar stb = new StockToolbar();
 
         Settings settings = new Settings("Config.cfg");
@@ -34,8 +37,7 @@ namespace MissionControllerEC
         public void Start()
         {
             Debug.LogError("MCE has been Loaded");           
-            GetHiredKerbals();
-            stb.CreateButtons();                  
+            GetHiredKerbals();               
         }
 
         void OnLevelWasLoaded()
