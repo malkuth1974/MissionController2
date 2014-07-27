@@ -12,31 +12,25 @@ using KSPAchievements;
 
 namespace MissionControllerEC
 {
-    
+    #region Contract DeliverSatellit
     public class DeliverSatellite : Contract
     {
         CelestialBody targetBody = null;
-        public double aMaxApa = UnityEngine.Random.Range(75000, 300000);
-        public double aMinPeA = 0;
+        public double GMaxApA = UnityEngine.Random.Range(75000, 300000);
+        public double GMinApA = 0;
+        public double GMaxPeA = 0;
+        public double GMinPeA = 0;
         public bool techUnlocked = false;
         public double MinInc = 0;
-        public double MaxInc = UnityEngine.Random.Range(0, 90);
+        public double MaxInc = UnityEngine.Random.Range(10, 90);
         public int test = UnityEngine.Random.Range(0, 100);
 
-        protected override void OnDeclined()
-        {
-            MissionControllerEC.TestThis = false;
-            Debug.Log("DelieverSat Period reset");
-        }
-        protected override void OnCancelled()
-        {
-            MissionControllerEC.TestThis = false;
-            Debug.Log("DelieverSat Period reset");
-        }
-
+        public int ContractCount = ContractSystem.Instance.GetCurrentContracts<DeliverSatellite>().Count();
+       
         protected override bool Generate()
         {
-            if (MissionControllerEC.TestThis)
+            Debug.Log("ContractCount is: " + ContractCount);
+            if (ContractCount >= 1)
             {
                 Debug.Log("contract is generated right now terminating DeliverSat");
                 return false;
@@ -45,7 +39,9 @@ namespace MissionControllerEC
             Debug.Log("Contract State" + ContractState);
 
             targetBody = Planetarium.fetch.Home;
-            aMinPeA = aMaxApa - 5000;
+            GMinApA = GMaxApA - 5000;
+            GMaxPeA = GMaxApA;
+            GMinPeA = GMinApA;
             MinInc = MaxInc - 10;
             bool ifInclination = false;
 
@@ -53,7 +49,8 @@ namespace MissionControllerEC
                 ifInclination = true;
             else
                 ifInclination = false;
-            this.AddParameter(new OrbitGoal(targetBody, (double)aMaxApa, (double)aMinPeA), null);
+            this.AddParameter(new ApAOrbitGoal(targetBody, (double)GMaxApA, (double)GMinApA), null);
+            this.AddParameter(new PeAOrbitGoal(targetBody, (double)GMaxPeA, (double)GMinPeA), null);
             if (ifInclination)
             {
                 this.AddParameter(new Inclination(MinInc, MaxInc));
@@ -68,7 +65,6 @@ namespace MissionControllerEC
                 base.SetFunds(8000f, 24000f, 9000f, targetBody);
 
             Debug.Log(contractsInExistance + ContractState);
-            MissionControllerEC.TestThis = true;
             return true;
 
         }
@@ -84,7 +80,7 @@ namespace MissionControllerEC
 
         protected override string GetHashString()
         {
-            return targetBody.bodyName + aMaxApa.ToString() + aMinPeA.ToString();
+            return targetBody.bodyName + GMaxApA.ToString() + GMinApA.ToString();
         }
         protected override string GetTitle()
         {
@@ -101,7 +97,6 @@ namespace MissionControllerEC
         }
         protected override string MessageCompleted()
         {
-            MissionControllerEC.TestThis = false;
             return "You have successfully delivered our satellite to orbit " + targetBody.theName;
         }
 
@@ -113,23 +108,36 @@ namespace MissionControllerEC
                 if (body.flightGlobalsIndex == bodyID)
                     targetBody = body;
             }
-            double ApaID = double.Parse(node.GetValue("aPa"));
-            aMaxApa = ApaID;
-            double PeAID = double.Parse(node.GetValue("pEa"));
-            aMinPeA = PeAID;
+            double maxApa = double.Parse(node.GetValue("maxaPa"));
+            GMaxApA = maxApa;
+            double minApa = double.Parse(node.GetValue("minaPa"));
+            GMinApA = minApa;
+
+            double masxPpaID = double.Parse(node.GetValue("maxpEa"));
+            GMaxPeA = masxPpaID;
+            double minPeAID = double.Parse(node.GetValue("minpEa"));
+            GMinPeA = minPeAID;
+
             double maxincID = double.Parse(node.GetValue("maxincID"));
             MaxInc = maxincID;
             double minincID = double.Parse(node.GetValue("minincID"));
-            MinInc = minincID;          
+            MinInc = minincID;            
         }
         protected override void OnSave(ConfigNode node)
         {
             int bodyID = targetBody.flightGlobalsIndex;
             node.AddValue("targetBody", bodyID);
-            double ApAID = aMaxApa;
-            node.AddValue("aPa", ApAID);
-            double PeAID = aMinPeA;
-            node.AddValue("pEa", PeAID);
+
+            double maxApa = GMaxApA;
+            node.AddValue("maxaPa", GMaxApA);
+            double minApa = GMinApA;
+            node.AddValue("minaPa", GMinApA);
+
+            double maxPpAID = GMaxPeA;
+            node.AddValue("maxpEa", GMaxPeA);
+            double MinPeAID = GMinPeA;
+            node.AddValue("minpEa", GMinPeA);
+
             double maxincID = MaxInc;
             node.AddValue("maxincID", MaxInc);
             double minincID = MinInc;
@@ -145,8 +153,11 @@ namespace MissionControllerEC
             else
                 return false;
         }
-    }
 
+        public double AeAID { get; set; }
+    }
+    #endregion
+    #region Deliver Satellite to Orbital Period
     public class DeliverSatOrbitalPeriod : Contract
     {
         CelestialBody targetBody = null;
@@ -154,24 +165,15 @@ namespace MissionControllerEC
         public double MinOrb = 21480;
         public double MaxOrb = 21660;
         public double MinInc = 0;
-        public double MaxInc = UnityEngine.Random.Range(0, 90);
+        public double MaxInc = UnityEngine.Random.Range(10, 90);
         public int test = UnityEngine.Random.Range(0, 100);
         public bool testThis = false;
 
-        protected override void OnDeclined()
-        {
-            MissionControllerEC.TestThis2 = false;
-            Debug.Log("DelieverSat Period reset");
-        }
-        protected override void OnCancelled()
-        {
-            MissionControllerEC.TestThis2 = false;
-            Debug.Log("DelieverSat Period reset");
-        }
-
+        public int ContractCount = ContractSystem.Instance.GetCurrentContracts<DeliverSatOrbitalPeriod>().Count();
+       
         protected override bool Generate()
         {            
-            if (MissionControllerEC.TestThis2)
+            if (ContractCount >= 1)
             {
                 Debug.Log("contract is generated right now terminating OrbitalPeriod");
                 return false;               
@@ -199,7 +201,6 @@ namespace MissionControllerEC
             else
                 base.SetFunds(10000f, 28000f, 11000f, targetBody);
 
-            MissionControllerEC.TestThis2 = true;
             return true;
         }
        
@@ -231,7 +232,6 @@ namespace MissionControllerEC
         }
         protected override string MessageCompleted()
         {
-            MissionControllerEC.TestThis2 = false;
             return "You have successfully delivered our satellite to orbit " + targetBody.theName;
         }
 
@@ -276,4 +276,5 @@ namespace MissionControllerEC
                 return false;
         }
     }
+#endregion
 }

@@ -7,11 +7,12 @@ namespace MissionControllerEC
 {
     class Tools
     {
+        
         public static bool RandomBool(bool value)
         {
             int test = 0;
-            test = UnityEngine.Random.Range(0, 1);
-            if (test == 1)
+            test = UnityEngine.Random.Range(0, 100);
+            if (test > 50)
                 return true;
             else
                 return false;

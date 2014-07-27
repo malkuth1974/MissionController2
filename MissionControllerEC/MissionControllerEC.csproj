@@ -59,6 +59,7 @@
     <Compile Include="MissionControllerEC.cs" />
     <Compile Include="PopUps.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RepairPanel.cs" />
     <Compile Include="SaveInfo.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="StockToolBar.cs" />
