@@ -13,20 +13,14 @@ namespace MissionControllerEC
         string DoorAnimation = "mceanim";
 
         [KSPField(isPersistant = false)]
-        public static bool repair = false;
-
-        [KSPField(isPersistant = false)]
-        public static bool dooropen = false;
+        public static bool repair = false;        
 
         [KSPField(isPersistant = true)]
         public double currentRepair = 0;
 
         [KSPField(isPersistant = false)]
         public double repairRate = .1;
-
-        [KSPField(isPersistant = false, guiActive = true, guiName = "Ready To Repair")]
-        public bool readyRep = false;
-
+       
         public Animation GetDeployDoorAnim
         {
             get
@@ -35,73 +29,72 @@ namespace MissionControllerEC
             }
         }
 
-        private void PlayDeployAnimation(int speed = 1)
+        private void PlayOpenAnimation(int speed, float time)
         {
-            print("Inflating");
-            GetDeployDoorAnim[DoorAnimation].speed = speed;
-            GetDeployDoorAnim.Play(DoorAnimation);           
+            print("Opening");
+            GetDeployDoorAnim[DoorAnimation].speed = speed;           
+            GetDeployDoorAnim[DoorAnimation].normalizedTime = time;
+            GetDeployDoorAnim.Play(DoorAnimation);
         }
-        public void DeflateLifeboat(int speed)
-        {
-            print("Deflating");
-            GetDeployDoorAnim[DoorAnimation].time = GetDeployDoorAnim[DoorAnimation].length;
-            GetDeployDoorAnim[DoorAnimation].speed = speed;
-        }
-        
+               
         public override void OnStart(PartModule.StartState state)
         {
-            this.part.force_activate();
+            this.part.force_activate();            
         }
       
-        [KSPEvent(externalToEVAOnly = true, unfocusedRange = 4f, guiActiveUnfocused = true, guiActive = false, guiName = "Start Repairs", active = true)]
+        [KSPEvent(externalToEVAOnly = true, unfocusedRange = 4f, guiActiveUnfocused = true, guiName = "Start Repairs", active = false)]
         public void EnableRepair()
         {
-            dooropen = true;
-            PlayDeployAnimation(1);
-            Debug.Log("Door activated");
+            checkRepaired();
+            Debug.Log("repairEnabled");
+            if (repair)
+                ScreenMessages.PostScreenMessage("Repairs Started and Finsished.  Good Job");
+            else
+                ScreenMessages.PostScreenMessage("Repair failed maker sure you have RepairParts inside the Repair Panel");
+            
+           
         }
 
-        [KSPEvent(externalToEVAOnly = true, unfocusedRange = 4f, guiActiveUnfocused = true, guiActive = false, guiName = "Open Door", active = true)]
+        [KSPEvent(externalToEVAOnly = true, unfocusedRange = 4f, guiActiveUnfocused = true, guiName = "Open Door",active = true)]
         public void OpenDoor()
         {
-            PlayDeployAnimation(1);
+            PlayOpenAnimation(1,0);
+            Events["OpenDoor"].active = false;
+            Events["EnableRepair"].active = true;
+            Events["closeDoor"].active = true;
         }
 
-        [KSPEvent(externalToEVAOnly = true, unfocusedRange = 4f, guiActiveUnfocused = true, guiActive = false, guiName = "Close Door", active = true)]
+        [KSPEvent(externalToEVAOnly = true, unfocusedRange = 4f, guiActiveUnfocused = true, guiName = "Close Door",active = false)]
         public void closeDoor()
         {
-            DeflateLifeboat(1);
+            PlayOpenAnimation(-1, 1);
+            Events["OpenDoor"].active = true;
+            Events["EnableRepair"].active = false;
+            Events["closeDoor"].active = false;
         }       
 
         [KSPAction("Start repair")]
         public void ToggleAction(KSPActionParam param)
         {
             EnableRepair();
-        }       
+        }
 
-        public override void OnFixedUpdate()
+        public void checkRepaired()
         {
+            currentRepair = this.part.Resources.Get(PartResourceLibrary.Instance.GetDefinition("repairParts").id).amount;
+            Debug.Log("Current Repair is: " + currentRepair);
             if (currentRepair > 0)
             {
-                readyRep = !readyRep;
-            }
-
-            if (dooropen.Equals(true))
-            {
-                currentRepair = this.part.Resources.Get(PartResourceLibrary.Instance.GetDefinition("repairParts").id).amount;
                 this.part.RequestResource("repairParts", repairRate);
-                if (currentRepair > 0)
-                { 
-                    repair = true;
-                    ScreenMessages.PostScreenMessage("Repair Finished Good Job"); 
-                }
-                if (currentRepair == 0)
-                {
-                    repair = false;
-                    dooropen = false;
-                    ScreenMessages.PostScreenMessage("You Need to Transfer Repair Parts to the RepairPanel For Repair To work");
-                }
+                repair = true;
+                Debug.Log("Repaired " + repair);
+                currentRepair = 0;
             }
-        }
+            if (currentRepair == 0)
+            {
+                repair = false;
+                Debug.Log("Not repaired " + repair);
+            }
+        }              
     }
 }

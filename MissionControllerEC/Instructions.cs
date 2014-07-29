@@ -211,4 +211,19 @@ namespace MissionControllerEC
             this.hiredKerbalName = kerbalname;
         }
     }
+    public class RepairVesselsList
+    {
+        public string vesselName;
+        public string vesselId;
+        public RepairVesselsList()
+        {
+        }
+        public RepairVesselsList(string name, string id)
+        {
+            this.vesselName = name;
+            this.vesselId = id;
+        }
+
+
+    }
 }

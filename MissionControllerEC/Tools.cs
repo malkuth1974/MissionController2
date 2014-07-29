@@ -18,6 +18,13 @@ namespace MissionControllerEC
                 return false;
         }
 
+        public static int RandomNumber(int range1, int range2)
+        {
+            int value = UnityEngine.Random.Range(range1, range2);
+
+            return value;
+        }
+
         public static double ConvertDays(double seconds)
         {
             double newValue;
@@ -77,6 +84,8 @@ namespace MissionControllerEC
                 return "0s";
             }
         }
+
+        
     }
                 
 }

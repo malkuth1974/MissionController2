@@ -33,7 +33,7 @@ namespace MissionControllerEC
         }
         protected override string GetTitle()
         {
-            return "Enter Orbit Around ApA Goal: " + targetBody.theName + "  MaxApA: " + maxApA + "  MinApA: " + minApA;
+            return "Enter Orbit Around: " + targetBody.theName + "  MaxApA: " + maxApA + "  MinApA: " + minApA;
         }
 
         protected override void OnUpdate()
@@ -349,14 +349,6 @@ namespace MissionControllerEC
         {
             CheckPartGoal(FlightGlobals.ActiveVessel);
         }
-        protected override void OnRegister()
-        {
-            GameEvents.onVesselLoaded.Add(CheckPartGoal);
-        }
-        protected override void OnUnregister()
-        {
-            GameEvents.onVesselLoaded.Remove(CheckPartGoal);
-        }
 
         protected override void OnLoad(ConfigNode node)
         {
@@ -456,23 +448,25 @@ namespace MissionControllerEC
     public class TargetDockingGoal : ContractParameter
     {
         public string targetDockingID;
+        public string targetDockingName;
 
         public TargetDockingGoal()
         {
         }
 
-        public TargetDockingGoal(string targetID)
+        public TargetDockingGoal(string targetID,string targetName)
         {
-
+            this.targetDockingID = targetID;
+            this.targetDockingName = targetName;
         }
 
         protected override string GetHashString()
         {
-            return "Dock with another Vessel";
+            return "Dock with Vessel:\n " + targetDockingName;
         }
         protected override string GetTitle()
         {
-            return "Dock with another Vessel";
+            return "Dock with Vessel: \n" + targetDockingName;
         }
 
         protected override void OnRegister()
@@ -486,13 +480,14 @@ namespace MissionControllerEC
 
         protected override void OnLoad(ConfigNode node)
         {
-            string tagID = (node.GetValue("tagID"));
-            targetDockingID = tagID;
+            targetDockingID = node.GetValue("VesselID");
+            targetDockingName = node.GetValue("VesselName");
+
         }
         protected override void OnSave(ConfigNode node)
         {
-            string tagID = targetDockingID;
-            node.AddValue("tagID", targetDockingID);
+            node.AddValue("VesselID", targetDockingID);
+            node.AddValue("VesselName", targetDockingName);
         }
 
         private void onPartCouple(GameEvents.FromToAction<Part, Part> action)
@@ -501,13 +496,118 @@ namespace MissionControllerEC
             {                                             
                 Debug.LogError("Does: " + targetDockingID + " = " + action.from.vessel.id.ToString());
                 Debug.LogError("Docked TO ID: " + action.to.vessel.id.ToString());
-                if (targetDockingID == action.from.vessel.vesselName)
+                if (targetDockingID == action.from.vessel.id.ToString())
                 {
                     ScreenMessages.PostScreenMessage("You have docked to the Target Vessel, Goal Complete");
                     base.SetComplete();
                 }
                 else
                     ScreenMessages.PostScreenMessage("Did not connect to the correct target ID vessel, Try Again");
+            }
+        }
+    }
+    #endregion
+    #region RepairGoalCheck
+    public class SimplePartCheck : ContractParameter
+    {
+        string TitleName;
+        //bool must be static and global for check.
+        public bool value1 = false;
+        
+        public SimplePartCheck()
+        {
+        }
+
+        public SimplePartCheck(string title, bool value1)
+        {
+            this.TitleName = title;
+            this.value1 = value1;
+        }
+       
+        protected override string GetHashString()
+        {
+            return TitleName;
+        }
+        protected override string GetTitle()
+        {
+            return TitleName;
+        }
+
+        protected override void OnUpdate()
+        {
+            CheckIfRepaired(FlightGlobals.ActiveVessel);
+        }
+        protected override void OnLoad(ConfigNode node)
+        {
+            TitleName = node.GetValue("titlename");
+            value1 = bool.Parse(node.GetValue("value1"));
+        }
+        protected override void OnSave(ConfigNode node)
+        {
+            node.AddValue("titlename", TitleName);
+            node.AddValue("value1", value1);
+        }
+
+        private void CheckIfRepaired(Vessel name)
+        {
+            if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel && value1 == true)
+            {
+                base.SetComplete();
+            }
+        }
+    }
+#endregion
+    #region Get Crew Count
+    public class GetCrewCount : ContractParameter
+    {
+        public int crewCount = 0;
+
+        public GetCrewCount()
+        {
+        }
+
+        public GetCrewCount(int crewnumber)
+        {
+            this.crewCount = crewnumber;
+        }
+        protected override string GetHashString()
+        {
+            if (crewCount > 0)
+                return "Amount crew " + crewCount;
+            else
+                return "Vessel is automated: (nocrew)";
+        }
+        protected override string GetTitle()
+        {
+            if (crewCount > 0)
+                return "Vessel Must Have This Amount Of crew " + crewCount;
+            else
+                return "Vessel is automated: (nocrew)";
+        }
+
+        protected override void OnUpdate()
+        {
+            CheckCrewValues(FlightGlobals.ActiveVessel); 
+        }
+     
+        protected override void OnLoad(ConfigNode node)
+        {            
+            crewCount = int.Parse(node.GetValue("crewcount"));
+        }
+        protected override void OnSave(ConfigNode node)
+        {            
+            node.AddValue("crewcount", crewCount);
+        }
+
+        public void CheckCrewValues(Vessel vessel)
+        {
+            if (FlightGlobals.ActiveVessel && HighLogic.LoadedSceneIsFlight)
+            {
+                if (crewCount <= vessel.GetCrewCount())
+                {
+                    base.SetComplete();
+                    Debug.Log("Passed Crew Check");
+                }
             }
         }
     }

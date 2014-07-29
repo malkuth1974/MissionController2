@@ -56,6 +56,7 @@
     <Compile Include="FinanceWindow1.cs" />
     <Compile Include="Instructions.cs" />
     <Compile Include="MCEContracts.cs" />
+    <Compile Include="MCEOrbitalScanning.cs" />
     <Compile Include="MissionControllerEC.cs" />
     <Compile Include="PopUps.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

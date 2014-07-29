@@ -24,7 +24,7 @@ namespace MissionControllerEC
         
         
         private bool DifficultyLevelCheck = false;
-        private float cst;       
+        private float cst;
 
         StockToolbar stb = new StockToolbar();
 
