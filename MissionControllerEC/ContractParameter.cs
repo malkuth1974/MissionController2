@@ -100,13 +100,9 @@ namespace MissionControllerEC
             return "Enter Orbit Around Goal: " + targetBody.theName;
         }
 
-        protected override void OnRegister()
+        protected override void OnUpdate()
         {
-            GameEvents.onVesselOrbitClosed.Add(InOrbit);
-        }
-        protected override void OnUnregister()
-        {
-            GameEvents.onVesselOrbitClosed.Remove(InOrbit);
+            InOrbit(FlightGlobals.ActiveVessel);
         }
 
         protected override void OnLoad(ConfigNode node)
@@ -127,11 +123,11 @@ namespace MissionControllerEC
         public void InOrbit(Vessel vessel)
         {
             if (FlightGlobals.ActiveVessel && HighLogic.LoadedSceneIsFlight)
-            {
-                if (FlightGlobals.ActiveVessel.orbit.referenceBody.bodyName.Equals(targetBody))
+            {                
+                if (FlightGlobals.ActiveVessel.orbit.referenceBody.name.Equals(targetBody.theName))                   
                 {
                     base.SetComplete();
-                    ScreenMessages.PostScreenMessage("You Have achieved Orbit of Target Body: " + targetBody + " Contract Complete");
+                    ScreenMessages.PostScreenMessage("You Have achieved Orbit of Target Body: " + targetBody);
                 }
             }
         }
@@ -353,16 +349,13 @@ namespace MissionControllerEC
         protected override void OnLoad(ConfigNode node)
         {
 
-            string partname = (node.GetValue("partname"));
-            partName = partname;
-            int maxcount = int.Parse(node.GetValue("maxcount"));
-            maxPartCount = maxcount;
+            partName = (node.GetValue("partname"));
+            maxPartCount = int.Parse(node.GetValue("maxcount"));
         }
         protected override void OnSave(ConfigNode node)
         {
-            string partname = partName;
-            node.AddValue("partname", partName);
-            int maxcount = maxPartCount;
+            
+            node.AddValue("partname", partName);            
             node.AddValue("maxcount", maxPartCount);
         }
 
@@ -507,23 +500,121 @@ namespace MissionControllerEC
         }
     }
     #endregion
-    #region RepairGoalCheck
-    public class SimplePartCheck : ContractParameter
+    #region Orbital Research Part Check
+    public class OrbialResearchPartCheck : ContractParameter
     {
-        string TitleName;
-        //bool must be static and global for check.
-        public bool value1 = false;
-        
-        public SimplePartCheck()
+        public CelestialBody targetBody;
+
+        public double diff;
+        public double savedTime;
+        public double missionTime;
+
+        public bool setTime = true;
+
+        public OrbialResearchPartCheck()
         {
         }
 
-        public SimplePartCheck(string title, bool value1)
+        public OrbialResearchPartCheck(CelestialBody target, double Mtime)
         {
-            this.TitleName = title;
-            this.value1 = value1;
+            this.targetBody = target;
+            this.missionTime = Mtime;
         }
        
+        protected override string GetHashString()
+        {
+            return "Orbit " + targetBody.theName + " and conduct research.";
+        }
+        protected override string GetTitle()
+        {
+            return "Conduct Orbital Research. Time For Completion: " + Tools.formatTime(missionTime);
+        }
+
+        protected override void OnUpdate()
+        {
+            if (FlightGlobals.ActiveVessel.orbit.referenceBody.bodyName == targetBody.theName)
+            {
+                CheckIfOrbit(FlightGlobals.ActiveVessel);
+            }
+        }
+        protected override void OnLoad(ConfigNode node)
+        {
+            int bodyID = int.Parse(node.GetValue("targetBody"));
+            foreach (var body in FlightGlobals.Bodies)
+            {
+                if (body.flightGlobalsIndex == bodyID)
+                    targetBody = body;
+            }
+
+            savedTime = double.Parse(node.GetValue("savedtime"));
+            missionTime = double.Parse(node.GetValue("missiontime"));
+            diff = double.Parse(node.GetValue("diff"));
+
+            setTime = bool.Parse(node.GetValue("settime"));
+        }
+        protected override void OnSave(ConfigNode node)
+        {
+            int bodyID = targetBody.flightGlobalsIndex;
+            node.AddValue("targetBody", bodyID);
+
+            node.AddValue("savedtime", savedTime);
+            node.AddValue("missiontime", missionTime);
+            node.AddValue("diff", diff);
+
+            node.AddValue("settime", setTime);
+        }
+
+        private void CheckIfOrbit(Vessel vessel)
+        {
+
+            if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel)
+            {
+
+                if (MCEOrbitalScanning.doOrbitResearch)
+                {
+                    if (HighLogic.LoadedSceneIsFlight && setTime)
+                    {
+                        contractSetTime();
+                    }
+
+                    diff = Planetarium.GetUniversalTime() - savedTime;
+
+                    ScreenMessages.PostScreenMessage("Time Left To Complete: " + Tools.formatTime(missionTime - diff), .001f);
+
+                    if (diff > missionTime)
+                    {
+                        base.SetComplete();
+                        Debug.Log("Time Completed");
+                    }
+
+                }
+            }
+        }
+        public void contractSetTime()
+        {
+            savedTime = Planetarium.GetUniversalTime();
+            setTime = false;
+            Debug.Log("Time countdown has been set");
+        }
+
+        
+    }
+#endregion
+    #region Repair Panel Part Check
+    public class RepairPanelPartCheck : ContractParameter
+    {
+        string TitleName;
+        //bool must be static and global for check.
+
+        public RepairPanelPartCheck()
+        {
+        }
+
+        public RepairPanelPartCheck(string title)
+        {
+            this.TitleName = title;
+        }
+
         protected override string GetHashString()
         {
             return TitleName;
@@ -540,23 +631,22 @@ namespace MissionControllerEC
         protected override void OnLoad(ConfigNode node)
         {
             TitleName = node.GetValue("titlename");
-            value1 = bool.Parse(node.GetValue("value1"));
         }
         protected override void OnSave(ConfigNode node)
         {
             node.AddValue("titlename", TitleName);
-            node.AddValue("value1", value1);
         }
 
         private void CheckIfRepaired(Vessel name)
         {
-            if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel && value1 == true)
+
+            if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel && RepairPanel.repair)
             {
                 base.SetComplete();
             }
         }
     }
-#endregion
+    #endregion
     #region Get Crew Count
     public class GetCrewCount : ContractParameter
     {
@@ -612,4 +702,190 @@ namespace MissionControllerEC
         }
     }
 #endregion
+    #region Lander Research Part Check
+    public class LanderResearchPartCheck : ContractParameter
+    {
+        public CelestialBody targetBody;
+
+        public double diff;
+        public double savedTime;
+        public double missionTime;
+
+        public bool setTime = true;
+
+        public LanderResearchPartCheck()
+        {
+        }
+
+        public LanderResearchPartCheck(CelestialBody target, double Mtime)
+        {
+            this.targetBody = target;
+            this.missionTime = Mtime;
+        }
+
+        protected override string GetHashString()
+        {
+            return "Land Vessel And Conduct Research";
+        }
+        protected override string GetTitle()
+        {
+            return "Conduct Research. Time For Completion: " + Tools.formatTime(missionTime);
+        }
+
+        protected override void OnUpdate()
+        {
+            if (FlightGlobals.ActiveVessel.orbit.referenceBody.bodyName == targetBody.theName)
+            {
+                CheckIflanded(FlightGlobals.ActiveVessel);
+            }
+        }
+        protected override void OnLoad(ConfigNode node)
+        {
+            int bodyID = int.Parse(node.GetValue("targetBody"));
+            foreach (var body in FlightGlobals.Bodies)
+            {
+                if (body.flightGlobalsIndex == bodyID)
+                    targetBody = body;
+            }
+
+            savedTime = double.Parse(node.GetValue("savedtime"));
+            missionTime = double.Parse(node.GetValue("missiontime"));
+            diff = double.Parse(node.GetValue("diff"));
+
+            setTime = bool.Parse(node.GetValue("settime"));
+        }
+        protected override void OnSave(ConfigNode node)
+        {
+            int bodyID = targetBody.flightGlobalsIndex;
+            node.AddValue("targetBody", bodyID);
+
+            node.AddValue("savedtime", savedTime);
+            node.AddValue("missiontime", missionTime);
+            node.AddValue("diff", diff);
+
+            node.AddValue("settime", setTime);
+        }
+
+        private void CheckIflanded(Vessel vessel)
+        {
+
+            if (HighLogic.LoadedSceneIsFlight && (FlightGlobals.ActiveVessel.situation == Vessel.Situations.LANDED || FlightGlobals.ActiveVessel.situation == Vessel.Situations.SPLASHED))
+            {
+                if (MCELanderResearch.doLanderResearch)
+                {
+                    if (HighLogic.LoadedSceneIsFlight && setTime)
+                    {
+                        contractSetTime();
+                    }
+                    diff = Planetarium.GetUniversalTime() - savedTime;                   
+                    
+                    ScreenMessages.PostScreenMessage("Time Left To Complete: " + Tools.formatTime(missionTime - diff),.001f);                    
+                    
+                    if (diff > missionTime)
+                    {
+                        base.SetComplete();
+                        Debug.Log("Time Completed");
+                    }
+
+                }
+            }
+        }
+        public void contractSetTime()
+        {
+            savedTime = Planetarium.GetUniversalTime();
+            setTime = false;
+            Debug.Log("Time countdown has been set");
+        }
+    }
+    #endregion
+    #region Time Goal Check
+    public class TimeGoalCheck : ContractParameter
+    {
+        public string TitleName;
+        
+        public double diff;
+        public double savedTime;
+        public double missionTime;
+
+        public bool setTime = false;
+        public bool beginCountDown = false;
+
+        public TimeGoalCheck()
+        {
+        }
+
+        public TimeGoalCheck(string title, double MTime, bool settime)
+        {
+            this.TitleName = title;
+            this.missionTime = MTime;
+            this.setTime = settime;
+        }
+
+        protected override string GetHashString()
+        {
+            return TitleName;
+        }
+        protected override string GetTitle()
+        {
+            return TitleName;
+        }
+
+        protected override void OnUpdate()
+        {
+            if (HighLogic.LoadedSceneIsFlight && setTime)
+                contractSetTime();
+
+            if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel && beginCountDown)
+                contractcheckTime();
+        }
+        protected override void OnLoad(ConfigNode node)
+        {
+            TitleName = node.GetValue("titlename");
+            int bodyID = int.Parse(node.GetValue("targetBody"));
+           
+            savedTime = double.Parse(node.GetValue("savedtime"));
+            missionTime = double.Parse(node.GetValue("missiontime"));
+            diff = double.Parse(node.GetValue("diff"));
+
+            setTime = bool.Parse(node.GetValue("settime"));
+            beginCountDown = bool.Parse(node.GetValue("begincountdown"));
+        }
+        protected override void OnSave(ConfigNode node)
+        {
+            node.AddValue("titlename", TitleName);
+
+            node.AddValue("savedtime", savedTime);
+            node.AddValue("missiontime", missionTime);
+            node.AddValue("diff", diff);
+
+            node.AddValue("settime", setTime);
+            node.AddValue("begincountdown", beginCountDown);
+        }
+
+        public void contractcheckTime()
+        {
+            if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel)
+            {
+                
+                diff = Planetarium.GetUniversalTime() - savedTime;
+                Debug.Log("Time Left is: " + Tools.formatTime(savedTime - diff));
+                ScreenMessages.PostScreenMessage("Time Left is: " + Tools.formatTime(savedTime - diff),null);
+                if (diff > missionTime)
+                {
+                    base.SetComplete();
+                    beginCountDown = false;
+                    Debug.Log("Time Completed");
+                }
+            }
+        }
+        public void contractSetTime()
+        {
+            savedTime = Planetarium.GetUniversalTime();
+            setTime = false;
+            beginCountDown = true;
+            Debug.Log("Time countdown has been set");
+        }
+              
+    }
+    #endregion
 }

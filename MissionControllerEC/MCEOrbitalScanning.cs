@@ -8,12 +8,9 @@ namespace MissionControllerEC
 {
     class MCEOrbitalScanning : PartModule
     {
-        [KSPField(isPersistant = false)]
-        public static bool doResearch = false;
-
         [KSPField(isPersistant = true)]
-        private bool IsEnabled = false;
-
+        public static bool doOrbitResearch = false;
+       
         Vessel vs = new Vessel();
 
         [KSPField(isPersistant = false, guiActive = true, guiName = "Probe Ready To Scan:")]
@@ -28,16 +25,22 @@ namespace MissionControllerEC
             checkVesselResearch();
         }
 
+        [KSPAction("Start Scanning")]
+        public void ToggleAction(KSPActionParam param)
+        {
+            StartResearchMCE();
+        }
+
         public void checkVesselResearch()
         {
             if (probeOrbitResearch == true)
             {
-                doResearch = true;
+                doOrbitResearch = true;
                 ScreenMessages.PostScreenMessage("Starting Orbital Research, Please Stand By...");
             }
             else
             {
-                doResearch = false;
+                doOrbitResearch = false;
                 scanStart = false;
                 ScreenMessages.PostScreenMessage("Vessel Needs to be In Orbit to Conduct Scans");
             }
@@ -45,7 +48,7 @@ namespace MissionControllerEC
 
         public override void OnFixedUpdate()
         {
-            if (doResearch == true)
+            if (doOrbitResearch == true)
             {
                 scanStart = true;
             }
