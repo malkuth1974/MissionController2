@@ -7,7 +7,9 @@ CopyRight Malkuth74
 
 Please ask for permission to use any code from this Mod file, I have no real issues with using code just nice to know where it is going and what it is doing.
 
-Do not reuse any Models or Parts from Mission Controller without my Consent or HellDivers permission. All models are made my HellDiver and has Final Judgment and Word on what is done with these models.
+Do not reuse any Models or Parts from Mission Controller without my Consent or HellDivers permission. All models are made by HellDiver and has Final Judgment and Word on what is done with these models.
+
+Helldivers Forum Adress For KSP: http://forum.kerbalspaceprogram.com/members/76731-helldiver
 
 Mission Controller 2 Is A Complete Rewrite of the Original Code Mission Controller. Mission Controller 2 is brand new code and new mod only connected to the original Mission Controller by Name.
 
