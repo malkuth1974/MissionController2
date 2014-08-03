@@ -15,7 +15,7 @@ namespace MissionControllerEC
     #region Contract DeliverSatellit
     public class DeliverSatellite : Contract
     {
-        CelestialBody targetBody = null;
+        CelestialBody targetBody = null;        
         public double GMaxApA = UnityEngine.Random.Range(75000, 300000);
         public double GMinApA = 0;
         public double GMaxPeA = 0;
@@ -24,27 +24,26 @@ namespace MissionControllerEC
         public bool techUnlocked = false;
         public double MinInc = 0;
         public int partAmount = 1;
-        public string partName = "repairPanel";
+        public string partName = "Repair Panel";
         public double MaxInc = UnityEngine.Random.Range(10, 90);
         public int test = UnityEngine.Random.Range(0, 100);
 
         public int totalContracts;
         public int TotalFinished;
-
-       
+            
         protected override bool Generate()
-        {
+        {           
             totalContracts = ContractSystem.Instance.GetCurrentContracts<DeliverSatellite>().Count();
             TotalFinished = ContractSystem.Instance.GetCompletedContracts<DeliverSatellite>().Count();
 
-            Debug.Log("Satellite Delivery Totalcontracts " + totalContracts + " - " + " Total Finsihed " + TotalFinished);
+            //Debug.Log("Satellite Delivery Totalcontracts " + totalContracts + " - " + " Total Finsihed " + TotalFinished);
             if (totalContracts >= 1)
             {
-                Debug.Log("contract is generated right now terminating Normal Satellite Mission");
-                Debug.Log("count is " + totalContracts);
+                //Debug.Log("contract is generated right now terminating Normal Satellite Mission");
+                //Debug.Log("count is " + totalContracts);
                 return false;                 
-            }            
-
+            }
+            bool parttechUnlock = ResearchAndDevelopment.GetTechnologyState("advConstruction") == RDTech.State.Available;
             targetBody = Planetarium.fetch.Home;
             GMinApA = GMaxApA - 5000;
             GMaxPeA = GMaxApA;
@@ -62,7 +61,10 @@ namespace MissionControllerEC
             {
                 this.AddParameter(new Inclination(MinInc, MaxInc));
             }
-            this.AddParameter(new PartGoal(partName, partAmount), null);
+            if (parttechUnlock)
+            {
+                this.AddParameter(new PartGoal(partName, partAmount), null);
+            }
             this.AddParameter(new GetCrewCount(crewCount), null);
             
             base.SetExpiry(3f,10f);
@@ -94,7 +96,7 @@ namespace MissionControllerEC
         }
         protected override string GetTitle()
         {
-            return "Launch Company Satellite Into Orbit around " + targetBody.theName + ": " + TotalFinished;
+            return "Launch Company Satellite Into Orbit around " + targetBody.theName + " - Total Done: " + TotalFinished;
         }
         protected override string GetDescription()
         {
@@ -177,7 +179,7 @@ namespace MissionControllerEC
                 return false;
         }
 
-        public double AeAID { get; set; }
+        
     }
     #endregion
     #region Deliver Satellite to Orbital Period
@@ -194,7 +196,7 @@ namespace MissionControllerEC
         public int crewCount = 0;
 
         public int partAmount = 1;
-        public string partName = "repairPanel";
+        public string partName = "Repair Panel";
 
         public int totalContracts;
         public int TotalFinished;
@@ -204,12 +206,12 @@ namespace MissionControllerEC
         {
             totalContracts = ContractSystem.Instance.GetCurrentContracts<DeliverSatOrbitalPeriod>().Count();
             TotalFinished = ContractSystem.Instance.GetCompletedContracts<DeliverSatOrbitalPeriod>().Count();
-
-            Debug.Log("Orbital Period Totalcontracts " + totalContracts + " - " + " Total Finsihed " + TotalFinished);
+            bool parttechUnlock = ResearchAndDevelopment.GetTechnologyState("advConstruction") == RDTech.State.Available;
+            //Debug.Log("Orbital Period Totalcontracts " + totalContracts + " - " + " Total Finsihed " + TotalFinished);
             if (totalContracts >= 1)
             {
-                Debug.Log("contract is generated right now terminating Orbital Period Satellite Mission");
-                Debug.Log("count is " + totalContracts);
+                //Debug.Log("contract is generated right now terminating Orbital Period Satellite Mission");
+                //Debug.Log("count is " + totalContracts);
                 return false;                 
             }
 
@@ -217,7 +219,7 @@ namespace MissionControllerEC
             MinInc = MaxInc - 10;
             bool ifInclination = false;
 
-            if (test >= 50)
+            if (test >= 75)
                 ifInclination = true;
             else
                 ifInclination = false;
@@ -226,7 +228,11 @@ namespace MissionControllerEC
             {
                 this.AddParameter(new Inclination(MinInc, MaxInc));
             }
-            this.AddParameter(new PartGoal(partName, partAmount), null);
+            if (parttechUnlock)
+            {
+                this.AddParameter(new PartGoal(partName, partAmount), null);
+            }
+            
             this.AddParameter(new GetCrewCount(crewCount), null);
             base.SetExpiry(3f, 10f);
             base.SetScience(2.25f, targetBody);
@@ -255,7 +261,7 @@ namespace MissionControllerEC
         }
         protected override string GetTitle()
         {
-            return "Deliver a Satellite To an Orbital Period of Six Hours " + targetBody.theName + ": " + TotalFinished;
+            return "Deliver a Satellite To an Orbital Period of Six Hours " + targetBody.theName + " - Total Done " + TotalFinished;
         }
         protected override string GetDescription()
         {
@@ -343,7 +349,7 @@ namespace MissionControllerEC
                         if (m.moduleName.Equals("RepairPanel"))
                         {
                             repairvesselList.Add(new RepairVesselsList(vs.name,vs.id.ToString()));
-                            Debug.Log("MCE***" + vs.name + " Loaded Vessels With RepairStation Parts");
+                            //Debug.Log("MCE***" + vs.name + " Loaded Vessels With RepairStation Parts");
                         }
                     }
                 }
@@ -358,10 +364,10 @@ namespace MissionControllerEC
                 RepairVesselsList random = repairvesselList[rnd.Next(repairvesselList.Count)];
                 vesselID = random.vesselId.ToString();
                 vesselName = random.vesselName;
-                Debug.LogWarning("Random Repair Vessel Selected " + random.vesselName);
+                //Debug.LogWarning("Random Repair Vessel Selected " + random.vesselName);
                 NoVessel = true;
             }
-            else { Debug.LogError(" Vessel Selection Null, skiped process"); NoVessel = false; }
+            //else { Debug.LogError(" Vessel Selection Null, skiped process"); NoVessel = false; }
         }
 
         public int totalContracts;
@@ -371,27 +377,27 @@ namespace MissionControllerEC
         {
             totalContracts = ContractSystem.Instance.GetCurrentContracts<RepairGoal>().Count();
             TotalFinished = ContractSystem.Instance.GetCompletedContracts<RepairGoal>().Count();
-            Debug.Log(" Repair Contract Totalcontracts " + totalContracts + " - " + " Total Finsihed " + TotalFinished);
+            //Debug.Log(" Repair Contract Totalcontracts " + totalContracts + " - " + " Total Finsihed " + TotalFinished);
             findVeselWithRepairPart();
             chooseVesselRepairFromList();
             if (totalContracts >= 1 || NoVessel == false || randomWeightSystem >= 60)
             {
                 if (totalContracts >= 1)
                 {
-                    Debug.Log("contract is generated right now terminating Repair Vessel");
+                    //Debug.Log("contract is generated right now terminating Repair Vessel");
                 }
                 if (!NoVessel)
                 {
-                    Debug.Log("no vessel found current vessel is: " + vesselName);
+                    //Debug.Log("no vessel found current vessel is: " + vesselName);
                 }
                 if (randomWeightSystem >= 60)
                 {
-                    Debug.Log("Failed random weight system weight is set at: " + randomWeightSystem);
+                    //Debug.Log("Failed random weight system weight is set at: " + randomWeightSystem);
                 }
-                Debug.Log("count is " + totalContracts);
+                //Debug.Log("count is " + totalContracts);
                 return false;  
             }
-            Debug.Log("Random Weight System set at: " + randomWeightSystem + " System passed by being greater than 60");
+            //Debug.Log("Random Weight System set at: " + randomWeightSystem + " System passed by being greater than 60");
                                                                    
             targetBody = Planetarium.fetch.Home;
             this.AddParameter(new TargetDockingGoal(vesselID,vesselName), null);
@@ -479,36 +485,38 @@ namespace MissionControllerEC
         CelestialBody targetBody = null;
         int crewCount = 0;
         public double testpos = 0;
-        string partName = "orbitalResearch";
+        string partName = "Orbital Research Scanner";
         int partNumber = 1;
 
-        double missionTime = Tools.RandomNumber(200, 1500);
+        double missionTime = 0;
 
-        
-        
-
-        public int totalContracts;
-        public int TotalFinished;
+        public int totalContracts = 0;
+        public int TotalFinished = 0;
 
         protected override bool Generate()
         {
+            targetBody = GetUnreachedTargets();
+            if (targetBody != null)
+            {
+                //Debug.LogWarning(" Bodies Not Visited is: " + targetBody.theName);
+            }
+            else
+            {
+                targetBody = Planetarium.fetch.Home;
+                //Debug.LogWarning("Target Body was Null set to kerbin");
+            }
             totalContracts = ContractSystem.Instance.GetCurrentContracts<OrbitalScanContract>().Count();
             TotalFinished = ContractSystem.Instance.GetCompletedContracts<OrbitalScanContract>().Count();
-            Debug.Log("Orbital Research Totalcontracts " + totalContracts + " - " + " Total Finsihed " + TotalFinished);
+            //Debug.Log("Orbital Research Totalcontracts " + totalContracts + " - " + " Total Finsihed " + TotalFinished);
             if (totalContracts >= 1)
             {
-                Debug.Log("Orbital Research contract is generated right now terminating Mission");
-                Debug.Log("count is " + totalContracts);
+                //Debug.Log("Orbital Research contract is generated right now terminating Mission");
+                //Debug.Log("count is " + totalContracts);
                 return false;
             }
-            System.Random generator = new System.Random(this.MissionSeed);
-            int bodynumbers = FlightGlobals.Bodies.Count;
-            int bodyChoice = Tools.RandomNumber(0, bodynumbers);
-            Debug.Log("BodyChoice " + bodyChoice);
-            if (targetBody == null)
-                targetBody = FlightGlobals.Bodies[bodyChoice];
+            missionTime = Tools.RandomNumber(200, 1500);
             this.AddParameter(new InOrbitGoal(targetBody), null);
-            this.AddParameter(new OrbialResearchPartCheck(targetBody,missionTime), null);
+            this.AddParameter(new OrbialResearchPartCheck(targetBody, missionTime), null);
             this.AddParameter(new PartGoal(partName, partNumber), null);
             this.AddParameter(new GetCrewCount(0), null);
             this.prestige = ContractPrestige.Significant;
@@ -519,8 +527,8 @@ namespace MissionControllerEC
             base.SetFunds(24000f, 30000f, 21000f, targetBody);
 
             return true;
-        }     
-        
+        }
+
         public override bool CanBeCancelled()
         {
             return true;
@@ -536,7 +544,7 @@ namespace MissionControllerEC
         }
         protected override string GetTitle()
         {
-            return "Conduct Unmanned Orbital Research around " + targetBody.theName + ": " + TotalFinished;
+            return "Conduct Unmanned Orbital Research around " + targetBody.theName + " - Total Done " + TotalFinished;
         }
         protected override string GetDescription()
         {
@@ -561,18 +569,19 @@ namespace MissionControllerEC
                 if (body.flightGlobalsIndex == bodyID)
                     targetBody = body;
             }
-            
+
             crewCount = int.Parse(node.GetValue("crewcount"));
             partName = (node.GetValue("partname"));
             partNumber = int.Parse(node.GetValue("maxcount"));
             missionTime = double.Parse(node.GetValue("missiontime"));
+
         }
         protected override void OnSave(ConfigNode node)
         {
             int bodyID = targetBody.flightGlobalsIndex;
-            node.AddValue("targetBody", bodyID); 
-           
-            node.AddValue("crewcount",crewCount);
+            node.AddValue("targetBody", bodyID);
+
+            node.AddValue("crewcount", crewCount);
             node.AddValue("partname", partName);
             node.AddValue("maxcount", partNumber);
             node.AddValue("missiontime", missionTime);
@@ -587,6 +596,17 @@ namespace MissionControllerEC
             else
                 return false;
         }
+
+        protected static CelestialBody GetUnreachedTargets()
+        {
+            var bodies = Contract.GetBodies_Reached(true, true);
+            if (bodies != null)
+            {
+                if (bodies.Count > 0)
+                    return bodies[UnityEngine.Random.Range(0, bodies.Count)];
+            }
+            return null;
+        }
     }
     #endregion
     #region Lander Scanning Contract
@@ -595,7 +615,7 @@ namespace MissionControllerEC
         CelestialBody targetBody = null;
         int crewCount = 0;
         public double testpos = 0;
-        string partName = "LanderResearch";
+        string partName = "Ground Based Research Scanner";
         int partNumber = 1;
 
         double amountTime = Tools.RandomNumber(200, 1500);
@@ -605,36 +625,48 @@ namespace MissionControllerEC
 
         protected override bool Generate()
         {
-            totalContracts = ContractSystem.Instance.GetCurrentContracts<LanderResearchScan>().Count();
-            TotalFinished = ContractSystem.Instance.GetCompletedContracts<LanderResearchScan>().Count();
-            Debug.Log("Land Research Totalcontracts " + totalContracts + " - " + " Total Finsihed " + TotalFinished);
-            if (totalContracts >= 1)
+            targetBody = GetUnreachedTargets();
+
+            if (targetBody != null)
             {
-                Debug.LogWarning("Land Research contract is generated right now terminating Mission");
-                Debug.Log("count is " + totalContracts);
+                //Debug.LogWarning(" Bodies Not Visited is: " + targetBody.theName);
+            }
+            else
+            {
+                //Debug.LogWarning("Target Body was Null For Landing Contract Contract Cancelled");
                 return false;
             }
-            System.Random generator = new System.Random(this.MissionSeed);
-            int bodynumbers = FlightGlobals.Bodies.Count;
-            int bodyChoice = Tools.RandomNumber(2, bodynumbers);
-            Debug.Log("BodyChoice " + bodyChoice);
-            if (targetBody == null)
-                targetBody = FlightGlobals.Bodies[bodyChoice]; 
+
+            totalContracts = ContractSystem.Instance.GetCurrentContracts<LanderResearchScan>().Count();
+            TotalFinished = ContractSystem.Instance.GetCompletedContracts<LanderResearchScan>().Count();
+            //Debug.Log("Land Research Totalcontracts " + totalContracts + " - " + " Total Finsihed " + TotalFinished);
+            if (totalContracts >= 1)
+            {
+                //Debug.LogWarning("Land Research contract is generated right now terminating Mission");
+                //Debug.Log("count is " + totalContracts);
+                return false;
+            }
+            if (targetBody.theName.Equals("Jool") || targetBody.theName.Equals("Sun") || targetBody.theName.Equals("Kerbin"))
+            {
+                //Debug.LogWarning("Landing Goal Body set to: " + targetBody.theName + " Contract Generate cancelled");
+                return false;
+            }
+
             this.AddParameter(new InOrbitGoal(targetBody), null);
             this.AddParameter(new LandOnBody(targetBody), null);
-            this.AddParameter(new LanderResearchPartCheck(targetBody,amountTime), null);
+            this.AddParameter(new LanderResearchPartCheck(targetBody, amountTime), null);
             this.AddParameter(new PartGoal(partName, partNumber), null);
             this.AddParameter(new GetCrewCount(0), null);
             this.prestige = ContractPrestige.Significant;
             base.SetExpiry(3f, 10f);
             base.SetScience(35f, targetBody);
             base.SetDeadlineYears(3f, targetBody);
-            base.SetReputation(12f, 11f , targetBody);
+            base.SetReputation(12f, 11f, targetBody);
             base.SetFunds(27000f, 35000f, 24000f, targetBody);
 
             return true;
         }
-        
+
         public override bool CanBeCancelled()
         {
             return true;
@@ -643,14 +675,14 @@ namespace MissionControllerEC
         {
             return true;
         }
-      
+
         protected override string GetHashString()
         {
             return targetBody.bodyName + " " + TotalFinished;
         }
         protected override string GetTitle()
         {
-            return "Conduct Ground research on " + targetBody.theName + ": " + TotalFinished;
+            return "Conduct Ground research on " + targetBody.theName + " - Total Done " + TotalFinished;
         }
         protected override string GetDescription()
         {
@@ -703,6 +735,150 @@ namespace MissionControllerEC
             else
                 return false;
         }
+        protected static CelestialBody GetUnreachedTargets()
+        {
+            var bodies = Contract.GetBodies_Reached(true, true);
+            if (bodies != null)
+            {
+                if (bodies.Count > 0)
+                    return bodies[UnityEngine.Random.Range(0, bodies.Count)];
+            }
+            return null;
+        }
     }
     #endregion
+    #region Build ComSat Network
+    public class BuildComNetwork : Contract
+    {
+        CelestialBody targetBody = null;
+        Settings settings = new Settings("Config.cfg");
+        public double MinOrb;
+        public double MaxOrb;
+        public int crewCount = 0;
+
+        public string ContractPlayerName;
+
+        public int partAmount = 1;
+        public string partName = "Repair Panel";
+
+        public bool StartNetwork;
+
+        public int totalContracts;
+        public int TotalFinished;
+
+
+        protected override bool Generate()
+        {
+            totalContracts = ContractSystem.Instance.GetCurrentContracts<BuildComNetwork>().Count();
+            TotalFinished = ContractSystem.Instance.GetCompletedContracts<BuildComNetwork>().Count();
+            bool parttechUnlock = ResearchAndDevelopment.GetTechnologyState("advConstruction") == RDTech.State.Available;
+            //Debug.Log("COMSAT Totalcontracts " + totalContracts + " - " + " Total Finsihed " + TotalFinished);
+            if (totalContracts >= 1)
+            {
+                //Debug.Log("Contract Deliver ComSat Network Rejected");
+                //Debug.Log("count is " + totalContracts);
+                return false;
+            }
+            settings.Load();
+            StartNetwork = settings.StartBuilding;
+            if (!StartNetwork)
+            {
+                Debug.Log("ComSat Network is shut off, and set to false");
+                return false;
+            }
+            targetBody = FlightGlobals.Bodies[settings.bodyNumber];
+            ContractPlayerName = settings.contractName;
+            MinOrb = settings.minOrbP;
+            MaxOrb = settings.maxOrbP;
+
+            this.AddParameter(new OrbitalPeriod(MinOrb, MaxOrb), null);
+            if (parttechUnlock)
+            {
+                this.AddParameter(new PartGoal(partName, partAmount), null);
+            }
+            this.AddParameter(new GetCrewCount(crewCount), null);
+            base.SetExpiry(1f, 10f);
+            base.SetScience(1f, targetBody);
+            base.SetDeadlineYears(.3f, targetBody);
+            base.SetReputation(10f, 40f, targetBody);
+            base.SetFunds(25000f, 15000f, 27000f, targetBody);
+
+            return true;
+        }
+
+        public override bool CanBeCancelled()
+        {
+            return true;
+        }
+        public override bool CanBeDeclined()
+        {
+            return true;
+        }
+
+        protected override string GetHashString()
+        {
+            return targetBody.bodyName + MaxOrb + MinOrb;
+        }
+        protected override string GetTitle()
+        {
+            return ContractPlayerName + " " + targetBody.theName + " - Total Done " + TotalFinished;
+        }
+        protected override string GetDescription()
+        {
+
+            return "This is a ComSat Network Contract, you have control over when these missions are available and what their Orbital Periods are, you can set this up in the MCE Infomation Icon Tab located top Right \n" +
+                "Corner Of screen while in SpaceCenter View.  Please note that settings will not take effect until at least 1 cycle of contracts has passed.  If you don't see your settings cancel out the Offered contract! \n\n" +
+                "All ComSat Information is stored inside the Mission Controller Config File and will pass on to other save files";
+        }
+        protected override string GetSynopsys()
+        {
+            return "Launch Your ComSat Network " + targetBody.theName;
+        }
+        protected override string MessageCompleted()
+        {
+            return "You have Delivered your ComSat to its assigned height around " + targetBody.theName + " Continue to build you network.  When your done you can turn off ComSat Contracts in the MCE Information Window.  Please note it will take a few Contract cycles for them to Disapear! ";
+        }
+
+        protected override void OnLoad(ConfigNode node)
+        {
+            int bodyID = int.Parse(node.GetValue("targetBody"));
+            foreach (var body in FlightGlobals.Bodies)
+            {
+                if (body.flightGlobalsIndex == bodyID)
+                    targetBody = body;
+            }
+            double ApaID = double.Parse(node.GetValue("aPa"));
+            MaxOrb = ApaID;
+            double PeAID = double.Parse(node.GetValue("pEa"));
+            MinOrb = PeAID;
+            crewCount = int.Parse(node.GetValue("crewcount"));
+            partAmount = int.Parse(node.GetValue("partamount"));
+            partName = node.GetValue("partname");
+            ContractPlayerName = node.GetValue("contractplayername");
+        }
+        protected override void OnSave(ConfigNode node)
+        {
+            int bodyID = targetBody.flightGlobalsIndex;
+            node.AddValue("targetBody", bodyID);
+            double ApAID = MaxOrb;
+            node.AddValue("aPa", ApAID);
+            double PeAID = MinOrb;
+            node.AddValue("pEa", PeAID);
+            node.AddValue("crewcount", crewCount);
+            node.AddValue("partamount", partAmount);
+            node.AddValue("partname", partName);
+            node.AddValue("contractplayername", ContractPlayerName);
+        }
+
+        //for testing purposes
+        public override bool MeetRequirements()
+        {
+            bool techUnlock = ResearchAndDevelopment.GetTechnologyState("advFlightControl") == RDTech.State.Available;
+            if (techUnlock)
+                return true;
+            else
+                return false;
+        }
+    }
+#endregion
 }

@@ -64,7 +64,6 @@
     <Compile Include="RepairPanel.cs" />
     <Compile Include="SaveInfo.cs" />
     <Compile Include="Settings.cs" />
-    <Compile Include="StockToolBar.cs" />
     <Compile Include="Tools.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

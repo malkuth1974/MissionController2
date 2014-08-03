@@ -17,6 +17,13 @@ namespace MissionControllerEC
         [Persistent]internal float EasyMode = 1.0f;
         [Persistent]internal float MediumMode = 2.0f;
         [Persistent]internal float HardCoreMode = 4.0f;
-        //[Persistent]internal bool cheatsTrue = false;       
+        [Persistent]internal bool MessageHelpers = true;
+        [Persistent]internal bool NoRescueKerbalContracts = true;  //thanks flowerchild :)
+        [Persistent]internal bool StartBuilding = false;
+        [Persistent]internal double maxOrbP = 10860;
+        [Persistent]internal double minOrbP = 10680;
+        [Persistent]internal string contractName = "Deliever COMSAT Satellite";
+        [Persistent]internal int bodyNumber = 1;
+      
     }
 }

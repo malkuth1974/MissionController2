@@ -13,6 +13,6 @@ namespace MissionControllerEC
         [Persistent]internal double CurrentTimeCheck = 604800;
         [Persistent]internal double TotalSpentOnSaleries = 0;
         [Persistent]internal double TotalSpentOnRocketTest = 0;
-        [Persistent]internal bool SatContractReady = false;
+        [Persistent]public static bool SatContractReady = false;
     }
 }

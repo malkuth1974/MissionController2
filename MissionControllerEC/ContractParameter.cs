@@ -39,6 +39,11 @@ namespace MissionControllerEC
         protected override void OnUpdate()
         {
             Orbits(FlightGlobals.ActiveVessel);
+            //if (this.state == ParameterState.Complete)
+            //{
+            //    NotOrbit(FlightGlobals.ActiveVessel);
+            //}
+            
         }
 
         protected override void OnLoad(ConfigNode node)
@@ -72,7 +77,20 @@ namespace MissionControllerEC
                 if (vessel.orbit.ApA >= minApA && vessel.orbit.ApA <= maxApA)
                 {
                     base.SetComplete();
-                    Debug.Log("Min And Max ApA has been Completed");
+                }
+                if (vessel.orbit.ApA > minApA && vessel.orbit.ApA > maxApA)
+                {
+                    base.SetIncomplete();
+                }
+            }
+        }
+        public void NotOrbit(Vessel vessel)
+        {
+            if (FlightGlobals.ActiveVessel && HighLogic.LoadedSceneIsFlight)
+            {
+                if (vessel.orbit.ApA > minApA && vessel.orbit.ApA > maxApA)
+                {
+                    base.SetIncomplete();
                 }
             }
         }
@@ -123,11 +141,11 @@ namespace MissionControllerEC
         public void InOrbit(Vessel vessel)
         {
             if (FlightGlobals.ActiveVessel && HighLogic.LoadedSceneIsFlight)
-            {                
-                if (FlightGlobals.ActiveVessel.orbit.referenceBody.name.Equals(targetBody.theName))                   
+            {
+                if (FlightGlobals.ActiveVessel.orbit.referenceBody.Equals(targetBody))                   
                 {
                     base.SetComplete();
-                    ScreenMessages.PostScreenMessage("You Have achieved Orbit of Target Body: " + targetBody);
+                    ScreenMessages.PostScreenMessage("You Have achieved Orbit of Target Body: " + targetBody.theName);
                 }
             }
         }
@@ -136,6 +154,7 @@ namespace MissionControllerEC
     #region PeA OrbitGoal
     public class PeAOrbitGoal : ContractParameter
     {
+        Settings settings = new Settings("Config.cfg");
         public CelestialBody targetBody;
         public double maxPeA = 0.0;
         public double minPeA = 0.0;
@@ -192,6 +211,7 @@ namespace MissionControllerEC
         {
             if (FlightGlobals.ActiveVessel && HighLogic.LoadedSceneIsFlight)
             {
+                                
                 if (vessel.orbit.PeA >= minPeA && vessel.orbit.PeA <= maxPeA)
                 {
                     base.SetComplete();
@@ -205,6 +225,7 @@ namespace MissionControllerEC
 
     public class Inclination : ContractParameter
     {
+        Settings settings = new Settings("Config.cfg");
         public double minInclination = 0.0;
         public double maxInclination = 0.0;
 
@@ -251,7 +272,7 @@ namespace MissionControllerEC
         public void CheckInclination(Vessel vessel)
         {     
             if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel)
-            {
+            {               
                 if (vessel.orbit.inclination <= maxInclination && vessel.orbit.inclination >= minInclination)
                     base.SetComplete();
             }
@@ -261,6 +282,7 @@ namespace MissionControllerEC
     #region OrbiatlPeriod Goal
     public class OrbitalPeriod : ContractParameter
     {
+        Settings settings = new Settings("Config.cfg");
         public double minOrbitalPeriod = 0.0;
         public double maxOrbitalPeriod = 0.0;
 
@@ -308,6 +330,10 @@ namespace MissionControllerEC
         {
             if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel)
             {
+                //if (settings.MessageHelpers)
+                //{
+                //    ScreenMessages.PostScreenMessage("Current Orbital Period is: " + Tools.formatTime(FlightGlobals.ActiveVessel.orbit.period), 0005f);
+                //}
                 if (vessel.orbit.period <= maxOrbitalPeriod && vessel.orbit.period >= minOrbitalPeriod)
                     base.SetComplete();
             }
@@ -367,7 +393,7 @@ namespace MissionControllerEC
                 {
                     foreach (Part p in vessel.Parts)
                     {
-                        if (p.partInfo.name.Equals(partName))
+                        if (p.partInfo.title.Equals(partName))
                         {
                             ++partCount;
                         }
@@ -486,7 +512,8 @@ namespace MissionControllerEC
         private void onPartCouple(GameEvents.FromToAction<Part, Part> action)
         {
             if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel)
-            {                                             
+            {                
+                Debug.LogWarning("Postion of vessel is ");           
                 Debug.LogError("Does: " + targetDockingID + " = " + action.from.vessel.id.ToString());
                 Debug.LogError("Docked TO ID: " + action.to.vessel.id.ToString());
                 if (targetDockingID == action.from.vessel.id.ToString())
@@ -532,7 +559,7 @@ namespace MissionControllerEC
 
         protected override void OnUpdate()
         {
-            if (FlightGlobals.ActiveVessel.orbit.referenceBody.bodyName == targetBody.theName)
+            if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel.orbit.referenceBody.Equals(targetBody))
             {
                 CheckIfOrbit(FlightGlobals.ActiveVessel);
             }
@@ -577,14 +604,17 @@ namespace MissionControllerEC
                         contractSetTime();
                     }
 
-                    diff = Planetarium.GetUniversalTime() - savedTime;
-
-                    ScreenMessages.PostScreenMessage("Time Left To Complete: " + Tools.formatTime(missionTime - diff), .001f);
-
-                    if (diff > missionTime)
+                    if (!setTime)
                     {
-                        base.SetComplete();
-                        Debug.Log("Time Completed");
+                        diff = Planetarium.GetUniversalTime() - savedTime;
+
+                        ScreenMessages.PostScreenMessage("Time Left To Complete: " + Tools.formatTime(missionTime - diff), .001f);
+
+                        if (diff > missionTime)
+                        {
+                            base.SetComplete();
+                            Debug.Log("Time Completed");
+                        }
                     }
 
                 }
@@ -693,7 +723,9 @@ namespace MissionControllerEC
         {
             if (FlightGlobals.ActiveVessel && HighLogic.LoadedSceneIsFlight)
             {
-                if (crewCount <= vessel.GetCrewCount())
+                int currentcrew = FlightGlobals.ActiveVessel.GetCrewCount();
+                Debug.LogError("Current crew is " + currentcrew + " crew can't be over " + crewCount);
+                if (currentcrew <= crewCount)
                 {
                     base.SetComplete();
                     Debug.Log("Passed Crew Check");
@@ -734,7 +766,7 @@ namespace MissionControllerEC
 
         protected override void OnUpdate()
         {
-            if (FlightGlobals.ActiveVessel.orbit.referenceBody.bodyName == targetBody.theName)
+            if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel.orbit.referenceBody.Equals(targetBody))
             {
                 CheckIflanded(FlightGlobals.ActiveVessel);
             }
@@ -777,14 +809,17 @@ namespace MissionControllerEC
                     {
                         contractSetTime();
                     }
-                    diff = Planetarium.GetUniversalTime() - savedTime;                   
-                    
-                    ScreenMessages.PostScreenMessage("Time Left To Complete: " + Tools.formatTime(missionTime - diff),.001f);                    
-                    
-                    if (diff > missionTime)
+                    if (!setTime)
                     {
-                        base.SetComplete();
-                        Debug.Log("Time Completed");
+                        diff = Planetarium.GetUniversalTime() - savedTime;
+
+                        ScreenMessages.PostScreenMessage("Time Left To Complete: " + Tools.formatTime(missionTime - diff), .001f);
+
+                        if (diff > missionTime)
+                        {
+                            base.SetComplete();
+                            Debug.Log("Time Completed");
+                        }
                     }
 
                 }
@@ -887,5 +922,5 @@ namespace MissionControllerEC
         }
               
     }
-    #endregion
+    #endregion       
 }

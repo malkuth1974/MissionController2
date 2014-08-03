@@ -1,4 +1,4 @@
-﻿#region 
+﻿
 using System;
 using UnityEngine;
 using System.Linq;
@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using System.Reflection;
-#endregion
 
 namespace MissionControllerEC
 {
@@ -26,7 +25,10 @@ namespace MissionControllerEC
         private bool DifficultyLevelCheck = false;
         private float cst;
 
-        StockToolbar stb = new StockToolbar();
+        private static Texture2D texture;
+        private static Texture2D texture2;
+        private ApplicationLauncherButton MCEButton;
+        private ApplicationLauncherButton MCERevert;
 
         Settings settings = new Settings("Config.cfg");
         SaveInfo saveinfo = new SaveInfo(HighLogic.CurrentGame.Title + "SaveFile.cfg");
@@ -34,18 +36,15 @@ namespace MissionControllerEC
         public void Start()
         {
             Debug.LogError("MCE has been Loaded");           
-            GetHiredKerbals();               
+            GetHiredKerbals();             
         }
 
         void OnLevelWasLoaded()
         {             
         }
+      
         void Update()
-        {
-            //if (saveinfo.CurrentTimeCheck < Planetarium.GetUniversalTime())
-            //{               
-            //    mci.Check30DaySaleries();
-            //}
+        {           
             if (HighLogic.LoadedScene == GameScenes.SPACECENTER)
             {
                 isKerbalHired();
@@ -53,28 +52,92 @@ namespace MissionControllerEC
         }
         void Awake()
         {
-            if (saveinfo.FileExists)
-            {
-                saveinfo.Load();               
-            }
-            else 
-            { 
-                saveinfo.Save(); saveinfo.Load();                              
-            }
 
-            if (settings.FileExists)
+            if (texture == null)
             {
-                settings.Load();
+                texture = new Texture2D(36, 36, TextureFormat.RGBA32, false);
+                texture.LoadImage(File.ReadAllBytes(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "MCEStockToolbar.png")));
             }
-            else
+            if (texture2 == null)
             {
-                settings.Save(); settings.Load();
+                texture2 = new Texture2D(36, 36, TextureFormat.RGBA32, false);
+                texture2.LoadImage(File.ReadAllBytes(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "MCERevert.png")));
             }
+            GameEvents.onGUIApplicationLauncherReady.Add(this.CreateButtons);
+
+            if (saveinfo.FileExists){saveinfo.Load();}
+            else {saveinfo.Save(); saveinfo.Load();}
+
+            if (settings.FileExists){settings.Load(); settings.Save();}
+            else{settings.Save(); settings.Load();}
             
-            DontDestroyOnLoad(this);          
+            DontDestroyOnLoad(this);
+            GameEvents.Contract.onContractsLoaded.Add(this.onContractLoaded);
+        }
+        private void Reset(GameScenes gameScenes)
+        {
+            GameEvents.Contract.onContractsLoaded.Remove(this.onContractLoaded);
+            Debug.Log("Game All values removed for MCE");
         }
         void OnDestroy()
         {
+            if (this.MCEButton != null)
+            {
+                ApplicationLauncher.Instance.RemoveModApplication(this.MCEButton);
+            }
+            if (this.MCERevert != null)
+            {
+                ApplicationLauncher.Instance.RemoveModApplication(this.MCERevert);
+            }
+        }
+
+        public void CreateButtons()
+        {
+            if (HighLogic.LoadedScene == GameScenes.SPACECENTER && this.MCEButton == null)
+            {
+                this.MCEButton = ApplicationLauncher.Instance.AddModApplication(
+                    this.MCEOn,
+                    this.MCEOff,
+                    null,
+                    null,
+                    null,
+                    null,
+                    ApplicationLauncher.AppScenes.SPACECENTER,
+                    texture
+                    );
+            }
+            if (HighLogic.LoadedScene == GameScenes.SPACECENTER && this.MCERevert == null)
+            {
+                this.MCERevert = ApplicationLauncher.Instance.AddModApplication(
+                    this.revertOn,
+                    this.revertOff,
+                    null,
+                    null,
+                    null,
+                    null,
+                    ApplicationLauncher.AppScenes.FLIGHT,
+                    texture2
+                    );
+            }
+        }
+
+        private void MCEOn()
+        {
+            MissionControllerEC.ShowfinanaceWindow = true;
+        }
+
+        private void MCEOff()
+        {
+            MissionControllerEC.ShowfinanaceWindow = false;
+        }
+
+        private void revertOff()
+        {
+            MissionControllerEC.ShowPopUpWindow3 = false;
+        }
+        private void revertOn()
+        {
+            MissionControllerEC.ShowPopUpWindow3 = true;
         }
       
         public void OnGUI()
@@ -102,6 +165,7 @@ namespace MissionControllerEC
                 }
                 EditorPartList.Instance.Refresh();
             }
+
 
             if (ShowMainWindow)
             {
