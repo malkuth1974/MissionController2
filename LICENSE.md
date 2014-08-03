@@ -16,7 +16,8 @@ Mission Controller 2 Is A Complete Rewrite of the Original Code Mission Controll
 If I lose interest and Mission Controller falls behind in updates, please try to get Original Permission By me to take over on the project.
 
 If something is not covered in the above mentioned terms then the following License information should be completely valid. Or If I give sole permission to resume my responsibilities to this code to Someone Else.
-For nothing covered above GNU General Public License Shall Apply.
+
+For Everything that is not covered by my statement above Then the  GNU General Public License Shall Apply.
 At any time after above conditions happen, I can and shall return to Mission Controller 2 at any time if I so choose.
 
 
