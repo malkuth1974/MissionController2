@@ -6,9 +6,13 @@ For KSP .24 And Beyond
 CopyRight Malkuth74
 
 Please ask for permission to use any code from this Mod file, I have no real issues with using code just nice to know where it is going and what it is doing.
+
 Do not reuse any Models or Parts from Mission Controller without my Consent or HellDivers permission. All models are made my HellDiver and has Final Judgment and Word on what is done with these models.
+
 Mission Controller 2 Is A Complete Rewrite of the Original Code Mission Controller. Mission Controller 2 is brand new code and new mod only connected to the original Mission Controller by Name.
+
 If I lose interest and Mission Controller falls behind in updates, please try to get Original Permission By me to take over on the project.
+
 If something is not covered in the above mentioned terms then the following License information should be completely valid. Or If I give sole permission to resume my responsibilities to this code to Someone Else.
 For nothing covered above GNU General Public License Shall Apply.
 At any time after above conditions happen, I can and shall return to Mission Controller 2 at any time if I so choose.
