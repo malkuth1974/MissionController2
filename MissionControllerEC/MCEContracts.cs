@@ -881,4 +881,150 @@ namespace MissionControllerEC
         }
     }
 #endregion
+    public class AgenaTargetPracticeContract : Contract
+    {
+        CelestialBody targetBody = null;
+        public double GMaxApA = UnityEngine.Random.Range(72000, 85000);
+        public double GMinApA = 0;
+        public double GMaxPeA = 0;
+        public double GMinPeA = 0;
+        public int crewCount = 0;
+        public int partAmount = 1;
+        public string partName = "Clamp-O-Tron Docking Port";
+
+        public string vesselTestID = "none";
+
+        public int totalContracts;
+        public int TotalFinished;
+
+        ContractParameter AgenaParameter;
+        ContractParameter AgenaTest;
+
+        protected override bool Generate()
+        {
+            totalContracts = ContractSystem.Instance.GetCurrentContracts<AgenaTargetPracticeContract>().Count();
+
+            //Debug.Log("Satellite Delivery Totalcontracts " + totalContracts + " - " + " Total Finsihed " + TotalFinished);
+            if (totalContracts >= 1)
+            {
+                //Debug.Log("contract is generated right now terminating Normal Satellite Mission");
+                //Debug.Log("count is " + totalContracts);
+                return false;
+            }
+            targetBody = Planetarium.fetch.Home;
+            
+            GMinApA = GMaxApA - 1500;
+            GMaxPeA = GMaxApA;
+            GMinPeA = GMinApA;
+          
+            AgenaParameter = this.AddParameter(new AgenaInOrbit(targetBody), null);
+            AgenaParameter.SetFunds(2000.0f, targetBody);
+            AgenaParameter.SetReputation(20f, targetBody); 
+            this.AddParameter(new ApAOrbitGoal(targetBody, (double)GMaxApA, (double)GMinApA), null);
+            this.AddParameter(new PeAOrbitGoal(targetBody, (double)GMaxPeA, (double)GMinPeA), null);                      
+            this.AddParameter(new PartGoal(partName, partAmount), null);            
+            AgenaTest = this.AddParameter(new GetCrewCount(crewCount), null);
+           
+            base.SetExpiry(3f, 10f);
+            base.SetScience(2.25f, targetBody);
+            base.SetDeadlineYears(1f, targetBody);
+            base.SetReputation(15f, 35f, targetBody);
+            base.SetFunds(8000f, 24000f, 9000f, targetBody);
+
+            return true;
+        }
+
+        public override bool CanBeCancelled()
+        {
+            return true;
+        }
+        public override bool CanBeDeclined()
+        {
+            return true;
+        }
+        
+        protected override string GetHashString()
+        {
+            return targetBody.bodyName + GMaxApA.ToString() + GMinApA.ToString();
+        }
+        protected override string GetTitle()
+        {
+            return "Agena Target Vehicle Orbital Test Around Kerbin - Launch Agena Vehicle";
+        }
+        protected override string GetDescription()
+        {
+
+            return "The Agena Target Vehicle (ATV) was an unmanned spacecraft used by NASA during its Gemini program to develop and practice orbital space rendezvous and docking techniques and\n" +
+                "to perform large orbital changes, in preparation for the Apollo program lunar missions.\n\n" +
+                "Your first task is to launch an Agena Type vehicle into orbit";
+        }
+        protected override string GetSynopsys()
+        {
+            return "Agena Test " + targetBody.theName;
+        }
+        protected override string MessageCompleted()
+        {
+            return "Congradulations you have succesfully launched your Agena Target Vehicle, now you must get you Manned Orbital vehicle to Dock with the ATV ";
+        }
+
+        protected override void OnLoad(ConfigNode node)
+        {
+            int bodyID = int.Parse(node.GetValue("targetBody"));
+            foreach (var body in FlightGlobals.Bodies)
+            {
+                if (body.flightGlobalsIndex == bodyID)
+                    targetBody = body;
+            }
+            double maxApa = double.Parse(node.GetValue("maxaPa"));
+            GMaxApA = maxApa;
+            double minApa = double.Parse(node.GetValue("minaPa"));
+            GMinApA = minApa;
+
+            double masxPpaID = double.Parse(node.GetValue("maxpEa"));
+            GMaxPeA = masxPpaID;
+            double minPeAID = double.Parse(node.GetValue("minpEa"));
+            GMinPeA = minPeAID;                      
+
+            int pcount = int.Parse(node.GetValue("pCount"));
+            partAmount = pcount;
+            partName = (node.GetValue("pName"));
+            crewCount = int.Parse(node.GetValue("crewcount"));
+
+        }
+        protected override void OnSave(ConfigNode node)
+        {
+            int bodyID = targetBody.flightGlobalsIndex;
+            node.AddValue("targetBody", bodyID);
+
+            double maxApa = GMaxApA;
+            node.AddValue("maxaPa", GMaxApA);
+            double minApa = GMinApA;
+            node.AddValue("minaPa", GMinApA);
+
+            double maxPpAID = GMaxPeA;
+            node.AddValue("maxpEa", GMaxPeA);
+            double MinPeAID = GMinPeA;
+            node.AddValue("minpEa", GMinPeA);
+
+            
+            int pcount = partAmount;
+            node.AddValue("pCount", partAmount);
+            string pname = partName;
+            node.AddValue("pName", partName);
+
+            node.AddValue("crewcount", crewCount);
+        }
+
+        //for testing purposes
+        public override bool MeetRequirements()
+        {
+            bool techUnlock = ResearchAndDevelopment.GetTechnologyState("specializedConstruction") == RDTech.State.Available;
+            if (techUnlock)
+                return true;
+            else
+                return false;
+        }
+
+
+    }
 }

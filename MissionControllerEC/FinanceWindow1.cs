@@ -23,13 +23,13 @@ namespace MissionControllerEC
             GUILayout.Space(10);
             GUILayout.BeginHorizontal();
             GUILayout.Box("Total Spent Kerbals",GUILayout.Width(200));
-            GUILayout.Box("" + (int)saveinfo.TotalSpentKerbals, GUILayout.Width(200));
+            GUILayout.Box("" + (int)SaveInfo.TotalSpentKerbals, GUILayout.Width(200));
             GUILayout.EndHorizontal();            
 
             GUILayout.Space(10);
             GUILayout.BeginHorizontal();
             GUILayout.Box("Total Spent RocketTest (Reverts)", GUILayout.Width(200));
-            GUILayout.Box("" + (int)saveinfo.TotalSpentOnRocketTest, GUILayout.Width(200));
+            GUILayout.Box("" + (int)SaveInfo.TotalSpentOnRocketTest, GUILayout.Width(200));
             GUILayout.EndHorizontal();
 
             GUILayout.Label("ComSat Network Information");
@@ -116,7 +116,7 @@ namespace MissionControllerEC
             //}
             if (GUILayout.Button("Exit Window And Save"))
             {
-                ShowfinanaceWindow = false;
+                MCE_ScenarioStartup.ShowfinanaceWindow = false;
                 settings.Save();
                 settings.Load();
             }

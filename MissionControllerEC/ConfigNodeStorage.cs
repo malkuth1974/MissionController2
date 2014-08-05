@@ -152,7 +152,7 @@ namespace MissionControllerEC
             try
             {
                 //Encode the current object
-                ConfigNode cnToSave = this.AsConfigNode;
+                ConfigNode cnToSave = this.AsConfigNode();
                 //Wrap it in a node with a name of the class
                 ConfigNode cnSaveWrapper = new ConfigNode(this.GetType().Name);
                 cnSaveWrapper.AddNode(cnToSave);
@@ -171,24 +171,21 @@ namespace MissionControllerEC
         /// <summary>
         /// Returns the current object as a ConfigNode
         /// </summary>
-        public ConfigNode AsConfigNode
+        public ConfigNode AsConfigNode()
         {
-            get
+            try
             {
-                try
-                {
-                    //Create a new Empty Node with the class name
-                    ConfigNode cnTemp = new ConfigNode(this.GetType().Name);
-                    //Load the current object in there
-                    cnTemp = ConfigNode.CreateConfigFromObject(this, cnTemp);
-                    return cnTemp;
-                }
-                catch (Exception ex)
-                {
-                    LogFormatted("Failed to generate ConfigNode-Error;{0}", ex.Message);
-                    //Logging and return value?                    
-                    return new ConfigNode(this.GetType().Name);
-                }
+                //Create a new Empty Node with the class name
+                ConfigNode cnTemp = new ConfigNode(this.GetType().Name);
+                //Load the current object in there
+                cnTemp = ConfigNode.CreateConfigFromObject(this, cnTemp);
+                return cnTemp;
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError(ex.Message);
+                //Logging and return value?                    
+                return new ConfigNode(this.GetType().Name);
             }
         }
 

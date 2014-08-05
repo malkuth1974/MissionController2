@@ -6,158 +6,167 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using System.Reflection;
+using KSP;
 
 namespace MissionControllerEC
-{
-    [KSPAddonFixed(KSPAddon.Startup.SpaceCentre, true, typeof(MissionControllerEC))]
-    public partial class MissionControllerEC : MonoBehaviour
-    {        
-        private Rect MainWindowPosition;
-        public static bool ShowMainWindow = false;
-        
-        private Rect FinanceWindowPosition;
-        public static bool ShowfinanaceWindow = false;
-        
-        private Rect PopUpWindowPosition3;
-        public static bool ShowPopUpWindow3;
-        
-        
-        private bool DifficultyLevelCheck = false;
-        private float cst;
+{  
+    [KSPAddon(KSPAddon.Startup.SpaceCentre, false)]
+    public class MCE_ScenarioStartup : MonoBehaviour
+    {         
+        public static bool DifficultyLevelCheck = false;
+        public static float cst;
 
+        public static Rect PopUpWindowPosition3;
+        public static bool ShowPopUpWindow3;
+
+        public static Rect MainWindowPosition;
+        public static bool ShowMainWindow = false;
+
+        public static Rect FinanceWindowPosition;
+        public static bool ShowfinanaceWindow = false;
+
+        public static bool RevertHalt = false;
+
+        // Special thanks to Magico13 Of Kerbal Construction Time for showing me how to Get Scenario Persistance.
+
+        void Start()
+        {
+            ProtoScenarioModule scenario = HighLogic.CurrentGame.scenarios.Find(s => s.moduleName == typeof(MissionControllerData).Name);
+            if (scenario == null)
+            {
+                try
+                {
+                    HighLogic.CurrentGame.AddProtoScenarioModule(typeof(MissionControllerData), new GameScenes[] { GameScenes.FLIGHT, GameScenes.SPACECENTER, GameScenes.EDITOR, GameScenes.SPH, GameScenes.TRACKSTATION });
+                    Debug.LogWarning("[MCE] Adding InternalModule scenario to game '" + HighLogic.CurrentGame.Title + "'");
+                    // the game will add this scenario to the appropriate persistent file on save from now on
+                }
+                catch (ArgumentException ae)
+                {
+                    Debug.LogException(ae);
+                }
+                catch
+                {
+                    Debug.LogWarning("[MCE] Unknown failure while adding scenario.");
+                }
+            }
+            else
+            {
+                Debug.LogWarning("[MCE] Scenario is not null.");
+                if (!scenario.targetScenes.Contains(GameScenes.SPACECENTER))
+                    scenario.targetScenes.Add(GameScenes.SPACECENTER);
+                if (!scenario.targetScenes.Contains(GameScenes.FLIGHT))
+                    scenario.targetScenes.Add(GameScenes.FLIGHT);
+                if (!scenario.targetScenes.Contains(GameScenes.EDITOR))
+                    scenario.targetScenes.Add(GameScenes.EDITOR);
+                if (!scenario.targetScenes.Contains(GameScenes.SPH))
+                    scenario.targetScenes.Add(GameScenes.SPH);
+                if (!scenario.targetScenes.Contains(GameScenes.TRACKSTATION))
+                    scenario.targetScenes.Add(GameScenes.TRACKSTATION);
+
+            }
+        }
+    }
+
+    public class MissionControllerData : ScenarioModule
+    {
+        // used TacLife Support way of loading MissionControllerEC Component by Taranis Elsu
+        private readonly List<Component> children = new List<Component>();
+
+        public override void OnAwake()
+        {
+            Debug.Log("OnAwake in " + HighLogic.LoadedScene);
+            base.OnAwake();
+
+            if (HighLogic.LoadedScene == GameScenes.SPACECENTER || HighLogic.LoadedScene == GameScenes.FLIGHT || HighLogic.LoadedScene == GameScenes.EDITOR || HighLogic.LoadedScene == GameScenes.SPH)
+            {
+                Debug.Log("Adding MissionController Child");
+                var c = gameObject.AddComponent<MissionControllerEC>();
+                children.Add(c);
+            }
+        }
+
+        public override void OnSave(ConfigNode node)
+        {
+            Debug.Log("[MCE] Writing to persistence.");
+            base.OnSave(node);
+            MCE_DataStorage mceData = new MCE_DataStorage();
+            node.AddNode(mceData.AsConfigNode());
+        }
+        public override void OnLoad(ConfigNode node)
+        {
+            Debug.Log("[MCE] Loading from persistence.");
+            base.OnLoad(node);
+            MCE_DataStorage mceData = new MCE_DataStorage();
+            ConfigNode CN = node.GetNode(mceData.GetType().Name);
+            if (CN != null)
+                ConfigNode.LoadObjectFromConfig(mceData, CN);
+        }
+
+        void OnDestroy()
+        {
+            Debug.Log("MCE ScenarioModule OnDestroy");
+            foreach (Component c in children)
+            {
+                Destroy(c);
+                //MCELoaded = false;
+            }
+            children.Clear();
+        }
+    }
+    public partial class MissionControllerEC : MonoBehaviour
+    {
         private static Texture2D texture;
         private static Texture2D texture2;
         private ApplicationLauncherButton MCEButton;
         private ApplicationLauncherButton MCERevert;
-
+        
         Settings settings = new Settings("Config.cfg");
-        SaveInfo saveinfo = new SaveInfo(HighLogic.CurrentGame.Title + "SaveFile.cfg");
+
+        public void Awake()
+        {
+            loadTextures();
+            loadFiles();
+            CreateButtons();
+            GameEvents.Contract.onContractsLoaded.Add(this.onContractLoaded);
+            GameEvents.onCrewKilled.Add(this.chargeKerbalDeath);
+            GameEvents.onKerbalTypeChange.Add(this.hireKerbals);
+            Debug.Log("MCE Awake");           
+        }    
                 
         public void Start()
-        {
-            Debug.LogError("MCE has been Loaded");           
-            GetHiredKerbals();             
-        }
-
-        void OnLevelWasLoaded()
-        {             
+        {           
+            Debug.LogError("MCE Onstart Files Loaded");                    
         }
       
-        void Update()
-        {           
-            if (HighLogic.LoadedScene == GameScenes.SPACECENTER)
-            {
-                isKerbalHired();
-            }
-        }
-        void Awake()
-        {
-
-            if (texture == null)
-            {
-                texture = new Texture2D(36, 36, TextureFormat.RGBA32, false);
-                texture.LoadImage(File.ReadAllBytes(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "MCEStockToolbar.png")));
-            }
-            if (texture2 == null)
-            {
-                texture2 = new Texture2D(36, 36, TextureFormat.RGBA32, false);
-                texture2.LoadImage(File.ReadAllBytes(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "MCERevert.png")));
-            }
-            GameEvents.onGUIApplicationLauncherReady.Add(this.CreateButtons);
-
-            if (saveinfo.FileExists){saveinfo.Load();}
-            else {saveinfo.Save(); saveinfo.Load();}
-
-            if (settings.FileExists){settings.Load(); settings.Save();}
-            else{settings.Save(); settings.Load();}
-            
-            DontDestroyOnLoad(this);
-            GameEvents.Contract.onContractsLoaded.Add(this.onContractLoaded);
-        }
-        private void Reset(GameScenes gameScenes)
-        {
-            GameEvents.Contract.onContractsLoaded.Remove(this.onContractLoaded);
-            Debug.Log("Game All values removed for MCE");
-        }
+                      
         void OnDestroy()
         {
-            if (this.MCEButton != null)
-            {
-                ApplicationLauncher.Instance.RemoveModApplication(this.MCEButton);
-            }
-            if (this.MCERevert != null)
-            {
-                ApplicationLauncher.Instance.RemoveModApplication(this.MCERevert);
-            }
-        }
-
-        public void CreateButtons()
-        {
-            if (HighLogic.LoadedScene == GameScenes.SPACECENTER && this.MCEButton == null)
-            {
-                this.MCEButton = ApplicationLauncher.Instance.AddModApplication(
-                    this.MCEOn,
-                    this.MCEOff,
-                    null,
-                    null,
-                    null,
-                    null,
-                    ApplicationLauncher.AppScenes.SPACECENTER,
-                    texture
-                    );
-            }
-            if (HighLogic.LoadedScene == GameScenes.SPACECENTER && this.MCERevert == null)
-            {
-                this.MCERevert = ApplicationLauncher.Instance.AddModApplication(
-                    this.revertOn,
-                    this.revertOff,
-                    null,
-                    null,
-                    null,
-                    null,
-                    ApplicationLauncher.AppScenes.FLIGHT,
-                    texture2
-                    );
-            }
-        }
-
-        private void MCEOn()
-        {
-            MissionControllerEC.ShowfinanaceWindow = true;
-        }
-
-        private void MCEOff()
-        {
-            MissionControllerEC.ShowfinanaceWindow = false;
-        }
-
-        private void revertOff()
-        {
-            MissionControllerEC.ShowPopUpWindow3 = false;
-        }
-        private void revertOn()
-        {
-            MissionControllerEC.ShowPopUpWindow3 = true;
-        }
+            DestroyButtons();
+            Debug.Log("MCE OnDestroy");
+            GameEvents.onCrewKilled.Remove(this.chargeKerbalDeath);
+            GameEvents.onKerbalTypeChange.Remove(this.hireKerbals);
+            GameEvents.Contract.onContractsLoaded.Remove(this.onContractLoaded);
+            Debug.Log("Game All values removed for MCE");
+        }                
       
         public void OnGUI()
         {
-            if (!DifficultyLevelCheck)
+            if (!MCE_ScenarioStartup.DifficultyLevelCheck)
             {
-                DifficultyLevelCheck = true;
+                MCE_ScenarioStartup.DifficultyLevelCheck = true;
 
                 Debug.LogWarning("** MCE2 Is Checking Difficulty Level and Adjusting Prices Parts set difficulties in Settings.cfg file to raise");
-                if (settings.difficutlylevel == 1) { cst = settings.EasyMode; Debug.Log("Difficulty is easyMode"); }
-                if (settings.difficutlylevel == 2) { cst = settings.MediumMode; Debug.Log("Difficulty is MediumMode"); }
-                if (settings.difficutlylevel == 3) { cst = settings.HardCoreMode; Debug.Log("Difficulty is HardcoreMode"); }
+                if (settings.difficutlylevel == 1) { MCE_ScenarioStartup.cst = settings.EasyMode; Debug.Log("Difficulty is easyMode"); }
+                if (settings.difficutlylevel == 2) { MCE_ScenarioStartup.cst = settings.MediumMode; Debug.Log("Difficulty is MediumMode"); }
+                if (settings.difficutlylevel == 3) { MCE_ScenarioStartup.cst = settings.HardCoreMode; Debug.Log("Difficulty is HardcoreMode"); }
 
                 foreach (AvailablePart ap in PartLoader.LoadedPartsList)
                 {
 
                     try
                     {                        
-                        Debug.Log("MCE Changed Price Of Part " + ap.name + ": " + ap.title + "," + "from: " + ap.cost + " To: " + ap.cost * cst);
-                        ap.cost = ap.cost * cst;
+                        //Debug.Log("MCE Changed Price Of Part " + ap.name + ": " + ap.title + "," + "from: " + ap.cost + " To: " + ap.cost * cst);
+                        ap.cost = ap.cost * MCE_ScenarioStartup.cst;
                     }
                     catch
                     {
@@ -167,21 +176,21 @@ namespace MissionControllerEC
             }
 
 
-            if (ShowMainWindow)
+            if (MCE_ScenarioStartup.ShowMainWindow)
             {
-                MainWindowPosition = GUILayout.Window(971974, MainWindowPosition, DrawMainWindow, "Maine MCE Window", GUILayout.MaxHeight(600), GUILayout.MaxWidth(400), GUILayout.MinHeight(300), GUILayout.MinWidth(200));
-                MainWindowPosition.x = Mathf.Clamp(MainWindowPosition.x, 0, Screen.width - MainWindowPosition.width);
-                MainWindowPosition.y = Mathf.Clamp(MainWindowPosition.y, 0, Screen.height - MainWindowPosition.height);
+                MCE_ScenarioStartup.MainWindowPosition = GUILayout.Window(971974, MCE_ScenarioStartup.MainWindowPosition, DrawMainWindow, "Maine MCE Window", GUILayout.MaxHeight(600), GUILayout.MaxWidth(400), GUILayout.MinHeight(300), GUILayout.MinWidth(200));
+                MCE_ScenarioStartup.MainWindowPosition.x = Mathf.Clamp(MCE_ScenarioStartup.MainWindowPosition.x, 0, Screen.width - MCE_ScenarioStartup.MainWindowPosition.width);
+                MCE_ScenarioStartup.MainWindowPosition.y = Mathf.Clamp(MCE_ScenarioStartup.MainWindowPosition.y, 0, Screen.height - MCE_ScenarioStartup.MainWindowPosition.height);
             }
-            if (ShowfinanaceWindow)
+            if (MCE_ScenarioStartup.ShowfinanaceWindow)
             {
-                FinanceWindowPosition = GUILayout.Window(981974, FinanceWindowPosition, drawFinanceWind, "MCE Finances", GUILayout.MaxHeight(800), GUILayout.MaxWidth(400), GUILayout.MinHeight(250), GUILayout.MinWidth(390));
-                FinanceWindowPosition.x = Mathf.Clamp(FinanceWindowPosition.x, 0, Screen.width - FinanceWindowPosition.width);
-                FinanceWindowPosition.y = Mathf.Clamp(FinanceWindowPosition.y, 0, Screen.height - FinanceWindowPosition.height);
+                MCE_ScenarioStartup.FinanceWindowPosition = GUILayout.Window(981974, MCE_ScenarioStartup.FinanceWindowPosition, drawFinanceWind, "MCE Finances", GUILayout.MaxHeight(800), GUILayout.MaxWidth(400), GUILayout.MinHeight(250), GUILayout.MinWidth(390));
+                MCE_ScenarioStartup.FinanceWindowPosition.x = Mathf.Clamp(MCE_ScenarioStartup.FinanceWindowPosition.x, 0, Screen.width - MCE_ScenarioStartup.FinanceWindowPosition.width);
+                MCE_ScenarioStartup.FinanceWindowPosition.y = Mathf.Clamp(MCE_ScenarioStartup.FinanceWindowPosition.y, 0, Screen.height - MCE_ScenarioStartup.FinanceWindowPosition.height);
             }                       
-            if (ShowPopUpWindow3)
+            if (MCE_ScenarioStartup.ShowPopUpWindow3)
             {
-                PopUpWindowPosition3 = GUILayout.Window(1011974, new Rect(Screen.width / 2 - 200, Screen.height / 2 - 100, 450, 150), drawPopUpWindow3, "MCE Information Window");
+                MCE_ScenarioStartup.PopUpWindowPosition3 = GUILayout.Window(1011974, new Rect(Screen.width / 2 - 200, Screen.height / 2 - 100, 450, 150), drawPopUpWindow3, "MCE Information Window");
             }
         }
 
@@ -189,33 +198,24 @@ namespace MissionControllerEC
         {
             GUI.skin = HighLogic.Skin;
             GUILayout.BeginVertical();
-
-            
-            GUILayout.Label("Current Funds: " + MceFunds);
+           
+            GUILayout.Label("Current Funds: " + Funding.Instance.Funds);
 
             if (GUILayout.Button("Add Money"))
             {
-                MceFunds += 1000;
+                Funding.Instance.Funds += 1000;
             }
 
-            GUILayout.Label("Current Science: " + MceScience);
+            GUILayout.Label("Current Science: " + ResearchAndDevelopment.Instance.Science);
             if (GUILayout.Button("Add Science"))
             {
-                MceScience += 1000;
-            }
-
-            if (GUILayout.Button("Finance Window"))
-            {
-                ShowfinanaceWindow = true;
-            }
-
-            GUILayout.Label("Current Reputation: " + MceReputation);
-
+                ResearchAndDevelopment.Instance.Science += 1000;
+            }           
 
             GUILayout.EndVertical();
             if (GUILayout.Button("Exit Save Settings"))
             {
-                ShowMainWindow = false;
+                MCE_ScenarioStartup.ShowMainWindow = false;
             }
 
             if (!Input.GetMouseButtonDown(1))
@@ -223,6 +223,31 @@ namespace MissionControllerEC
                 GUI.DragWindow();
             }
         }
+    }
+               
+    public class MCE_DataStorage : ConfigNodeStorage
+    {
+        [Persistent]public double TotalSpentKerbals = 0;
+        [Persistent]public double TotalSpentRockets = 0;
+        [Persistent]public bool ComSatOn = false;
+
+        public override void OnDecodeFromConfigNode()
+        {
+            SaveInfo.TotalSpentKerbals = TotalSpentKerbals;
+            SaveInfo.TotalSpentOnRocketTest = TotalSpentRockets;
+            SaveInfo.SatContractReady = ComSatOn;
+
+        }
+
+        public override void OnEncodeToConfigNode()
+        {
+            TotalSpentKerbals = SaveInfo.TotalSpentKerbals;
+            TotalSpentRockets = SaveInfo.TotalSpentOnRocketTest;
+            ComSatOn = SaveInfo.SatContractReady;
+
+        }
+    
+
     }
 
     public class KSPAddonFixed : KSPAddon, IEquatable<KSPAddonFixed>

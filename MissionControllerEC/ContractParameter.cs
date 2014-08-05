@@ -923,4 +923,58 @@ namespace MissionControllerEC
               
     }
     #endregion       
+    #region Agena In Orbit Goal
+    public class AgenaInOrbit : ContractParameter
+    {
+        public CelestialBody targetBody;
+        public string vesselID = "none";
+
+        public AgenaInOrbit()
+        {
+        }
+
+        public AgenaInOrbit(CelestialBody target)
+        {
+            this.targetBody = target;
+        }
+        protected override string GetHashString()
+        {
+            return targetBody.bodyName;
+        }
+        protected override string GetTitle()
+        {
+            return "Build and Launch Agena Vessel";
+        }
+
+        protected override void OnUpdate()
+        {
+            launchAgena(FlightGlobals.ActiveVessel);
+        }
+
+        protected override void OnLoad(ConfigNode node)
+        {
+            int bodyID = int.Parse(node.GetValue("targetBody"));
+            foreach (var body in FlightGlobals.Bodies)
+            {
+                if (body.flightGlobalsIndex == bodyID)
+                    targetBody = body;
+            }
+            vesselID = node.GetValue("vesselid");
+        }
+        protected override void OnSave(ConfigNode node)
+        {
+            int bodyID = targetBody.flightGlobalsIndex;
+            node.AddValue("targetBody", bodyID);
+            node.AddValue("vesselid", vesselID);
+        }
+
+        public void launchAgena(Vessel vessel)
+        {
+            if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel.situation != Vessel.Situations.PRELAUNCH)
+            {                
+              base.SetComplete();                             
+            }
+        }
+    }
+    #endregion
 }

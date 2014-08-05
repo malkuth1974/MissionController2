@@ -9,4 +9,3 @@ C:\kerbal\MissionControllerEC\MissionControllerEC\MissionControllerEC\obj\Debug\
 C:\kerbal\MissionControllerEC\MissionControllerEC\MissionControllerEC\obj\Debug\MissionControllerEC.pdb
 C:\kerbal\MissionControllerEC\MissionControllerEC\MissionController2\MissionControllerEC\obj\Debug\MissionControllerEC.dll
 C:\kerbal\MissionControllerEC\MissionControllerEC\MissionController2\MissionControllerEC\obj\Debug\MissionControllerEC.pdb
-C:\kerbal\MissionControllerEC\MissionControllerEC\MissionController2\MissionControllerEC\obj\Debug\MissionControllerEC.csprojResolveAssemblyReference.cache
