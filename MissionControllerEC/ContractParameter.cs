@@ -972,7 +972,9 @@ namespace MissionControllerEC
         {
             if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel.situation != Vessel.Situations.PRELAUNCH)
             {                
-              base.SetComplete();                             
+              base.SetComplete();
+              SaveInfo.AgenaTargetVesselID = vessel.id.ToString();
+              SaveInfo.AgenaTargetVesselName = vessel.name;
             }
         }
     }

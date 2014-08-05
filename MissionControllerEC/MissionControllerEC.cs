@@ -69,7 +69,7 @@ namespace MissionControllerEC
 
     public class MissionControllerData : ScenarioModule
     {
-        // used TacLife Support way of loading MissionControllerEC Component by Taranis Elsu
+        // used TacLife Support by Taranis Elsu way of loading Components for the MissionControllerEC Component 
         private readonly List<Component> children = new List<Component>();
 
         public override void OnAwake()
@@ -230,12 +230,20 @@ namespace MissionControllerEC
         [Persistent]public double TotalSpentKerbals = 0;
         [Persistent]public double TotalSpentRockets = 0;
         [Persistent]public bool ComSatOn = false;
+        [Persistent]public string agenaTargetVesselID = "none";
+        [Persistent]public string agenaTargetVesselName = "none";
+        [Persistent]public bool agena1done = false;
+        [Persistent]public bool agena2done = false;
 
         public override void OnDecodeFromConfigNode()
         {
             SaveInfo.TotalSpentKerbals = TotalSpentKerbals;
             SaveInfo.TotalSpentOnRocketTest = TotalSpentRockets;
             SaveInfo.SatContractReady = ComSatOn;
+            SaveInfo.AgenaTargetVesselID = agenaTargetVesselID;
+            SaveInfo.AgenaTargetVesselName = agenaTargetVesselName;
+            SaveInfo.Agena1Done = agena1done;
+            SaveInfo.Agena2Done = agena2done;
 
         }
 
@@ -244,39 +252,13 @@ namespace MissionControllerEC
             TotalSpentKerbals = SaveInfo.TotalSpentKerbals;
             TotalSpentRockets = SaveInfo.TotalSpentOnRocketTest;
             ComSatOn = SaveInfo.SatContractReady;
+            agenaTargetVesselID = SaveInfo.AgenaTargetVesselID;
+            agenaTargetVesselName = SaveInfo.AgenaTargetVesselName;
+            agena1done = SaveInfo.Agena1Done;
+            agena2done = SaveInfo.Agena2Done;
 
         }
     
 
-    }
-
-    public class KSPAddonFixed : KSPAddon, IEquatable<KSPAddonFixed>
-    {
-        private readonly Type type;
-
-        public KSPAddonFixed(KSPAddon.Startup startup, bool once, Type type)
-            : base(startup, once)
-        {
-            this.type = type;
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (obj.GetType() != this.GetType()) { return false; }
-            return Equals((KSPAddonFixed)obj);
-        }
-
-        public bool Equals(KSPAddonFixed other)
-        {
-            if (this.once != other.once) { return false; }
-            if (this.startup != other.startup) { return false; }
-            if (this.type != other.type) { return false; }
-            return true;
-        }
-
-        public override int GetHashCode()
-        {
-            return this.startup.GetHashCode() ^ this.once.GetHashCode() ^ this.type.GetHashCode();
-        }
     }
 }

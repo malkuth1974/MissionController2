@@ -46,7 +46,7 @@ namespace MissionControllerEC
             }
         }
 
-        public override void OnFixedUpdate()
+        public override void OnUpdate()
         {
             if (doOrbitResearch == true)
             {
@@ -54,7 +54,7 @@ namespace MissionControllerEC
             }
             else { scanStart = false; }
 
-            if(FlightGlobals.ActiveVessel.situation.Equals(Vessel.Situations.ORBITING))
+            if(FlightGlobals.ActiveVessel.situation == Vessel.Situations.ORBITING)
             {
                 probeOrbitResearch = true;
             }

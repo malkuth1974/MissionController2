@@ -374,7 +374,11 @@ namespace MissionControllerEC
         public int TotalFinished;
 
         protected override bool Generate()
-        {
+        {            
+            if (HighLogic.LoadedSceneIsFlight)
+            {
+                return false;
+            }
             totalContracts = ContractSystem.Instance.GetCurrentContracts<RepairGoal>().Count();
             TotalFinished = ContractSystem.Instance.GetCompletedContracts<RepairGoal>().Count();
             //Debug.Log(" Repair Contract Totalcontracts " + totalContracts + " - " + " Total Finsihed " + TotalFinished);
@@ -881,6 +885,7 @@ namespace MissionControllerEC
         }
     }
 #endregion
+    # region Agena Contract 1
     public class AgenaTargetPracticeContract : Contract
     {
         CelestialBody targetBody = null;
@@ -892,19 +897,22 @@ namespace MissionControllerEC
         public int partAmount = 1;
         public string partName = "Clamp-O-Tron Docking Port";
 
-        public string vesselTestID = "none";
-
         public int totalContracts;
         public int TotalFinished;
+        public int Agena1Done;
 
         ContractParameter AgenaParameter;
-        ContractParameter AgenaTest;
 
         protected override bool Generate()
         {
             totalContracts = ContractSystem.Instance.GetCurrentContracts<AgenaTargetPracticeContract>().Count();
+            Agena1Done = ContractSystem.Instance.GetCompletedContracts<AgenaTargetPracticeContract>().Count();
 
             //Debug.Log("Satellite Delivery Totalcontracts " + totalContracts + " - " + " Total Finsihed " + TotalFinished);
+            if (Agena1Done == 1 || SaveInfo.Agena1Done)
+            {
+                return false;
+            }           
             if (totalContracts >= 1)
             {
                 //Debug.Log("contract is generated right now terminating Normal Satellite Mission");
@@ -923,7 +931,7 @@ namespace MissionControllerEC
             this.AddParameter(new ApAOrbitGoal(targetBody, (double)GMaxApA, (double)GMinApA), null);
             this.AddParameter(new PeAOrbitGoal(targetBody, (double)GMaxPeA, (double)GMinPeA), null);                      
             this.AddParameter(new PartGoal(partName, partAmount), null);            
-            AgenaTest = this.AddParameter(new GetCrewCount(crewCount), null);
+            this.AddParameter(new GetCrewCount(crewCount), null);
            
             base.SetExpiry(3f, 10f);
             base.SetScience(2.25f, targetBody);
@@ -964,7 +972,24 @@ namespace MissionControllerEC
         }
         protected override string MessageCompleted()
         {
-            return "Congradulations you have succesfully launched your Agena Target Vehicle, now you must get you Manned Orbital vehicle to Dock with the ATV ";
+            SaveInfo.Agena1Done = true;
+            return "Congradulations you have succesfully launched your Agena Target Vehicle, now you must get you Manned Orbital vehicle to Dock with the ATV\n\n" +
+                "The Gemini-Agena Target Vehicle design was an adaptation of the basic Agena-D vehicle using the alternate Model 8247 rocket engine and additional program-peculiar equipment required for the Gemini mission.\n" +
+                "This GATV was divided into:\n\n" +
+
+"The program-peculiar forward auxiliary section. This section consisted of the auxiliary equipment rack, the McDonnell Aircraft Company-furnished docking-adapter module, and the clamshell nose shroud.\n" +
+"The Agena-D forward and mid-body sections. The Agena-D forward section housed the main equipment bay, and the mid-body contained the main fuel and oxidizer tanks which supplied propellants through a feed and\n" +
+"load system for the main engine. (3) the program-peculiar aft section. The Model 8247 multi-start main engine and the smaller Model 8250 maneuvering and ullage orientation engines were located in this section.\n" +
+"Orbital length of the GATV was approximately 26 feet. Vehicle weight-on-orbit was approximately 7200 lb. This weight included propellants still remaining in the main tanks and available for Model 8247 engine operation\n" +
+"after the Agena achieved orbit.\n\n" +
+"The Gemini-ATV propulsion system consisted of the following:\n\n" +
+
+"Model 8247 rocket engine, also known as XLR-81-BA-13, and its controls, mount, gimbals, and titanium nozzle extension\n" +
+"Pyrotechnically operated helium-control valve (POHCV) and associated pressurization plumbing\n" +
+"Fuel and oxidizer feed and load system, including propellant tanks, vents, and fill quick disconnects\n" +
+"Propellant isolation valves (PIV's)\n" +
+"All associated pyro devices and solid-propellant rockets.\n\n" +
+"All Information For Agena was Gathered From www.astronautix.com";            
         }
 
         protected override void OnLoad(ConfigNode node)
@@ -1027,4 +1052,182 @@ namespace MissionControllerEC
 
 
     }
+#endregion
+    # region Agena Contract 2
+    public class AgenaTargetPracticeContractDocking : Contract
+    {
+        CelestialBody targetBody = null;        
+        public int crewCount = 1;
+        public int partAmount = 1;
+        public string partName = "Clamp-O-Tron Docking Port";
+
+        public double GMaxApA = UnityEngine.Random.Range(150000, 250000);
+        public double GMinApA = 0;
+        public double GMaxPeA = 0;
+        public double GMinPeA = 0;
+
+        public string vesselTestID = "none";
+        public string vesselTestName = "none";
+
+        public int totalContracts;
+        public int Agena1Done;
+        public int Agena2Done;
+
+        ContractParameter AgenaDockParameter;
+
+
+        protected override bool Generate()
+        {
+            totalContracts = ContractSystem.Instance.GetCurrentContracts<AgenaTargetPracticeContractDocking>().Count();
+            Agena1Done = ContractSystem.Instance.GetCompletedContracts<AgenaTargetPracticeContract>().Count();
+            Agena2Done = ContractSystem.Instance.GetCompletedContracts<AgenaTargetPracticeContractDocking>().Count();
+
+            //Debug.Log("Satellite Delivery Totalcontracts " + totalContracts + " - " + " Total Finsihed " + TotalFinished)
+            if (Agena1Done != 1 || Agena2Done == 1 || SaveInfo.Agena2Done)
+            {
+                Debug.Log("Agena 1 Is not Done Yet, rejecting Contract 2 Docking");
+                return false;
+            }
+            if (totalContracts >= 1)
+            {
+                Debug.Log("Agena 2 is already loaded.");
+                return false;
+            }
+            targetBody = Planetarium.fetch.Home;
+
+            GMinApA = GMaxApA - 1500;
+            GMaxPeA = GMaxApA;
+            GMinPeA = GMinApA;
+
+            vesselTestID = SaveInfo.AgenaTargetVesselID;
+            vesselTestName = SaveInfo.AgenaTargetVesselName;
+            AgenaDockParameter = this.AddParameter(new TargetDockingGoal(vesselTestID, vesselTestName), null);
+            AgenaDockParameter.SetFunds(3000.0f, targetBody);
+            AgenaDockParameter.SetReputation(30f, targetBody);
+
+            this.AddParameter(new ApAOrbitGoal(targetBody, (double)GMaxApA, (double)GMinApA), null);
+            this.AddParameter(new PeAOrbitGoal(targetBody, (double)GMaxPeA, (double)GMinPeA), null);  
+
+            this.AddParameter(new PartGoal(partName, partAmount), null);
+            this.AddParameter(new GetCrewCount(crewCount), null);
+
+            base.SetExpiry(3f, 10f);
+            base.SetScience(.25f, targetBody);
+            base.SetDeadlineDays(5f, targetBody);
+            base.SetReputation(25f, 35f, targetBody);
+            base.SetFunds(10000f, 28000f, 12000f, targetBody);
+
+            return true;
+        }
+
+        public override bool CanBeCancelled()
+        {
+            return true;
+        }
+        public override bool CanBeDeclined()
+        {
+            return true;
+        }
+
+        protected override string GetHashString()
+        {
+            return targetBody.bodyName + vesselTestName;
+        }
+        protected override string GetTitle()
+        {
+            return "Agena Target Vehicle Orbital Test Around Kerbin - Dock With ATV " + vesselTestName;
+        }
+        protected override string GetDescription()
+        {
+
+            return "Project Gemini was the second human spaceflight program of NASA, the civilian space agency of the United States government. Project Gemini was conducted between projects Mercury\n" +
+                " and Apollo, with ten manned flights occurring in 1965 and 1966.\n\n"+
+
+                 "Its objective was to develop space travel techniques in support of Apollo, which had the goal of landing men on the Moon. Gemini achieved missions long enough for a trip to the Moon\n" +
+                 "and back, perfected extra-vehicular activity (working outside a spacecraft), and orbital maneuvers necessary to achieve rendezvous and docking. All Gemini flights were launched from \n" + 
+                 " Cape Canaveral, Florida using the Titan II Gemini launch vehicle\n\n" +
+                 "Info For Gemini From Wikipedia.org\n\n" +
+                "Your Second Task Is To Dock your Manned Orbital Pod with Agena Target Vehicle.  Then you are required to change Altitude to the selected ApA and PeA";
+        }
+        protected override string GetSynopsys()
+        {
+            return "Agena Test " + targetBody.theName;
+        }
+        protected override string MessageCompleted()
+        {
+            SaveInfo.Agena2Done = true;
+            return "You have been succesful with Launching an Agena Type Craft, Docking with it, and changing your Orbital Altitude.  Congradulations!\n\n" +                
+                "The first GATV was launched on October 25, 1965 while the Gemini 6 astronauts were waiting on the pad. While the Atlas performed normally,\n" +
+                "the Agena's engine exploded during orbital injection. Since the rendezvous and docking was the primary objective, the Gemini 6 mission was scrubbed,\n" +
+                "and replaced with the alternate mission Gemini 6A, which rendezvoused (but could not dock) with Gemini 7 in December.\n\n" +
+                "Was not until Gemini 10 That all objectives of Launching, Docking, and boosting Gemini 10 to 412-nautical-mile change succeded.";
+        }
+
+        protected override void OnLoad(ConfigNode node)
+        {
+            int bodyID = int.Parse(node.GetValue("targetBody"));
+            foreach (var body in FlightGlobals.Bodies)
+            {
+                if (body.flightGlobalsIndex == bodyID)
+                    targetBody = body;
+            }
+            double maxApa = double.Parse(node.GetValue("maxaPa"));
+            GMaxApA = maxApa;
+            double minApa = double.Parse(node.GetValue("minaPa"));
+            GMinApA = minApa;
+
+            double masxPpaID = double.Parse(node.GetValue("maxpEa"));
+            GMaxPeA = masxPpaID;
+            double minPeAID = double.Parse(node.GetValue("minpEa"));
+            GMinPeA = minPeAID;
+
+            int pcount = int.Parse(node.GetValue("pCount"));
+            partAmount = pcount;
+            partName = (node.GetValue("pName"));
+            crewCount = int.Parse(node.GetValue("crewcount"));
+
+            vesselTestID = node.GetValue("vesselid");
+            vesselTestName = node.GetValue("vesselname");
+
+        }
+        protected override void OnSave(ConfigNode node)
+        {
+            int bodyID = targetBody.flightGlobalsIndex;
+            node.AddValue("targetBody", bodyID);
+
+            double maxApa = GMaxApA;
+            node.AddValue("maxaPa", GMaxApA);
+            double minApa = GMinApA;
+            node.AddValue("minaPa", GMinApA);
+
+            double maxPpAID = GMaxPeA;
+            node.AddValue("maxpEa", GMaxPeA);
+            double MinPeAID = GMinPeA;
+            node.AddValue("minpEa", GMinPeA);
+
+
+            int pcount = partAmount;
+            node.AddValue("pCount", partAmount);
+            string pname = partName;
+            node.AddValue("pName", partName);
+
+            node.AddValue("crewcount", crewCount);
+
+            node.AddValue("vesselid", vesselTestID);
+            node.AddValue("vesselname", vesselTestName);
+        }
+
+        //for testing purposes
+        public override bool MeetRequirements()
+        {
+            bool techUnlock = ResearchAndDevelopment.GetTechnologyState("specializedConstruction") == RDTech.State.Available;
+            if (techUnlock)
+                return true;
+            else
+                return false;
+        }
+
+
+    }
+    #endregion
 }

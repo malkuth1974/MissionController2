@@ -54,7 +54,7 @@ namespace MissionControllerEC
             this.part.force_activate();
         }
 
-        public override void OnFixedUpdate()
+        public override void OnUpdate()
         {
 
             if (FlightGlobals.fetch.activeVessel.situation.Equals(Vessel.Situations.LANDED))
