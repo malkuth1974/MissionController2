@@ -3,7 +3,7 @@ MissionController2
 
 For KSP .24 And Beyond
 
-CopyRight Malkuth74
+##### CopyRight Malkuth74
 
 Please give credit if you use code from Mission Controller 2 in your own mod, I have no real issues with using code just nice to know where it is going and what it is doing. Also its polite.
 
@@ -22,7 +22,7 @@ At any time after above conditions happen, I can and shall return to Mission Con
 
  
  
-                     ###GNU GENERAL PUBLIC LICENSE
+                     GNU GENERAL PUBLIC LICENSE
                        Version 3, 29 June 2007
 
  Copyright (C) 2007 Free Software Foundation, Inc. <http://fsf.org/>
