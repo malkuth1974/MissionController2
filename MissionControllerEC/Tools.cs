@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-using System.Linq;
 
 namespace MissionControllerEC
 {
     class Tools
     {
-        
         public static bool RandomBool(bool value)
         {
             int test = 0;
@@ -84,7 +82,11 @@ namespace MissionControllerEC
                 return "0s";
             }
         }
-
+        public static void ObitalPeriodHelper(Vessel v)
+        {
+            
+            ScreenMessages.PostScreenMessage("Current Orbital Period is: " + Tools.formatTime(FlightGlobals.ActiveVessel.orbit.period) + " ApA Is: " + (int)v.orbit.ApA + " PeA Is: " + (int)v.orbit.PeA , .001f);
+        }
         
     }
                 

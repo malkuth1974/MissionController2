@@ -1,8 +1,4 @@
 ﻿using System;
-using System.IO;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using Contracts;
 using KSP;
@@ -38,12 +34,8 @@ namespace MissionControllerEC
 
         protected override void OnUpdate()
         {
-            Orbits(FlightGlobals.ActiveVessel);
-            //if (this.state == ParameterState.Complete)
-            //{
-            //    NotOrbit(FlightGlobals.ActiveVessel);
-            //}
-            
+            if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel.situation == Vessel.Situations.ORBITING)
+            Orbits(FlightGlobals.ActiveVessel);           
         }
 
         protected override void OnLoad(ConfigNode node)
@@ -72,28 +64,18 @@ namespace MissionControllerEC
 
         public void Orbits(Vessel vessel)
         {
-            if (FlightGlobals.ActiveVessel && HighLogic.LoadedSceneIsFlight)
+            if (vessel.isActiveVessel)
             {
                 if (vessel.orbit.ApA >= minApA && vessel.orbit.ApA <= maxApA)
                 {
                     base.SetComplete();
                 }
-                if (vessel.orbit.ApA > minApA && vessel.orbit.ApA > maxApA)
-                {
-                    base.SetIncomplete();
-                }
             }
+            else
+                base.SetIncomplete();
         }
-        public void NotOrbit(Vessel vessel)
-        {
-            if (FlightGlobals.ActiveVessel && HighLogic.LoadedSceneIsFlight)
-            {
-                if (vessel.orbit.ApA > minApA && vessel.orbit.ApA > maxApA)
-                {
-                    base.SetIncomplete();
-                }
-            }
-        }
+
+        
     }
 #endregion
     #region InOrbit Goal
@@ -180,7 +162,13 @@ namespace MissionControllerEC
 
         protected override void OnUpdate()
         {
-            Orbits(FlightGlobals.ActiveVessel);
+            if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel.situation == Vessel.Situations.ORBITING)
+                Orbits(FlightGlobals.ActiveVessel);
+
+            if (HighLogic.LoadedSceneIsFlight && settings.MessageHelpers)
+            {
+                Tools.ObitalPeriodHelper(FlightGlobals.ActiveVessel);
+            }
         }
 
         protected override void OnLoad(ConfigNode node)
@@ -209,16 +197,17 @@ namespace MissionControllerEC
 
         public void Orbits(Vessel vessel)
         {
-            if (FlightGlobals.ActiveVessel && HighLogic.LoadedSceneIsFlight)
+            if (vessel.isActiveVessel)
             {
-                                
+
                 if (vessel.orbit.PeA >= minPeA && vessel.orbit.PeA <= maxPeA)
                 {
                     base.SetComplete();
-                    Debug.Log("Min And Max PeA has been Completed");
                 }
             }
-        }
+            else
+                base.SetIncomplete();
+        }       
     }
     #endregion
     #region inclinationGoal
@@ -307,7 +296,12 @@ namespace MissionControllerEC
         
         protected override void OnUpdate()
         {
+            if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel)
             CheckOrbitalPeriod(FlightGlobals.ActiveVessel);
+            if (HighLogic.LoadedSceneIsFlight && settings.MessageHelpers)
+            {
+                Tools.ObitalPeriodHelper(FlightGlobals.ActiveVessel);
+            }
         }
 
         protected override void OnLoad(ConfigNode node)
@@ -328,16 +322,12 @@ namespace MissionControllerEC
 
         public void CheckOrbitalPeriod(Vessel vessel)
         {
-            if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel)
-            {
-                //if (settings.MessageHelpers)
-                //{
-                //    ScreenMessages.PostScreenMessage("Current Orbital Period is: " + Tools.formatTime(FlightGlobals.ActiveVessel.orbit.period), 0005f);
-                //}
+            if (vessel.isActiveVessel)
+            {               
                 if (vessel.orbit.period <= maxOrbitalPeriod && vessel.orbit.period >= minOrbitalPeriod)
                     base.SetComplete();
             }
-        }
+        }      
     }
     #endregion
     #region PartGoal
@@ -369,6 +359,7 @@ namespace MissionControllerEC
 
         protected override void OnUpdate()
         {
+            if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel)
             CheckPartGoal(FlightGlobals.ActiveVessel);
         }
 
@@ -387,7 +378,7 @@ namespace MissionControllerEC
 
         public void CheckPartGoal(Vessel vessel)
         {
-            if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel)
+            if (vessel.isActiveVessel)
             {               
                 if (vessel != null)
                 {
@@ -594,7 +585,7 @@ namespace MissionControllerEC
         private void CheckIfOrbit(Vessel vessel)
         {
 
-            if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel)
+            if (vessel.isActiveVessel)
             {
 
                 if (MCEOrbitalScanning.doOrbitResearch)
@@ -656,6 +647,7 @@ namespace MissionControllerEC
 
         protected override void OnUpdate()
         {
+            if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel)
             CheckIfRepaired(FlightGlobals.ActiveVessel);
         }
         protected override void OnLoad(ConfigNode node)
@@ -670,7 +662,7 @@ namespace MissionControllerEC
         private void CheckIfRepaired(Vessel name)
         {
 
-            if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel && RepairPanel.repair)
+            if (name.isActiveVessel && RepairPanel.repair)
             {
                 base.SetComplete();
             }
@@ -707,6 +699,7 @@ namespace MissionControllerEC
 
         protected override void OnUpdate()
         {
+            if (FlightGlobals.ActiveVessel && HighLogic.LoadedSceneIsFlight)
             CheckCrewValues(FlightGlobals.ActiveVessel); 
         }
      
@@ -721,14 +714,14 @@ namespace MissionControllerEC
 
         public void CheckCrewValues(Vessel vessel)
         {
-            if (FlightGlobals.ActiveVessel && HighLogic.LoadedSceneIsFlight)
+            if (vessel.isActiveVessel)
             {
                 int currentcrew = FlightGlobals.ActiveVessel.GetCrewCount();
-                Debug.LogError("Current crew is " + currentcrew + " crew can't be over " + crewCount);
+                //Debug.LogError("Current crew is " + currentcrew + " crew can't be over " + crewCount);
                 if (currentcrew <= crewCount)
                 {
                     base.SetComplete();
-                    Debug.Log("Passed Crew Check");
+                    //Debug.Log("Passed Crew Check");
                 }
             }
         }
@@ -801,7 +794,7 @@ namespace MissionControllerEC
         private void CheckIflanded(Vessel vessel)
         {
 
-            if (HighLogic.LoadedSceneIsFlight && (FlightGlobals.ActiveVessel.situation == Vessel.Situations.LANDED || FlightGlobals.ActiveVessel.situation == Vessel.Situations.SPLASHED))
+            if (vessel.isActiveVessel && (FlightGlobals.ActiveVessel.situation == Vessel.Situations.LANDED || FlightGlobals.ActiveVessel.situation == Vessel.Situations.SPLASHED))
             {
                 if (MCELanderResearch.doLanderResearch)
                 {
@@ -943,12 +936,15 @@ namespace MissionControllerEC
         }
         protected override string GetTitle()
         {
-            return "Build and Launch Agena Vessel";
+            return "Build and Launch Agena Target Vehicle\n"+
+                "Your current active vehicle at launch will be\n" +
+                "Recorded as the Agena Vehicle";
         }
 
         protected override void OnUpdate()
         {
-            launchAgena(FlightGlobals.ActiveVessel);
+            if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel.situation != Vessel.Situations.PRELAUNCH)
+            launchAgena(FlightGlobals.ActiveVessel);           
         }
 
         protected override void OnLoad(ConfigNode node)
@@ -970,11 +966,254 @@ namespace MissionControllerEC
 
         public void launchAgena(Vessel vessel)
         {
-            if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel.situation != Vessel.Situations.PRELAUNCH)
+            if (vessel.isActiveVessel)
             {                
               base.SetComplete();
               SaveInfo.AgenaTargetVesselID = vessel.id.ToString();
-              SaveInfo.AgenaTargetVesselName = vessel.name;
+              SaveInfo.AgenaTargetVesselName = FlightGlobals.ActiveVessel.vesselName;
+            }
+        }
+    }
+    #endregion
+    #region Module Goal
+    public class ModuleGoal : ContractParameter
+    {
+        public String moduleName;
+        public String ModuleGoalname;
+        //public int partCount = 0;
+        //public int maxPartCount = 0;
+
+        public ModuleGoal()
+        {
+        }
+
+        public ModuleGoal(string Modulename, string TitleName)
+        {
+            this.moduleName = Modulename;
+            this.ModuleGoalname = TitleName;
+
+        }
+
+        protected override string GetHashString()
+        {
+            return "Must Have  " + ModuleGoalname +  " On your vessel";
+        }
+        protected override string GetTitle()
+        {
+            return "Must Have  " + ModuleGoalname + " On your vessel";
+        }
+
+        protected override void OnUpdate()
+        {
+            if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel)
+            {
+                CheckPartGoal(FlightGlobals.ActiveVessel);
+            }
+        }
+
+        protected override void OnLoad(ConfigNode node)
+        {
+
+            moduleName = (node.GetValue("partname"));
+            ModuleGoalname = node.GetValue("modulegoalname");
+        }
+        protected override void OnSave(ConfigNode node)
+        {
+
+            node.AddValue("partname", moduleName);
+            node.AddValue("modulegoalname", ModuleGoalname);
+           
+        }
+
+        public void CheckPartGoal(Vessel vessel)
+        {
+            if (FlightGlobals.ActiveVessel.situation == Vessel.Situations.PRELAUNCH)
+            {                
+                    foreach (Part p in vessel.parts)
+                    {
+                        foreach (PartModule pm in p.Modules)
+                        {
+                            if (pm.moduleName.Equals(moduleName))
+                            {
+                                base.SetComplete();
+                            }
+                        }
+                    }
+            }            
+
+        }
+    }
+    
+    #endregion
+    #region Prelaunch Goal
+    public class PreLaunch : ContractParameter
+    {
+        
+        public PreLaunch()
+        {
+        }
+       
+        protected override string GetHashString()
+        {
+            return "Launch Vessel";
+        }
+        protected override string GetTitle()
+        {
+            return "Ready To Launch Your Vessel";
+        }
+
+        protected override void OnUpdate()
+        {
+            if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel.situation == Vessel.Situations.PRELAUNCH)
+            {
+                base.SetComplete();
+            }
+        }        
+    }
+#endregion
+    #region TotalMassGoal
+    public class TotalMasGoal : ContractParameter
+    {
+        public CelestialBody targetBody;
+        public float maxweight = 0.0f;
+        public float minWeight = 0.0f;
+
+        public TotalMasGoal()
+        {
+        }
+
+        public TotalMasGoal(CelestialBody target, float maxWeight, float minWeight)
+        {
+            this.targetBody = target;
+            this.maxweight = maxWeight;
+            this.minWeight = minWeight;
+        }
+        protected override string GetHashString()
+        {
+            return targetBody.bodyName;
+        }
+        protected override string GetTitle()
+        {
+            return "Satellite Mass(Kg) Must be Between: " + minWeight + " and " + maxweight + " Kg. (InOrbit)";
+        }
+
+        protected override void OnUpdate()
+        {
+            if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel.situation == Vessel.Situations.ORBITING)
+            MassCheck(FlightGlobals.ActiveVessel);
+        }
+
+        protected override void OnLoad(ConfigNode node)
+        {
+            int bodyID = int.Parse(node.GetValue("targetBody"));
+            foreach (var body in FlightGlobals.Bodies)
+            {
+                if (body.flightGlobalsIndex == bodyID)
+                    targetBody = body;
+            }
+
+            maxweight = float.Parse(node.GetValue("maxtons"));
+            minWeight = float.Parse(node.GetValue("mintons"));
+            
+
+        }
+        protected override void OnSave(ConfigNode node)
+        {
+            int bodyID = targetBody.flightGlobalsIndex;
+            node.AddValue("targetBody", bodyID);
+
+            node.AddValue("maxtons", maxweight);
+            node.AddValue("mintons", minWeight);
+            
+        }
+
+        public void MassCheck(Vessel vessel)
+        {
+            if (vessel.isActiveVessel)
+            {
+                if (vessel.GetTotalMass() >= minWeight && vessel.GetTotalMass() <= maxweight)
+                {
+                    base.SetComplete();
+                }               
+            }
+        }       
+    }
+    #endregion
+    #region Resource Goal Check
+    public class ResourceGoal : ContractParameter
+    {
+        public string targetName;
+        public double maxAmountt = 0.0f;
+        public double minAmount = 0.0f;
+
+        public ResourceGoal()
+        {
+        }
+
+        public ResourceGoal(string target, double maxAmt, double minAmt)
+        {
+            this.targetName = target;
+            this.maxAmountt = maxAmt;
+            this.minAmount = minAmt;
+        }
+        protected override string GetHashString()
+        {
+            return targetName;
+        }
+        protected override string GetTitle()
+        {
+            return "Must Have " + targetName + " Between "+ minAmount + " and " + maxAmountt + " (InOrbit)";
+        }
+
+        protected override void OnUpdate()
+        {
+            if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel.situation == Vessel.Situations.ORBITING)
+                ResourceCheck(FlightGlobals.ActiveVessel);
+        }
+
+        protected override void OnLoad(ConfigNode node)
+        {
+
+            targetName = node.GetValue("targetname");
+            maxAmountt = float.Parse(node.GetValue("maxtons"));
+            minAmount = float.Parse(node.GetValue("mintons"));
+
+
+        }
+        protected override void OnSave(ConfigNode node)
+        {
+
+            node.AddValue("targetname", targetName);
+            node.AddValue("maxtons", maxAmountt);
+            node.AddValue("mintons", minAmount);
+
+        }
+
+        public void ResourceCheck(Vessel vessel)
+        {
+            if (vessel.isActiveVessel)
+            {
+                double resources = 0;
+
+                if (vessel != null)
+                {
+                    foreach (Part p in vessel.parts)
+                    {
+                        if (p.Resources[targetName] != null)
+                        {
+                            resources += p.Resources[targetName].amount;
+                        }
+                    }
+                    if (resources > 0)
+                    {
+                        if (resources >= minAmount && resources <= maxAmountt)
+                        {
+                            base.SetComplete();
+                        }
+                    }
+                }
+
+                
             }
         }
     }

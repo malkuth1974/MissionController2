@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MissionControllerEC
 {
@@ -23,6 +19,8 @@ namespace MissionControllerEC
         [Persistent]internal double minOrbP = 10680;
         [Persistent]internal string contractName = "Deliever COMSAT Satellite";
         [Persistent]internal int bodyNumber = 1;
+        [Persistent]internal bool RevertOn = true;
+        [Persistent]internal bool DebugMenu = false;
       
     }
 }

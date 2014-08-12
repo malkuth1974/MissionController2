@@ -1,11 +1,35 @@
 ﻿using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace MissionControllerEC
 {
     public partial class MissionControllerEC
     {
+        public void drawEditorwindow(int id)
+        {
+            GUI.skin = HighLogic.Skin;
+            GUILayout.BeginVertical();
+            MCE_ScenarioStartup.scrollPosition = GUILayout.BeginScrollView(MCE_ScenarioStartup.scrollPosition, GUILayout.Width(408));
+            GetPartsCost();
+            GUILayout.EndScrollView();
+            GUILayout.EndVertical();
+
+            showFuel = (GUILayout.Toggle(showFuel, "Toggle Fuel Type Visible"));
+            showTons = (GUILayout.Toggle(showTons, "Show Mass Vessel"));
+            if (showTons)
+                showMiniTons = (GUILayout.Toggle(showMiniTons, "Show Individual Mass(Kg) Parts"));
+            
+            if (GUILayout.Button("Exit Window And Save"))
+            {
+                MCE_ScenarioStartup.ShowEditorWindow = false;
+            }
+
+            if (!Input.GetMouseButtonDown(1))
+            {
+                GUI.DragWindow();
+            }
+        }
+        
         public void drawFinanceWind(int id)
         {
             CelestialBody targetbody = null;
@@ -16,7 +40,7 @@ namespace MissionControllerEC
 
             GUILayout.Space(2);
             GUILayout.BeginHorizontal();
-            GUILayout.Box("Mission COntroller Extended 2 Version PreRelease 2", GUILayout.Width(400));
+            GUILayout.Box(MCE_ScenarioStartup.mainWindowTitle + " " + MCE_ScenarioStartup.versionCode, GUILayout.Width(400));
 
             GUILayout.EndHorizontal();
 
@@ -110,10 +134,14 @@ namespace MissionControllerEC
 
             GUILayout.Space(10);
             GUILayout.EndVertical();
-            //if (GUILayout.Button("Settings menu"))
-            //{               
-            //    ShowMainWindow = true;
-            //}
+            if (settings.DebugMenu && GUILayout.Button("Debug Menu"))
+            {
+               MCE_ScenarioStartup.ShowMainWindow = true;
+            }
+            if (GUILayout.Button("Settings Menu"))
+            {
+                MCE_ScenarioStartup.ShowSettingsWindow = true;
+            }
             if (GUILayout.Button("Exit Window And Save"))
             {
                 MCE_ScenarioStartup.ShowfinanaceWindow = false;
