@@ -136,7 +136,6 @@ namespace MissionControllerEC
     #region PeA OrbitGoal
     public class PeAOrbitGoal : ContractParameter
     {
-        Settings settings = new Settings("Config.cfg");
         public CelestialBody targetBody;
         public double maxPeA = 0.0;
         public double minPeA = 0.0;
@@ -165,7 +164,7 @@ namespace MissionControllerEC
             if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel.situation == Vessel.Situations.ORBITING)
                 Orbits(FlightGlobals.ActiveVessel);
 
-            if (HighLogic.LoadedSceneIsFlight && settings.MessageHelpers)
+            if (HighLogic.LoadedSceneIsFlight && SaveInfo.MessageHelpers == true)
             {
                 Tools.ObitalPeriodHelper(FlightGlobals.ActiveVessel);
             }
@@ -271,7 +270,6 @@ namespace MissionControllerEC
     #region OrbiatlPeriod Goal
     public class OrbitalPeriod : ContractParameter
     {
-        Settings settings = new Settings("Config.cfg");
         public double minOrbitalPeriod = 0.0;
         public double maxOrbitalPeriod = 0.0;
 
@@ -298,7 +296,7 @@ namespace MissionControllerEC
         {
             if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel)
             CheckOrbitalPeriod(FlightGlobals.ActiveVessel);
-            if (HighLogic.LoadedSceneIsFlight && settings.MessageHelpers)
+            if (HighLogic.LoadedSceneIsFlight && SaveInfo.MessageHelpers == true)
             {
                 Tools.ObitalPeriodHelper(FlightGlobals.ActiveVessel);
             }
@@ -504,10 +502,16 @@ namespace MissionControllerEC
         {
             if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel)
             {                
-                Debug.LogWarning("Postion of vessel is ");           
+                          
                 Debug.LogError("Does: " + targetDockingID + " = " + action.from.vessel.id.ToString());
+                Debug.LogError("Docked FROM: " + action.from.vessel.vesselName);
+                Debug.LogError("Docked TO: " + action.to.vessel.vesselName);
+
+                Debug.LogError("Docked TO Type Vessel: " + action.to.vessel.vesselType);
+
+                Debug.LogError("Docked FROM ID: " + action.from.vessel.id.ToString());
                 Debug.LogError("Docked TO ID: " + action.to.vessel.id.ToString());
-                if (targetDockingID == action.from.vessel.id.ToString())
+                if (targetDockingID == action.from.vessel.id.ToString() || targetDockingID == action.to.vessel.id.ToString())
                 {
                     ScreenMessages.PostScreenMessage("You have docked to the Target Vessel, Goal Complete");
                     base.SetComplete();
@@ -970,7 +974,7 @@ namespace MissionControllerEC
             {                
               base.SetComplete();
               SaveInfo.AgenaTargetVesselID = vessel.id.ToString();
-              SaveInfo.AgenaTargetVesselName = FlightGlobals.ActiveVessel.vesselName;
+              SaveInfo.AgenaTargetVesselName = FlightGlobals.ActiveVessel.vesselName.Replace("(unloaded)", "");
             }
         }
     }
@@ -1214,6 +1218,98 @@ namespace MissionControllerEC
                 }
 
                 
+            }
+        }
+    }
+    #endregion
+    #region Resource Supply Goal Check
+    public class ResourceSupplyGoal : ContractParameter
+    {
+        public string targetName;
+        public double ResourceAmount = 0.0f;
+        public string contractTitle;
+
+        public ResourceSupplyGoal()
+        {
+        }
+
+        public ResourceSupplyGoal(string target, double RsAmount,string Ctitle)
+        {
+            this.targetName = target;
+            this.ResourceAmount = RsAmount;
+            this.contractTitle = Ctitle;
+        }
+        protected override string GetHashString()
+        {
+            return targetName;
+        }
+        protected override string GetTitle()
+        {
+            return contractTitle + " "  + ResourceAmount + " " + targetName;
+        }
+
+        protected override void OnRegister()
+        {
+            GameEvents.onPartCouple.Add(OnResourceCheck);
+        }
+        protected override void OnUnregister()
+        {
+            GameEvents.onPartCouple.Remove(OnResourceCheck);
+        }
+
+        protected override void OnLoad(ConfigNode node)
+        {
+
+            targetName = node.GetValue("targetname");
+            ResourceAmount = float.Parse(node.GetValue("resourceamount"));            
+        }
+        protected override void OnSave(ConfigNode node)
+        {
+
+            node.AddValue("targetname", targetName);
+            node.AddValue("resourceamount", ResourceAmount);            
+        }
+
+        private void onPartCouple(GameEvents.FromToAction<Part, Part> action)
+        {
+            if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel)
+            {
+                Debug.LogError("Docked FROM: " + action.from.vessel.vesselName);
+                Debug.LogError("Docked TO: " + action.to.vessel.vesselName);
+
+                Debug.LogError("Docked TO Type Vessel: " + action.to.vessel.vesselType);
+
+                Debug.LogError("Docked FROM ID: " + action.from.vessel.id.ToString());
+                Debug.LogError("Docked TO ID: " + action.to.vessel.id.ToString());
+                base.SetComplete();
+            }
+        }
+
+        private void OnResourceCheck(GameEvents.FromToAction<Part, Part> action)
+        {
+            if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel)
+            {
+                double resources = 0;
+
+                if (FlightGlobals.ActiveVessel != null)
+                {
+                    foreach (Part p in FlightGlobals.ActiveVessel.parts)
+                    {
+                        if (p.Resources[targetName] != null)
+                        {
+                            resources += p.Resources[targetName].amount;
+                        }
+                    }
+                    if (resources > 0)
+                    {
+                        if (resources >= ResourceAmount)
+                        {
+                            base.SetComplete();
+                        }
+                    }
+                }
+
+
             }
         }
     }

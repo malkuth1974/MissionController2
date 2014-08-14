@@ -76,8 +76,8 @@ namespace MissionControllerEC
             GUILayout.Space(10);
             GUILayout.BeginHorizontal();
             GUILayout.Box("Flight Help On (Apa,PeA,Orbital Period)",MCE_ScenarioStartup.StyleBold, GUILayout.Width(300));
-            GUILayout.Box("" + settings.MessageHelpers, MCE_ScenarioStartup.styleBlueBold, GUILayout.Width(75));
-            settings.MessageHelpers = GUILayout.Toggle(settings.MessageHelpers, "Set", GUILayout.Width(25));
+            GUILayout.Box("" + SaveInfo.MessageHelpers, MCE_ScenarioStartup.styleBlueBold, GUILayout.Width(75));
+            SaveInfo.MessageHelpers = GUILayout.Toggle(SaveInfo.MessageHelpers, "Set", GUILayout.Width(25));
             GUILayout.EndHorizontal();
 
             GUILayout.Space(10);

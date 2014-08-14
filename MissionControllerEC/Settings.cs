@@ -12,7 +12,6 @@ namespace MissionControllerEC
         [Persistent]internal float EasyMode = 1.0f;
         [Persistent]internal float MediumMode = 2.0f;
         [Persistent]internal float HardCoreMode = 4.0f;
-        [Persistent]internal bool MessageHelpers = true;
         [Persistent]internal bool NoRescueKerbalContracts = true;  //thanks flowerchild :)
         [Persistent]internal bool StartBuilding = false;
         [Persistent]internal double maxOrbP = 10860;

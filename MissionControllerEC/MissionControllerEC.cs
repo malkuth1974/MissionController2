@@ -37,6 +37,9 @@ namespace MissionControllerEC
         public static bool ShowEditorWindow = false;
         public static Vector2 scrollPosition = new Vector2(0, 0);
 
+        public static Rect CustomWindowPostion;
+        public static bool ShowCustomWindow;
+
         public static GUIStyle StyleWhite, StyleBold, styleBoxWhite, styleBlue, styleBlueBold, styleGreenBold;
 
 
@@ -53,7 +56,7 @@ namespace MissionControllerEC
                 try
                 {
                     HighLogic.CurrentGame.AddProtoScenarioModule(typeof(MissionControllerData), new GameScenes[] { GameScenes.FLIGHT, GameScenes.SPACECENTER, GameScenes.EDITOR, GameScenes.SPH, GameScenes.TRACKSTATION });
-                    Debug.LogWarning("[MCE] Adding InternalModule scenario to game '" + HighLogic.CurrentGame.Title + "'");
+                    //Debug.LogWarning("[MCE] Adding InternalModule scenario to game '" + HighLogic.CurrentGame.Title + "'");
                     // the game will add this scenario to the appropriate persistent file on save from now on
                 }
                 catch (ArgumentException ae)
@@ -80,12 +83,12 @@ namespace MissionControllerEC
                     scenario.targetScenes.Add(GameScenes.TRACKSTATION);
 
             }
-          
+            MissionControllerEC mc = new MissionControllerEC();                   
         }
         void Awake()
         {
             assemblyName = Assembly.GetExecutingAssembly().GetName();
-            versionCode = "Preview 3B";
+            versionCode = "Preview 3C";
             mainWindowTitle = "Mission Controller 2 ";
         }
         public static void loadStyles()
@@ -136,12 +139,12 @@ namespace MissionControllerEC
 
         public override void OnAwake()
         {
-            Debug.Log("OnAwake in " + HighLogic.LoadedScene);
+            //Debug.Log("OnAwake in " + HighLogic.LoadedScene);
 
 
             if (HighLogic.LoadedScene == GameScenes.SPACECENTER || HighLogic.LoadedScene == GameScenes.FLIGHT || HighLogic.LoadedScene == GameScenes.EDITOR || HighLogic.LoadedScene == GameScenes.SPH)
             {
-                Debug.Log("Adding MissionController Child");
+                //Debug.Log("Adding MissionController Child");
                 var c = gameObject.AddComponent<MissionControllerEC>();
                 mcechildren.Add(c);
             }
@@ -187,13 +190,17 @@ namespace MissionControllerEC
 
         public void Awake()
         {
+            DontDestroyOnLoad(this);
             loadTextures();
             loadFiles();
             CreateButtons();
             GameEvents.Contract.onContractsLoaded.Add(this.onContractLoaded);
             GameEvents.onCrewKilled.Add(this.chargeKerbalDeath);
             GameEvents.onKerbalTypeChange.Add(this.hireKerbals);
-            //Debug.Log("MCE Awake");           
+            GameEvents.onGameSceneLoadRequested.Add(this.CheckRepairStatus);
+            //Debug.Log("MCE Awake");
+            getSupplyList();
+            LoadResourceDictionary();
         }    
                 
         public void Start()
@@ -224,10 +231,9 @@ namespace MissionControllerEC
             }
             else
             {
-                Debug.LogError("Could not load difficulties");
-            }
-        }
-      
+                //Debug.LogError("Could not load difficulties");
+            }            
+        }            
                       
         void OnDestroy()
         {
@@ -236,6 +242,7 @@ namespace MissionControllerEC
             GameEvents.onCrewKilled.Remove(this.chargeKerbalDeath);
             GameEvents.onKerbalTypeChange.Remove(this.hireKerbals);
             GameEvents.Contract.onContractsLoaded.Remove(this.onContractLoaded);
+            GameEvents.onGameSceneLoadRequested.Remove(this.CheckRepairStatus);
             //Debug.Log("Game All values removed for MCE");
         }                
       
@@ -254,6 +261,12 @@ namespace MissionControllerEC
                 MCE_ScenarioStartup.FinanceWindowPosition = GUILayout.Window(981974, MCE_ScenarioStartup.FinanceWindowPosition, drawFinanceWind, "MCE Finances", GUILayout.MaxHeight(800), GUILayout.MaxWidth(400), GUILayout.MinHeight(250), GUILayout.MinWidth(390));
                 MCE_ScenarioStartup.FinanceWindowPosition.x = Mathf.Clamp(MCE_ScenarioStartup.FinanceWindowPosition.x, 0, Screen.width - MCE_ScenarioStartup.FinanceWindowPosition.width);
                 MCE_ScenarioStartup.FinanceWindowPosition.y = Mathf.Clamp(MCE_ScenarioStartup.FinanceWindowPosition.y, 0, Screen.height - MCE_ScenarioStartup.FinanceWindowPosition.height);
+            }
+            if (MCE_ScenarioStartup.ShowCustomWindow)
+            {
+                MCE_ScenarioStartup.CustomWindowPostion = GUILayout.Window(1091974, MCE_ScenarioStartup.CustomWindowPostion, drawCustomGUI, "Custom Contracts", GUILayout.MaxHeight(800), GUILayout.MaxWidth(400), GUILayout.MinHeight(250), GUILayout.MinWidth(390));
+                MCE_ScenarioStartup.CustomWindowPostion.x = Mathf.Clamp(MCE_ScenarioStartup.CustomWindowPostion.x, 0, Screen.width - MCE_ScenarioStartup.CustomWindowPostion.width);
+                MCE_ScenarioStartup.CustomWindowPostion.y = Mathf.Clamp(MCE_ScenarioStartup.CustomWindowPostion.y, 0, Screen.height - MCE_ScenarioStartup.CustomWindowPostion.height);
             }
             if (MCE_ScenarioStartup.ShowEditorWindow)
             {
@@ -291,7 +304,6 @@ namespace MissionControllerEC
             {
                 ResearchAndDevelopment.Instance.Science += 1000;
             }
-
            
             if (GUILayout.Button("Set Agena Current Vehicle"))
             {
@@ -337,6 +349,15 @@ namespace MissionControllerEC
         [Persistent]public string agenaTargetVesselName = "none";
         [Persistent]public bool agena1done = false;
         [Persistent]public bool agena2done = false;
+        [Persistent]public bool messagehelpers = false;
+        
+        [Persistent]public string supplyVesselName = "None";
+        [Persistent]public string supplyVesselId = "none";
+        [Persistent]public string supplyResource = "none";
+        [Persistent]public string supplyContractName = "none";
+        [Persistent]public int supplybodyIDX;
+        [Persistent]public bool supplyContractOn = false;
+        [Persistent]public double supplyResAmount = 0;
 
         public override void OnDecodeFromConfigNode()
         {
@@ -347,6 +368,15 @@ namespace MissionControllerEC
             SaveInfo.AgenaTargetVesselName = agenaTargetVesselName;
             SaveInfo.Agena1Done = agena1done;
             SaveInfo.Agena2Done = agena2done;
+            SaveInfo.MessageHelpers = messagehelpers;
+
+            SaveInfo.SupplyVesName = supplyVesselName;
+            SaveInfo.SupplyVesId = supplyVesselId;
+            SaveInfo.ResourceName = supplyResource;
+            SaveInfo.SupplyContractName = supplyContractName;
+            SaveInfo.SupplyBodyIDX = supplybodyIDX;
+            SaveInfo.supplyContractOn = supplyContractOn;
+            SaveInfo.supplyAmount = supplyResAmount;
 
         }
 
@@ -359,6 +389,15 @@ namespace MissionControllerEC
             agenaTargetVesselName = SaveInfo.AgenaTargetVesselName;
             agena1done = SaveInfo.Agena1Done;
             agena2done = SaveInfo.Agena2Done;
+            messagehelpers = SaveInfo.MessageHelpers;
+
+            supplyVesselName = SaveInfo.SupplyVesName;
+            supplyVesselId = SaveInfo.SupplyVesId;
+            supplyResource = SaveInfo.ResourceName;
+            supplyContractName = SaveInfo.SupplyContractName;
+            supplybodyIDX = SaveInfo.SupplyBodyIDX;
+            supplyContractOn = SaveInfo.supplyContractOn;
+            supplyResAmount = SaveInfo.supplyAmount;
 
         }
     
