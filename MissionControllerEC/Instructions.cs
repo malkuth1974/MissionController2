@@ -19,6 +19,7 @@ namespace MissionControllerEC
         public bool showTons = false;
         public bool showMiniTons = false;
         public float vesselResourceTons;
+        public float multDiff = 1;
 
         public static int supplyCount;
 
@@ -136,12 +137,20 @@ namespace MissionControllerEC
             }
         }
 
+        public void FlightglobalsIndexCheck()
+        {
+            foreach (CelestialBody cb in FlightGlobals.Bodies)
+            {
+                Debug.Log("Planet name" + cb.theName + " Planet index " + cb.flightGlobalsIndex.ToString());
+            }
+        }
+
         public void CheckRepairStatus(GameScenes gs)
         {
             int random = 100;
             random = UnityEngine.Random.Range(0, 100);
             //Debug.LogWarning("Repair Random is: " + random);
-            if (random > 75)
+            if (random > 70)
                 SaveInfo.RepairContractOn = true;
             else
                 SaveInfo.RepairContractOn = false;
@@ -171,7 +180,20 @@ namespace MissionControllerEC
                     {                       
                         string name = p.partInfo.title;                      
                         vesselPartCost += p.partInfo.cost + p.GetModuleCosts();
-                        vesseltons += p.mass;
+                        vesseltons += p.mass;                       
+
+                        if (settings.difficutlylevel == 1)
+                        {
+                            multDiff = settings.EasyMode;
+                        }
+                        if (settings.difficutlylevel == 2)
+                        {
+                            multDiff = settings.MediumMode;
+                        }
+                        if (settings.difficutlylevel == 3)
+                        {
+                            multDiff = settings.HardCoreMode;
+                        }
                     
                         GUILayout.BeginHorizontal();
                         GUILayout.Box("" + name, MCE_ScenarioStartup.styleBoxWhite, GUILayout.MinWidth(300), GUILayout.MaxWidth(300));
@@ -181,7 +203,7 @@ namespace MissionControllerEC
                         if (showTons && showMiniTons)
                         {
                             GUILayout.BeginHorizontal();
-                            GUILayout.Label("Part Mass Empty: " + p.mass, GUILayout.MinWidth(400));
+                            GUILayout.Label("Part Mass Empty: " + p.mass.ToString("F2"), GUILayout.MinWidth(400));
                             GUILayout.EndHorizontal();
                         }
 
@@ -189,19 +211,20 @@ namespace MissionControllerEC
                         {
                             if (pr.amount > 0 && pr.info.unitCost > 0)
                             {
-                                resourceCost += pr.info.unitCost * (float)pr.amount;
+                                resourceCost += (pr.info.unitCost * multDiff)  * (float)pr.amount;
                                 vesselResourceTons += pr.info.density * (float)pr.amount;
-                                double totalFuelCost = pr.info.unitCost * pr.amount;
+                                double totalFuelCost = (pr.info.unitCost * multDiff) * pr.amount;
+                                double adjustedCost = pr.info.unitCost * multDiff;
                                 if (showFuel)
                                 {
                                     GUILayout.BeginHorizontal();
-                                    GUILayout.Label(pr.resourceName + " Amount: " + "("+pr.amount+")" + " Cost Per Unit: " + "("+pr.info.unitCost+")" + " Total Cost: " + "("+(int)totalFuelCost+")" ,MCE_ScenarioStartup.styleBlue,GUILayout.MinWidth(400));
+                                    GUILayout.Label(pr.resourceName + " Amount: " + "(" + pr.amount.ToString("F2") + ")" + " Cost Per Unit: " + "(" + adjustedCost.ToString("F2") + ")" + " Total Cost: " + "(" + totalFuelCost.ToString("F2") + ")", MCE_ScenarioStartup.styleBlue, GUILayout.MinWidth(400));
                                     GUILayout.EndHorizontal();
                                 }
                                 if (showTons && showMiniTons)
                                 {
                                     GUILayout.BeginHorizontal();
-                                    GUILayout.Label("Total Resource (" + pr.resourceName + ") Mass(Kg): " + vesselResourceTons, GUILayout.MinWidth(400));
+                                    GUILayout.Label("Total Resource (" + pr.resourceName + ") Mass(Tons): " + vesselResourceTons.ToString("F2"), GUILayout.MinWidth(400));
                                     GUILayout.EndHorizontal();
                                 }
                             }
@@ -212,25 +235,25 @@ namespace MissionControllerEC
                     GUILayout.Space(15);
                     GUILayout.BeginHorizontal();
                     GUILayout.Box("Total Part Cost Without Fuel", MCE_ScenarioStartup.StyleBold, GUILayout.MinWidth(300), GUILayout.MaxWidth(300));
-                    GUILayout.Box("" + (int)MinTotal, MCE_ScenarioStartup.StyleBold, GUILayout.MinWidth(100), GUILayout.MaxWidth(100));
+                    GUILayout.Box("" + MinTotal.ToString("F2"), MCE_ScenarioStartup.StyleBold, GUILayout.MinWidth(100), GUILayout.MaxWidth(100));
                     GUILayout.EndHorizontal();
                     
                     GUILayout.BeginHorizontal();
                     GUILayout.Box("Total Fuel Cost", MCE_ScenarioStartup.styleBlueBold, GUILayout.MinWidth(300), GUILayout.MaxWidth(300));
-                    GUILayout.Box("" + (int)resourceCost, MCE_ScenarioStartup.styleBlueBold, GUILayout.MinWidth(100), GUILayout.MaxWidth(100));
+                    GUILayout.Box("" + resourceCost.ToString("F2"), MCE_ScenarioStartup.styleBlueBold, GUILayout.MinWidth(100), GUILayout.MaxWidth(100));
                     GUILayout.EndHorizontal();
 
                     GUILayout.Space(10);
                     GUILayout.BeginHorizontal();
                     GUILayout.Box("Total Cost with Fuel", MCE_ScenarioStartup.StyleBold, GUILayout.MinWidth(300), GUILayout.MaxWidth(300));
-                    GUILayout.Box("" + (int)vesselPartCost, MCE_ScenarioStartup.StyleBold, GUILayout.MinWidth(100), GUILayout.MaxWidth(100));
+                    GUILayout.Box("" + vesselPartCost.ToString("F2"), MCE_ScenarioStartup.StyleBold, GUILayout.MinWidth(100), GUILayout.MaxWidth(100));
                     GUILayout.EndHorizontal();
 
                     if (showTons)
                     {
                         GUILayout.Space(15);
                         GUILayout.BeginHorizontal();
-                        GUILayout.Box("Total Vessel Mass (Kg) ", MCE_ScenarioStartup.styleGreenBold, GUILayout.MinWidth(300), GUILayout.MaxWidth(300));
+                        GUILayout.Box("Total Vessel Mass (Tons) ", MCE_ScenarioStartup.styleGreenBold, GUILayout.MinWidth(300), GUILayout.MaxWidth(300));
                         GUILayout.Box("" + rMinTotal.ToString("F2"), MCE_ScenarioStartup.styleGreenBold, GUILayout.MinWidth(100), GUILayout.MaxWidth(100));
                         GUILayout.EndHorizontal();
                     }                   
@@ -254,7 +277,17 @@ namespace MissionControllerEC
                 }
 
                 catch { Debug.LogError("could not run NoRescueKerbalContracts Returned Null");}
-            }           
+            }
+            if (settings.NoPartTestContracts && ContractSystem.ContractTypes.Contains(typeof(Contracts.Templates.PartTest)))
+            {
+                try
+                {
+                    ContractSystem.ContractTypes.Remove(typeof(Contracts.Templates.PartTest));
+                    Debug.Log("Removed PartTest Type Contracts from Gererating");
+                }
+
+                catch { Debug.LogError("could not run NoPartTest Returned Null"); }
+            } 
         }    
                
         public void hireKerbals(ProtoCrewMember pc, ProtoCrewMember.KerbalType pc1, ProtoCrewMember.KerbalType pc2)

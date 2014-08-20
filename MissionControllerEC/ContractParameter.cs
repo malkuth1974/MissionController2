@@ -515,6 +515,8 @@ namespace MissionControllerEC
                 {
                     ScreenMessages.PostScreenMessage("You have docked to the Target Vessel, Goal Complete");
                     base.SetComplete();
+                    action.from.vessel.vesselName = action.from.vessel.vesselName.Replace("(Repair)", "");
+                    action.to.vessel.vesselName = action.to.vessel.vesselName.Replace("(Repair)", "");
                 }
                 else
                     ScreenMessages.PostScreenMessage("Did not connect to the correct target ID vessel, Try Again");
@@ -1098,7 +1100,7 @@ namespace MissionControllerEC
         }
         protected override string GetTitle()
         {
-            return "Satellite Mass(Kg) Must be Between: " + minWeight + " and " + maxweight + " Kg. (InOrbit)";
+            return "Satellite Mass Must be Between: " + minWeight.ToString("F2") + " and " + maxweight.ToString("F2") + " Tons. (InOrbit)";
         }
 
         protected override void OnUpdate()

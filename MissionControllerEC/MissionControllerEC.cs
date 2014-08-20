@@ -49,14 +49,15 @@ namespace MissionControllerEC
 
         void Start()
         {
-
-            ProtoScenarioModule scenario = HighLogic.CurrentGame.scenarios.Find(s => s.moduleName == typeof(MissionControllerData).Name);
+            
+            ProtoScenarioModule scenario = HighLogic.CurrentGame.scenarios.Find(s => s.moduleName == typeof(MissionControllerData).Name);                        
+            
             if (scenario == null)
             {
                 try
                 {
                     HighLogic.CurrentGame.AddProtoScenarioModule(typeof(MissionControllerData), new GameScenes[] { GameScenes.FLIGHT, GameScenes.SPACECENTER, GameScenes.EDITOR, GameScenes.SPH, GameScenes.TRACKSTATION });
-                    //Debug.LogWarning("[MCE] Adding InternalModule scenario to game '" + HighLogic.CurrentGame.Title + "'");
+                    Debug.LogWarning("[MCE] Adding InternalModule scenario to game '" + HighLogic.CurrentGame.Title + "'");
                     // the game will add this scenario to the appropriate persistent file on save from now on
                 }
                 catch (ArgumentException ae)
@@ -82,13 +83,12 @@ namespace MissionControllerEC
                 if (!scenario.targetScenes.Contains(GameScenes.TRACKSTATION))
                     scenario.targetScenes.Add(GameScenes.TRACKSTATION);
 
-            }
-            MissionControllerEC mc = new MissionControllerEC();                   
+            }                   
         }
         void Awake()
         {
             assemblyName = Assembly.GetExecutingAssembly().GetName();
-            versionCode = "Preview 3C";
+            versionCode = assemblyName.Version.Major.ToString() + "." + assemblyName.Version.Minor.ToString() + "." + assemblyName.Version.Build.ToString();
             mainWindowTitle = "Mission Controller 2 ";
         }
         public static void loadStyles()
@@ -205,7 +205,6 @@ namespace MissionControllerEC
                 
         public void Start()
         {           
-            //Debug.LogError("MCE Onstart Files Loaded");
             if (!MCE_ScenarioStartup.DifficultyLevelCheck)
             {
                 MCE_ScenarioStartup.DifficultyLevelCheck = true;
@@ -223,16 +222,19 @@ namespace MissionControllerEC
                         //Debug.Log("MCE Changed Price Of Part " + ap.name + ": " + ap.title + "," + "from: " + ap.cost + " To: " + ap.cost * cst);
                         ap.cost = ap.cost * MCE_ScenarioStartup.cst;
                     }
-                    catch
+                    catch (ArgumentException ae)
                     {
+                        Debug.LogException(ae);
                     }
                 }
                 EditorPartList.Instance.Refresh();
+                Debug.Log("Difficutlies level adjusted to user selection");
             }
             else
             {
-                //Debug.LogError("Could not load difficulties");
-            }            
+                //Debug.LogError("Difficulties already loaded");
+            }
+            FlightglobalsIndexCheck();
         }            
                       
         void OnDestroy()

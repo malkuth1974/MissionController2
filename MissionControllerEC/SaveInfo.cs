@@ -21,6 +21,12 @@ namespace MissionControllerEC
         public static string SupplyContractName = "Supply Contract";
         public static double supplyAmount = 0;
 
+        public static bool NoSatelliteContracts = false;
+        public static bool NoOrbitalPeriodcontracts = false;
+        public static bool NoLanderResearchContracts = false;
+        public static bool NoOrbitalResearchContracts = false;
+        public static bool NoRepairContracts = false;
+
         public static bool RepairContractOn = false;
     }   
 }

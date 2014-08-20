@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace MissionControllerEC
 {
@@ -60,14 +59,12 @@ namespace MissionControllerEC
             if (FlightGlobals.fetch.activeVessel.situation.Equals(Vessel.Situations.LANDED))
             {
                 roverlanded = true;
-                ScreenMessages.PostScreenMessage("Landed On Dry Ground, can conduct Reserach Now");
             }
             else { roverlanded = false; }
 
             if (FlightGlobals.fetch.activeVessel.situation.Equals(Vessel.Situations.SPLASHED))
             {
                 roverlandedWet = true;
-                ScreenMessages.PostScreenMessage("Landed in Liquid, I guess you won't be going far... But Research is still available.");
             }
             else { roverlandedWet = false; }
 

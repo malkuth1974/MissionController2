@@ -13,6 +13,7 @@ namespace MissionControllerEC
     #region Contract DeliverSatellit
     public class DeliverSatellite : Contract
     {
+        Settings st = new Settings("Config.cfg");
         CelestialBody targetBody = null;        
         public double GMaxApA = 0;
         public double GMinApA = 0;
@@ -47,7 +48,7 @@ namespace MissionControllerEC
             TotalFinished = ContractSystem.Instance.GetCompletedContracts<DeliverSatellite>().Count();
 
             //Debug.Log("Satellite Delivery Totalcontracts " + totalContracts + " - " + " Total Finsihed " + TotalFinished);
-            if (totalContracts >= 1)
+            if (totalContracts >= 1 && !SaveInfo.NoSatelliteContracts)
             {
                 //Debug.Log("contract is generated right now terminating Normal Satellite Mission");
                 //Debug.Log("count is " + totalContracts);
@@ -67,55 +68,55 @@ namespace MissionControllerEC
             MinInc = MaxInc - 10;
             if (this.prestige == ContractPrestige.Trivial)
             {
-                maxTon = UnityEngine.Random.Range(2, 5);
-                minTon = maxTon - 1;
-                maxResources = UnityEngine.Random.Range(2, 6) * 100;
+                maxTon = UnityEngine.Random.Range(2, st.contracSatelliteMaxAMassTrivial);
+                minTon = maxTon - 1.5f;
+                maxResources = UnityEngine.Random.Range(2, 5) * 100 + 50;
                 minResources = maxResources - 100;
-                GMaxApA = UnityEngine.Random.Range(75000, 400000);
-                GMinApA = GMaxApA - 5000;
+                GMaxApA = UnityEngine.Random.Range((int)st.contracSatelliteMaxApATrivial, (int)st.contracSatelliteMaxTotalHeightTrivial + (int)st.contracSatelliteMaxApATrivial);
+                GMinApA = GMaxApA - st.contracSatelliteBetweenDifference;
                 GMaxPeA = GMaxApA;
-                GMinPeA = GMinApA; 
-                base.SetFunds(25000f, 46000f, 25000f, targetBody);
+                GMinPeA = GMinApA;
+                base.SetFunds(25000f * st.ContractPaymentMultiplier, 46000f * st.ContractPaymentMultiplier, 25000f * st.ContractPaymentMultiplier, targetBody);
                 base.SetReputation(15f, 35f, targetBody);
             }
             else if (this.prestige == ContractPrestige.Significant)
             {
-                maxTon = UnityEngine.Random.Range(2, 7);
-                minTon = maxTon - 1;
-                maxResources = UnityEngine.Random.Range(6, 11) * 100;
+                maxTon = UnityEngine.Random.Range(3, st.contracSatelliteMaxMassSignificant);
+                minTon = maxTon - 1.5f;
+                maxResources = UnityEngine.Random.Range(3, 9) * 100 + 50;
                 minResources = maxResources - 100;
                 if (targetBody.flightGlobalsIndex == 2 || targetBody.flightGlobalsIndex == 3)
                 {
-                    GMaxApA = UnityEngine.Random.Range(85000, 500000);
+                    GMaxApA = UnityEngine.Random.Range(75000,150000);
                 }
                 else
                 {
-                    GMaxApA = UnityEngine.Random.Range(85000, 2000000);
+                    GMaxApA = UnityEngine.Random.Range((int)st.contracSatelliteMaxApASignificant, (int)st.contracSatelliteMaxTotalHeightSignificant + (int)st.contracSatelliteMaxApASignificant);
                 }
-                GMinApA = GMaxApA - UnityEngine.Random.Range(5000, 13000);
+                GMinApA = GMaxApA - st.contracSatelliteBetweenDifference;
                 GMaxPeA = GMaxApA;
-                GMinPeA = GMinApA; 
-                base.SetFunds(35000f, 68000f, 35000f, targetBody);
+                GMinPeA = GMinApA;
+                base.SetFunds(35000f * st.ContractPaymentMultiplier, 68000f * st.ContractPaymentMultiplier, 35000f * st.ContractPaymentMultiplier, targetBody);
                 base.SetReputation(25f, 45f, targetBody);
             }
             else if (this.prestige == ContractPrestige.Exceptional)
             {
-                maxTon = UnityEngine.Random.Range(3, 14);
-                minTon = maxTon - 2;
-                maxResources = UnityEngine.Random.Range(10, 18) * 100;
+                maxTon = UnityEngine.Random.Range(4, st.contracSatelliteMaxMassExcept);
+                minTon = maxTon - 1.5f;
+                maxResources = UnityEngine.Random.Range(5, 13) * 100 + 50;
                 minResources = maxResources - 100;
                 if (targetBody.flightGlobalsIndex == 2 || targetBody.flightGlobalsIndex == 3)
                 {
-                    GMaxApA = UnityEngine.Random.Range(200000, 500000);
+                    GMaxApA = UnityEngine.Random.Range(35000, 120000);
                 }
                 else
                 {
-                    GMaxApA = UnityEngine.Random.Range(200000, 3000000);
+                    GMaxApA = UnityEngine.Random.Range((int)st.contracSatelliteMaxApAExcept, (int)st.contracSatelliteMaxTotalHeightExcept + (int)st.contracSatelliteMaxApAExcept);
                 }
-                GMinApA = GMaxApA - UnityEngine.Random.Range(5000, 150000);
+                GMinApA = GMaxApA - st.contracSatelliteBetweenDifference;
                 GMaxPeA = GMaxApA;
-                GMinPeA = GMinApA; 
-                base.SetFunds(45000f, 85000f, 45000f, targetBody);
+                GMinPeA = GMinApA;
+                base.SetFunds(45000f * st.ContractPaymentMultiplier, 85000f * st.ContractPaymentMultiplier, 45000f * st.ContractPaymentMultiplier, targetBody);
                 base.SetReputation(35f, 345f, targetBody);
             }
             bool ifInclination = false;
@@ -271,6 +272,7 @@ namespace MissionControllerEC
     #region Deliver Satellite to Orbital Period
     public class DeliverSatOrbitalPeriod : Contract
     {
+        Settings st = new Settings("Config.cfg");
         CelestialBody targetBody = null;
 
         public double MinOrb = 21480;
@@ -302,7 +304,7 @@ namespace MissionControllerEC
             TotalFinished = ContractSystem.Instance.GetCompletedContracts<DeliverSatOrbitalPeriod>().Count();
             bool parttechUnlock = ResearchAndDevelopment.GetTechnologyState("advConstruction") == RDTech.State.Available;
             //Debug.Log("Orbital Period Totalcontracts " + totalContracts + " - " + " Total Finsihed " + TotalFinished);
-            if (totalContracts >= 1)
+            if (totalContracts >= 1 && !SaveInfo.NoOrbitalPeriodcontracts)
             {
                 //Debug.Log("contract is generated right now terminating Orbital Period Satellite Mission");
                 //Debug.Log("count is " + totalContracts);
@@ -311,6 +313,8 @@ namespace MissionControllerEC
 
             targetBody = Planetarium.fetch.Home;
             MinInc = MaxInc - 10;
+            MinOrb = st.contractOrbitalPeriodMinInSeconds;
+            MaxOrb = st.contractOrbitalPeriodMaxInSeconds;
             bool ifInclination = false;
 
             if (test >= 75)
@@ -320,29 +324,29 @@ namespace MissionControllerEC
 
             if (this.prestige == ContractPrestige.Trivial)
             {
-                maxTon = UnityEngine.Random.Range(2, 5);
-                minTon = maxTon - 1;
-                maxResources = UnityEngine.Random.Range(2, 7) * 100;
+                maxTon = UnityEngine.Random.Range(2, st.contracSatelliteMaxAMassTrivial);
+                minTon = maxTon - 1.8f;
+                maxResources = UnityEngine.Random.Range(2, 5) * 100 + 50;
                 minResources = maxResources - 100;
-                base.SetFunds(29000f, 58000f, 29000f, targetBody);
+                base.SetFunds(29000f * st.ContractPaymentMultiplier, 58000f * st.ContractPaymentMultiplier, 29000f * st.ContractPaymentMultiplier, targetBody);
                 base.SetReputation(15f, 35f, targetBody);
             }
             else if (this.prestige == ContractPrestige.Significant)
             {
-                maxTon = UnityEngine.Random.Range(4, 8);
-                minTon = maxTon - 2;
-                maxResources = UnityEngine.Random.Range(7, 11) * 100;
+                maxTon = UnityEngine.Random.Range(3, st.contracSatelliteMaxMassSignificant);
+                minTon = maxTon - 1.6f;
+                maxResources = UnityEngine.Random.Range(3, 6) * 100 + 50;
                 minResources = maxResources - 100;
-                base.SetFunds(39000f, 79000f, 39000f, targetBody);
+                base.SetFunds(39000f * st.ContractPaymentMultiplier, 79000f * st.ContractPaymentMultiplier, 39000f * st.ContractPaymentMultiplier, targetBody);
                 base.SetReputation(25f, 45f, targetBody);
             }
             else if (this.prestige == ContractPrestige.Exceptional)
             {
-                maxTon = UnityEngine.Random.Range(7, 14);
-                minTon = maxTon - 2;
-                maxResources = UnityEngine.Random.Range(10, 18) * 100;
+                maxTon = UnityEngine.Random.Range(4, st.contracSatelliteMaxMassSignificant);
+                minTon = maxTon - 1.3f;
+                maxResources = UnityEngine.Random.Range(4, 9) * 100 + 50;
                 minResources = maxResources - 100;
-                base.SetFunds(49000f, 98000f, 49000f, targetBody);
+                base.SetFunds(49000f * st.ContractPaymentMultiplier, 98000f * st.ContractPaymentMultiplier, 49000f * st.ContractPaymentMultiplier, targetBody);
                 base.SetReputation(35f, 345f, targetBody);
             }
 
@@ -468,6 +472,7 @@ namespace MissionControllerEC
     #region Repair Goal Contract
     public class RepairGoal : Contract
     {
+        Settings st = new Settings("Config.cfg");
         CelestialBody targetBody = null;
         int bodyIDX = 1;
         string vesselID;
@@ -481,8 +486,6 @@ namespace MissionControllerEC
 
         string Ctitle = "To Repair Vessel You must have at Least ";
 
-        int randomWeightSystem;
-
         public List<RepairVesselsList> repairvesselList = new List<RepairVesselsList>();
 
         public void findVeselWithRepairPart()
@@ -495,12 +498,38 @@ namespace MissionControllerEC
                     {
                         if (m.moduleName.Equals("RepairPanel"))
                         {                           
-                           repairvesselList.Add(new RepairVesselsList(vs.name,vs.id.ToString(),vs.orbit.ApA,vs.mainBody.flightGlobalsIndex));
+                           repairvesselList.Add(new RepairVesselsList(vs.vesselName,vs.id.ToString(),vs.orbit.ApA,vs.mainBody.flightGlobalsIndex));
                         }
                     }
                 }
             }
            
+        }
+        public void changeNameRepairVes()
+        {
+            string originalName;
+            foreach (Vessel vs in FlightGlobals.Vessels)
+            {
+                if (vs.id.ToString() == vesselID)
+                {
+                    originalName = vs.vesselName;
+                    vs.vesselName = vs.vesselName.Replace(originalName,originalName + "(Repair)");
+                    Debug.Log("vessel original name is " + originalName + "new name " + vs.vesselName);
+                }
+            }
+        }
+
+        public void NameBackOriginal()
+        {
+            foreach (Vessel vs in FlightGlobals.Vessels)
+            {
+                if (vs.id.ToString() == vesselID)
+                {
+                    vs.vesselName = vs.vesselName.Replace("(Repair)", "");
+                }                
+                else
+                    Debug.Log("could not find vessel name to change back.  Have to manually change it back.  Possible when docked name can't be changed since vessel doesn't exist while docked");
+            }
         }
 
         public void chooseVesselRepairFromList()
@@ -532,7 +561,7 @@ namespace MissionControllerEC
             totalContracts = ContractSystem.Instance.GetCurrentContracts<RepairGoal>().Count();
             TotalFinished = ContractSystem.Instance.GetCompletedContracts<RepairGoal>().Count();
             //Debug.Log(" Repair Contract Totalcontracts " + totalContracts + " - " + " Total Finsihed " + TotalFinished);           
-            if (totalContracts >= 1)
+            if (totalContracts >= 1 && !SaveInfo.NoRepairContracts)
             {               
                //Debug.Log("contract is generated right now terminating Repair Vessel");
                                             
@@ -557,19 +586,19 @@ namespace MissionControllerEC
             
             if (maxApA <= 120000)
             {
-                base.SetFunds(31000f, 51000f, 31000f, targetBody);
+                base.SetFunds(31000f * st.ContractPaymentMultiplier, 51000f * st.ContractPaymentMultiplier, 31000f * st.ContractPaymentMultiplier, targetBody);
                 base.SetReputation(20f, 25f, targetBody);
                 base.SetScience(3.0f, targetBody);
             }
             if (maxApA > 120000 && maxApA <= 1000000)
             {
-                base.SetFunds(50000f, 75000f, 50000f, targetBody);
+                base.SetFunds(50000f * st.ContractPaymentMultiplier, 75000f * st.ContractPaymentMultiplier, 50000f * st.ContractPaymentMultiplier, targetBody);
                 base.SetReputation(20f, 25f, targetBody);
                 base.SetScience(10.0f, targetBody);
             }
             if (maxApA > 1000001)
             {
-                base.SetFunds(100000f, 120000f, 100000f, targetBody);
+                base.SetFunds(100000f * st.ContractPaymentMultiplier, 120000f * st.ContractPaymentMultiplier, 100000f * st.ContractPaymentMultiplier, targetBody);
                 base.SetReputation(20f, 25f, targetBody);
                 base.SetScience(20.0f, targetBody);
             }
@@ -590,6 +619,20 @@ namespace MissionControllerEC
         public override bool CanBeDeclined()
         {
             return true;
+        }
+
+        protected override void OnAccepted()
+        {
+            changeNameRepairVes();
+        }
+
+        protected override void OnCancelled()
+        {
+            NameBackOriginal();
+        }
+        protected override void OnCompleted()
+        {
+            NameBackOriginal();
         }
 
         protected override string GetHashString()
@@ -670,6 +713,7 @@ namespace MissionControllerEC
     #region OrbitalScan Contract
     public class OrbitalScanContract : Contract
     {
+        Settings st = new Settings("Config.cfg");
         CelestialBody targetBody = null;
         int crewCount = 0;
         public double testpos = 0;
@@ -697,7 +741,7 @@ namespace MissionControllerEC
             totalContracts = ContractSystem.Instance.GetCurrentContracts<OrbitalScanContract>().Count();
             TotalFinished = ContractSystem.Instance.GetCompletedContracts<OrbitalScanContract>().Count();
             //Debug.Log("Orbital Research Totalcontracts " + totalContracts + " - " + " Total Finsihed " + TotalFinished);
-            if (totalContracts >= 1)
+            if (totalContracts >= 1 && !SaveInfo.NoOrbitalResearchContracts)
             {
                 //Debug.Log("Orbital Research contract is generated right now terminating Mission");
                 //Debug.Log("count is " + totalContracts);
@@ -714,7 +758,7 @@ namespace MissionControllerEC
             base.SetScience(30f, targetBody);
             base.SetDeadlineYears(3f, targetBody);
             base.SetReputation(5f, 3f, targetBody);
-            base.SetFunds(24000f, 43000f, 24000f, targetBody);
+            base.SetFunds(24000f * st.ContractPaymentMultiplier, 43000f * st.ContractPaymentMultiplier, 24000f * st.ContractPaymentMultiplier, targetBody);
 
             return true;
         }
@@ -802,6 +846,7 @@ namespace MissionControllerEC
     #region Lander Scanning Contract
     public class LanderResearchScan : Contract
     {
+        Settings st = new Settings("Config.cfg");
         CelestialBody targetBody = null;
         int crewCount = 0;
         public double testpos = 0;
@@ -831,15 +876,15 @@ namespace MissionControllerEC
             totalContracts = ContractSystem.Instance.GetCurrentContracts<LanderResearchScan>().Count();
             TotalFinished = ContractSystem.Instance.GetCompletedContracts<LanderResearchScan>().Count();
             //Debug.Log("Land Research Totalcontracts " + totalContracts + " - " + " Total Finsihed " + TotalFinished);
-            if (totalContracts >= 1)
+            if (totalContracts >= 1 && !SaveInfo.NoLanderResearchContracts)
             {
                 //Debug.LogWarning("Land Research contract is generated right now terminating Mission");
                 //Debug.Log("count is " + totalContracts);
                 return false;
             }
-            if (targetBody.theName == "Jool" || targetBody.theName == "Sun" || targetBody.theName =="Kerbin" || targetBody.theName == "sun")
+            if (targetBody.flightGlobalsIndex == 8)
             {
-                //Debug.LogWarning("Landing Goal Body set to: " + targetBody.theName + " Contract Generate cancelled");
+                Debug.LogWarning("Landing Goal Body set to: " + targetBody.theName + " Contract Generate cancelled");
                 return false;
             }
             this.AddParameter(new PreLaunch(), null);
@@ -853,7 +898,7 @@ namespace MissionControllerEC
             base.SetScience(55f, targetBody);
             base.SetDeadlineYears(3f, targetBody);
             base.SetReputation(35f, 11f, targetBody);
-            base.SetFunds(27000f, 56000f, 27000f, targetBody);
+            base.SetFunds(27000f * st.ContractPaymentMultiplier, 56000f * st.ContractPaymentMultiplier, 27000f * st.ContractPaymentMultiplier, targetBody);
 
             return true;
         }
@@ -928,7 +973,7 @@ namespace MissionControllerEC
         }
         protected static CelestialBody GetUnreachedTargets()
         {
-            var bodies = Contract.GetBodies_Reached(true, true);
+            var bodies = Contract.GetBodies_Reached(false, false);
             if (bodies != null)
             {
                 if (bodies.Count > 0)
@@ -994,7 +1039,7 @@ namespace MissionControllerEC
             base.SetScience(5f, targetBody);
             base.SetDeadlineYears(.3f, targetBody);
             base.SetReputation(25f, 40f, targetBody);
-            base.SetFunds(29000f, 42000f, 27000f, targetBody);
+            base.SetFunds(29000f * settings.ContractPaymentMultiplier, 42000f * settings.ContractPaymentMultiplier, 27000f * settings.ContractPaymentMultiplier, targetBody);
 
             return true;
         }
@@ -1077,8 +1122,9 @@ namespace MissionControllerEC
     # region Agena Contract 1
     public class AgenaTargetPracticeContract : Contract
     {
+        Settings st = new Settings("Config.cfg");
         CelestialBody targetBody = null;
-        public double GMaxApA = UnityEngine.Random.Range(72000, 85000);
+        public double GMaxApA = 0;
         public double GMinApA = 0;
         public double GMaxPeA = 0;
         public double GMinPeA = 0;
@@ -1110,8 +1156,8 @@ namespace MissionControllerEC
                 return false;
             }
             targetBody = Planetarium.fetch.Home;
-            
-            GMinApA = GMaxApA - 1500;
+            GMaxApA = UnityEngine.Random.Range((int)st.contracSatelliteMaxApATrivial, (int)st.contracSatelliteMaxTotalHeightTrivial + (int)st.contracSatelliteMaxApATrivial);
+            GMinApA = GMaxApA - st.contracSatelliteBetweenDifference;
             GMaxPeA = GMaxApA;
             GMinPeA = GMinApA;
           
@@ -1127,7 +1173,7 @@ namespace MissionControllerEC
             base.SetScience(25f, targetBody);
             base.SetDeadlineDays(1f, targetBody);
             base.SetReputation(35f, 35f, targetBody);
-            base.SetFunds(18000f, 44000f, 29000f, targetBody);
+            base.SetFunds(18000f * st.ContractPaymentMultiplier, 44000f * st.ContractPaymentMultiplier, 29000f * st.ContractPaymentMultiplier, targetBody);
 
             return true;
         }
@@ -1253,12 +1299,13 @@ namespace MissionControllerEC
     # region Agena Contract 2
     public class AgenaTargetPracticeContractDocking : Contract
     {
+        Settings st = new Settings("Config.cfg");
         CelestialBody targetBody = null;        
         public int crewCount = 1;
         public int partAmount = 1;
         public string partName = "Clamp-O-Tron Docking Port";
 
-        public double GMaxApA = UnityEngine.Random.Range(150000, 250000);
+        public double GMaxApA = 0;
         public double GMinApA = 0;
         public double GMaxPeA = 0;
         public double GMinPeA = 0;
@@ -1291,8 +1338,8 @@ namespace MissionControllerEC
                 return false;
             }
             targetBody = Planetarium.fetch.Home;
-
-            GMinApA = GMaxApA - 1500;
+            GMaxApA = UnityEngine.Random.Range((int)st.contracSatelliteMaxApAExcept, (int)st.contracSatelliteMaxApAExcept + (int)st.contracSatelliteMaxTotalHeightExcept);
+            GMinApA = GMaxApA - st.contracSatelliteBetweenDifference;
             GMaxPeA = GMaxApA;
             GMinPeA = GMinApA;
 
@@ -1312,7 +1359,7 @@ namespace MissionControllerEC
             base.SetScience(25f, targetBody);
             base.SetDeadlineDays(2f, targetBody);
             base.SetReputation(50f, 35f, targetBody);
-            base.SetFunds(19000f, 38000f, 32000f, targetBody);
+            base.SetFunds(19000f * st.ContractPaymentMultiplier, 38000f * st.ContractPaymentMultiplier, 32000f * st.ContractPaymentMultiplier, targetBody);
 
             return true;
         }
@@ -1430,6 +1477,7 @@ namespace MissionControllerEC
     #region Custom Supply Contract
     public class CustomSupply : Contract
     {
+        Settings st = new Settings("Config.cfg");
         CelestialBody targetBody = null;      
 
         public string vesselName;
@@ -1487,7 +1535,7 @@ namespace MissionControllerEC
             base.SetScience(1f, targetBody);
             base.SetDeadlineYears(.3f, targetBody);
             base.SetReputation(38f, 40f, targetBody);
-            base.SetFunds(35000f, 50000f, 35000f, targetBody);
+            base.SetFunds(35000f * st.ContractPaymentMultiplier, 50000f * st.ContractPaymentMultiplier, 35000f * st.ContractPaymentMultiplier, targetBody);
 
             return true;
         }

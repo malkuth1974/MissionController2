@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 using System.Text.RegularExpressions;
 
@@ -87,6 +86,48 @@ namespace MissionControllerEC
             settings.NoRescueKerbalContracts = GUILayout.Toggle(settings.NoRescueKerbalContracts, "Set", GUILayout.Width(25));
             GUILayout.EndHorizontal();
 
+            GUILayout.Space(10);
+            GUILayout.BeginHorizontal();
+            GUILayout.Box("Part Test Contracts Off (Needs Restart)", MCE_ScenarioStartup.StyleBold, GUILayout.Width(300));
+            GUILayout.Box("" + settings.NoPartTestContracts, MCE_ScenarioStartup.styleBlueBold, GUILayout.Width(75));
+            settings.NoPartTestContracts = GUILayout.Toggle(settings.NoPartTestContracts, "Set", GUILayout.Width(25));
+            GUILayout.EndHorizontal();
+
+            GUILayout.Space(10);
+            GUILayout.BeginHorizontal();
+            GUILayout.Box("No MCE Satellite Contracts", MCE_ScenarioStartup.StyleBold, GUILayout.Width(300));
+            GUILayout.Box("" + SaveInfo.NoSatelliteContracts, MCE_ScenarioStartup.styleBlueBold, GUILayout.Width(75));
+            SaveInfo.NoSatelliteContracts = GUILayout.Toggle(SaveInfo.NoSatelliteContracts, "Set", GUILayout.Width(25));
+            GUILayout.EndHorizontal();
+
+            GUILayout.Space(10);
+            GUILayout.BeginHorizontal();
+            GUILayout.Box("No MCE Orbital Period Satellite Contracts", MCE_ScenarioStartup.StyleBold, GUILayout.Width(300));
+            GUILayout.Box("" + SaveInfo.NoOrbitalPeriodcontracts, MCE_ScenarioStartup.styleBlueBold, GUILayout.Width(75));
+            SaveInfo.NoOrbitalPeriodcontracts = GUILayout.Toggle(SaveInfo.NoOrbitalPeriodcontracts, "Set", GUILayout.Width(25));
+            GUILayout.EndHorizontal();
+
+            GUILayout.Space(10);
+            GUILayout.BeginHorizontal();
+            GUILayout.Box("No MCE Repair Contracts", MCE_ScenarioStartup.StyleBold, GUILayout.Width(300));
+            GUILayout.Box("" + SaveInfo.NoRepairContracts, MCE_ScenarioStartup.styleBlueBold, GUILayout.Width(75));
+            SaveInfo.NoRepairContracts = GUILayout.Toggle(SaveInfo.NoRepairContracts, "Set", GUILayout.Width(25));
+            GUILayout.EndHorizontal();
+
+            GUILayout.Space(10);
+            GUILayout.BeginHorizontal();
+            GUILayout.Box("No MCE Orbital Research Contracts", MCE_ScenarioStartup.StyleBold, GUILayout.Width(300));
+            GUILayout.Box("" + SaveInfo.NoOrbitalResearchContracts, MCE_ScenarioStartup.styleBlueBold, GUILayout.Width(75));
+            SaveInfo.NoOrbitalResearchContracts = GUILayout.Toggle(SaveInfo.NoOrbitalResearchContracts, "Set", GUILayout.Width(25));
+            GUILayout.EndHorizontal();
+
+            GUILayout.Space(10);
+            GUILayout.BeginHorizontal();
+            GUILayout.Box("No MCE Lander Research Contracts", MCE_ScenarioStartup.StyleBold, GUILayout.Width(300));
+            GUILayout.Box("" + SaveInfo.NoLanderResearchContracts, MCE_ScenarioStartup.styleBlueBold, GUILayout.Width(75));
+            SaveInfo.NoLanderResearchContracts = GUILayout.Toggle(SaveInfo.NoLanderResearchContracts, "Set", GUILayout.Width(25));
+            GUILayout.EndHorizontal();
+           
             GUILayout.Space(10);
             GUILayout.BeginHorizontal();
             GUILayout.Box("Set MCE Revert On (Needs Restart)", MCE_ScenarioStartup.StyleBold, GUILayout.Width(300));
