@@ -29,9 +29,13 @@ namespace MissionControllerEC
         [Persistent]internal double contracSatelliteMaxApAExcept = 200000;
         [Persistent]internal double contracSatelliteMaxTotalHeightExcept = 300000;
         [Persistent]internal double contracSatelliteBetweenDifference = 5000;
-        [Persistent]internal float contracSatelliteMaxAMassTrivial = 4;
-        [Persistent]internal float contracSatelliteMaxMassSignificant = 6;
-        [Persistent]internal float contracSatelliteMaxMassExcept = 7;
+        [Persistent]internal float contracSatelliteMaxAMassTrivial = 3.7f;
+        [Persistent]internal float contracSatelliteMaxMassSignificant = 5.8f;
+        [Persistent]internal float contracSatelliteMaxMassExcept = 6.5f;
+        [Persistent]internal float contracSatelliteMinAMassTrivial = 2f;
+        [Persistent]internal float contracSatelliteMinMassSignificant = 2.3f;
+        [Persistent]internal float contracSatelliteMinMassExcept = 2.7f;
+        [Persistent]internal float contractSatelliteMassDifference = 1.5f;
         [Persistent]internal double contractOrbitalPeriodMaxInSeconds = 21660;
         [Persistent]internal double contractOrbitalPeriodMinInSeconds = 21480;
         [Persistent]internal int ContractPaymentMultiplier = 1;

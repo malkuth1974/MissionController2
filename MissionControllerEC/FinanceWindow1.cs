@@ -33,6 +33,7 @@ namespace MissionControllerEC
             resourceNamesInfo.Add(rf.ResourceName5.ID, rf.ResourceName5);
             resourceNamesInfo.Add(rf.ResourceName6.ID, rf.ResourceName6);
             resourceNamesInfo.Add(rf.ResourceName7.ID, rf.ResourceName7);
+            resourceNamesInfo.Add(rf.ResourceName8.ID, rf.ResourceName8);
             //Debug.Log("MCE Loaded Resource Dictionary");
         }
         #endregion
@@ -372,6 +373,11 @@ namespace MissionControllerEC
         {
             ID = 7,
             Name = "Oxygen",
+        };
+        public ResourceNames ResourceName8 = new ResourceNames()
+        {
+            ID = 8,
+            Name = "Kibbal",
         };
     }
 # endregion

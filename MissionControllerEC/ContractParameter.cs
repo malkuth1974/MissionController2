@@ -294,7 +294,7 @@ namespace MissionControllerEC
         
         protected override void OnUpdate()
         {
-            if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel)
+            if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel.situation == Vessel.Situations.ORBITING)
             CheckOrbitalPeriod(FlightGlobals.ActiveVessel);
             if (HighLogic.LoadedSceneIsFlight && SaveInfo.MessageHelpers == true)
             {

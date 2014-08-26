@@ -68,8 +68,8 @@ namespace MissionControllerEC
             MinInc = MaxInc - 10;
             if (this.prestige == ContractPrestige.Trivial)
             {
-                maxTon = UnityEngine.Random.Range(2, st.contracSatelliteMaxAMassTrivial);
-                minTon = maxTon - 1.5f;
+                maxTon = UnityEngine.Random.Range(st.contracSatelliteMinAMassTrivial, st.contracSatelliteMaxAMassTrivial);
+                minTon = maxTon - st.contractSatelliteMassDifference;
                 maxResources = UnityEngine.Random.Range(2, 5) * 100 + 50;
                 minResources = maxResources - 100;
                 GMaxApA = UnityEngine.Random.Range((int)st.contracSatelliteMaxApATrivial, (int)st.contracSatelliteMaxTotalHeightTrivial + (int)st.contracSatelliteMaxApATrivial);
@@ -81,8 +81,8 @@ namespace MissionControllerEC
             }
             else if (this.prestige == ContractPrestige.Significant)
             {
-                maxTon = UnityEngine.Random.Range(3, st.contracSatelliteMaxMassSignificant);
-                minTon = maxTon - 1.5f;
+                maxTon = UnityEngine.Random.Range(st.contracSatelliteMinMassSignificant, st.contracSatelliteMaxMassSignificant);
+                minTon = maxTon - st.contractSatelliteMassDifference;
                 maxResources = UnityEngine.Random.Range(3, 9) * 100 + 50;
                 minResources = maxResources - 100;
                 if (targetBody.flightGlobalsIndex == 2 || targetBody.flightGlobalsIndex == 3)
@@ -101,8 +101,8 @@ namespace MissionControllerEC
             }
             else if (this.prestige == ContractPrestige.Exceptional)
             {
-                maxTon = UnityEngine.Random.Range(4, st.contracSatelliteMaxMassExcept);
-                minTon = maxTon - 1.5f;
+                maxTon = UnityEngine.Random.Range(st.contracSatelliteMinMassExcept, st.contracSatelliteMaxMassExcept);
+                minTon = maxTon - st.contractSatelliteMassDifference;
                 maxResources = UnityEngine.Random.Range(5, 13) * 100 + 50;
                 minResources = maxResources - 100;
                 if (targetBody.flightGlobalsIndex == 2 || targetBody.flightGlobalsIndex == 3)
@@ -324,8 +324,8 @@ namespace MissionControllerEC
 
             if (this.prestige == ContractPrestige.Trivial)
             {
-                maxTon = UnityEngine.Random.Range(2, st.contracSatelliteMaxAMassTrivial);
-                minTon = maxTon - 1.8f;
+                maxTon = UnityEngine.Random.Range(st.contracSatelliteMinAMassTrivial, st.contracSatelliteMaxAMassTrivial);
+                minTon = maxTon - st.contractSatelliteMassDifference;
                 maxResources = UnityEngine.Random.Range(2, 5) * 100 + 50;
                 minResources = maxResources - 100;
                 base.SetFunds(29000f * st.ContractPaymentMultiplier, 58000f * st.ContractPaymentMultiplier, 29000f * st.ContractPaymentMultiplier, targetBody);
@@ -333,8 +333,8 @@ namespace MissionControllerEC
             }
             else if (this.prestige == ContractPrestige.Significant)
             {
-                maxTon = UnityEngine.Random.Range(3, st.contracSatelliteMaxMassSignificant);
-                minTon = maxTon - 1.6f;
+                maxTon = UnityEngine.Random.Range(st.contracSatelliteMinMassSignificant, st.contracSatelliteMaxMassSignificant);
+                minTon = maxTon - st.contractSatelliteMassDifference;
                 maxResources = UnityEngine.Random.Range(3, 6) * 100 + 50;
                 minResources = maxResources - 100;
                 base.SetFunds(39000f * st.ContractPaymentMultiplier, 79000f * st.ContractPaymentMultiplier, 39000f * st.ContractPaymentMultiplier, targetBody);
@@ -342,8 +342,8 @@ namespace MissionControllerEC
             }
             else if (this.prestige == ContractPrestige.Exceptional)
             {
-                maxTon = UnityEngine.Random.Range(4, st.contracSatelliteMaxMassSignificant);
-                minTon = maxTon - 1.3f;
+                maxTon = UnityEngine.Random.Range(st.contracSatelliteMinMassExcept, st.contracSatelliteMaxMassSignificant);
+                minTon = maxTon - st.contractSatelliteMassDifference;
                 maxResources = UnityEngine.Random.Range(4, 9) * 100 + 50;
                 minResources = maxResources - 100;
                 base.SetFunds(49000f * st.ContractPaymentMultiplier, 98000f * st.ContractPaymentMultiplier, 49000f * st.ContractPaymentMultiplier, targetBody);
