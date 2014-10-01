@@ -339,6 +339,17 @@ namespace MissionControllerEC
         {
         }
 
+        /// <summary>
+        /// Used to get the Partname of this ContractParameter
+        /// </summary>
+        /// <param name="cp">Instance of this parameter</param>
+        /// <returns>returns the actual name of part</returns>
+        public static string iPartName(ContractParameter cp)
+        {
+            PartGoal instance = (PartGoal)cp;
+            return instance.partName;
+        }
+
         public PartGoal(string name, int maxCount)
         {
             this.partName = name;
@@ -460,6 +471,27 @@ namespace MissionControllerEC
 
         public TargetDockingGoal()
         {
+        }
+
+        /// <summary>
+        /// used return the name of vessel for this docking goal
+        /// </summary>
+        /// <param name="cp"></param>
+        /// <returns></returns>
+        public static string ItargetDockingName(ContractParameter cp)
+        {
+            TargetDockingGoal instance = (TargetDockingGoal)cp;
+            return instance.targetDockingName;
+        }
+        /// <summary>
+        /// used to return the Vessel ID of the To DOCK TO vessel
+        /// </summary>
+        /// <param name="cp"></param>
+        /// <returns></returns>
+        public static string ItargetDockingID(ContractParameter cp)
+        {
+            TargetDockingGoal instance = (TargetDockingGoal)cp;
+            return instance.targetDockingID;
         }
 
         public TargetDockingGoal(string targetID,string targetName)
@@ -1152,6 +1184,17 @@ namespace MissionControllerEC
         public double maxAmountt = 0.0f;
         public double minAmount = 0.0f;
 
+        /// <summary>
+        /// Returns the name of the Resource goal for this parameter
+        /// </summary>
+        /// <param name="cp"></param>
+        /// <returns></returns>
+        public static string iTargetName(ContractParameter cp)
+        {
+            ResourceGoal instance = (ResourceGoal)cp;
+            return instance.targetName;
+        }
+
         public ResourceGoal()
         {
         }
@@ -1220,6 +1263,92 @@ namespace MissionControllerEC
                 }
 
                 
+            }
+        }
+    }
+    #endregion
+    #region Resource Goal Cap Check
+    public class ResourceGoalCap : ContractParameter
+    {
+        public string targetName;        
+        public double RsAmount = 0.0f;
+
+        /// <summary>
+        /// Returns the name of the Resource goal for this parameter
+        /// </summary>
+        /// <param name="cp"></param>
+        /// <returns></returns>
+        public static string iTargetName(ContractParameter cp)
+        {
+            ResourceGoal instance = (ResourceGoal)cp;
+            return instance.targetName;
+        }
+
+        public ResourceGoalCap()
+        {
+        }
+
+        public ResourceGoalCap(string target, double rsAmount)
+        {
+            this.targetName = target;
+            this.RsAmount = rsAmount;
+        }
+        protected override string GetHashString()
+        {
+            return targetName;
+        }
+        protected override string GetTitle()
+        {
+            return "Must Have " + targetName + " Greater Than " + RsAmount + " (InOrbit)";
+        }
+
+        protected override void OnUpdate()
+        {
+            if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel.situation == Vessel.Situations.ORBITING)
+                ResourceCheck(FlightGlobals.ActiveVessel);
+        }
+
+        protected override void OnLoad(ConfigNode node)
+        {
+
+            targetName = node.GetValue("targetname");
+            RsAmount = float.Parse(node.GetValue("mintons"));
+
+
+        }
+        protected override void OnSave(ConfigNode node)
+        {
+
+            node.AddValue("targetname", targetName);
+            node.AddValue("mintons", RsAmount);
+
+        }
+
+        public void ResourceCheck(Vessel vessel)
+        {
+            if (vessel.isActiveVessel)
+            {
+                double resources = 0;
+
+                if (vessel != null)
+                {
+                    foreach (Part p in vessel.parts)
+                    {
+                        if (p.Resources[targetName] != null)
+                        {
+                            resources += p.Resources[targetName].amount;
+                        }
+                    }
+                    if (resources > 0)
+                    {
+                        if (resources >= RsAmount)
+                        {
+                            base.SetComplete();
+                        }
+                    }
+                }
+
+
             }
         }
     }

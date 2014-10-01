@@ -300,7 +300,7 @@ namespace MissionControllerEC
                 Hiremessage.AppendLine();
                 Hiremessage.AppendLine("You hired him for Total of: " + settings.HireCost + " Funds.");
                 Hiremessage.AppendLine();
-                Hiremessage.AppendLine(pc.name + " Says he will server your space Agency proud!");
+                Hiremessage.AppendLine(pc.name + " Says he will serve your space Agency proud!");
                 Hiremessage.AppendLine();              
                 MessageSystem.Message m = new MessageSystem.Message("Hired Recruit", Hiremessage.ToString(), MessageSystemButton.MessageButtonColor.GREEN, MessageSystemButton.ButtonIcons.MESSAGE);
                 MessageSystem.Instance.AddMessage(m);
@@ -317,7 +317,7 @@ namespace MissionControllerEC
             deathmessage.AppendLine();
             deathmessage.AppendLine("This is a tragic loss and will cost you " + settings.DeathInsurance + " Funds.");
             deathmessage.AppendLine();
-            deathmessage.AppendLine(value.sender + " Will be remember by the Kerbal People as a hero who though of Kerbal kind before his own safety");
+            deathmessage.AppendLine(value.sender + " will be remembered by the Kerbal People as a hero who though of Kerbal kind before his own safety");
             deathmessage.AppendLine();
             deathmessage.AppendLine("We send him to the Darkness in which we all are born, to rejoin the spark of life");
             MessageSystem.Message m = new MessageSystem.Message("Death Of Hero", deathmessage.ToString(), MessageSystemButton.MessageButtonColor.RED, MessageSystemButton.ButtonIcons.ALERT);

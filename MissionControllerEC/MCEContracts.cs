@@ -23,8 +23,7 @@ namespace MissionControllerEC
         public float maxTon = 0;
         public float minTon = 0;
 
-        public double maxResources;
-        public double minResources;
+        public double capResources;
         public string ResourceName = "ElectricCharge";
 
         public int crewCount = 0;
@@ -70,8 +69,7 @@ namespace MissionControllerEC
             {
                 maxTon = UnityEngine.Random.Range(st.contracSatelliteMinAMassTrivial, st.contracSatelliteMaxAMassTrivial);
                 minTon = maxTon - st.contractSatelliteMassDifference;
-                maxResources = UnityEngine.Random.Range(2, 5) * 100 + 50;
-                minResources = maxResources - 100;
+                capResources = UnityEngine.Random.Range(2, 5) * 100;
                 GMaxApA = UnityEngine.Random.Range((int)st.contracSatelliteMaxApATrivial, (int)st.contracSatelliteMaxTotalHeightTrivial + (int)st.contracSatelliteMaxApATrivial);
                 GMinApA = GMaxApA - st.contracSatelliteBetweenDifference;
                 GMaxPeA = GMaxApA;
@@ -83,8 +81,7 @@ namespace MissionControllerEC
             {
                 maxTon = UnityEngine.Random.Range(st.contracSatelliteMinMassSignificant, st.contracSatelliteMaxMassSignificant);
                 minTon = maxTon - st.contractSatelliteMassDifference;
-                maxResources = UnityEngine.Random.Range(3, 9) * 100 + 50;
-                minResources = maxResources - 100;
+                capResources = UnityEngine.Random.Range(3, 9) * 100;
                 if (targetBody.flightGlobalsIndex == 2 || targetBody.flightGlobalsIndex == 3)
                 {
                     GMaxApA = UnityEngine.Random.Range(75000,150000);
@@ -103,8 +100,7 @@ namespace MissionControllerEC
             {
                 maxTon = UnityEngine.Random.Range(st.contracSatelliteMinMassExcept, st.contracSatelliteMaxMassExcept);
                 minTon = maxTon - st.contractSatelliteMassDifference;
-                maxResources = UnityEngine.Random.Range(5, 13) * 100 + 50;
-                minResources = maxResources - 100;
+                capResources = UnityEngine.Random.Range(5, 13) * 100;
                 if (targetBody.flightGlobalsIndex == 2 || targetBody.flightGlobalsIndex == 3)
                 {
                     GMaxApA = UnityEngine.Random.Range(35000, 120000);
@@ -137,7 +133,7 @@ namespace MissionControllerEC
                 this.AddParameter(new PartGoal(partName, partAmount), null);
             }
             this.AddParameter(new TotalMasGoal(targetBody, maxTon, minTon), null);
-            this.AddParameter(new ResourceGoal(ResourceName, maxResources, minResources), null);           
+            this.AddParameter(new ResourceGoalCap(ResourceName, capResources), null);           
             this.AddParameter(new GetCrewCount(crewCount), null);
             
             base.SetExpiry(3f,10f);
@@ -210,8 +206,7 @@ namespace MissionControllerEC
             maxTon = float.Parse(node.GetValue("maxtons"));
             minTon = float.Parse(node.GetValue("mintons"));
 
-            maxResources = double.Parse(node.GetValue("maxresources"));
-            minResources = double.Parse(node.GetValue("minresources"));
+            capResources = double.Parse(node.GetValue("minresources"));
             ResourceName = node.GetValue("resourcename");
            
             int pcount = int.Parse(node.GetValue("pCount"));
@@ -243,8 +238,7 @@ namespace MissionControllerEC
             node.AddValue("maxtons", maxTon);
             node.AddValue("mintons", minTon);
 
-            node.AddValue("maxresources", maxResources);
-            node.AddValue("minresources", minResources);
+            node.AddValue("minresources", capResources);
             node.AddValue("resourcename", ResourceName);
 
             int pcount = partAmount;
@@ -286,8 +280,7 @@ namespace MissionControllerEC
         public float maxTon = 0;
         public float minTon = 0;
 
-        public double maxResources;
-        public double minResources;
+        public double capResources;
         public string ResourceName = "ElectricCharge";
 
         public int partAmount = 1;
@@ -326,8 +319,7 @@ namespace MissionControllerEC
             {
                 maxTon = UnityEngine.Random.Range(st.contracSatelliteMinAMassTrivial, st.contracSatelliteMaxAMassTrivial);
                 minTon = maxTon - st.contractSatelliteMassDifference;
-                maxResources = UnityEngine.Random.Range(2, 5) * 100 + 50;
-                minResources = maxResources - 100;
+                capResources = UnityEngine.Random.Range(2, 5) * 100;
                 base.SetFunds(29000f * st.ContractPaymentMultiplier, 58000f * st.ContractPaymentMultiplier, 29000f * st.ContractPaymentMultiplier, targetBody);
                 base.SetReputation(15f, 35f, targetBody);
             }
@@ -335,8 +327,7 @@ namespace MissionControllerEC
             {
                 maxTon = UnityEngine.Random.Range(st.contracSatelliteMinMassSignificant, st.contracSatelliteMaxMassSignificant);
                 minTon = maxTon - st.contractSatelliteMassDifference;
-                maxResources = UnityEngine.Random.Range(3, 6) * 100 + 50;
-                minResources = maxResources - 100;
+                capResources = UnityEngine.Random.Range(3, 6) * 100;
                 base.SetFunds(39000f * st.ContractPaymentMultiplier, 79000f * st.ContractPaymentMultiplier, 39000f * st.ContractPaymentMultiplier, targetBody);
                 base.SetReputation(25f, 45f, targetBody);
             }
@@ -344,8 +335,7 @@ namespace MissionControllerEC
             {
                 maxTon = UnityEngine.Random.Range(st.contracSatelliteMinMassExcept, st.contracSatelliteMaxMassSignificant);
                 minTon = maxTon - st.contractSatelliteMassDifference;
-                maxResources = UnityEngine.Random.Range(4, 9) * 100 + 50;
-                minResources = maxResources - 100;
+                capResources = UnityEngine.Random.Range(4, 9) * 100;
                 base.SetFunds(49000f * st.ContractPaymentMultiplier, 98000f * st.ContractPaymentMultiplier, 49000f * st.ContractPaymentMultiplier, targetBody);
                 base.SetReputation(35f, 345f, targetBody);
             }
@@ -361,7 +351,7 @@ namespace MissionControllerEC
                 this.AddParameter(new PartGoal(partName, partAmount), null);
             }
             this.AddParameter(new TotalMasGoal(targetBody, maxTon, minTon), null);
-            this.AddParameter(new ResourceGoal(ResourceName, maxResources, minResources), null);
+            this.AddParameter(new ResourceGoalCap(ResourceName, capResources), null);
             this.AddParameter(new GetCrewCount(crewCount), null);
             base.SetExpiry(3f, 10f);
             base.SetScience(2.25f, targetBody);
@@ -429,8 +419,7 @@ namespace MissionControllerEC
             maxTon = float.Parse(node.GetValue("maxtons"));
             minTon = float.Parse(node.GetValue("mintons"));
 
-            maxResources = double.Parse(node.GetValue("maxresources"));
-            minResources = double.Parse(node.GetValue("minresources"));
+            capResources = double.Parse(node.GetValue("minresources"));
             ResourceName = node.GetValue("resourcename");
         }
         protected override void OnSave(ConfigNode node)
@@ -452,8 +441,7 @@ namespace MissionControllerEC
             node.AddValue("maxtons", maxTon);
             node.AddValue("mintons", minTon);
 
-            node.AddValue("maxresources", maxResources);
-            node.AddValue("minresources", minResources);
+            node.AddValue("minresources", capResources);
             node.AddValue("resourcename", ResourceName);
         }
 
