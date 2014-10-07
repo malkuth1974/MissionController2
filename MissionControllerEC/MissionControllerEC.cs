@@ -204,36 +204,7 @@ namespace MissionControllerEC
         }    
                 
         public void Start()
-        {           
-            if (!MCE_ScenarioStartup.DifficultyLevelCheck)
-            {
-                MCE_ScenarioStartup.DifficultyLevelCheck = true;
-
-                //Debug.LogWarning("** MCE2 Is Checking Difficulty Level and Adjusting Prices Parts set difficulties in Settings.cfg file to raise");
-                if (settings.difficutlylevel == 1) { MCE_ScenarioStartup.cst = settings.EasyMode; Debug.Log("Difficulty is easyMode"); }
-                if (settings.difficutlylevel == 2) { MCE_ScenarioStartup.cst = settings.MediumMode; Debug.Log("Difficulty is MediumMode"); }
-                if (settings.difficutlylevel == 3) { MCE_ScenarioStartup.cst = settings.HardCoreMode; Debug.Log("Difficulty is HardcoreMode"); }
-
-                foreach (AvailablePart ap in PartLoader.LoadedPartsList)
-                {
-
-                    try
-                    {
-                        //Debug.Log("MCE Changed Price Of Part " + ap.name + ": " + ap.title + "," + "from: " + ap.cost + " To: " + ap.cost * cst);
-                        ap.cost = ap.cost * MCE_ScenarioStartup.cst;
-                    }
-                    catch (ArgumentException ae)
-                    {
-                        Debug.LogException(ae);
-                    }
-                }
-                EditorPartList.Instance.Refresh();
-                Debug.Log("Difficutlies level adjusted to user selection");
-            }
-            else
-            {
-                //Debug.LogError("Difficulties already loaded");
-            }
+        {                     
             FlightglobalsIndexCheck();
         }            
                       
@@ -298,13 +269,13 @@ namespace MissionControllerEC
 
             if (GUILayout.Button("Add Money"))
             {
-                Funding.Instance.Funds += 1000;
+                Funding.Instance.AddFunds(1000,TransactionReasons.Cheating);
             }
 
             GUILayout.Label("Current Science: " + ResearchAndDevelopment.Instance.Science);
             if (GUILayout.Button("Add Science"))
             {
-                ResearchAndDevelopment.Instance.Science += 1000;
+                ResearchAndDevelopment.Instance.AddScience(1000,TransactionReasons.Cheating);
             }
            
             if (GUILayout.Button("Set Agena Current Vehicle"))
@@ -361,6 +332,9 @@ namespace MissionControllerEC
         [Persistent]public bool supplyContractOn = false;
         [Persistent]public double supplyResAmount = 0;
 
+        [Persistent]public bool apCivilianPod = false;
+        [Persistent]public string apCivilianName = "none";
+
         public override void OnDecodeFromConfigNode()
         {
             SaveInfo.TotalSpentKerbals = TotalSpentKerbals;
@@ -379,6 +353,9 @@ namespace MissionControllerEC
             SaveInfo.SupplyBodyIDX = supplybodyIDX;
             SaveInfo.supplyContractOn = supplyContractOn;
             SaveInfo.supplyAmount = supplyResAmount;
+
+            SaveInfo.CivilianApPod = apCivilianPod;
+            SaveInfo.CivilianApName = apCivilianName;
 
         }
 
@@ -400,6 +377,9 @@ namespace MissionControllerEC
             supplybodyIDX = SaveInfo.SupplyBodyIDX;
             supplyContractOn = SaveInfo.supplyContractOn;
             supplyResAmount = SaveInfo.supplyAmount;
+
+            apCivilianPod = SaveInfo.CivilianApPod;
+            apCivilianName = SaveInfo.CivilianApName;
 
         }
     

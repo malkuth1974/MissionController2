@@ -5,13 +5,9 @@ namespace MissionControllerEC
     public class Settings : ConfigNodeStorage
     {       
         public Settings(String FilePath) : base(FilePath) { }
-
-        [Persistent]internal int difficutlylevel = 1;
+       
         [Persistent]internal double HireCost = 4000;
-        [Persistent]internal double DeathInsurance = 20000;
-        [Persistent]internal float EasyMode = 1.0f;
-        [Persistent]internal float MediumMode = 2.0f;
-        [Persistent]internal float HardCoreMode = 4.0f;
+        [Persistent]internal double DeathInsurance = 20000;        
         [Persistent]internal bool NoRescueKerbalContracts = false;  //thanks flowerchild :)
         [Persistent]internal bool NoPartTestContracts = false;
         [Persistent]internal bool StartBuilding = false;
@@ -19,7 +15,7 @@ namespace MissionControllerEC
         [Persistent]internal double minOrbP = 10680;
         [Persistent]internal string contractName = "Deliever COMSAT Satellite";
         [Persistent]internal int bodyNumber = 1;
-        [Persistent]internal bool RevertOn = true;
+        [Persistent]internal bool RevertOn = false;
         [Persistent]internal bool DebugMenu = false;
 
         [Persistent]internal double contracSatelliteMaxApATrivial = 75000;

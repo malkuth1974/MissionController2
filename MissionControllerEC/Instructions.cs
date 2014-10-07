@@ -19,7 +19,6 @@ namespace MissionControllerEC
         public bool showTons = false;
         public bool showMiniTons = false;
         public float vesselResourceTons;
-        public float multDiff = 1;
 
         public static int supplyCount;
 
@@ -180,20 +179,7 @@ namespace MissionControllerEC
                     {                       
                         string name = p.partInfo.title;                      
                         vesselPartCost += p.partInfo.cost + p.GetModuleCosts();
-                        vesseltons += p.mass;                       
-
-                        if (settings.difficutlylevel == 1)
-                        {
-                            multDiff = settings.EasyMode;
-                        }
-                        if (settings.difficutlylevel == 2)
-                        {
-                            multDiff = settings.MediumMode;
-                        }
-                        if (settings.difficutlylevel == 3)
-                        {
-                            multDiff = settings.HardCoreMode;
-                        }
+                        vesseltons += p.mass;                                              
                     
                         GUILayout.BeginHorizontal();
                         GUILayout.Box("" + name, MCE_ScenarioStartup.styleBoxWhite, GUILayout.MinWidth(300), GUILayout.MaxWidth(300));
@@ -211,10 +197,10 @@ namespace MissionControllerEC
                         {
                             if (pr.amount > 0 && pr.info.unitCost > 0)
                             {
-                                resourceCost += (pr.info.unitCost * multDiff)  * (float)pr.amount;
+                                resourceCost += pr.info.unitCost  * (float)pr.amount;
                                 vesselResourceTons += pr.info.density * (float)pr.amount;
-                                double totalFuelCost = (pr.info.unitCost * multDiff) * pr.amount;
-                                double adjustedCost = pr.info.unitCost * multDiff;
+                                double totalFuelCost = pr.info.unitCost * pr.amount;
+                                double adjustedCost = pr.info.unitCost;
                                 if (showFuel)
                                 {
                                     GUILayout.BeginHorizontal();
@@ -304,14 +290,14 @@ namespace MissionControllerEC
                 Hiremessage.AppendLine();              
                 MessageSystem.Message m = new MessageSystem.Message("Hired Recruit", Hiremessage.ToString(), MessageSystemButton.MessageButtonColor.GREEN, MessageSystemButton.ButtonIcons.MESSAGE);
                 MessageSystem.Instance.AddMessage(m);
-                Funding.Instance.Funds -= settings.HireCost;                
+                Funding.Instance.AddFunds(settings.HireCost,TransactionReasons.Any);                
             }
             
         }      
 
         public void chargeKerbalDeath(EventReport value)
         {
-            Funding.Instance.Funds -= settings.DeathInsurance;
+            Funding.Instance.AddFunds(settings.DeathInsurance, TransactionReasons.Any);
             StringBuilder deathmessage = new StringBuilder();
             deathmessage.AppendLine("A Kerbal named " + value.sender + " has died in the line of duty");
             deathmessage.AppendLine();

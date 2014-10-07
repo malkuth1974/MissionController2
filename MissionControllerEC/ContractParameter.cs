@@ -642,6 +642,7 @@ namespace MissionControllerEC
                         if (diff > missionTime)
                         {
                             base.SetComplete();
+                            MCEOrbitalScanning.isdisabled = true;
                             Debug.Log("Time Completed");
                         }
                     }
@@ -849,6 +850,7 @@ namespace MissionControllerEC
                         if (diff > missionTime)
                         {
                             base.SetComplete();
+                            MCELanderResearch.isdisabled = true;
                             Debug.Log("Time Completed");
                         }
                     }

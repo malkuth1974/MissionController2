@@ -5,7 +5,7 @@ namespace MissionControllerEC
     class MCEOrbitalScanning : PartModule
     {
         [KSPField(isPersistant = true)]
-        public static bool doOrbitResearch = false;
+        public static bool doOrbitResearch = false;      
        
         Vessel vs = new Vessel();
 
@@ -15,10 +15,16 @@ namespace MissionControllerEC
         [KSPField(isPersistant = false, guiActive = true, guiName = "Starting Scan:")]
         private bool scanStart = false;
 
+        [KSPField(isPersistant = true, guiActive = true, guiName = "Completed A Contract:")]
+        public static bool isdisabled = false;
+
         [KSPEvent(guiActive = true, guiName = "Start MCE Orbital Research", active = true)]
         public void StartResearchMCE()
         {
-            checkVesselResearch();
+            if (!isdisabled)
+                checkVesselResearch();
+            else
+                ScreenMessages.PostScreenMessage("This vessel has already completed a Contract, can't be used again!");
         }
 
         [KSPAction("Start Scanning")]

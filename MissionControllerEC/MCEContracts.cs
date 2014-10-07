@@ -74,7 +74,7 @@ namespace MissionControllerEC
                 GMinApA = GMaxApA - st.contracSatelliteBetweenDifference;
                 GMaxPeA = GMaxApA;
                 GMinPeA = GMinApA;
-                base.SetFunds(25000f * st.ContractPaymentMultiplier, 46000f * st.ContractPaymentMultiplier, 25000f * st.ContractPaymentMultiplier, targetBody);
+                base.SetFunds(35000f * st.ContractPaymentMultiplier, 56000f * st.ContractPaymentMultiplier, 35000f * st.ContractPaymentMultiplier, targetBody);
                 base.SetReputation(15f, 35f, targetBody);
             }
             else if (this.prestige == ContractPrestige.Significant)
@@ -93,7 +93,7 @@ namespace MissionControllerEC
                 GMinApA = GMaxApA - st.contracSatelliteBetweenDifference;
                 GMaxPeA = GMaxApA;
                 GMinPeA = GMinApA;
-                base.SetFunds(35000f * st.ContractPaymentMultiplier, 68000f * st.ContractPaymentMultiplier, 35000f * st.ContractPaymentMultiplier, targetBody);
+                base.SetFunds(45000f * st.ContractPaymentMultiplier, 78000f * st.ContractPaymentMultiplier, 45000f * st.ContractPaymentMultiplier, targetBody);
                 base.SetReputation(25f, 45f, targetBody);
             }
             else if (this.prestige == ContractPrestige.Exceptional)
@@ -112,7 +112,7 @@ namespace MissionControllerEC
                 GMinApA = GMaxApA - st.contracSatelliteBetweenDifference;
                 GMaxPeA = GMaxApA;
                 GMinPeA = GMinApA;
-                base.SetFunds(45000f * st.ContractPaymentMultiplier, 85000f * st.ContractPaymentMultiplier, 45000f * st.ContractPaymentMultiplier, targetBody);
+                base.SetFunds(55000f * st.ContractPaymentMultiplier, 95000f * st.ContractPaymentMultiplier, 55000f * st.ContractPaymentMultiplier, targetBody);
                 base.SetReputation(35f, 345f, targetBody);
             }
             bool ifInclination = false;
@@ -320,7 +320,7 @@ namespace MissionControllerEC
                 maxTon = UnityEngine.Random.Range(st.contracSatelliteMinAMassTrivial, st.contracSatelliteMaxAMassTrivial);
                 minTon = maxTon - st.contractSatelliteMassDifference;
                 capResources = UnityEngine.Random.Range(2, 5) * 100;
-                base.SetFunds(29000f * st.ContractPaymentMultiplier, 58000f * st.ContractPaymentMultiplier, 29000f * st.ContractPaymentMultiplier, targetBody);
+                base.SetFunds(39000f * st.ContractPaymentMultiplier, 68000f * st.ContractPaymentMultiplier, 39000f * st.ContractPaymentMultiplier, targetBody);
                 base.SetReputation(15f, 35f, targetBody);
             }
             else if (this.prestige == ContractPrestige.Significant)
@@ -328,7 +328,7 @@ namespace MissionControllerEC
                 maxTon = UnityEngine.Random.Range(st.contracSatelliteMinMassSignificant, st.contracSatelliteMaxMassSignificant);
                 minTon = maxTon - st.contractSatelliteMassDifference;
                 capResources = UnityEngine.Random.Range(3, 6) * 100;
-                base.SetFunds(39000f * st.ContractPaymentMultiplier, 79000f * st.ContractPaymentMultiplier, 39000f * st.ContractPaymentMultiplier, targetBody);
+                base.SetFunds(49000f * st.ContractPaymentMultiplier, 89000f * st.ContractPaymentMultiplier, 49000f * st.ContractPaymentMultiplier, targetBody);
                 base.SetReputation(25f, 45f, targetBody);
             }
             else if (this.prestige == ContractPrestige.Exceptional)
@@ -336,7 +336,7 @@ namespace MissionControllerEC
                 maxTon = UnityEngine.Random.Range(st.contracSatelliteMinMassExcept, st.contracSatelliteMaxMassSignificant);
                 minTon = maxTon - st.contractSatelliteMassDifference;
                 capResources = UnityEngine.Random.Range(4, 9) * 100;
-                base.SetFunds(49000f * st.ContractPaymentMultiplier, 98000f * st.ContractPaymentMultiplier, 49000f * st.ContractPaymentMultiplier, targetBody);
+                base.SetFunds(59000f * st.ContractPaymentMultiplier, 108000f * st.ContractPaymentMultiplier, 59000f * st.ContractPaymentMultiplier, targetBody);
                 base.SetReputation(35f, 345f, targetBody);
             }
 
@@ -574,19 +574,19 @@ namespace MissionControllerEC
             
             if (maxApA <= 120000)
             {
-                base.SetFunds(31000f * st.ContractPaymentMultiplier, 51000f * st.ContractPaymentMultiplier, 31000f * st.ContractPaymentMultiplier, targetBody);
+                base.SetFunds(45000f * st.ContractPaymentMultiplier, 71000f * st.ContractPaymentMultiplier, 51000f * st.ContractPaymentMultiplier, targetBody);
                 base.SetReputation(20f, 25f, targetBody);
                 base.SetScience(3.0f, targetBody);
             }
             if (maxApA > 120000 && maxApA <= 1000000)
             {
-                base.SetFunds(50000f * st.ContractPaymentMultiplier, 75000f * st.ContractPaymentMultiplier, 50000f * st.ContractPaymentMultiplier, targetBody);
+                base.SetFunds(70000f * st.ContractPaymentMultiplier, 95000f * st.ContractPaymentMultiplier, 70000f * st.ContractPaymentMultiplier, targetBody);
                 base.SetReputation(20f, 25f, targetBody);
                 base.SetScience(10.0f, targetBody);
             }
             if (maxApA > 1000001)
             {
-                base.SetFunds(100000f * st.ContractPaymentMultiplier, 120000f * st.ContractPaymentMultiplier, 100000f * st.ContractPaymentMultiplier, targetBody);
+                base.SetFunds(120000f * st.ContractPaymentMultiplier, 130000f * st.ContractPaymentMultiplier, 120000f * st.ContractPaymentMultiplier, targetBody);
                 base.SetReputation(20f, 25f, targetBody);
                 base.SetScience(20.0f, targetBody);
             }
@@ -634,7 +634,7 @@ namespace MissionControllerEC
         protected override string GetDescription()
         {
             //those 3 strings appear to do nothing
-            return "Hello, we would like you to launch a Manned Vessel to our satellite.  Dock with it, transfer some repair Parts to the RepairPanel.  After this you will have to go EVA and open the door and conduct Repairs.\n\n"+
+            return "Hello, we would like you to launch a Manned Vessel to our satellite.  DOCK WITH IT, transfer some repair Parts to the RepairPanel.  After this you will have to go EVA and open the door and conduct Repairs.\n\n"+
                 "Don't forget to bring at least 1 (Resource) repair Parts with you to conduct the repairs with.  Contact payout are adjusted for travel time, and what Celestrial Body you are going to.";
         }
         protected override string GetSynopsys()
@@ -746,7 +746,7 @@ namespace MissionControllerEC
             base.SetScience(30f, targetBody);
             base.SetDeadlineYears(3f, targetBody);
             base.SetReputation(5f, 3f, targetBody);
-            base.SetFunds(24000f * st.ContractPaymentMultiplier, 43000f * st.ContractPaymentMultiplier, 24000f * st.ContractPaymentMultiplier, targetBody);
+            base.SetFunds(34000f * st.ContractPaymentMultiplier, 53000f * st.ContractPaymentMultiplier, 34000f * st.ContractPaymentMultiplier, targetBody);
 
             return true;
         }
@@ -886,7 +886,7 @@ namespace MissionControllerEC
             base.SetScience(55f, targetBody);
             base.SetDeadlineYears(3f, targetBody);
             base.SetReputation(35f, 11f, targetBody);
-            base.SetFunds(27000f * st.ContractPaymentMultiplier, 56000f * st.ContractPaymentMultiplier, 27000f * st.ContractPaymentMultiplier, targetBody);
+            base.SetFunds(37000f * st.ContractPaymentMultiplier, 66000f * st.ContractPaymentMultiplier, 77000f * st.ContractPaymentMultiplier, targetBody);
 
             return true;
         }
@@ -1027,7 +1027,7 @@ namespace MissionControllerEC
             base.SetScience(5f, targetBody);
             base.SetDeadlineYears(.3f, targetBody);
             base.SetReputation(25f, 40f, targetBody);
-            base.SetFunds(29000f * settings.ContractPaymentMultiplier, 42000f * settings.ContractPaymentMultiplier, 27000f * settings.ContractPaymentMultiplier, targetBody);
+            base.SetFunds(39000f * settings.ContractPaymentMultiplier, 52000f * settings.ContractPaymentMultiplier, 37000f * settings.ContractPaymentMultiplier, targetBody);
 
             return true;
         }
@@ -1157,11 +1157,11 @@ namespace MissionControllerEC
             this.AddParameter(new ModuleGoal(partName, ModuleTitle), null);            
             this.AddParameter(new GetCrewCount(crewCount), null);
            
-            base.SetExpiry(3f, 10f);
+            base.SetExpiry(15f, 35f);
             base.SetScience(25f, targetBody);
-            base.SetDeadlineDays(1f, targetBody);
+            base.SetDeadlineDays(19f, targetBody);
             base.SetReputation(35f, 35f, targetBody);
-            base.SetFunds(18000f * st.ContractPaymentMultiplier, 44000f * st.ContractPaymentMultiplier, 29000f * st.ContractPaymentMultiplier, targetBody);
+            base.SetFunds(28000f * st.ContractPaymentMultiplier, 54000f * st.ContractPaymentMultiplier, 39000f * st.ContractPaymentMultiplier, targetBody);
 
             return true;
         }
@@ -1343,11 +1343,11 @@ namespace MissionControllerEC
             this.AddParameter(new PartGoal(partName, partAmount), null);
             this.AddParameter(new GetCrewCount(crewCount), null);
 
-            base.SetExpiry(3f, 10f);
+            base.SetExpiry(15f, 35f);
             base.SetScience(25f, targetBody);
-            base.SetDeadlineDays(2f, targetBody);
+            base.SetDeadlineDays(20f, targetBody);
             base.SetReputation(50f, 35f, targetBody);
-            base.SetFunds(19000f * st.ContractPaymentMultiplier, 38000f * st.ContractPaymentMultiplier, 32000f * st.ContractPaymentMultiplier, targetBody);
+            base.SetFunds(29000f * st.ContractPaymentMultiplier, 48000f * st.ContractPaymentMultiplier, 42000f * st.ContractPaymentMultiplier, targetBody);
 
             return true;
         }
@@ -1523,7 +1523,7 @@ namespace MissionControllerEC
             base.SetScience(1f, targetBody);
             base.SetDeadlineYears(.3f, targetBody);
             base.SetReputation(38f, 40f, targetBody);
-            base.SetFunds(35000f * st.ContractPaymentMultiplier, 50000f * st.ContractPaymentMultiplier, 35000f * st.ContractPaymentMultiplier, targetBody);
+            base.SetFunds(55000f * st.ContractPaymentMultiplier, 70000f * st.ContractPaymentMultiplier, 55000f * st.ContractPaymentMultiplier, targetBody);
 
             return true;
         }

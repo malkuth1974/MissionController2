@@ -38,7 +38,7 @@ namespace MissionControllerEC
                 if (GUILayout.Button("Exit Window And Charge Funds"))
                 {
                     MCE_ScenarioStartup.ShowPopUpWindow3 = false;
-                    Funding.Instance.Funds -= 1000;
+                    Funding.Instance.AddFunds(-1000,TransactionReasons.Any );
                     SaveInfo.TotalSpentOnRocketTest += 1000;
                     MCE_ScenarioStartup.RevertHalt = false;
                 }

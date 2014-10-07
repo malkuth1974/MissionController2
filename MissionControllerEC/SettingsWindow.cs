@@ -16,46 +16,7 @@ namespace MissionControllerEC
         {
             GUI.skin = HighLogic.Skin;
             GUILayout.BeginVertical();
-
-            if (settings.difficutlylevel == 1)
-            {
-                difficulties = "Easy Mode";
-            }
-            if (settings.difficutlylevel == 2)
-            {
-                difficulties = "Medium Mode";
-            }
-            if (settings.difficutlylevel == 3)
-            {
-                difficulties = "HardCore Mode";
-            }
-            if (settings.difficutlylevel > 3 || settings.difficutlylevel < 1)
-            {
-                difficulties = "Number Not Accepted";
-            }
-
-            GUILayout.BeginHorizontal();
-            GUILayout.Box("Current Difficulty Settings",MCE_ScenarioStartup.StyleBold);
-            GUILayout.Box("" + difficulties, MCE_ScenarioStartup.styleBlueBold);
-            GUILayout.EndHorizontal();
-
-            GUILayout.Label("Difficulty Will require Restart If changed!",MCE_ScenarioStartup.styleGreenBold);
-
-            GUILayout.BeginHorizontal();
-            if (GUILayout.Button("Set Easy Mode"))
-            {
-                settings.difficutlylevel = 1;
-            }
-            if (GUILayout.Button("Set Medium Mode"))
-            {
-                settings.difficutlylevel = 2;
-            }
-            if (GUILayout.Button("Set Hardcore Mode"))
-            {
-                settings.difficutlylevel = 3;
-            }
-            GUILayout.EndHorizontal();
-            
+                     
             GUILayout.Space(10);
             GUILayout.BeginHorizontal();
             GUILayout.Box("Hire Kerbal Cost",MCE_ScenarioStartup.StyleBold, GUILayout.Width(300));
