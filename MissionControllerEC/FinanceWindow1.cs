@@ -16,6 +16,7 @@ namespace MissionControllerEC
         # region initializers
         public bool comSatwin = false;
         public bool supplywin = false;
+        public bool crewwin = false;
         public int count = 0;
         public int prCount = 1;
         private int DictCount = 7;
@@ -124,11 +125,13 @@ namespace MissionControllerEC
             GUILayout.BeginVertical();
             comSatwin = GUILayout.Toggle(comSatwin, "Edit ComSat Contract Values");
             supplywin = GUILayout.Toggle(supplywin, "Edit Supply Contract Values");
+            crewwin = GUILayout.Toggle(crewwin, "Edit Crew Transfer Contract Values");
             
             #region ComSatValues
             if (comSatwin)
             {
                 supplywin = false;
+                crewwin = false;
                 GUILayout.Label("ComSat Network Information",MCE_ScenarioStartup.styleGreenBold);
 
                 GUILayout.Space(10);
@@ -210,7 +213,8 @@ namespace MissionControllerEC
             #region Supply Contract Values
             if (supplywin)
             {
-                comSatwin = false;            
+                comSatwin = false;
+                crewwin = false;
                 GUILayout.Label("Supply Contract Information", MCE_ScenarioStartup.styleGreenBold);
 
                 if (supplyCount > 0)
@@ -317,6 +321,141 @@ namespace MissionControllerEC
 
             }
             # endregion
+            #region Crew Transfer Values
+            if (crewwin)
+            {
+                comSatwin = false;
+                supplywin = false;
+                GUILayout.Label("Crew Transfer Information", MCE_ScenarioStartup.styleGreenBold);
+
+                if (supplyCount > 0)
+                {
+                    SaveInfo.crewVesName = SupVes[count].vesselName;
+                    SaveInfo.crewVesid = SupVes[count].vesselId.ToString();
+                    SaveInfo.crewBodyIDX = SupVes[count].body.flightGlobalsIndex;
+                   
+                    GUILayout.BeginHorizontal();
+                    GUILayout.Box("Crew Transfer Contracts On", MCE_ScenarioStartup.StyleBold, GUILayout.Width(200));
+                    GUILayout.Box("" + SaveInfo.crewContractOn, MCE_ScenarioStartup.styleBlueBold, GUILayout.Width(200));
+                    GUILayout.EndHorizontal();
+                    GUILayout.BeginHorizontal();
+                    if (GUILayout.Button("Turn On Contracts"))
+                    {
+                        SaveInfo.crewContractOn = true;
+                    }
+                    if (GUILayout.Button("Turn Off Contracts"))
+                    {
+                        SaveInfo.crewContractOn = false;
+                    }
+                    GUILayout.EndHorizontal();
+
+                    GUILayout.Space(15);
+                    GUILayout.BeginHorizontal();
+                    GUILayout.Box("Station/Base Transfer Crew To:", MCE_ScenarioStartup.StyleBold, GUILayout.Width(200));
+                    GUILayout.Box("" + SaveInfo.crewVesName, MCE_ScenarioStartup.styleBlueBold, GUILayout.Width(200));
+                    GUILayout.EndHorizontal();
+                    GUILayout.BeginHorizontal();
+                    if (GUILayout.Button("- Previous"))
+                    {
+                        count--;
+                        if (count < 1 || count > (supplyCount - 1))
+                        {
+                            count = 0;
+                        }
+                    }
+                    if (GUILayout.Button("+ Next"))
+                    {
+                        count++;
+                        if (count > (supplyCount - 1) || count < 1)
+                        {
+                            count = 0;
+                        }
+                    }
+
+                    GUILayout.EndHorizontal();
+
+                    GUILayout.Space(15);
+
+
+                    GUILayout.BeginHorizontal();
+                    GUILayout.Box("Set Amount Crew To Transfer", MCE_ScenarioStartup.StyleBold, GUILayout.Width(200));
+                    GUILayout.Box("" + SaveInfo.crewAmount, MCE_ScenarioStartup.styleBlueBold, GUILayout.Width(200));
+                    GUILayout.EndHorizontal();
+
+                    GUILayout.BeginHorizontal();
+
+                    if (GUILayout.Button("- Crew"))
+                    {
+                        SaveInfo.crewAmount --;                       
+                    }
+
+                    if (GUILayout.Button("+ Crew"))
+                    {
+                        SaveInfo.crewAmount ++;                      
+                    }
+                    GUILayout.Space(15);
+                    GUILayout.EndHorizontal();
+
+                    GUILayout.BeginHorizontal();
+                    GUILayout.Box("Set Amount of Time Crew At Station?", MCE_ScenarioStartup.StyleBold, GUILayout.Width(200));
+                    GUILayout.Box("" + Tools.formatTime(SaveInfo.crewTime), MCE_ScenarioStartup.styleBlueBold, GUILayout.Width(200));
+                    GUILayout.EndHorizontal();
+
+                    GUILayout.BeginHorizontal();
+                    if (GUILayout.Button("- 1 Hour"))
+                    {
+                        SaveInfo.crewTime = SaveInfo.crewTime - 3600;
+                    }
+                    if (GUILayout.Button("+ 1 Hour"))
+                    {
+                        SaveInfo.crewTime = SaveInfo.crewTime + 3600;
+                    }
+                    GUILayout.EndHorizontal();
+
+                    GUILayout.BeginHorizontal();
+                    if (GUILayout.Button("- 1 Day"))
+                    {
+                        SaveInfo.crewTime = SaveInfo.crewTime - 21600;
+                    }
+
+                    if (GUILayout.Button("+ 1 Day"))
+                    {
+                        SaveInfo.crewTime = SaveInfo.crewTime + 21600;
+                    }
+                    GUILayout.EndHorizontal();
+
+                    GUILayout.BeginHorizontal();
+                    if (GUILayout.Button("- 1 Month"))
+                    {
+                        SaveInfo.crewTime = SaveInfo.crewTime - 648000;
+                    }
+
+                    if (GUILayout.Button("+ 1 Month"))
+                    {
+                        SaveInfo.crewTime = SaveInfo.crewTime + 648000;
+                    }
+                    GUILayout.EndHorizontal();
+
+                    GUILayout.Space(15);
+                    GUILayout.BeginHorizontal();
+                    GUILayout.Box("Station/Base Is Located At Body", MCE_ScenarioStartup.StyleBold, GUILayout.Width(200));
+                    GUILayout.Box("" + FlightGlobals.Bodies[SaveInfo.crewBodyIDX].theName, MCE_ScenarioStartup.styleBlueBold, GUILayout.Width(200));
+                    GUILayout.EndHorizontal();
+
+                    GUILayout.Space(15);
+                    GUILayout.BeginHorizontal();
+                    GUILayout.Box("Contract Name", MCE_ScenarioStartup.StyleBold, GUILayout.Width(150), GUILayout.Height(30));
+                    SaveInfo.crewTransferName = GUILayout.TextField(SaveInfo.crewTransferName, 50);
+                    GUILayout.EndHorizontal();
+
+                    GUILayout.Space(15);
+                }
+                else
+                    GUILayout.Label("You have no Vessels of Type Station or Base in space This contract Only works On those Types Vessels!", MCE_ScenarioStartup.StyleBold);
+
+            }
+            # endregion
+
             GUILayout.EndVertical();
             if (GUILayout.Button("Exit Window"))
             {

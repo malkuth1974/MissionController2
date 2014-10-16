@@ -64,7 +64,7 @@ namespace MissionControllerEC
 
         public void Orbits(Vessel vessel)
         {
-            if (vessel.isActiveVessel)
+            if (vessel.isActiveVessel && FlightGlobals.ActiveVessel.orbit.referenceBody.Equals(targetBody))
             {
                 if (vessel.orbit.ApA >= minApA && vessel.orbit.ApA <= maxApA)
                 {
@@ -102,6 +102,7 @@ namespace MissionControllerEC
 
         protected override void OnUpdate()
         {
+            if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel.situation == Vessel.Situations.ORBITING && FlightGlobals.ActiveVessel.orbit.referenceBody.Equals(targetBody))
             InOrbit(FlightGlobals.ActiveVessel);
         }
 
@@ -122,13 +123,10 @@ namespace MissionControllerEC
 
         public void InOrbit(Vessel vessel)
         {
-            if (FlightGlobals.ActiveVessel && HighLogic.LoadedSceneIsFlight)
+            if (FlightGlobals.ActiveVessel)
             {
-                if (FlightGlobals.ActiveVessel.orbit.referenceBody.Equals(targetBody))                   
-                {
-                    base.SetComplete();
-                    ScreenMessages.PostScreenMessage("You Have achieved Orbit of Target Body: " + targetBody.theName);
-                }
+                base.SetComplete();
+                ScreenMessages.PostScreenMessage("You Have achieved Orbit of Target Body: " + targetBody.theName);
             }
         }
     }
@@ -328,6 +326,70 @@ namespace MissionControllerEC
         }      
     }
     #endregion
+    #region AltitudeGoal
+    public class AltitudeGoal : ContractParameter
+    {
+        public CelestialBody targetBody;
+        public double minAlt = 0.0;
+
+        public AltitudeGoal()
+        {
+        }
+
+        public AltitudeGoal(CelestialBody target, double minapA)
+        {
+            this.targetBody = target;
+            this.minAlt = minapA;
+        }
+        protected override string GetHashString()
+        {
+            return targetBody.bodyName;
+        }
+        protected override string GetTitle()
+        {
+            return "Achieve an Altitude Of At least: " + minAlt;
+        }
+
+        protected override void OnUpdate()
+        {
+            if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel.situation == Vessel.Situations.SUB_ORBITAL)
+            Orbits(FlightGlobals.ActiveVessel);           
+        }
+
+        protected override void OnLoad(ConfigNode node)
+        {
+            int bodyID = int.Parse(node.GetValue("targetBody"));
+            foreach (var body in FlightGlobals.Bodies)
+            {
+                if (body.flightGlobalsIndex == bodyID)
+                    targetBody = body;
+            }
+            minAlt = double.Parse(node.GetValue("alt"));
+        }
+        protected override void OnSave(ConfigNode node)
+        {
+            int bodyID = targetBody.flightGlobalsIndex;
+            node.AddValue("targetBody", bodyID);
+            
+            node.AddValue("alt", minAlt);
+        }
+
+        public void Orbits(Vessel vessel)
+        {
+            if (vessel.isActiveVessel)
+            {
+                if (vessel.orbit.altitude >= minAlt)
+                {
+                    base.SetComplete();
+                }
+            }
+            else
+                base.SetIncomplete();
+        }
+
+        
+    }
+#endregion
     #region PartGoal
     public class PartGoal : ContractParameter
     {
@@ -642,7 +704,6 @@ namespace MissionControllerEC
                         if (diff > missionTime)
                         {
                             base.SetComplete();
-                            MCEOrbitalScanning.isdisabled = true;
                             Debug.Log("Time Completed");
                         }
                     }
@@ -850,7 +911,6 @@ namespace MissionControllerEC
                         if (diff > missionTime)
                         {
                             base.SetComplete();
-                            MCELanderResearch.isdisabled = true;
                             Debug.Log("Time Completed");
                         }
                     }
@@ -865,97 +925,7 @@ namespace MissionControllerEC
             Debug.Log("Time countdown has been set");
         }
     }
-    #endregion
-    #region Time Goal Check
-    public class TimeGoalCheck : ContractParameter
-    {
-        public string TitleName;
-        
-        public double diff;
-        public double savedTime;
-        public double missionTime;
-
-        public bool setTime = false;
-        public bool beginCountDown = false;
-
-        public TimeGoalCheck()
-        {
-        }
-
-        public TimeGoalCheck(string title, double MTime, bool settime)
-        {
-            this.TitleName = title;
-            this.missionTime = MTime;
-            this.setTime = settime;
-        }
-
-        protected override string GetHashString()
-        {
-            return TitleName;
-        }
-        protected override string GetTitle()
-        {
-            return TitleName;
-        }
-
-        protected override void OnUpdate()
-        {
-            if (HighLogic.LoadedSceneIsFlight && setTime)
-                contractSetTime();
-
-            if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel && beginCountDown)
-                contractcheckTime();
-        }
-        protected override void OnLoad(ConfigNode node)
-        {
-            TitleName = node.GetValue("titlename");
-            int bodyID = int.Parse(node.GetValue("targetBody"));
-           
-            savedTime = double.Parse(node.GetValue("savedtime"));
-            missionTime = double.Parse(node.GetValue("missiontime"));
-            diff = double.Parse(node.GetValue("diff"));
-
-            setTime = bool.Parse(node.GetValue("settime"));
-            beginCountDown = bool.Parse(node.GetValue("begincountdown"));
-        }
-        protected override void OnSave(ConfigNode node)
-        {
-            node.AddValue("titlename", TitleName);
-
-            node.AddValue("savedtime", savedTime);
-            node.AddValue("missiontime", missionTime);
-            node.AddValue("diff", diff);
-
-            node.AddValue("settime", setTime);
-            node.AddValue("begincountdown", beginCountDown);
-        }
-
-        public void contractcheckTime()
-        {
-            if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel)
-            {
-                
-                diff = Planetarium.GetUniversalTime() - savedTime;
-                Debug.Log("Time Left is: " + Tools.formatTime(savedTime - diff));
-                ScreenMessages.PostScreenMessage("Time Left is: " + Tools.formatTime(savedTime - diff),null);
-                if (diff > missionTime)
-                {
-                    base.SetComplete();
-                    beginCountDown = false;
-                    Debug.Log("Time Completed");
-                }
-            }
-        }
-        public void contractSetTime()
-        {
-            savedTime = Planetarium.GetUniversalTime();
-            setTime = false;
-            beginCountDown = true;
-            Debug.Log("Time countdown has been set");
-        }
-              
-    }
-    #endregion       
+    #endregion    
     #region Agena In Orbit Goal
     public class AgenaInOrbit : ContractParameter
     {
@@ -1008,9 +978,7 @@ namespace MissionControllerEC
         {
             if (vessel.isActiveVessel)
             {                
-              base.SetComplete();
-              SaveInfo.AgenaTargetVesselID = vessel.id.ToString();
-              SaveInfo.AgenaTargetVesselName = FlightGlobals.ActiveVessel.vesselName.Replace("(unloaded)", "");
+              base.SetComplete();             
             }
         }
     }
@@ -1116,17 +1084,15 @@ namespace MissionControllerEC
     {
         public CelestialBody targetBody;
         public float maxweight = 0.0f;
-        public float minWeight = 0.0f;
 
         public TotalMasGoal()
         {
         }
 
-        public TotalMasGoal(CelestialBody target, float maxWeight, float minWeight)
+        public TotalMasGoal(CelestialBody target, float maxWeight)
         {
             this.targetBody = target;
             this.maxweight = maxWeight;
-            this.minWeight = minWeight;
         }
         protected override string GetHashString()
         {
@@ -1134,7 +1100,7 @@ namespace MissionControllerEC
         }
         protected override string GetTitle()
         {
-            return "Satellite Mass Must be Between: " + minWeight.ToString("F2") + " and " + maxweight.ToString("F2") + " Tons. (InOrbit)";
+            return "Satellite Mass Must Not Exceed: " + maxweight.ToString("F2") + " Tons. (InOrbit)";
         }
 
         protected override void OnUpdate()
@@ -1153,7 +1119,6 @@ namespace MissionControllerEC
             }
 
             maxweight = float.Parse(node.GetValue("maxtons"));
-            minWeight = float.Parse(node.GetValue("mintons"));
             
 
         }
@@ -1163,7 +1128,6 @@ namespace MissionControllerEC
             node.AddValue("targetBody", bodyID);
 
             node.AddValue("maxtons", maxweight);
-            node.AddValue("mintons", minWeight);
             
         }
 
@@ -1171,7 +1135,7 @@ namespace MissionControllerEC
         {
             if (vessel.isActiveVessel)
             {
-                if (vessel.GetTotalMass() >= minWeight && vessel.GetTotalMass() <= maxweight)
+                if (vessel.GetTotalMass() <= maxweight)
                 {
                     base.SetComplete();
                 }               
@@ -1447,4 +1411,213 @@ namespace MissionControllerEC
         }
     }
     #endregion
+    #region Time Countdown 
+    public class TimeCountdownOrbits : ContractParameter
+    {
+        public CelestialBody targetBody;
+
+        public double diff;
+        public double savedTime;
+        public double missionTime;
+        public string contractTimeTitle = "Reach Orbit and stay for amount of Time Specified: ";
+
+        public bool setTime = true;
+
+        public TimeCountdownOrbits()
+        {
+        }
+
+        public TimeCountdownOrbits(CelestialBody target, double Mtime)
+        {
+            this.targetBody = target;
+            this.missionTime = Mtime;
+        }
+
+        public TimeCountdownOrbits(CelestialBody target, double Mtime, string title)
+        {
+            this.targetBody = target;
+            this.missionTime = Mtime;
+            this.contractTimeTitle = title;
+        }
+
+        protected override string GetHashString()
+        {
+            return "Orbit " + targetBody.theName + " and conduct research.";
+        }
+        protected override string GetTitle()
+        {
+            return contractTimeTitle + Tools.formatTime(missionTime);
+        }
+
+        protected override void OnUpdate()
+        {
+            if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel.orbit.referenceBody.Equals(targetBody) && FlightGlobals.ActiveVessel.situation == Vessel.Situations.ORBITING)
+            {
+                CheckIfOrbit(FlightGlobals.ActiveVessel);
+            }
+        }
+        protected override void OnLoad(ConfigNode node)
+        {
+            int bodyID = int.Parse(node.GetValue("targetBody"));
+            foreach (var body in FlightGlobals.Bodies)
+            {
+                if (body.flightGlobalsIndex == bodyID)
+                    targetBody = body;
+            }
+
+            savedTime = double.Parse(node.GetValue("savedtime"));
+            missionTime = double.Parse(node.GetValue("missiontime"));
+            diff = double.Parse(node.GetValue("diff"));
+
+            setTime = bool.Parse(node.GetValue("settime"));
+        }
+        protected override void OnSave(ConfigNode node)
+        {
+            int bodyID = targetBody.flightGlobalsIndex;
+            node.AddValue("targetBody", bodyID);
+
+            node.AddValue("savedtime", savedTime);
+            node.AddValue("missiontime", missionTime);
+            node.AddValue("diff", diff);
+
+            node.AddValue("settime", setTime);
+        }
+
+        private void CheckIfOrbit(Vessel vessel)
+        {
+
+            if (vessel.isActiveVessel && FlightGlobals.ActiveVessel.situation == Vessel.Situations.ORBITING)
+            {
+                if (HighLogic.LoadedSceneIsFlight && setTime)
+                {
+                    contractSetTime();
+                }
+
+                if (!setTime)
+                {
+                    diff = Planetarium.GetUniversalTime() - savedTime;
+                    ScreenMessages.PostScreenMessage("Time Left To Complete: " + Tools.formatTime(missionTime - diff), .001f);
+
+                    if (diff > missionTime)
+                    {
+                        base.SetComplete();                       
+                    }
+                }
+            }
+        }
+        public void contractSetTime()
+        {
+            savedTime = Planetarium.GetUniversalTime();
+            setTime = false;
+        }
+    } 
+     #endregion             
+    #region EVA Goal
+    public class EvaGoal : ContractParameter
+    {
+        public CelestialBody targetBody;
+
+        public EvaGoal()
+        {
+        }
+
+        public EvaGoal(CelestialBody target)
+        {
+            this.targetBody = target;
+        }
+        protected override string GetHashString()
+        {
+            return targetBody.bodyName;
+        }
+        protected override string GetTitle()
+        {
+            return "Exit your vessel and conduct an EVA";
+        }
+
+        protected override void OnUpdate()
+        {
+            if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel.situation == Vessel.Situations.ORBITING)
+                isEVA(FlightGlobals.ActiveVessel);
+        }
+
+        protected override void OnLoad(ConfigNode node)
+        {
+            int bodyID = int.Parse(node.GetValue("targetBody"));
+            foreach (var body in FlightGlobals.Bodies)
+            {
+                if (body.flightGlobalsIndex == bodyID)
+                    targetBody = body;
+            }
+        }
+        protected override void OnSave(ConfigNode node)
+        {
+            int bodyID = targetBody.flightGlobalsIndex;
+            node.AddValue("targetBody", bodyID);
+        }
+
+        public void isEVA(Vessel vessel)
+        {
+            if (FlightGlobals.ActiveVessel.isEVA)
+                base.SetComplete();
+        }
+
+
+    }
+    #endregion
+    #region Crash Goal
+    public class CrashGoal : ContractParameter
+    {
+        public CelestialBody targetBody;
+
+        public CrashGoal()
+        {
+        }
+
+        public CrashGoal(CelestialBody target)
+        {
+            this.targetBody = target;
+        }
+        protected override string GetHashString()
+        {
+            return targetBody.bodyName;
+        }
+        protected override string GetTitle()
+        {
+            return "Crash your vessel into " + targetBody;
+        }
+
+        protected override void OnRegister()
+        {
+            if (HighLogic.LoadedSceneIsFlight && (FlightGlobals.ActiveVessel.orbit.referenceBody.Equals(targetBody) || FlightGlobals.ship_orbit.referenceBody.Equals(targetBody)))
+            GameEvents.onCrash.Add(crashGoal);
+        }
+        protected override void OnUnregister()
+        {
+            GameEvents.onCrash.Remove(crashGoal);
+        }
+
+        protected override void OnLoad(ConfigNode node)
+        {
+            int bodyID = int.Parse(node.GetValue("targetBody"));
+            foreach (var body in FlightGlobals.Bodies)
+            {
+                if (body.flightGlobalsIndex == bodyID)
+                    targetBody = body;
+            }
+        }
+        protected override void OnSave(ConfigNode node)
+        {
+            int bodyID = targetBody.flightGlobalsIndex;
+            node.AddValue("targetBody", bodyID);
+        }
+
+        public void crashGoal(EventReport ev)
+        {           
+                base.SetComplete();
+        }
+
+
+    }
+    #endregion
 }
+   

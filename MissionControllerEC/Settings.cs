@@ -31,7 +31,6 @@ namespace MissionControllerEC
         [Persistent]internal float contracSatelliteMinAMassTrivial = 2f;
         [Persistent]internal float contracSatelliteMinMassSignificant = 2.3f;
         [Persistent]internal float contracSatelliteMinMassExcept = 2.7f;
-        [Persistent]internal float contractSatelliteMassDifference = 1.5f;
         [Persistent]internal double contractOrbitalPeriodMaxInSeconds = 21660;
         [Persistent]internal double contractOrbitalPeriodMinInSeconds = 21480;
         [Persistent]internal int ContractPaymentMultiplier = 1;

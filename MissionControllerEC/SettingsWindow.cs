@@ -9,7 +9,6 @@ namespace MissionControllerEC
 {
     public partial class MissionControllerEC
     {
-        private string difficulties;
         private string hireme;
         private string insuranceme;
         private void drawSettings(int id)

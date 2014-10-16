@@ -37,10 +37,10 @@ namespace MissionControllerEC
         }
         public static String formatTime(double seconds)
         {
-            int y = (int)(seconds / (24.0 * 60.0 * 60.0 * 365.0));
-            seconds = seconds % (24.0 * 60.0 * 60.0 * 365.0);
-            int d = (int)(seconds / (24.0 * 60.0 * 60.0));
-            seconds = seconds % (24.0 * 60.0 * 60.0);
+            int y = (int)(seconds / (6.0 * 60.0 * 60.0 * 426.08));
+            seconds = seconds % (6.0 * 60.0 * 60.0 * 426.08);
+            int d = (int)(seconds / (6.0 * 60.0 * 60.0));
+            seconds = seconds % (6.0 * 60.0 * 60.0);
             int h = (int)(seconds / (60.0 * 60.0));
             seconds = seconds % (60.0 * 60.0);
             int m = (int)(seconds / (60.0));

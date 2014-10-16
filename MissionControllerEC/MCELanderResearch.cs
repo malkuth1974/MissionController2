@@ -14,10 +14,7 @@ namespace MissionControllerEC
 
         [KSPField(isPersistant = false, guiActive = true, guiName = "Rover Landed:")]
         public bool roverlanded = false;
-
-        [KSPField(isPersistant = true, guiActive = true, guiName = "Completed A Contract:")]
-        public static bool isdisabled = false;
-
+       
         [KSPField(isPersistant = false, guiActive = true, guiName = "Rover Landed Wet:")]
         public bool roverlandedWet = false;
 
@@ -32,11 +29,8 @@ namespace MissionControllerEC
 
         [KSPAction("Start Scanning")]
         public void ToggleAction(KSPActionParam param)
-        {
-            if (!isdisabled)
-            StartResearchMCE();
-            else
-                ScreenMessages.PostScreenMessage("This vessel has already completed a Contract, can't be used again!");
+        {            
+            StartResearchMCE();            
         }
 
         public void checkVesselResearch()

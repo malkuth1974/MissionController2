@@ -278,10 +278,16 @@ namespace MissionControllerEC
                 ResearchAndDevelopment.Instance.AddScience(1000,TransactionReasons.Cheating);
             }
            
-            if (GUILayout.Button("Set Agena Current Vehicle"))
+            if (GUILayout.Button("Set Agena Current Selected Vessel (Must be in flight)"))
             {
                 SaveInfo.AgenaTargetVesselName = FlightGlobals.ActiveVessel.vesselName;
                 SaveInfo.AgenaTargetVesselID = FlightGlobals.ActiveVessel.id.ToString();
+            }
+
+            if (GUILayout.Button("Set SkyLab Current Selected Vessel(Must be in flight)"))
+            {
+                SaveInfo.skyLabName = FlightGlobals.ActiveVessel.vesselName;
+                SaveInfo.skyLabVesID = FlightGlobals.ActiveVessel.id.ToString();
             }
  
             if (GUILayout.Button("Set Agena1 Bool False"))
@@ -292,6 +298,27 @@ namespace MissionControllerEC
             if (GUILayout.Button("Set Agena2 Bool False"))
             {
                 SaveInfo.Agena2Done = false;
+            }
+
+            if (GUILayout.Button("Set Voskov1 Bool false"))
+            {
+                SaveInfo.Vostok1Done = false;
+            }
+            if (GUILayout.Button("Set Voskov2 Bool false"))
+            {
+                SaveInfo.Vostok2Done = false;
+            }
+            if (GUILayout.Button("Set Voskhod2 Bool false"))
+            {
+                SaveInfo.Voskhod2Done = false;
+            }
+            if (GUILayout.Button("Set Luna2 Bool false"))
+            {
+                SaveInfo.Luna2Done = false;
+            }
+            if (GUILayout.Button("Set Luna3 Bool false"))
+            {
+                SaveInfo.Luna16Done = false;
             }
 
             if (HighLogic.LoadedSceneIsEditor && GUILayout.Button("Price Out Vessel Parts"))
@@ -322,7 +349,20 @@ namespace MissionControllerEC
         [Persistent]public string agenaTargetVesselName = "none";
         [Persistent]public bool agena1done = false;
         [Persistent]public bool agena2done = false;
+        [Persistent]public bool vostok1done = false;
+        [Persistent]public bool vostok2done = false;
+        [Persistent]public bool voskhod2done = false;
+        [Persistent]public bool luna2done = false;
+        [Persistent]public bool luna16done = false;
+        [Persistent]public bool skylab1done = false;
+        [Persistent]public bool skylab2done = false;
+        [Persistent]public bool skylab3done = false;
+        [Persistent]public bool skylab4done = false;
         [Persistent]public bool messagehelpers = false;
+
+        [Persistent]public string skylabname = "none";
+        [Persistent]public string skylabID = "none";
+
         
         [Persistent]public string supplyVesselName = "None";
         [Persistent]public string supplyVesselId = "none";
@@ -331,6 +371,14 @@ namespace MissionControllerEC
         [Persistent]public int supplybodyIDX;
         [Persistent]public bool supplyContractOn = false;
         [Persistent]public double supplyResAmount = 0;
+
+        [Persistent]public string crewtransfername = "crew transfer";
+        [Persistent]public string crewvesname = "none";
+        [Persistent]public string crewvesId = "none";
+        [Persistent]public int crewamount = 0;
+        [Persistent]public double crewtime = 0;
+        [Persistent]public int crewbodyIDX = 0;
+        [Persistent]public bool crewcontracton = false;
 
         [Persistent]public bool apCivilianPod = false;
         [Persistent]public string apCivilianName = "none";
@@ -344,7 +392,27 @@ namespace MissionControllerEC
             SaveInfo.AgenaTargetVesselName = agenaTargetVesselName;
             SaveInfo.Agena1Done = agena1done;
             SaveInfo.Agena2Done = agena2done;
+            SaveInfo.Vostok1Done = vostok1done;
+            SaveInfo.Vostok2Done = vostok2done;
+            SaveInfo.Voskhod2Done = voskhod2done;
+            SaveInfo.Luna2Done = luna2done;
+            SaveInfo.Luna16Done = luna16done;
+            SaveInfo.skylab1done = skylab1done;
+            SaveInfo.skylab2done = skylab2done;
+            SaveInfo.skylab3done = skylab3done;
+            SaveInfo.skylab4done = skylab4done;
             SaveInfo.MessageHelpers = messagehelpers;
+
+            SaveInfo.crewContractOn = crewcontracton;
+            SaveInfo.crewAmount = crewamount;
+            SaveInfo.crewBodyIDX = crewbodyIDX;
+            SaveInfo.crewTime = crewtime;
+            SaveInfo.crewTransferName = crewtransfername;
+            SaveInfo.crewVesid = crewvesId;
+            SaveInfo.crewVesName = crewvesname;
+
+            SaveInfo.skyLabName = skylabname;
+            SaveInfo.skyLabVesID = skylabID;
 
             SaveInfo.SupplyVesName = supplyVesselName;
             SaveInfo.SupplyVesId = supplyVesselId;
@@ -368,7 +436,27 @@ namespace MissionControllerEC
             agenaTargetVesselName = SaveInfo.AgenaTargetVesselName;
             agena1done = SaveInfo.Agena1Done;
             agena2done = SaveInfo.Agena2Done;
+            vostok1done = SaveInfo.Vostok1Done;
+            vostok2done = SaveInfo.Vostok2Done;
+            voskhod2done = SaveInfo.Voskhod2Done;
+            luna2done = SaveInfo.Luna2Done;
+            luna16done = SaveInfo.Luna16Done;
+            skylab1done = SaveInfo.skylab1done;
+            skylab2done = SaveInfo.skylab2done;
+            skylab3done = SaveInfo.skylab3done;
+            skylab4done = SaveInfo.skylab4done;
             messagehelpers = SaveInfo.MessageHelpers;
+
+            crewcontracton = SaveInfo.crewContractOn;
+            crewamount = SaveInfo.crewAmount;
+            crewbodyIDX = SaveInfo.crewBodyIDX;
+            crewtime = SaveInfo.crewTime;
+            crewtransfername = SaveInfo.crewTransferName;
+            crewvesId = SaveInfo.crewVesid;
+            crewvesname = SaveInfo.crewVesName;
+
+            skylabname = SaveInfo.skyLabName;
+            skylabID = SaveInfo.skyLabVesID;
 
             supplyVesselName = SaveInfo.SupplyVesName;
             supplyVesselId = SaveInfo.SupplyVesId;

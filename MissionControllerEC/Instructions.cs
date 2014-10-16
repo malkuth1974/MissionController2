@@ -290,14 +290,14 @@ namespace MissionControllerEC
                 Hiremessage.AppendLine();              
                 MessageSystem.Message m = new MessageSystem.Message("Hired Recruit", Hiremessage.ToString(), MessageSystemButton.MessageButtonColor.GREEN, MessageSystemButton.ButtonIcons.MESSAGE);
                 MessageSystem.Instance.AddMessage(m);
-                Funding.Instance.AddFunds(settings.HireCost,TransactionReasons.Any);                
+                Funding.Instance.AddFunds(- settings.HireCost,TransactionReasons.Any);                
             }
             
         }      
 
         public void chargeKerbalDeath(EventReport value)
         {
-            Funding.Instance.AddFunds(settings.DeathInsurance, TransactionReasons.Any);
+            Funding.Instance.AddFunds( - settings.DeathInsurance, TransactionReasons.Any);
             StringBuilder deathmessage = new StringBuilder();
             deathmessage.AppendLine("A Kerbal named " + value.sender + " has died in the line of duty");
             deathmessage.AppendLine();
@@ -314,6 +314,7 @@ namespace MissionControllerEC
         public void getSupplyList()
         {
             supplyCount = 0;
+            SupVes.Clear();
             foreach (Vessel v in FlightGlobals.Vessels)
             {
                 if (v.vesselType == VesselType.Station || v.vesselType == VesselType.Base)

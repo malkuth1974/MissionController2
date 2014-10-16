@@ -13,18 +13,12 @@ namespace MissionControllerEC
         private bool probeOrbitResearch = false;
 
         [KSPField(isPersistant = false, guiActive = true, guiName = "Starting Scan:")]
-        private bool scanStart = false;
-
-        [KSPField(isPersistant = true, guiActive = true, guiName = "Completed A Contract:")]
-        public static bool isdisabled = false;
+        private bool scanStart = false;      
 
         [KSPEvent(guiActive = true, guiName = "Start MCE Orbital Research", active = true)]
         public void StartResearchMCE()
-        {
-            if (!isdisabled)
-                checkVesselResearch();
-            else
-                ScreenMessages.PostScreenMessage("This vessel has already completed a Contract, can't be used again!");
+        {           
+          checkVesselResearch();           
         }
 
         [KSPAction("Start Scanning")]
