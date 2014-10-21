@@ -122,20 +122,28 @@ namespace MissionControllerEC
             else
                 ifInclination = false;            
             this.AddParameter(new PreLaunch(), null);
+
             this.satellite1 = this.AddParameter(new ApAOrbitGoal(targetBody, (double)GMaxApA, (double)GMinApA), null);
             satellite1.SetFunds(2000, targetBody);
+            satellite1.DisableOnStateChange = false;
+
             this.satellite2 = this.AddParameter(new PeAOrbitGoal(targetBody, (double)GMaxPeA, (double)GMinPeA), null);
             satellite2.SetFunds(2000, targetBody);
+            satellite2.DisableOnStateChange = false;
+
             if (ifInclination && targetBody.flightGlobalsIndex == 1)
             {
                this.satellite3 = this.AddParameter(new Inclination(MinInc, MaxInc));
                satellite3.SetFunds(8000, targetBody);
                satellite3.SetReputation(10, targetBody);
+               satellite3.DisableOnStateChange = false;
             }
+
             if (parttechUnlock)
             {
                 this.AddParameter(new PartGoal(partName, partAmount), null);
             }
+
             this.AddParameter(new TotalMasGoal(targetBody, maxTon), null);
             this.AddParameter(new ResourceGoalCap(ResourceName, capResources), null);           
             this.AddParameter(new GetCrewCount(crewCount), null);
@@ -461,6 +469,210 @@ namespace MissionControllerEC
         }
     }
 #endregion
+    #region Contract Advanced Satellite
+    public class AdvSatellite : Contract
+    {
+        Settings st = new Settings("Config.cfg");
+        CelestialBody targetBody = null;
+        public double GMaxecc = 0;
+        public double GMinecc = 0;
+        public double MaxAltitude = 0;
+               
+        public int crewCount = 0;
+
+        public List<TechList> techlist = new List<TechList>();
+
+        public bool techUnlocked = false;
+        public double MinInc = 0;
+
+        public int partAmount = 1;
+        public string partName = "Repair Panel";
+        
+        public string sciPartname = "Communotron 16";
+        public int scipartamount = 1;
+        public int scipartcount;
+        public int scipartFinalcount;
+
+        public double timeOnStation;
+        public string TOSName = "We need this amount of time to conduct our studies ";
+
+        public int totalContracts;
+        public int TotalFinished;
+
+        public void loadscienceparts()
+        {
+            foreach (AvailablePart ap in PartLoader.LoadedPartsList)
+            {
+                if (ap.category == PartCategories.Science)
+                {
+                    if (ResearchAndDevelopment.GetTechnologyState(ap.TechRequired) == RDTech.State.Available)
+                    {
+                        techlist.Add(new TechList(ap.title));
+                    }
+                }
+            }
+        }
+
+        ContractParameter satellite1;
+        ContractParameter satellite2;
+        ContractParameter satellite3;
+        ContractParameter satellite4;
+
+        protected override bool Generate()
+        {
+            if (HighLogic.LoadedSceneIsFlight) { return false; }
+            totalContracts = ContractSystem.Instance.GetCurrentContracts<AdvSatellite>().Count();
+            TotalFinished = ContractSystem.Instance.GetCompletedContracts<AdvSatellite>().Count();
+
+            if (totalContracts >= 1 && !SaveInfo.NoSatelliteContracts)
+            {              
+                return false;
+            }           
+            techlist.Clear();
+            loadscienceparts();
+            scipartcount = techlist.Count();
+            scipartFinalcount = UnityEngine.Random.Range(0, scipartcount);
+            sciPartname = techlist[scipartFinalcount].techName;
+
+            GMinecc = UnityEngine.Random.Range(0f, .9f);
+            GMaxecc = GMinecc + .09f;
+
+            MaxAltitude = UnityEngine.Random.Range(70000, 400000);
+
+            timeOnStation = UnityEngine.Random.Range(102400, 900000);
+            
+            bool parttechUnlock = ResearchAndDevelopment.GetTechnologyState("advConstruction") == RDTech.State.Available;
+            int bodyrandom = UnityEngine.Random.Range(1, 3);
+            int bodyrandomchance = UnityEngine.Random.Range(0, 100);
+            if (bodyrandomchance > 60)
+            {
+                targetBody = FlightGlobals.Bodies[bodyrandom];
+            }
+            else
+            {
+                targetBody = Planetarium.fetch.Home;
+            }                       
+            this.AddParameter(new PreLaunch(), null);
+            this.satellite1 = this.AddParameter(new AltitudeGoal(targetBody, MaxAltitude), null);
+            satellite1.SetFunds(5000, 5000,targetBody);
+            this.satellite2 = this.AddParameter(new EccentricGoal(GMinecc, GMaxecc), null);
+            satellite2.SetFunds(8000,8000, targetBody);
+            satellite2.DisableOnStateChange = false;
+            this.satellite3 = this.AddParameter(new PartGoal(sciPartname, scipartamount), null);
+            satellite3.SetFunds(2000, 2000, targetBody);
+            this.satellite4 = this.AddParameter(new TimeCountdownOrbits(targetBody, timeOnStation,TOSName), null);
+            satellite4.SetFunds(20000,20000, targetBody);
+            if (parttechUnlock)
+            {
+                this.AddParameter(new PartGoal(partName, partAmount), null);
+            }
+            this.AddParameter(new GetCrewCount(crewCount), null);
+
+            base.SetExpiry(3f, 10f);
+            base.SetDeadlineYears(3f, targetBody);
+            base.SetFunds(10000,175000,175000,targetBody);
+            base.SetReputation(25, 50, targetBody);
+            return true;
+        }
+       
+        public override bool CanBeCancelled()
+        {
+            return true;
+        }
+        public override bool CanBeDeclined()
+        {
+            return true;
+        }
+
+        protected override string GetNotes()
+        {
+            return "Send our satellite to orbit with specific parts and for amount of time we require";
+        }
+
+        protected override string GetHashString()
+        {
+            return targetBody.bodyName + GMaxecc.ToString() + GMinecc.ToString() + " - Total Done: " + TotalFinished;
+        }
+        protected override string GetTitle()
+        {
+            return "Bring advanced Satellite to orbit around " + targetBody.theName + " for amount time specified.";
+        }
+        protected override string GetDescription()
+        {
+            //those 3 strings appear to do nothing
+            return "We would like you to deliver our Satellite to orbit, We have specific scientific parts we want added to this satellite. Please include a " + sciPartname + 
+                "\n\n" + "Contract Goals\n\n " + "1. Build a satellite (suggest placing docking port for future Repair contracts)\n 2. Include a " + sciPartname + " In the construction." +
+                "\n 3. launch satellite to Contract Orbit Specified";
+        }
+        protected override string GetSynopsys()
+        {
+            return "Bring Advanced satellite to orbit " + targetBody.theName;
+        }
+        protected override string MessageCompleted()
+        {
+            return "You have successfully delivered our satellite to orbit around " + targetBody.theName + " with the specialized part " + sciPartname + 
+                ".  We gained many scientific achievments with this mission and would like to thank you for your help";
+        }
+
+        protected override void OnLoad(ConfigNode node)
+        {
+            int bodyID = int.Parse(node.GetValue("targetBody"));
+            foreach (var body in FlightGlobals.Bodies)
+            {
+                if (body.flightGlobalsIndex == bodyID)
+                    targetBody = body;
+            }
+                                      
+            int pcount = int.Parse(node.GetValue("pCount"));
+            partAmount = pcount;
+            partName = (node.GetValue("pName"));
+            crewCount = int.Parse(node.GetValue("crewcount"));
+
+            sciPartname = node.GetValue("sciname");
+            scipartamount = int.Parse(node.GetValue("sciamount"));
+            timeOnStation = double.Parse(node.GetValue("timestation"));
+            TOSName = node.GetValue("tosname");
+
+            GMaxecc = double.Parse(node.GetValue("maxecc"));
+            GMinecc = double.Parse(node.GetValue("minecc"));
+            MaxAltitude = double.Parse(node.GetValue("altitude"));
+
+        }
+        protected override void OnSave(ConfigNode node)
+        {
+            int bodyID = targetBody.flightGlobalsIndex;
+            node.AddValue("targetBody", bodyID);
+
+            node.AddValue("maxecc", GMaxecc);
+            node.AddValue("minecc", GMinecc);
+            node.AddValue("altitude", MaxAltitude);
+                                  
+            int pcount = partAmount;
+            node.AddValue("pCount", partAmount);
+            string pname = partName;
+            node.AddValue("pName", partName);
+            node.AddValue("crewcount", crewCount);
+
+            node.AddValue("sciname", sciPartname);
+            node.AddValue("sciamount", scipartamount);
+            node.AddValue("timestation", timeOnStation);
+            node.AddValue("tosname", TOSName);
+        }
+
+        //for testing purposes
+        public override bool MeetRequirements()
+        {
+            bool techUnlock = ResearchAndDevelopment.GetTechnologyState("flightControl") == RDTech.State.Available;
+            bool techUnlock2 = ResearchAndDevelopment.GetTechnologyState("scienceTech") == RDTech.State.Available;
+            if (techUnlock && techUnlock2)
+                return true;
+            else
+                return false;
+        }
+
+
+    }
+    #endregion
     #region Repair Goal Contract
     public class RepairGoal : Contract
     {
@@ -1796,4 +2008,236 @@ namespace MissionControllerEC
         }
     }
     #endregion
+    #region CCivilian Low Orbit Contract
+    public class CivilianLowOrbit : Contract
+    {
+        CelestialBody targetBody = null;
+
+        public double altitudeGoal;
+        public double eccmax;
+        public double eccmin;
+
+        public int civiliansAmount = 0;
+        public string civdestination = " Kerbin Civilian Tour";
+        public string crewSeatTitle = "You must have these many open seats for Civilians";
+
+        public string name1 = "Civilian Randall";
+        public string name2 = "Civilian Lisa";
+        public string name3 = "Civilian Roberts";
+        public string name4 = "Civilian Johnsons";
+
+        public double TripTime;
+        public string TripText = "The civilians have contracted to spend this amount of time in orbit\n";
+        
+        public int totalContracts;
+        public int TotalFinished;
+
+        private int choice1;
+        private int choice2;
+        private int choice3;
+        private int choice4;
+
+        ContractParameter civ1;
+        ContractParameter civ2;
+        ContractParameter civ3;
+        ContractParameter civ4;
+        ContractParameter civ5;
+        ContractParameter civ6;
+        ContractParameter civ7;
+
+        protected override bool Generate()
+        {
+            if (HighLogic.LoadedSceneIsFlight) { return false; }
+            totalContracts = ContractSystem.Instance.GetCurrentContracts<CivilianLowOrbit>().Count();
+            TotalFinished = ContractSystem.Instance.GetCompletedContracts<CivilianLowOrbit>().Count();
+
+            if (totalContracts >= 1 && !SaveInfo.NoSatelliteContracts)
+            {
+                return false;
+            }
+
+            if (!SaveInfo.CivilianLowOrbit)
+            {
+                return false;
+            }
+            targetBody = Planetarium.fetch.Home;
+
+            civiliansAmount = UnityEngine.Random.Range(2, 4);
+            eccmin = UnityEngine.Random.Range(0f, .4f);
+            eccmax = eccmin + .10f;
+            altitudeGoal = UnityEngine.Random.Range(70000, 225000);
+            TripTime = UnityEngine.Random.Range(14000, 150000);
+
+            this.civ1 = this.AddParameter(new PreLaunch(), null);
+            civ1.SetFunds(5000, 5000, targetBody);
+            civ1.SetReputation(5, 10, targetBody);
+
+            MissionControllerEC.CivName.Clear();
+            MissionControllerEC.civNamesListAdd();
+
+            choice1 = UnityEngine.Random.Range(0, 7);
+            name1 = MissionControllerEC.CivName[choice1];
+            choice2 = UnityEngine.Random.Range(8, 12);
+            name2 = MissionControllerEC.CivName[choice2];
+            choice3 = UnityEngine.Random.Range(13, 17);
+            name3 = MissionControllerEC.CivName[choice3];
+            choice4 = UnityEngine.Random.Range(18, 23);
+            name4 = MissionControllerEC.CivName[choice4];
+
+            if (civiliansAmount == 2)
+            {
+                this.civ2 = this.AddParameter(new CivilianModule(targetBody, civiliansAmount, name1, name2, civdestination), null);
+                civ2.SetFunds(50000, 5000, targetBody);
+                civ2.SetReputation(20, 40, targetBody);
+                civ2.DisableOnStateChange = false;
+            }
+            if (civiliansAmount == 3)
+            {
+                this.civ2 = this.AddParameter(new CivilianModule(targetBody, civiliansAmount, name1, name2, name3, civdestination), null);
+                civ2.SetFunds(75000, 5000, targetBody);
+                civ2.SetReputation(30, 60, targetBody);
+                civ2.DisableOnStateChange = false;
+            }
+            if (civiliansAmount == 4)
+            {
+                this.civ2 = this.AddParameter(new CivilianModule(targetBody, civiliansAmount, name1, name2, name3, name4, civdestination), null);
+                civ2.SetFunds(100000, 5000, targetBody);
+                civ2.SetReputation(40, 80, targetBody);
+                civ2.DisableOnStateChange = false;
+            }
+
+            this.civ3 = this.AddParameter(new AltitudeGoal(targetBody, altitudeGoal), null);
+            civ3.SetFunds(10000, 10000, targetBody);
+            civ3.SetReputation(5, 10, targetBody);
+            
+            this.civ4 = this.AddParameter(new EccentricGoal(eccmin, eccmax), null);
+            civ4.SetFunds(10000, 10000, targetBody);
+            civ4.SetReputation(5, 10, targetBody);
+
+            this.civ5 = this.AddParameter(new LandOnBody(targetBody), null);
+            civ5.SetFunds(20000, 20000, targetBody);
+            civ5.SetReputation(20, 40, targetBody);
+                        
+            this.civ6 = this.AddParameter(new TimeCountdownOrbits(targetBody, TripTime, TripText), null);
+            civ1.SetFunds(50000, 50000, targetBody);
+            civ1.SetReputation(15, 30, targetBody);
+
+            this.AddParameter(new GetSeatCount(civiliansAmount, crewSeatTitle), null);
+                                       
+            base.SetExpiry(3f, 10f);
+            base.SetDeadlineYears(3f, targetBody);
+            base.SetFunds(15000, 150000, 350000, targetBody);
+            base.SetReputation(50, 150, targetBody);
+            return true;
+        }
+
+        protected override void OnAccepted()
+        {
+
+            string AgenaMessage = "The civilians that are assigned to your vessel for the Contract Tour are represented in game by seats.  They do not show up as Individual Kerbals in " +
+                "the game! Make no mistake though they are on your vessel.  If you fill the seats they need, then you cannot finish the contract.\n" +
+
+                "Even if the objective is Green Check marked,  If you try to cheat and Fill the seat later on the objective will GO BACK to Not Finished!";
+
+            MessageSystem.Message m = new MessageSystem.Message("About the Passengers", AgenaMessage.ToString(), MessageSystemButton.MessageButtonColor.YELLOW, MessageSystemButton.ButtonIcons.MESSAGE);
+            MessageSystem.Instance.AddMessage(m);
+        }
+        public override bool CanBeCancelled()
+        {
+            return true;
+        }
+        public override bool CanBeDeclined()
+        {
+            return true;
+        }
+
+        protected override string GetNotes()
+        {
+            return "Civilian Low Orbit Tour";
+        }
+
+        protected override string GetHashString()
+        {
+            return "Bring Civilians on a Low Kerbib Orbit Tour of Kerbin";
+        }
+        protected override string GetTitle()
+        {
+            return "Civilian Contract.  Bring us to Low Kerbin Orbit";
+        }
+        protected override string GetDescription()
+        {
+            //those 3 strings appear to do nothing
+            return civiliansAmount + " Civilian kerbals have sighed a contracted with us to bring them to Low Kerbin Orbit for a set amount of time.\n The vessel must have room for the amount of civilians specified in the contract. " +
+                "Failure to have the space available will cause the contract to be null and void.\n\n" +
+                "It’s also very important that nothing bad happens to our guest while in our care.  If anything tragic happens the financial burdens on the Space Agency could be the end of us!\n\n" +
+                "Please take note civilians are not allowed to take part in operations of KSC Personal duties, they are on the vessel as passengers only.  For this reason you as player cannot use them as an in game asset.  \n" +
+                "But do not take up their seats or you will lose the contract!"
+;
+        }
+        protected override string GetSynopsys()
+        {
+            return "Low Kerbin Orbit Tour with Passengers " + targetBody.theName;
+        }
+        protected override string MessageCompleted()
+        {
+            return "The civilians thank you for bringing them home alive and showing them the wonders of space, and whats its like to be a true Kerbal Space Astronaught!";
+        }
+
+        protected override void OnLoad(ConfigNode node)
+        {
+            int bodyID = int.Parse(node.GetValue("targetBody"));
+            foreach (var body in FlightGlobals.Bodies)
+            {
+                if (body.flightGlobalsIndex == bodyID)
+                    targetBody = body;
+            }
+            civiliansAmount = int.Parse(node.GetValue("civilians"));
+            name1 = node.GetValue("name1");
+            name2 = node.GetValue("name2");
+            name3 = node.GetValue("name3");
+            name4 = node.GetValue("name4");
+            altitudeGoal = double.Parse(node.GetValue("altitude"));
+            eccmax = double.Parse(node.GetValue("eccmax"));
+            eccmin = double.Parse(node.GetValue("eccmin"));
+            TripTime = double.Parse(node.GetValue("time"));
+            TripText = node.GetValue("triptext");
+            civdestination = node.GetValue("civd");
+
+        }
+        protected override void OnSave(ConfigNode node)
+        {
+            int bodyID = targetBody.flightGlobalsIndex;
+            node.AddValue("targetBody", bodyID);
+            node.AddValue("civilians", civiliansAmount);
+            node.AddValue("name1", name1);
+            node.AddValue("name2", name2);
+            node.AddValue("name3", name3);
+            node.AddValue("name4", name4);
+            node.AddValue("altitude", altitudeGoal);
+            node.AddValue("eccmax", eccmax);
+            node.AddValue("eccmin", eccmin);
+            node.AddValue("time", TripTime);
+            node.AddValue("triptext", TripText);
+            node.AddValue("civd", civdestination);
+        }
+
+        public override bool MeetRequirements()
+        {
+            bool techUnlock = ResearchAndDevelopment.GetTechnologyState("flightControl") == RDTech.State.Available;
+            if (techUnlock)
+                return true;
+            else
+                return false;
+        }
+    }
+    #endregion
+    public class TechList
+    {
+        public string techName = "";
+
+        public TechList(string name)
+        {
+            this.techName = name;
+        }
+    }
 }

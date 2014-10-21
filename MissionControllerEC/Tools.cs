@@ -83,9 +83,10 @@ namespace MissionControllerEC
             }
         }
         public static void ObitalPeriodHelper(Vessel v)
-        {
-            
-            ScreenMessages.PostScreenMessage("Current Orbital Period is: " + Tools.formatTime(FlightGlobals.ActiveVessel.orbit.period) + " ApA Is: " + (int)v.orbit.ApA + " PeA Is: " + (int)v.orbit.PeA , .001f);
+        {            
+            ScreenMessages.PostScreenMessage("Current Orbital Period is: " + Tools.formatTime(FlightGlobals.ActiveVessel.orbit.period) + "\n" +
+                " ApA Is: " + (int)v.orbit.ApA + " PeA Is: "+ (int)v.orbit.PeA + "\n" +
+                "Current eccentricity is: " + FlightGlobals.ActiveVessel.orbit.eccentricity.ToString("F2"), .001f);
         }
         
     }

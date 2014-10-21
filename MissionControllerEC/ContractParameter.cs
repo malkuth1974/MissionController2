@@ -236,6 +236,7 @@ namespace MissionControllerEC
        
         protected override void OnUpdate()
         {
+            if (HighLogic.LoadedSceneIsFlight)
             CheckInclination(FlightGlobals.ActiveVessel);        
         }
 
@@ -257,7 +258,7 @@ namespace MissionControllerEC
 
         public void CheckInclination(Vessel vessel)
         {     
-            if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel)
+            if (FlightGlobals.ActiveVessel)
             {               
                 if (vessel.orbit.inclination <= maxInclination && vessel.orbit.inclination >= minInclination)
                     base.SetComplete();
@@ -265,6 +266,74 @@ namespace MissionControllerEC
         }
     }
         #endregion
+    #region EccentricGoal
+
+    public class EccentricGoal : ContractParameter
+    {
+        public double mineccn = 0.0;
+        public double maxeccn = 0.0;
+
+        public EccentricGoal()
+        {
+        }
+
+        public EccentricGoal(double minEcc, double maxEcc)
+        {
+            this.mineccn = minEcc;
+            this.maxeccn = maxEcc;
+        }
+
+        protected override string GetHashString()
+        {
+            return "Bring vessel into target orbital eccentricity";
+        }
+        protected override string GetTitle()
+        {
+            return "Bring vessel to Target Eccentricity between " + mineccn.ToString("F2") + " " + maxeccn.ToString("F2");
+        }
+
+        protected override void OnUpdate()
+        {
+            if (this.Root.ContractState == Contract.State.Active)
+            {
+                if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel)
+                {
+                    if (this.state == ParameterState.Incomplete)
+                    {
+                        CheckEccentricity(FlightGlobals.ActiveVessel);
+                    }
+                    if (this.state == ParameterState.Complete)
+                    {
+                        ReCheckEccentricity(FlightGlobals.ActiveVessel);
+                    }                    
+                }
+            }
+        }
+
+        protected override void OnLoad(ConfigNode node)
+        {
+            mineccn = double.Parse(node.GetValue("mineccn"));
+            maxeccn = double.Parse(node.GetValue("maxeccn"));
+            
+        }
+        protected override void OnSave(ConfigNode node)
+        {
+            node.AddValue("mineccn", mineccn);
+            node.AddValue("maxeccn", maxeccn);
+        }
+
+        public void CheckEccentricity(Vessel vessel)
+        {           
+            if (vessel.situation == Vessel.Situations.ORBITING && vessel.orbit.eccentricity <= maxeccn && vessel.orbit.eccentricity >= mineccn)
+                    base.SetComplete();
+        }
+        public void ReCheckEccentricity(Vessel vessel)
+        {          
+            if (vessel.orbit.eccentricity > maxeccn && vessel.orbit.eccentricity < mineccn)
+                base.SetIncomplete();
+        }
+    }
+    #endregion
     #region OrbiatlPeriod Goal
     public class OrbitalPeriod : ContractParameter
     {
@@ -347,12 +416,12 @@ namespace MissionControllerEC
         }
         protected override string GetTitle()
         {
-            return "Achieve an Altitude Of At least: " + minAlt;
+            return "Achieve an altitude of at least: " + minAlt;
         }
 
         protected override void OnUpdate()
         {
-            if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel.situation == Vessel.Situations.SUB_ORBITAL)
+            if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel)
             Orbits(FlightGlobals.ActiveVessel);           
         }
 
@@ -827,6 +896,61 @@ namespace MissionControllerEC
         }
     }
 #endregion
+    #region Get Seat Count
+    public class GetSeatCount : ContractParameter
+    {
+        public int seatCount = 0;
+        public string title = "none";
+
+        public GetSeatCount()
+        {
+        }
+
+        public GetSeatCount(int crewnumber, string titledesc)
+        {
+            this.seatCount = crewnumber;
+            this.title = titledesc;
+        }
+        protected override string GetHashString()
+        {
+            return "Amount crew " + seatCount;
+        }
+        protected override string GetTitle()
+        {
+            return title + " " + seatCount;
+        }
+
+        protected override void OnUpdate()
+        {
+            if (Root.ContractState == Contract.State.Active)
+            {
+                if (FlightGlobals.ActiveVessel && HighLogic.LoadedSceneIsFlight)
+                    CheckCrewValues(FlightGlobals.ActiveVessel);
+            }
+        }
+
+        protected override void OnLoad(ConfigNode node)
+        {
+            seatCount = int.Parse(node.GetValue("crewcount"));
+            title = node.GetValue("title");
+        }
+        protected override void OnSave(ConfigNode node)
+        {
+            node.AddValue("crewcount", seatCount);
+            node.AddValue("title", title);
+        }
+
+        public void CheckCrewValues(Vessel vessel)
+        {
+            int currentseats = FlightGlobals.ActiveVessel.GetCrewCapacity();
+
+            if (currentseats < seatCount)
+            {
+                base.SetComplete();
+            }
+        }
+    }
+    #endregion
     #region Lander Research Part Check
     public class LanderResearchPartCheck : ContractParameter
     {
@@ -1420,8 +1544,10 @@ namespace MissionControllerEC
         public double savedTime;
         public double missionTime;
         public string contractTimeTitle = "Reach Orbit and stay for amount of Time Specified: ";
+        public string vesselID = "none";
 
         public bool setTime = true;
+        public bool timebool = false;
 
         public TimeCountdownOrbits()
         {
@@ -1453,6 +1579,10 @@ namespace MissionControllerEC
         {
             if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel.orbit.referenceBody.Equals(targetBody) && FlightGlobals.ActiveVessel.situation == Vessel.Situations.ORBITING)
             {
+                timebool = true;
+            }
+            if (timebool)
+            {
                 CheckIfOrbit(FlightGlobals.ActiveVessel);
             }
         }
@@ -1470,6 +1600,8 @@ namespace MissionControllerEC
             diff = double.Parse(node.GetValue("diff"));
 
             setTime = bool.Parse(node.GetValue("settime"));
+            timebool = bool.Parse(node.GetValue("timebool"));
+            vesselID = node.GetValue("vesid");
         }
         protected override void OnSave(ConfigNode node)
         {
@@ -1481,27 +1613,29 @@ namespace MissionControllerEC
             node.AddValue("diff", diff);
 
             node.AddValue("settime", setTime);
+            node.AddValue("timebool", timebool);
+            node.AddValue("vesid", vesselID);
         }
 
         private void CheckIfOrbit(Vessel vessel)
         {
-
-            if (vessel.isActiveVessel && FlightGlobals.ActiveVessel.situation == Vessel.Situations.ORBITING)
+            if (HighLogic.LoadedSceneIsFlight && setTime)
             {
-                if (HighLogic.LoadedSceneIsFlight && setTime)
+                contractSetTime();
+                vesselID = vessel.id.ToString();
+            }
+
+            if (!setTime)
+            {
+                diff = Planetarium.GetUniversalTime() - savedTime;
+                if (HighLogic.LoadedSceneIsFlight && vessel.id.ToString() == vesselID)
                 {
-                    contractSetTime();
+                    ScreenMessages.PostScreenMessage("Time Left To Complete: " + Tools.formatTime(missionTime - diff), .001f);
                 }
 
-                if (!setTime)
+                if (diff > missionTime)
                 {
-                    diff = Planetarium.GetUniversalTime() - savedTime;
-                    ScreenMessages.PostScreenMessage("Time Left To Complete: " + Tools.formatTime(missionTime - diff), .001f);
-
-                    if (diff > missionTime)
-                    {
-                        base.SetComplete();                       
-                    }
+                    base.SetComplete();
                 }
             }
         }
@@ -1617,6 +1751,161 @@ namespace MissionControllerEC
         }
 
 
+    }
+    #endregion
+    #region Civilian Module
+    public class CivilianModule : ContractParameter
+    {
+        public int crewSpace = 0;
+        public int civilianSpace = 0;
+        public int FreeSpace = 0;
+        public int UsedSpace = 0;
+
+        public string name1 = "none";
+        public string name2 = "none";
+        public string name3 = "none";
+        public string name4 = "none";
+
+        public string destination = "none";       
+
+        public CelestialBody targetBody;
+
+        public CivilianModule()
+        {
+        }
+
+        public CivilianModule(CelestialBody body ,int civspace, string name1, string name2, string name3, string name4, string destination)
+        {
+            this.targetBody = body;
+            this.civilianSpace = civspace;
+            this.name1 = name1;
+            this.name2 = name2;
+            this.name3 = name3;
+            this.name4 = name4;
+            this.destination = destination;
+        }
+        public CivilianModule(CelestialBody body, int civspace, string name1, string name2, string name3, string destination)
+        {
+            this.targetBody = body;
+            this.civilianSpace = civspace;
+            this.name1 = name1;
+            this.name2 = name2;
+            this.name3 = name3;
+            this.destination = destination;
+        }
+        public CivilianModule(CelestialBody body, int civspace, string name1, string name2, string destination)
+        {
+            this.targetBody = body;
+            this.civilianSpace = civspace;
+            this.name1 = name1;
+            this.name2 = name2;
+            this.destination = destination;
+        }
+        protected override string GetHashString()
+        {
+
+            return "Bring civilians on space tour";
+           
+        }
+        protected override string GetTitle()
+        {
+            if (civilianSpace == 2 || civilianSpace == 1)
+            {
+                return "Have Room in vessel for following 2 Civilians for the " + destination + "\n\n" + "-" + name1 + "\n" + "-" + name2 + "\n";
+            }
+            if (civilianSpace == 3)
+            {
+                return "Have Room in vessel for following 3 Civilians for the " + destination + "\n\n" + "-" + name1 + "\n" + "-" + name2 + "\n" + "-" + name3 + "\n";
+            }
+            else 
+            {
+                return "Have Room in vessel for following 4 Civilians for the " + destination + "\n\n" + "-" + name1 + "\n" + "-" + name2 + "\n" + "-" + name3 + "\n" + "-" + name4 + "\n";
+            }
+        }
+        
+        protected override void OnUpdate()
+        {
+            if (Root.ContractState == Contract.State.Active)
+            {
+                if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel)
+                {
+                    if (this.state == ParameterState.Incomplete)
+                    {
+                        CivilianChecks(FlightGlobals.ActiveVessel);
+                    }
+                    if (this.state == ParameterState.Complete)
+                    {
+                        civilianReCheck(FlightGlobals.ActiveVessel);
+                    }
+                }               
+            }
+        }
+
+        protected override void OnLoad(ConfigNode node)
+        {
+            int bodyID = int.Parse(node.GetValue("targetBody"));
+            foreach (var body in FlightGlobals.Bodies)
+            {
+                if (body.flightGlobalsIndex == bodyID)
+                    targetBody = body;
+            }   
+   
+            crewSpace = int.Parse(node.GetValue("crewspace"));
+            civilianSpace = int.Parse(node.GetValue("civspace"));
+            FreeSpace = int.Parse(node.GetValue("freespace"));
+            UsedSpace = int.Parse(node.GetValue("usedspace"));
+            destination = node.GetValue("destination");
+            name1 = node.GetValue("name1");
+            name2 = node.GetValue("name2");
+            name3 = node.GetValue("name3");
+            name4 = node.GetValue("name4");
+          
+        }
+        protected override void OnSave(ConfigNode node)
+        {
+            int bodyID = targetBody.flightGlobalsIndex;
+            node.AddValue("targetBody", bodyID);
+
+            node.AddValue("crewspace", crewSpace);
+            node.AddValue("civspace", civilianSpace);
+            node.AddValue("freespace", FreeSpace);
+            node.AddValue("usedspace", UsedSpace);
+            node.AddValue("destination", destination);
+            node.AddValue("name1", name1);
+            node.AddValue("name2", name2);
+            node.AddValue("name3", name3);
+            node.AddValue("name4", name4);           
+        }
+
+        public void CivilianChecks(Vessel vessel)
+        {
+            crewSpace = FlightGlobals.ActiveVessel.GetCrewCount();
+            FreeSpace = FlightGlobals.ActiveVessel.GetCrewCapacity();
+
+            UsedSpace = FreeSpace - crewSpace;
+
+            if (UsedSpace >= civilianSpace)
+            {
+                base.SetComplete();
+            }
+            else
+            {
+                ScreenMessages.PostScreenMessage("No space for Civilians on this vessel, Make some room!");
+            }            
+        }
+        public void civilianReCheck(Vessel vessel)
+        {
+            crewSpace = FlightGlobals.ActiveVessel.GetCrewCount();
+            FreeSpace = FlightGlobals.ActiveVessel.GetCrewCapacity();
+
+            UsedSpace = FreeSpace - crewSpace;
+
+            if (UsedSpace < civilianSpace)
+            {
+                base.SetIncomplete();
+                ScreenMessages.PostScreenMessage("You have taken up the space that is required for your Civilian Passengers.  Please make room for them again!");
+            }             
+        }       
     }
     #endregion
 }

@@ -24,6 +24,8 @@ namespace MissionControllerEC
 
         public static List<SupplyVesselList> SupVes = new List<SupplyVesselList>();
 
+        public static List<string> CivName = new List<string>();
+        
         public void loadTextures()
         {
             if (texture == null)
@@ -136,6 +138,34 @@ namespace MissionControllerEC
             }
         }
 
+        public static void civNamesListAdd()
+        {
+            CivName.Add("Civilian Jason");
+            CivName.Add("Civilian Carolyne");
+            CivName.Add("Civilian Delila");
+            CivName.Add("Civilian Aleta");
+            CivName.Add("Civilian Jordon");
+            CivName.Add("Civilian Leon");
+            CivName.Add("Civilian Tonie");
+            CivName.Add("Civilian AWen");
+            CivName.Add("Civilian Huey");
+            CivName.Add("Civilian Wilfred");
+            CivName.Add("Civilian Jackson");
+            CivName.Add("Civilian Alex");
+            CivName.Add("Civilian Danny");
+            CivName.Add("Civilian Malkuth");
+            CivName.Add("Civilian Jebidiah");
+            CivName.Add("Civilian Jeni");
+            CivName.Add("Civilian Senyor");
+            CivName.Add("Civilian Batman");
+            CivName.Add("Civilian Timmy");
+            CivName.Add("Civilian Myers");
+            CivName.Add("Civilian Yoda");
+            CivName.Add("Civilian Luke");
+            CivName.Add("Civilian Jenny");
+            CivName.Add("Civilian Sam");
+        }
+
         public void FlightglobalsIndexCheck()
         {
             foreach (CelestialBody cb in FlightGlobals.Bodies)
@@ -147,13 +177,17 @@ namespace MissionControllerEC
         public void CheckRepairStatus(GameScenes gs)
         {
             int random = 100;
-            random = UnityEngine.Random.Range(0, 100);
-            //Debug.LogWarning("Repair Random is: " + random);
-            if (random > 70)
+            random = UnityEngine.Random.Range(0, 200);
+            //Chance of Repair Contract is 40 out of 200.
+            if (random < 140)
                 SaveInfo.RepairContractOn = true;
             else
                 SaveInfo.RepairContractOn = false;
-            //Debug.LogWarning("RepairContractOn = " + SaveInfo.RepairContractOn + "GameScene Change = " + gs.ToString());
+            //chance of Civilian Low Orbit Contract is 65 out of 200.
+            if (random > 80)
+                SaveInfo.CivilianLowOrbit = true;
+            else
+                SaveInfo.CivilianLowOrbit = false;
         }
 
         public void GetPartsCost()
