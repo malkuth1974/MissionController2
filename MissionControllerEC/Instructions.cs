@@ -177,14 +177,14 @@ namespace MissionControllerEC
         public void CheckRepairStatus(GameScenes gs)
         {
             int random = 100;
-            random = UnityEngine.Random.Range(0, 200);
+            random = UnityEngine.Random.Range(0, 100);
             //Chance of Repair Contract is 40 out of 200.
-            if (random < 140)
+            if (random >= settings.repairRandompercent)
                 SaveInfo.RepairContractOn = true;
             else
                 SaveInfo.RepairContractOn = false;
             //chance of Civilian Low Orbit Contract is 65 out of 200.
-            if (random > 80)
+            if (random >= settings.civilianLowOrbitPercent)
                 SaveInfo.CivilianLowOrbit = true;
             else
                 SaveInfo.CivilianLowOrbit = false;

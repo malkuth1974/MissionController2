@@ -494,7 +494,7 @@ namespace MissionControllerEC
         public int scipartFinalcount;
 
         public double timeOnStation;
-        public string TOSName = "We need this amount of time to conduct our studies ";
+        public string TOSName = "We need this amount of time to conduct our studies\n ";
 
         public int totalContracts;
         public int TotalFinished;
@@ -557,11 +557,11 @@ namespace MissionControllerEC
             satellite1.SetFunds(5000, 5000,targetBody);
             this.satellite2 = this.AddParameter(new EccentricGoal(GMinecc, GMaxecc), null);
             satellite2.SetFunds(8000,8000, targetBody);
-            satellite2.DisableOnStateChange = false;
-            this.satellite3 = this.AddParameter(new PartGoal(sciPartname, scipartamount), null);
-            satellite3.SetFunds(2000, 2000, targetBody);
+            satellite2.DisableOnStateChange = false;          
             this.satellite4 = this.AddParameter(new TimeCountdownOrbits(targetBody, timeOnStation,TOSName), null);
             satellite4.SetFunds(20000,20000, targetBody);
+            this.satellite3 = this.AddParameter(new PartGoal(sciPartname, scipartamount), null);
+            satellite3.SetFunds(2000, 2000, targetBody);
             if (parttechUnlock)
             {
                 this.AddParameter(new PartGoal(partName, partAmount), null);
@@ -2008,7 +2008,7 @@ namespace MissionControllerEC
         }
     }
     #endregion
-    #region CCivilian Low Orbit Contract
+    #region Civilian Low Orbit Contract
     public class CivilianLowOrbit : Contract
     {
         CelestialBody targetBody = null;

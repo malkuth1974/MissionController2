@@ -917,16 +917,15 @@ namespace MissionControllerEC
         }
         protected override string GetTitle()
         {
-            return title + " " + seatCount;
+            return title + " " + seatCount + " Plus Crew.";
         }
 
         protected override void OnUpdate()
         {
-            if (Root.ContractState == Contract.State.Active)
-            {
-                if (FlightGlobals.ActiveVessel && HighLogic.LoadedSceneIsFlight)
-                    CheckCrewValues(FlightGlobals.ActiveVessel);
-            }
+            
+         if (FlightGlobals.ActiveVessel && HighLogic.LoadedSceneIsFlight)
+                 CheckCrewValues(FlightGlobals.ActiveVessel);
+            
         }
 
         protected override void OnLoad(ConfigNode node)
@@ -943,8 +942,11 @@ namespace MissionControllerEC
         public void CheckCrewValues(Vessel vessel)
         {
             int currentseats = FlightGlobals.ActiveVessel.GetCrewCapacity();
+            int crewedseats = FlightGlobals.ActiveVessel.GetCrewCount();
 
-            if (currentseats < seatCount)
+            int seatavailable = currentseats - crewedseats;
+
+            if (seatavailable >= seatCount)
             {
                 base.SetComplete();
             }
@@ -1766,6 +1768,8 @@ namespace MissionControllerEC
         public string name3 = "none";
         public string name4 = "none";
 
+        public string vesselID;
+
         public string destination = "none";       
 
         public CelestialBody targetBody;
@@ -1859,6 +1863,7 @@ namespace MissionControllerEC
             name2 = node.GetValue("name2");
             name3 = node.GetValue("name3");
             name4 = node.GetValue("name4");
+            vesselID = node.GetValue("vesselid");
           
         }
         protected override void OnSave(ConfigNode node)
@@ -1874,7 +1879,8 @@ namespace MissionControllerEC
             node.AddValue("name1", name1);
             node.AddValue("name2", name2);
             node.AddValue("name3", name3);
-            node.AddValue("name4", name4);           
+            node.AddValue("name4", name4);
+            node.AddValue("vesselid", vesselID);
         }
 
         public void CivilianChecks(Vessel vessel)
@@ -1887,10 +1893,14 @@ namespace MissionControllerEC
             if (UsedSpace >= civilianSpace)
             {
                 base.SetComplete();
+                vesselID = FlightGlobals.ActiveVessel.id.ToString();
             }
             else
             {
-                ScreenMessages.PostScreenMessage("No space for Civilians on this vessel, Make some room!");
+                if (FlightGlobals.ActiveVessel.id.ToString() == vesselID)
+                {
+                    ScreenMessages.PostScreenMessage("No space for Civilians on this vessel, Make some room!");
+                }
             }            
         }
         public void civilianReCheck(Vessel vessel)
@@ -1903,7 +1913,10 @@ namespace MissionControllerEC
             if (UsedSpace < civilianSpace)
             {
                 base.SetIncomplete();
-                ScreenMessages.PostScreenMessage("You have taken up the space that is required for your Civilian Passengers.  Please make room for them again!");
+                if (FlightGlobals.ActiveVessel.id.ToString() == vesselID)
+                {
+                    ScreenMessages.PostScreenMessage("You have taken up the space that is required for your Civilian Passengers.  Please make room for them again!");
+                }
             }             
         }       
     }

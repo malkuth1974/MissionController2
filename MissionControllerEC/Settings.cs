@@ -34,6 +34,15 @@ namespace MissionControllerEC
         [Persistent]internal double contractOrbitalPeriodMaxInSeconds = 21660;
         [Persistent]internal double contractOrbitalPeriodMinInSeconds = 21480;
         [Persistent]internal int ContractPaymentMultiplier = 1;
+
+        [Persistent]internal int repairRandompercent = 65;
+        [Persistent]internal int civilianLowOrbitPercent = 30;
+
+        [Persistent]internal double vostok12height = 70000;
+        [Persistent]internal double voshodheight = 82000;
+        [Persistent]internal double skyLabheight = 90000;
+        [Persistent]internal double skyLab4MaxApA = 120000;
+        [Persistent]internal double skyLab4MaxPeA = 120000;
         
       
     }

@@ -12,6 +12,7 @@ namespace MissionControllerEC
     # region Vostok 1
     public class Vostok : Contract
     {
+        Settings settings = new Settings("config.cfg");
         public double minHeight = 70000;
         
         public int crew = 1;
@@ -24,7 +25,8 @@ namespace MissionControllerEC
 
         protected override bool Generate()
         {
-            if (HighLogic.LoadedSceneIsFlight) { return false; }            
+            if (HighLogic.LoadedSceneIsFlight) { return false; }
+            minHeight = settings.vostok12height;
             this.AddParameter(new PreLaunch(), null);   
             vostok1 = this.AddParameter(new AltitudeGoal(targetBody,minHeight),null);
             vostok1.SetFunds(1000f, targetBody);
@@ -140,6 +142,7 @@ namespace MissionControllerEC
     # region Vostok 2
     public class Vostok2 : Contract
     {
+        Settings settings = new Settings("config.cfg");
         public double minHeight = 70000;
         public double missionTime = 43200;
 
@@ -154,7 +157,8 @@ namespace MissionControllerEC
 
         protected override bool Generate()
         {
-            if (HighLogic.LoadedSceneIsFlight) { return false; }           
+            if (HighLogic.LoadedSceneIsFlight) { return false; }
+            minHeight = settings.vostok12height;
             this.AddParameter(new PreLaunch(), null);
             vostok1 = this.AddParameter(new AltitudeGoal(targetBody, minHeight), null);
             vostok1.SetFunds(1000f, targetBody);
@@ -262,6 +266,7 @@ namespace MissionControllerEC
     # region Voskhod 2
     public class Voskhod2 : Contract
     {
+        Settings settings = new Settings("config.cfg");
         public double minHeight = 82000;
 
         public int crew = 2;
@@ -276,6 +281,7 @@ namespace MissionControllerEC
         protected override bool Generate()
         {
             if (HighLogic.LoadedSceneIsFlight) { return false; }
+            minHeight = settings.voshodheight;
             this.AddParameter(new PreLaunch(), null);
             vostok1 = this.AddParameter(new AltitudeGoal(targetBody, minHeight), null);
             vostok1.SetFunds(2000f, targetBody);
@@ -631,6 +637,7 @@ namespace MissionControllerEC
     # region SkyLab 1
     public class SkyLab1 : Contract
     {
+        Settings settings = new Settings("config.cfg");
         public double minHeight = 90000;
 
         public string part1goal = "Repair Panel";
@@ -663,6 +670,7 @@ namespace MissionControllerEC
             totalContracts = ContractSystem.Instance.GetCurrentContracts<SkyLab1>().Count();
             if (totalContracts >= 1) { return false; }
             if (HighLogic.LoadedSceneIsFlight) { return false; }
+            minHeight = settings.skyLabheight;
             this.AddParameter(new PreLaunch(), null);
             this.AddParameter(new AltitudeGoal(targetBody,minHeight), null);
             this.AddParameter(new InOrbitGoal(targetBody), null);
@@ -1077,6 +1085,7 @@ namespace MissionControllerEC
     # region SkyLab 4
     public class SkyLab4 : Contract
     {
+        Settings settings = new Settings("config.cfg");
         public int crew = 3;
         public int contractTime = 1815264;
         public string contTimeTitle = " Must keep crew in orbit for ";
@@ -1103,6 +1112,11 @@ namespace MissionControllerEC
             totalContracts = ContractSystem.Instance.GetCurrentContracts<SkyLab4>().Count();
             if (HighLogic.LoadedSceneIsFlight) { return false; }
             if (totalContracts >= 1) { return false; }
+
+            GMaxApA = settings.skyLab4MaxApA;
+            GMaxPeA = settings.skyLab4MaxPeA;
+            GMinApA = GMaxApA - 5000;
+            GMinPeA = GMaxPeA - 5000;
 
             this.AddParameter(new PreLaunch(), null);
 
