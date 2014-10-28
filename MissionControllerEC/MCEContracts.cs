@@ -46,11 +46,15 @@ namespace MissionControllerEC
         protected override bool Generate()
         {
             if (HighLogic.LoadedSceneIsFlight) { return false; }
+            if (SaveInfo.NoSatelliteContracts)
+            {
+                return false;
+            }
             totalContracts = ContractSystem.Instance.GetCurrentContracts<DeliverSatellite>().Count();
             TotalFinished = ContractSystem.Instance.GetCompletedContracts<DeliverSatellite>().Count();
 
             //Debug.Log("Satellite Delivery Totalcontracts " + totalContracts + " - " + " Total Finsihed " + TotalFinished);
-            if (totalContracts >= 1 && !SaveInfo.NoSatelliteContracts)
+            if (totalContracts >= 1)
             {
                 //Debug.Log("contract is generated right now terminating Normal Satellite Mission");
                 //Debug.Log("count is " + totalContracts);
@@ -261,7 +265,7 @@ namespace MissionControllerEC
         
         //for testing purposes
         public override bool MeetRequirements()
-        {
+        {           
             bool techUnlock = ResearchAndDevelopment.GetTechnologyState("flightControl") == RDTech.State.Available;
             bool techUnlock2 = ResearchAndDevelopment.GetTechnologyState("scienceTech") == RDTech.State.Available;
             if (techUnlock && techUnlock2)
@@ -304,11 +308,15 @@ namespace MissionControllerEC
         protected override bool Generate()
         {
             if (HighLogic.LoadedSceneIsFlight) { return false; }
+            if (SaveInfo.NoOrbitalPeriodcontracts)
+            {
+                return false;
+            }
             totalContracts = ContractSystem.Instance.GetCurrentContracts<DeliverSatOrbitalPeriod>().Count();
             TotalFinished = ContractSystem.Instance.GetCompletedContracts<DeliverSatOrbitalPeriod>().Count();
             bool parttechUnlock = ResearchAndDevelopment.GetTechnologyState("advConstruction") == RDTech.State.Available;
             //Debug.Log("Orbital Period Totalcontracts " + totalContracts + " - " + " Total Finsihed " + TotalFinished);
-            if (totalContracts >= 1 && !SaveInfo.NoOrbitalPeriodcontracts)
+            if (totalContracts >= 1)
             {
                 //Debug.Log("contract is generated right now terminating Orbital Period Satellite Mission");
                 //Debug.Log("count is " + totalContracts);
@@ -459,7 +467,7 @@ namespace MissionControllerEC
 
         //for testing purposes
         public override bool MeetRequirements()
-        {
+        {            
             bool techUnlock = ResearchAndDevelopment.GetTechnologyState("advFlightControl") == RDTech.State.Available;
             bool techUnlock2 = ResearchAndDevelopment.GetTechnologyState("scienceTech") == RDTech.State.Available;
             if (techUnlock && techUnlock2)
@@ -521,10 +529,14 @@ namespace MissionControllerEC
         protected override bool Generate()
         {
             if (HighLogic.LoadedSceneIsFlight) { return false; }
+            if (SaveInfo.NoSatelliteContracts)
+            {
+                return false;
+            }
             totalContracts = ContractSystem.Instance.GetCurrentContracts<AdvSatellite>().Count();
             TotalFinished = ContractSystem.Instance.GetCompletedContracts<AdvSatellite>().Count();
 
-            if (totalContracts >= 1 && !SaveInfo.NoSatelliteContracts)
+            if (totalContracts >= 1)
             {              
                 return false;
             }           
@@ -661,8 +673,8 @@ namespace MissionControllerEC
 
         //for testing purposes
         public override bool MeetRequirements()
-        {
-            bool techUnlock = ResearchAndDevelopment.GetTechnologyState("flightControl") == RDTech.State.Available;
+        {            
+            bool techUnlock = ResearchAndDevelopment.GetTechnologyState("advFlightControl") == RDTech.State.Available;
             bool techUnlock2 = ResearchAndDevelopment.GetTechnologyState("scienceTech") == RDTech.State.Available;
             if (techUnlock && techUnlock2)
                 return true;
@@ -768,7 +780,7 @@ namespace MissionControllerEC
             totalContracts = ContractSystem.Instance.GetCurrentContracts<RepairGoal>().Count();
             TotalFinished = ContractSystem.Instance.GetCompletedContracts<RepairGoal>().Count();
             //Debug.Log(" Repair Contract Totalcontracts " + totalContracts + " - " + " Total Finsihed " + TotalFinished);           
-            if (totalContracts >= 1 && !SaveInfo.NoRepairContracts)
+            if (totalContracts >= 1 || SaveInfo.NoRepairContracts)
             {               
                //Debug.Log("contract is generated right now terminating Repair Vessel");
                                             
@@ -953,10 +965,14 @@ namespace MissionControllerEC
                 targetBody = Planetarium.fetch.Home;
                 //Debug.LogWarning("Target Body was Null set to kerbin");
             }
+            if (SaveInfo.NoOrbitalResearchContracts)
+            {
+                return false;
+            }
             totalContracts = ContractSystem.Instance.GetCurrentContracts<OrbitalScanContract>().Count();
             TotalFinished = ContractSystem.Instance.GetCompletedContracts<OrbitalScanContract>().Count();
             //Debug.Log("Orbital Research Totalcontracts " + totalContracts + " - " + " Total Finsihed " + TotalFinished);
-            if (totalContracts >= 1 && !SaveInfo.NoOrbitalResearchContracts)
+            if (totalContracts >= 1)
             {
                 //Debug.Log("Orbital Research contract is generated right now terminating Mission");
                 //Debug.Log("count is " + totalContracts);
@@ -1044,7 +1060,7 @@ namespace MissionControllerEC
 
         //for testing purposes
         public override bool MeetRequirements()
-        {
+        {           
             bool techUnlock = ResearchAndDevelopment.GetTechnologyState("electrics") == RDTech.State.Available;
             if (techUnlock)
                 return true;
@@ -1097,11 +1113,14 @@ namespace MissionControllerEC
                 //Debug.LogWarning("Target Body was Null For Landing Contract Contract Cancelled");
                 return false;
             }
-
+            if (SaveInfo.NoLanderResearchContracts)
+            {
+                return false;
+            }
             totalContracts = ContractSystem.Instance.GetCurrentContracts<LanderResearchScan>().Count();
             TotalFinished = ContractSystem.Instance.GetCompletedContracts<LanderResearchScan>().Count();
             //Debug.Log("Land Research Totalcontracts " + totalContracts + " - " + " Total Finsihed " + TotalFinished);
-            if (totalContracts >= 1 && !SaveInfo.NoLanderResearchContracts)
+            if (totalContracts >= 1)
             {
                 //Debug.LogWarning("Land Research contract is generated right now terminating Mission");
                 //Debug.Log("count is " + totalContracts);
@@ -1198,7 +1217,7 @@ namespace MissionControllerEC
 
         //for testing purposes
         public override bool MeetRequirements()
-        {
+        {           
             bool techUnlock = ResearchAndDevelopment.GetTechnologyState("advElectrics") == RDTech.State.Available;
             if (techUnlock)
                 return true;
@@ -2051,7 +2070,7 @@ namespace MissionControllerEC
             totalContracts = ContractSystem.Instance.GetCurrentContracts<CivilianLowOrbit>().Count();
             TotalFinished = ContractSystem.Instance.GetCompletedContracts<CivilianLowOrbit>().Count();
 
-            if (totalContracts >= 1 && !SaveInfo.NoSatelliteContracts)
+            if (totalContracts >= 1 || SaveInfo.NoSatelliteContracts)
             {
                 return false;
             }
@@ -2223,7 +2242,7 @@ namespace MissionControllerEC
 
         public override bool MeetRequirements()
         {
-            bool techUnlock = ResearchAndDevelopment.GetTechnologyState("flightControl") == RDTech.State.Available;
+            bool techUnlock = ResearchAndDevelopment.GetTechnologyState("advFlightControl") == RDTech.State.Available;
             if (techUnlock)
                 return true;
             else

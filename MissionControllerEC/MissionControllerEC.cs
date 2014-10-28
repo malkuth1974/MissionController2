@@ -383,6 +383,12 @@ namespace MissionControllerEC
         [Persistent]public bool apCivilianPod = false;
         [Persistent]public string apCivilianName = "none";
 
+        [Persistent]public bool noOrbitalContract = false;
+        [Persistent]public bool noLandingContract = false;
+        [Persistent]public bool noSatelliteContract = false;
+        [Persistent]public bool noRepairContract = false;
+        [Persistent]public bool noOrbitalPeriodContract = false;
+
         public override void OnDecodeFromConfigNode()
         {
             SaveInfo.TotalSpentKerbals = TotalSpentKerbals;
@@ -424,6 +430,12 @@ namespace MissionControllerEC
 
             SaveInfo.CivilianApPod = apCivilianPod;
             SaveInfo.CivilianApName = apCivilianName;
+
+            SaveInfo.NoOrbitalResearchContracts = noOrbitalContract;
+            SaveInfo.NoLanderResearchContracts = noLandingContract;
+            SaveInfo.NoSatelliteContracts = noSatelliteContract;
+            SaveInfo.NoRepairContracts = noRepairContract;
+            SaveInfo.NoOrbitalPeriodcontracts = noOrbitalPeriodContract;
 
         }
 
@@ -468,6 +480,12 @@ namespace MissionControllerEC
 
             apCivilianPod = SaveInfo.CivilianApPod;
             apCivilianName = SaveInfo.CivilianApName;
+
+            noOrbitalContract = SaveInfo.NoOrbitalResearchContracts;
+            noLandingContract = SaveInfo.NoLanderResearchContracts;
+            noSatelliteContract = SaveInfo.NoSatelliteContracts;
+            noRepairContract = SaveInfo.NoRepairContracts;
+            noOrbitalPeriodContract = SaveInfo.NoOrbitalPeriodcontracts;
 
         }
     
