@@ -17,6 +17,8 @@ namespace MissionControllerEC
         [Persistent]internal int bodyNumber = 1;
         [Persistent]internal bool RevertOn = false;
         [Persistent]internal bool DebugMenu = false;
+        [Persistent]internal bool CivilianContractsOff = false;
+        [Persistent]internal bool allHistoricalContractsOff = false; 
 
         [Persistent]internal double contracSatelliteMaxApATrivial = 75000;
         [Persistent]internal double contracSatelliteMaxTotalHeightTrivial = 325000;

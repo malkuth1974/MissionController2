@@ -87,6 +87,20 @@ namespace MissionControllerEC
             GUILayout.Box("" + SaveInfo.NoLanderResearchContracts, MCE_ScenarioStartup.styleBlueBold, GUILayout.Width(75));
             SaveInfo.NoLanderResearchContracts = GUILayout.Toggle(SaveInfo.NoLanderResearchContracts, "Set", GUILayout.Width(25));
             GUILayout.EndHorizontal();
+
+            GUILayout.Space(10);
+            GUILayout.BeginHorizontal();
+            GUILayout.Box("No MCE Civilian Contracts", MCE_ScenarioStartup.StyleBold, GUILayout.Width(300));
+            GUILayout.Box("" + settings.CivilianContractsOff, MCE_ScenarioStartup.styleBlueBold, GUILayout.Width(75));
+            settings.CivilianContractsOff = GUILayout.Toggle(settings.CivilianContractsOff, "Set", GUILayout.Width(25));
+            GUILayout.EndHorizontal();
+
+            GUILayout.Space(10);
+            GUILayout.BeginHorizontal();
+            GUILayout.Box("No MCE Historic Contracts", MCE_ScenarioStartup.StyleBold, GUILayout.Width(300));
+            GUILayout.Box("" + settings.allHistoricalContractsOff, MCE_ScenarioStartup.styleBlueBold, GUILayout.Width(75));
+            settings.allHistoricalContractsOff = GUILayout.Toggle(settings.allHistoricalContractsOff, "Set", GUILayout.Width(25));
+            GUILayout.EndHorizontal();
            
             GUILayout.Space(10);
             GUILayout.BeginHorizontal();

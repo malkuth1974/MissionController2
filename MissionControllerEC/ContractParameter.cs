@@ -1537,7 +1537,7 @@ namespace MissionControllerEC
         }
     }
     #endregion
-    #region Time Countdown 
+    #region Time Countdown Orbits
     public class TimeCountdownOrbits : ContractParameter
     {
         public CelestialBody targetBody;
@@ -1648,6 +1648,118 @@ namespace MissionControllerEC
         }
     } 
      #endregion             
+    #region Time Countdown Landing
+    public class TimeCountdownLanding : ContractParameter
+    {
+        public CelestialBody targetBody;
+
+        public double diff;
+        public double savedTime;
+        public double missionTime;
+        public string contractTimeTitle = "Land Vessel and stay for amount of Time Specified: ";
+        public string vesselID = "none";
+
+        public bool setTime = true;
+        public bool timebool = false;
+
+        public TimeCountdownLanding()
+        {
+        }
+
+        public TimeCountdownLanding(CelestialBody target, double Mtime)
+        {
+            this.targetBody = target;
+            this.missionTime = Mtime;
+        }
+
+        public TimeCountdownLanding(CelestialBody target, double Mtime, string title)
+        {
+            this.targetBody = target;
+            this.missionTime = Mtime;
+            this.contractTimeTitle = title;
+        }
+
+        protected override string GetHashString()
+        {
+            return "Orbit " + targetBody.theName + " and conduct research.";
+        }
+        protected override string GetTitle()
+        {
+            return contractTimeTitle + Tools.formatTime(missionTime);
+        }
+
+        protected override void OnUpdate()
+        {
+            if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel.orbit.referenceBody.Equals(targetBody) && 
+                (FlightGlobals.ActiveVessel.situation == Vessel.Situations.LANDED || FlightGlobals.ActiveVessel.situation == Vessel.Situations.SPLASHED))
+            {
+                timebool = true;
+            }
+            if (timebool)
+            {
+                CheckIfOrbit(FlightGlobals.ActiveVessel);
+            }
+        }
+        protected override void OnLoad(ConfigNode node)
+        {
+            int bodyID = int.Parse(node.GetValue("targetBody"));
+            foreach (var body in FlightGlobals.Bodies)
+            {
+                if (body.flightGlobalsIndex == bodyID)
+                    targetBody = body;
+            }
+
+            savedTime = double.Parse(node.GetValue("savedtime"));
+            missionTime = double.Parse(node.GetValue("missiontime"));
+            diff = double.Parse(node.GetValue("diff"));
+
+            setTime = bool.Parse(node.GetValue("settime"));
+            timebool = bool.Parse(node.GetValue("timebool"));
+            vesselID = node.GetValue("vesid");
+        }
+        protected override void OnSave(ConfigNode node)
+        {
+            int bodyID = targetBody.flightGlobalsIndex;
+            node.AddValue("targetBody", bodyID);
+
+            node.AddValue("savedtime", savedTime);
+            node.AddValue("missiontime", missionTime);
+            node.AddValue("diff", diff);
+
+            node.AddValue("settime", setTime);
+            node.AddValue("timebool", timebool);
+            node.AddValue("vesid", vesselID);
+        }
+
+        private void CheckIfOrbit(Vessel vessel)
+        {
+            if (HighLogic.LoadedSceneIsFlight && setTime)
+            {
+                contractSetTime();
+                vesselID = vessel.id.ToString();
+            }
+
+            if (!setTime)
+            {
+                diff = Planetarium.GetUniversalTime() - savedTime;
+                if (HighLogic.LoadedSceneIsFlight && vessel.id.ToString() == vesselID)
+                {
+                    ScreenMessages.PostScreenMessage("Time Left To Complete: " + Tools.formatTime(missionTime - diff), .001f);
+                }
+
+                if (diff > missionTime)
+                {
+                    base.SetComplete();
+                }
+            }
+        }
+        public void contractSetTime()
+        {
+            savedTime = Planetarium.GetUniversalTime();
+            setTime = false;
+        }
+    }
+    #endregion             
     #region EVA Goal
     public class EvaGoal : ContractParameter
     {

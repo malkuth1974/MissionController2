@@ -197,7 +197,7 @@ namespace MissionControllerEC
             GameEvents.Contract.onContractsLoaded.Add(this.onContractLoaded);
             GameEvents.onCrewKilled.Add(this.chargeKerbalDeath);
             GameEvents.onKerbalTypeChange.Add(this.hireKerbals);
-            GameEvents.onGameSceneLoadRequested.Add(this.CheckRepairStatus);
+            GameEvents.onGameSceneLoadRequested.Add(this.CheckRandomContractTypes);
             //Debug.Log("MCE Awake");
             getSupplyList();
             LoadResourceDictionary();
@@ -215,7 +215,7 @@ namespace MissionControllerEC
             GameEvents.onCrewKilled.Remove(this.chargeKerbalDeath);
             GameEvents.onKerbalTypeChange.Remove(this.hireKerbals);
             GameEvents.Contract.onContractsLoaded.Remove(this.onContractLoaded);
-            GameEvents.onGameSceneLoadRequested.Remove(this.CheckRepairStatus);
+            GameEvents.onGameSceneLoadRequested.Remove(this.CheckRandomContractTypes);
             //Debug.Log("Game All values removed for MCE");
         }                
       
@@ -319,6 +319,18 @@ namespace MissionControllerEC
             if (GUILayout.Button("Set Luna3 Bool false"))
             {
                 SaveInfo.Luna16Done = false;
+            }
+            if (GUILayout.Button("Set Repair True"))
+            {
+                SaveInfo.RepairContractOn = true;
+            }
+            if (GUILayout.Button("Set Civilian Orbit True"))
+            {
+                SaveInfo.CivilianLowOrbit = true;
+            }
+            if (GUILayout.Button("Set Civilian Landing True"))
+            {
+                SaveInfo.CivilianLanding = true;
             }
 
             if (HighLogic.LoadedSceneIsEditor && GUILayout.Button("Price Out Vessel Parts"))

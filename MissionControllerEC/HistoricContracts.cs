@@ -25,6 +25,10 @@ namespace MissionControllerEC
 
         protected override bool Generate()
         {
+            if (settings.allHistoricalContractsOff)
+            {
+                return false;
+            }
             if (HighLogic.LoadedSceneIsFlight) { return false; }
             minHeight = settings.vostok12height;
             this.AddParameter(new PreLaunch(), null);   
@@ -157,6 +161,10 @@ namespace MissionControllerEC
 
         protected override bool Generate()
         {
+            if (settings.allHistoricalContractsOff)
+            {
+                return false;
+            }
             if (HighLogic.LoadedSceneIsFlight) { return false; }
             minHeight = settings.vostok12height;
             this.AddParameter(new PreLaunch(), null);
@@ -280,6 +288,10 @@ namespace MissionControllerEC
 
         protected override bool Generate()
         {
+            if (settings.allHistoricalContractsOff)
+            {
+                return false;
+            }
             if (HighLogic.LoadedSceneIsFlight) { return false; }
             minHeight = settings.voshodheight;
             this.AddParameter(new PreLaunch(), null);
@@ -389,6 +401,7 @@ namespace MissionControllerEC
     # region Luna 2
     public class Luna2 : Contract
     {
+        Settings settings = new Settings("config.cfg");
         public int crew = 0;
 
         CelestialBody targetBody = FlightGlobals.Bodies[2];
@@ -398,6 +411,10 @@ namespace MissionControllerEC
         ContractParameter luna3;
         protected override bool Generate()
         {
+            if (settings.allHistoricalContractsOff)
+            {
+                return false;
+            }
             if (HighLogic.LoadedSceneIsFlight) { return false; }
             this.AddParameter(new PreLaunch(), null);
             luna1 = this.AddParameter(new InOrbitGoal(targetBody), null);
@@ -519,6 +536,11 @@ namespace MissionControllerEC
         ContractParameter luna3;
         protected override bool Generate()
         {
+            Settings settings = new Settings("config.cfg");
+            if (settings.allHistoricalContractsOff)
+            {
+                return false;
+            }
             if (HighLogic.LoadedSceneIsFlight) { return false; }
             this.AddParameter(new PreLaunch(), null);
             luna1 = this.AddParameter(new InOrbitGoal(targetBody), null);
@@ -667,6 +689,10 @@ namespace MissionControllerEC
     
         protected override bool Generate()
         {
+            if (settings.allHistoricalContractsOff)
+            {
+                return false;
+            }
             totalContracts = ContractSystem.Instance.GetCurrentContracts<SkyLab1>().Count();
             if (totalContracts >= 1) { return false; }
             if (HighLogic.LoadedSceneIsFlight) { return false; }
@@ -786,6 +812,7 @@ namespace MissionControllerEC
     # region SkyLab 2
     public class SkyLab2 : Contract
     {
+        Settings settings = new Settings("config.cfg");
         public int crew = 3;
         public int contractTime = 605448;
         public string contractName = "Launch And Repair " + SaveInfo.skyLabName;
@@ -807,6 +834,10 @@ namespace MissionControllerEC
 
         protected override bool Generate()
         {
+            if (settings.allHistoricalContractsOff)
+            {
+                return false;
+            }
             totalContracts = ContractSystem.Instance.GetCurrentContracts<SkyLab2>().Count();
             if (HighLogic.LoadedSceneIsFlight) { return false; }
             if (totalContracts >= 1) { return false; }
@@ -944,6 +975,7 @@ namespace MissionControllerEC
     # region SkyLab 3
     public class SkyLab3 : Contract
     {
+        Settings settings = new Settings("config.cfg");
         public int crew = 3;
         public int contractTime = 1284336;
         public string contTimeTitle = " Must keep crew in orbit for ";
@@ -960,6 +992,10 @@ namespace MissionControllerEC
 
         protected override bool Generate()
         {
+            if (settings.allHistoricalContractsOff)
+            {
+                return false;
+            }
             totalContracts = ContractSystem.Instance.GetCurrentContracts<SkyLab3>().Count();
             if (HighLogic.LoadedSceneIsFlight) { return false; }
             if (totalContracts >= 1) { return false; }
@@ -1109,6 +1145,10 @@ namespace MissionControllerEC
 
         protected override bool Generate()
         {
+            if (settings.allHistoricalContractsOff)
+            {
+                return false;
+            }
             totalContracts = ContractSystem.Instance.GetCurrentContracts<SkyLab4>().Count();
             if (HighLogic.LoadedSceneIsFlight) { return false; }
             if (totalContracts >= 1) { return false; }

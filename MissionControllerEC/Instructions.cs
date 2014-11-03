@@ -19,12 +19,15 @@ namespace MissionControllerEC
         public bool showTons = false;
         public bool showMiniTons = false;
         public float vesselResourceTons;
+        public int currentContractType = 0;
 
         public static int supplyCount;
 
         public static List<SupplyVesselList> SupVes = new List<SupplyVesselList>();
 
         public static List<string> CivName = new List<string>();
+
+        Tools.MC2RandomWieghtSystem.Item<int>[] RandomContractsCheck;
         
         public void loadTextures()
         {
@@ -172,22 +175,60 @@ namespace MissionControllerEC
             {
                 Debug.Log("Planet name" + cb.theName + " Planet index " + cb.flightGlobalsIndex.ToString());
             }
+        }       
+
+        public void CheckRandomContractTypes(GameScenes gs)
+        {
+            randomContractsCheck();
+            currentContractType = Tools.MC2RandomWieghtSystem.PickOne<int>(RandomContractsCheck);
+            if (currentContractType == 0)
+            {
+                SaveInfo.RepairContractOn = false;
+                SaveInfo.CivilianLowOrbit = false;
+                SaveInfo.CivilianLanding = false;
+                Debug.Log("No random contracts at this time");
+            }            
+            if (currentContractType == 1)
+            {
+                SaveInfo.RepairContractOn = true;
+                SaveInfo.CivilianLowOrbit = false;
+                SaveInfo.CivilianLanding = false;
+                Debug.Log("Repair Contract Selected");
+            }            
+            if (currentContractType == 2)
+            {
+                SaveInfo.RepairContractOn = false;
+                SaveInfo.CivilianLowOrbit = true;
+                SaveInfo.CivilianLanding = false;
+                Debug.Log("Civilian Low Orbit Contract Selected");
+            }           
+            if (currentContractType == 3)
+            {
+                SaveInfo.RepairContractOn = false;
+                SaveInfo.CivilianLowOrbit = false;
+                SaveInfo.CivilianLanding = true;
+                Debug.Log("Civilian Landing Contract Selected");
+            }            
         }
 
-        public void CheckRepairStatus(GameScenes gs)
+        public void randomContractsCheck()
         {
-            int random = 100;
-            random = UnityEngine.Random.Range(0, 100);
-            //Chance of Repair Contract is 40 out of 200.
-            if (random >= settings.repairRandompercent)
-                SaveInfo.RepairContractOn = true;
-            else
-                SaveInfo.RepairContractOn = false;
-            //chance of Civilian Low Orbit Contract is 65 out of 200.
-            if (random >= settings.civilianLowOrbitPercent)
-                SaveInfo.CivilianLowOrbit = true;
-            else
-                SaveInfo.CivilianLowOrbit = false;
+            RandomContractsCheck = new Tools.MC2RandomWieghtSystem.Item<int>[4];
+            RandomContractsCheck[0] = new Tools.MC2RandomWieghtSystem.Item<int>();
+            RandomContractsCheck[0].weight = 20;
+            RandomContractsCheck[0].value = 0;
+
+            RandomContractsCheck[1] = new Tools.MC2RandomWieghtSystem.Item<int>();
+            RandomContractsCheck[1].weight = 20;
+            RandomContractsCheck[1].value = 1;
+
+            RandomContractsCheck[2] = new Tools.MC2RandomWieghtSystem.Item<int>();
+            RandomContractsCheck[2].weight = 40;
+            RandomContractsCheck[2].value = 2;
+
+            RandomContractsCheck[3] = new Tools.MC2RandomWieghtSystem.Item<int>();
+            RandomContractsCheck[3].weight = 20;
+            RandomContractsCheck[3].value = 3;           
         }
 
         public void GetPartsCost()
