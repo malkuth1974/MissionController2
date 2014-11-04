@@ -29,6 +29,35 @@ namespace MissionControllerEC
             newValue = seconds / (24.0 * 60.0 * 60.0);
             return newValue;
         }
+        public static String ConvertMinsHours(double seconds)
+        {          
+            int h = (int)(seconds / (60.0 * 60.0));
+            seconds = seconds % (60.0 * 60.0);
+            int m = (int)(seconds / (60.0));
+            seconds = seconds % (60.0);
+
+            List<String> parts = new List<String>();                     
+
+            if (h > 0)
+            {
+                parts.Add(String.Format("{0}:hours ", h));
+            }
+
+            if (m > 0)
+            {
+                parts.Add(String.Format("{0}:mins ", m));
+            }            
+
+            if (parts.Count > 0)
+            {
+                return String.Join(" ", parts.ToArray());
+            }
+            else
+            {
+                return "0s";
+            }
+
+        }
         public static double DivisionBy2Numbers(double val, double val2)
         {
             double divnum;

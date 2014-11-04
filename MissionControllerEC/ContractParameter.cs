@@ -356,7 +356,7 @@ namespace MissionControllerEC
         }
         protected override string GetTitle()
         {
-            return "Reach Orbital Period Between: " + Tools.formatTime(maxOrbitalPeriod) + " and: " + Tools.formatTime(minOrbitalPeriod);
+            return "Reach Orbital Period Between: " + Tools.ConvertMinsHours(maxOrbitalPeriod) + " and: " + Tools.ConvertMinsHours(minOrbitalPeriod);
         }
         
         protected override void OnUpdate()
@@ -1548,6 +1548,8 @@ namespace MissionControllerEC
         public string contractTimeTitle = "Reach Orbit and stay for amount of Time Specified: ";
         public string vesselID = "none";
 
+        public bool PreFlightCheck = false;
+
         public bool setTime = true;
         public bool timebool = false;
 
@@ -1558,7 +1560,7 @@ namespace MissionControllerEC
         public TimeCountdownOrbits(CelestialBody target, double Mtime)
         {
             this.targetBody = target;
-            this.missionTime = Mtime;
+            this.missionTime = Mtime;            
         }
 
         public TimeCountdownOrbits(CelestialBody target, double Mtime, string title)
@@ -1567,7 +1569,7 @@ namespace MissionControllerEC
             this.missionTime = Mtime;
             this.contractTimeTitle = title;
         }
-
+       
         protected override string GetHashString()
         {
             return "Orbit " + targetBody.theName + " and conduct research.";
@@ -1579,9 +1581,17 @@ namespace MissionControllerEC
 
         protected override void OnUpdate()
         {
-            if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel.orbit.referenceBody.Equals(targetBody) && FlightGlobals.ActiveVessel.situation == Vessel.Situations.ORBITING)
+            if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel.situation == Vessel.Situations.PRELAUNCH)
             {
-                timebool = true;
+                PreFlightCheck = true;
+                
+            }
+            if (PreFlightCheck)
+            {
+                if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel.orbit.referenceBody.Equals(targetBody) && FlightGlobals.ActiveVessel.situation == Vessel.Situations.ORBITING)
+                {
+                    timebool = true;
+                }
             }
             if (timebool)
             {
@@ -1604,6 +1614,8 @@ namespace MissionControllerEC
             setTime = bool.Parse(node.GetValue("settime"));
             timebool = bool.Parse(node.GetValue("timebool"));
             vesselID = node.GetValue("vesid");
+
+            PreFlightCheck = bool.Parse(node.GetValue("preflightcheck"));
         }
         protected override void OnSave(ConfigNode node)
         {
@@ -1617,6 +1629,9 @@ namespace MissionControllerEC
             node.AddValue("settime", setTime);
             node.AddValue("timebool", timebool);
             node.AddValue("vesid", vesselID);
+
+            node.AddValue("preflightcheck", PreFlightCheck);
+
         }
 
         private void CheckIfOrbit(Vessel vessel)

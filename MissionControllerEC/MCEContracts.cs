@@ -943,8 +943,8 @@ namespace MissionControllerEC
     {
         Settings st = new Settings("Config.cfg");
         CelestialBody targetBody = null;
-        public double GMaxOrbital = 21599;
-        public double GMinOrbital = 21601;
+        public double GMaxOrbital = 21698;
+        public double GMinOrbital = 21598;
 
         public int crewCount = 0;
 
@@ -1044,16 +1044,9 @@ namespace MissionControllerEC
             timeOnStation = UnityEngine.Random.Range(102400, 900000);
 
             bool parttechUnlock = ResearchAndDevelopment.GetTechnologyState("advConstruction") == RDTech.State.Available;
-            int bodyrandom = UnityEngine.Random.Range(1, 3);
-            int bodyrandomchance = UnityEngine.Random.Range(0, 100);
-            if (bodyrandomchance > 60)
-            {
-                targetBody = FlightGlobals.Bodies[bodyrandom];
-            }
-            else
-            {
-                targetBody = Planetarium.fetch.Home;
-            }
+                      
+            targetBody = Planetarium.fetch.Home;
+            
             this.AddParameter(new PreLaunch(), null);           
             this.satellite2 = this.AddParameter(new OrbitalPeriod(GMinOrbital, GMaxOrbital), null);
             satellite2.SetFunds(8000, 8000, targetBody);
