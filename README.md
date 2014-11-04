@@ -6,7 +6,7 @@ drop development of the original mission controller and develop a system based o
 is a complete Rewrite and original work of Malkuth.  The only thing Mission Controller and MissionController 2 share is the name.
 
 
-New Contract Types:
+##New Contract Types:
 
 *NEW 1.07 Civilian tours, bring civilian Kerbals on low Orbit tour of Kerbin.
 *Deliver Satellite for A company (build your own)
