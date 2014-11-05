@@ -1,7 +1,7 @@
 ##MissionController2
 ==================
 
-MissionController 2 is the predecessor to the original Mission Controller.  Once Kerbal Space Program released its own contracts I decided to drop development of the original mission controller and develop a system based off the KSP contract system.  The following code is a complete Rewrite and original work of Malkuth.  The only thing Mission Controller and MissionController 2 share is the name.
+MissionController 2 is the successor to the original Mission Controller.  Once Kerbal Space Program released its own contracts I decided to drop development of the original mission controller and develop a system based off the KSP contract system.  The following code is a complete Rewrite and original work of Malkuth.  The only thing Mission Controller and MissionController 2 share is the name.
 
 
 ##New Contract Types:
