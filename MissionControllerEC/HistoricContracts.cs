@@ -848,7 +848,7 @@ namespace MissionControllerEC
             skylab1.SetFunds(7000, targetBody);
             skylab1.SetReputation(5, targetBody);
 
-            this.skylab2 = this.AddParameter(new RepairPanelPartCheck(contractName), null);
+            this.skylab2 = this.AddParameter(new RepairPanelPartCheck(contractName,SaveInfo.skyLabVesID,SaveInfo.skyLabName), null);
             skylab2.SetFunds(8000, targetBody);
             skylab2.SetReputation(7, targetBody);
             skylab2.SetScience(10, targetBody);

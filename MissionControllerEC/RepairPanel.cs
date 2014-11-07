@@ -14,8 +14,14 @@ namespace MissionControllerEC
         [KSPField(isPersistant = true)]
         public double currentRepair = 0;
 
+        [KSPField(isPersistant = true)]
+        public static string vesselId = "Test";
+
+        [KSPField(isPersistant = true)]
+        public static string vesselName = "TestName";
+
         [KSPField(isPersistant = false)]
-        public double repairRate = .1;
+        public double repairRate = 1;
 
         public bool startrepair = false;
        
@@ -40,22 +46,24 @@ namespace MissionControllerEC
             this.part.force_activate();            
         }
 
-        [KSPField(isPersistant = false, guiActive = true, guiName = "Ready To Repair")]
+        [KSPField(isPersistant = true, guiActive = true, guiName = "Ready To Repair")]
         public bool readyRep = false;
 
-        [KSPEvent(guiActive = true, guiName = "Check If Systems is Ready For Repair", active = true)]
+        [KSPEvent(externalToEVAOnly = true, unfocusedRange = 4f, guiActiveUnfocused = true, guiName = "CheckSystems", active = false)]
         public void CheckSystems()
         {
-            currentRepair = this.part.Resources.Get(PartResourceLibrary.Instance.GetDefinition("repairParts").id).amount;
-
-            if (currentRepair < 1)
+            currentRepair = this.part.Resources.Get(PartResourceLibrary.Instance.GetDefinition("SpareParts").id).amount; 
+            if (currentRepair == 0)
             {
-                ScreenMessages.PostScreenMessage("You need to Transfer Repair Parts to the Repair Panel To Proceed",5f);
+                ScreenMessages.PostScreenMessage("You need to Transfer SpareParts to the Repair Panel To Proceed", 5f);               
             }
             else
             {
                 readyRep = true;
-                ScreenMessages.PostScreenMessage("Vessel Preped for Repair, EVA to the repair Panel and open the Panel.  Then conduct the repair",5f); 
+                vesselId = this.part.vessel.id.ToString();
+                vesselName = this.part.vessel.name;
+                Debug.LogError("Vessel Id For PartModule is " + vesselId + " Name is " + vesselName);
+                ScreenMessages.PostScreenMessage("Vessel Preped for Repair open the Panel.  Then conduct the repair", 5f);                
             }
 
             
@@ -64,15 +72,15 @@ namespace MissionControllerEC
         [KSPEvent(externalToEVAOnly = true, unfocusedRange = 4f, guiActiveUnfocused = true, guiName = "Start Repairs", active = false)]
         public void EnableRepair()
         {
-            if (readyRep && currentRepair == 1)
+            if (readyRep && currentRepair > 0)
             {
-                this.part.RequestResource("repairParts", repairRate);
+                this.part.RequestResource("SpareParts", repairRate);
                 repair = true;
                 Debug.Log("repairEnabled");
-                ScreenMessages.PostScreenMessage("Repairs Started and Finsished.  Good Job",5f);
+                ScreenMessages.PostScreenMessage("Repairs Started and Finsished using Spare Parts.  Good Job", 5f);
                 readyRep = false;
             }
-            else ScreenMessages.PostScreenMessage("You must first prep the repair panel inside the vessel, when inside right click part and choose Check If Systems Is Ready For Repair",5f);
+            else { ScreenMessages.PostScreenMessage("You must first CheckSystems on the repair panel While on EVA. Right click part and choose Check If Systems Is Ready For Repair", 5f); }
         }
 
         [KSPEvent(externalToEVAOnly = true, unfocusedRange = 4f, guiActiveUnfocused = true, guiName = "Open Door", active = true, guiActiveEditor = true)]
@@ -82,6 +90,7 @@ namespace MissionControllerEC
             Events["OpenDoor"].active = false;
             Events["EnableRepair"].active = true;
             Events["closeDoor"].active = true;
+            Events["CheckSystems"].active = true;
         }
 
         [KSPEvent(externalToEVAOnly = true, unfocusedRange = 4f, guiActiveUnfocused = true, guiName = "Close Door", active = false, guiActiveEditor = true)]
@@ -91,6 +100,7 @@ namespace MissionControllerEC
             Events["OpenDoor"].active = true;
             Events["EnableRepair"].active = false;
             Events["closeDoor"].active = false;
+            Events["CheckSystems"].active = false;
         }       
 
         [KSPAction("Start repair")]

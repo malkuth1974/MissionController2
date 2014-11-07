@@ -1184,13 +1184,13 @@ namespace MissionControllerEC
         string vesselID;
         string vesselName;
         bool NoVessel = false;
-        string titleName = "Repair Vessel";
+        string titleName = "Repair Vessel ";
 
         double maxApA;
-        string repairParts = "repairParts";
+        string repairParts = "SpareParts";
+
         double RPamount = 1;
 
-        ContractParameter repairgoal1;
         ContractParameter repairgoal2;
 
         string Ctitle = "To Repair Vessel You must have at Least ";
@@ -1311,11 +1311,8 @@ namespace MissionControllerEC
                 base.SetReputation(20f, 25f, targetBody);
                 base.SetScience(20.0f, targetBody);
             }
-
-            this.repairgoal1 = this.AddParameter(new TargetDockingGoal(vesselID,vesselName), null);
-            repairgoal1.SetFunds(5000, targetBody);
-            repairgoal1.SetReputation(5, targetBody);
-            this.repairgoal2 = this.AddParameter(new RepairPanelPartCheck(titleName), null);
+           
+            this.repairgoal2 = this.AddParameter(new RepairPanelPartCheck(titleName,vesselID,vesselName), null);
             repairgoal2.SetFunds(8000, targetBody);
             repairgoal2.SetReputation(10, targetBody);
             this.AddParameter(new ResourceSupplyGoal(repairParts, RPamount,Ctitle), null);

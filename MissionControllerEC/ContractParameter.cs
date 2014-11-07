@@ -652,8 +652,7 @@ namespace MissionControllerEC
         protected override void OnLoad(ConfigNode node)
         {
             targetDockingID = node.GetValue("VesselID");
-            targetDockingName = node.GetValue("VesselName");
-
+            targetDockingName = node.GetValue("VesselName");           
         }
         protected override void OnSave(ConfigNode node)
         {
@@ -794,46 +793,96 @@ namespace MissionControllerEC
     public class RepairPanelPartCheck : ContractParameter
     {
         string TitleName;
+        string ShipVesselID;
+        string ShipName;
+        public string SavedOriginalID = "NONE";
         //bool must be static and global for check.
 
         public RepairPanelPartCheck()
         {
         }
 
-        public RepairPanelPartCheck(string title)
+        public RepairPanelPartCheck(string title, string vesselId, string vesselName)
         {
             this.TitleName = title;
+            this.ShipVesselID = vesselId;
+            this.ShipName = vesselName;
         }
 
         protected override string GetHashString()
         {
-            return TitleName;
+            return TitleName + " " + ShipName;
         }
         protected override string GetTitle()
         {
-            return TitleName;
+            return TitleName + " " + ShipName;
         }
 
         protected override void OnUpdate()
         {
-            if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel)
+            if (HighLogic.LoadedSceneIsFlight)
             CheckIfRepaired(FlightGlobals.ActiveVessel);
         }
+
+        protected override void OnRegister()
+        {
+            GameEvents.onPartCouple.Add(onPartCouple);
+        }
+        protected override void OnUnregister()
+        {
+            GameEvents.onPartCouple.Remove(onPartCouple);
+        }
+       
         protected override void OnLoad(ConfigNode node)
         {
             TitleName = node.GetValue("titlename");
+            ShipVesselID = node.GetValue("vesselid");
+            ShipName = node.GetValue("shipname");
+            SavedOriginalID = node.GetValue("savedid");
         }
         protected override void OnSave(ConfigNode node)
         {
             node.AddValue("titlename", TitleName);
+            node.AddValue("vesselid", ShipVesselID);
+            node.AddValue("shipname", ShipName);
+            node.AddValue("savedid", SavedOriginalID);
         }
 
         private void CheckIfRepaired(Vessel name)
         {
-
-            if (name.isActiveVessel && RepairPanel.repair)
+            if (SavedOriginalID == "NONE")
             {
-                base.SetComplete();
+                SavedOriginalID = ShipVesselID;
+            }
+            //Debug.LogError("Does ID's Match? " + ShipVesselID+ " and " + RepairPanel.vesselId + " Backup " + SavedOriginalID);
+            if (ShipVesselID == RepairPanel.vesselId || SavedOriginalID == RepairPanel.vesselId)
+            {
+                if (RepairPanel.repair)
+                {
+                    base.SetComplete();
+                }
+            }         
+        }
+
+        private void onPartCouple(GameEvents.FromToAction<Part, Part> action)
+        {
+            if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel)
+            {
+                Debug.LogError("Docked FROM: " + action.from.vessel.vesselName);
+                Debug.LogError("Docked TO: " + action.to.vessel.vesselName);
+
+                Debug.LogError("Docked TO Type Vessel: " + action.to.vessel.vesselType);
+
+                Debug.LogError("Docked FROM ID: " + action.from.vessel.id.ToString());
+                Debug.LogError("Docked TO ID: " + action.to.vessel.id.ToString());
+
+                if (action.from.vessel.id.ToString() == ShipVesselID || action.to.vessel.id.ToString() == ShipVesselID)
+                {
+                    Debug.Log("saved vessel Id Changed to new docking ID for vessel " + ShipName);
+                    ShipVesselID = action.from.vessel.id.ToString();
+                    SavedOriginalID = action.to.vessel.id.ToString();
+                }
+                else Debug.Log("Docked to vessel was not repair vessel, no ID change needed");
             }
         }
     }
@@ -1451,6 +1500,7 @@ namespace MissionControllerEC
         public string targetName;
         public double ResourceAmount = 0.0f;
         public string contractTitle;
+        public double resources = 0;
 
         public ResourceSupplyGoal()
         {
@@ -1462,75 +1512,56 @@ namespace MissionControllerEC
             this.ResourceAmount = RsAmount;
             this.contractTitle = Ctitle;
         }
+        
         protected override string GetHashString()
         {
             return targetName;
         }
         protected override string GetTitle()
         {
-            return contractTitle + " "  + ResourceAmount + " " + targetName;
+             return contractTitle + " " + ResourceAmount + " " + targetName;           
         }
 
-        protected override void OnRegister()
+        protected override void OnUpdate()
         {
-            GameEvents.onPartCouple.Add(OnResourceCheck);
+            if (HighLogic.LoadedSceneIsFlight)
+                OnResourceCheck(FlightGlobals.ActiveVessel);
         }
-        protected override void OnUnregister()
-        {
-            GameEvents.onPartCouple.Remove(OnResourceCheck);
-        }
-
+        
         protected override void OnLoad(ConfigNode node)
         {
 
             targetName = node.GetValue("targetname");
-            ResourceAmount = float.Parse(node.GetValue("resourceamount"));            
+            ResourceAmount = float.Parse(node.GetValue("resourceamount"));
+            contractTitle = node.GetValue("contracttitle");
         }
         protected override void OnSave(ConfigNode node)
         {
 
             node.AddValue("targetname", targetName);
-            node.AddValue("resourceamount", ResourceAmount);            
+            node.AddValue("resourceamount", ResourceAmount);
+            node.AddValue("contracttitle", contractTitle);
         }
-
-        private void onPartCouple(GameEvents.FromToAction<Part, Part> action)
+      
+        private void OnResourceCheck(Vessel v)
         {
-            if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel)
-            {
-                Debug.LogError("Docked FROM: " + action.from.vessel.vesselName);
-                Debug.LogError("Docked TO: " + action.to.vessel.vesselName);
-
-                Debug.LogError("Docked TO Type Vessel: " + action.to.vessel.vesselType);
-
-                Debug.LogError("Docked FROM ID: " + action.from.vessel.id.ToString());
-                Debug.LogError("Docked TO ID: " + action.to.vessel.id.ToString());
-                base.SetComplete();
-            }
-        }
-
-        private void OnResourceCheck(GameEvents.FromToAction<Part, Part> action)
-        {
-            if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel)
-            {
-                double resources = 0;
-
-                if (FlightGlobals.ActiveVessel != null)
+            if (FlightGlobals.ActiveVessel)
+            {              
+                foreach (Part p in FlightGlobals.ActiveVessel.parts)
                 {
-                    foreach (Part p in FlightGlobals.ActiveVessel.parts)
+                    if (p.Resources[targetName] != null)
                     {
-                        if (p.Resources[targetName] != null)
-                        {
-                            resources += p.Resources[targetName].amount;
-                        }
-                    }
-                    if (resources > 0)
+                        resources = p.Resources[targetName].amount;
+                    }                   
+                }
+                if (resources > 0)
+                {
+                    if (resources >= ResourceAmount)
                     {
-                        if (resources >= ResourceAmount)
-                        {
-                            base.SetComplete();
-                        }
+                        base.SetComplete();
                     }
                 }
+
 
 
             }
