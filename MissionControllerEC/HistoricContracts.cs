@@ -24,11 +24,7 @@ namespace MissionControllerEC
         ContractParameter vostok3;
 
         protected override bool Generate()
-        {
-            if (settings.allHistoricalContractsOff)
-            {
-                return false;
-            }
+        {           
             if (HighLogic.LoadedSceneIsFlight) { return false; }
             minHeight = settings.vostok12height;
             this.AddParameter(new PreLaunch(), null);   
@@ -138,7 +134,7 @@ namespace MissionControllerEC
 
         public override bool MeetRequirements()
         {
-            if (SaveInfo.Vostok1Done == true) { return false; }
+            if (SaveInfo.Vostok1Done == true || settings.all_Historical_Contracts_Off == true) { return false; }
             else { return true; }
         }
     }
@@ -161,10 +157,7 @@ namespace MissionControllerEC
 
         protected override bool Generate()
         {
-            if (settings.allHistoricalContractsOff)
-            {
-                return false;
-            }
+            
             if (HighLogic.LoadedSceneIsFlight) { return false; }
             minHeight = settings.vostok12height;
             this.AddParameter(new PreLaunch(), null);
@@ -265,7 +258,7 @@ namespace MissionControllerEC
 
         public override bool MeetRequirements()
         {
-            if (SaveInfo.Vostok2Done == true) { return false; }
+            if (SaveInfo.Vostok2Done == true || settings.all_Historical_Contracts_Off == true) { return false; }
             if (SaveInfo.Vostok1Done == false) { return false; }
             else { return true; }
         }
@@ -287,11 +280,7 @@ namespace MissionControllerEC
         ContractParameter vostok4;
 
         protected override bool Generate()
-        {
-            if (settings.allHistoricalContractsOff)
-            {
-                return false;
-            }
+        {        
             if (HighLogic.LoadedSceneIsFlight) { return false; }
             minHeight = settings.voshodheight;
             this.AddParameter(new PreLaunch(), null);
@@ -392,7 +381,7 @@ namespace MissionControllerEC
 
         public override bool MeetRequirements()
         {
-            if (SaveInfo.Voskhod2Done == true) { return false; }
+            if (SaveInfo.Voskhod2Done == true || settings.all_Historical_Contracts_Off == true) { return false; }
             if (SaveInfo.Vostok2Done == false) { return false; }
             else { return true; }
         }
@@ -410,11 +399,7 @@ namespace MissionControllerEC
         ContractParameter luna2;
         ContractParameter luna3;
         protected override bool Generate()
-        {
-            if (settings.allHistoricalContractsOff)
-            {
-                return false;
-            }
+        {          
             if (HighLogic.LoadedSceneIsFlight) { return false; }
             this.AddParameter(new PreLaunch(), null);
             luna1 = this.AddParameter(new InOrbitGoal(targetBody), null);
@@ -518,7 +503,7 @@ namespace MissionControllerEC
 
         public override bool MeetRequirements()
         {
-            if (SaveInfo.Luna2Done == true) { return false; }
+            if (SaveInfo.Luna2Done == true || settings.all_Historical_Contracts_Off == true) { return false; }
             if (SaveInfo.Voskhod2Done == false) { return false; }
             else { return true; }
         }
@@ -527,20 +512,17 @@ namespace MissionControllerEC
     # region Luna 16
     public class Luna16 : Contract
     {
+        Settings settings = new Settings("config.cfg");
         public int crew = 0;
-
         CelestialBody targetBody = FlightGlobals.Bodies[2];
-
         ContractParameter luna1;
         ContractParameter luna2;
         ContractParameter luna3;
+
         protected override bool Generate()
         {
             Settings settings = new Settings("config.cfg");
-            if (settings.allHistoricalContractsOff)
-            {
-                return false;
-            }
+            
             if (HighLogic.LoadedSceneIsFlight) { return false; }
             this.AddParameter(new PreLaunch(), null);
             luna1 = this.AddParameter(new InOrbitGoal(targetBody), null);
@@ -650,10 +632,365 @@ namespace MissionControllerEC
 
         public override bool MeetRequirements()
         {
-            if (SaveInfo.Luna16Done == true) { return false; }
+            if (SaveInfo.Luna16Done == true || settings.all_Historical_Contracts_Off == true) { return false; }
             if (SaveInfo.Luna2Done == false) { return false; }
             else { return true; }
         }
+    }
+    #endregion
+    # region Agena Contract 1
+    public class AgenaTargetPracticeContract : Contract
+    {
+        Settings st = new Settings("Config.cfg");
+        CelestialBody targetBody = null;
+        public double GMaxApA = 0;
+        public double GMinApA = 0;
+        public double GMaxPeA = 0;
+        public double GMinPeA = 0;
+        public int crewCount = 0;
+        public string partName = "ModuleDockingNode";
+        public string ModuleTitle = "Any Docking Port";
+        public int totalContracts;
+        public int TotalFinished;
+        public int Agena1Done;
+
+        ContractParameter AgenaParameter;
+
+        protected override bool Generate()
+        {
+            if (HighLogic.LoadedSceneIsFlight) { return false; }
+            totalContracts = ContractSystem.Instance.GetCurrentContracts<AgenaTargetPracticeContract>().Count();
+            Agena1Done = ContractSystem.Instance.GetCompletedContracts<AgenaTargetPracticeContract>().Count();
+
+            //Debug.Log("Satellite Delivery Totalcontracts " + totalContracts + " - " + " Total Finsihed " + TotalFinished);
+            if (Agena1Done == 1 || SaveInfo.Agena1Done)
+            {
+                return false;
+            }
+            if (totalContracts >= 1)
+            {
+                //Debug.Log("contract is generated right now terminating Normal Satellite Mission");
+                //Debug.Log("count is " + totalContracts);
+                return false;
+            }
+            targetBody = Planetarium.fetch.Home;
+            GMaxApA = UnityEngine.Random.Range((int)st.contrac_Satellite_Max_ApA_Trivial, (int)st.contrac_Satellite_Max_Total_Height_Trivial + (int)st.contrac_Satellite_Max_ApA_Trivial);
+            GMinApA = GMaxApA - st.contrac_Satellite_Between_Difference;
+            GMaxPeA = GMaxApA;
+            GMinPeA = GMinApA;
+
+            AgenaParameter = this.AddParameter(new AgenaInOrbit(targetBody), null);
+            AgenaParameter.SetFunds(2000.0f, targetBody);
+            AgenaParameter.SetReputation(20f, targetBody);
+            this.AddParameter(new ApAOrbitGoal(targetBody, (double)GMaxApA, (double)GMinApA), null);
+            this.AddParameter(new PeAOrbitGoal(targetBody, (double)GMaxPeA, (double)GMinPeA), null);
+            this.AddParameter(new ModuleGoal(partName, ModuleTitle), null);
+            this.AddParameter(new GetCrewCount(crewCount), null);
+
+            base.SetExpiry(15f, 35f);
+            base.SetScience(25f, targetBody);
+            base.SetDeadlineDays(19f, targetBody);
+            base.SetReputation(35f, 35f, targetBody);
+            base.SetFunds(28000f * st.Contract_Payment_Multiplier, 54000f * st.Contract_Payment_Multiplier, 39000f * st.Contract_Payment_Multiplier, targetBody);
+
+            return true;
+        }
+
+        protected override void OnAccepted()
+        {
+            string AgenaMessage = "Please Take Note when you finish the Agena Contract that vessel will be recorded as the Agena Vessel for next mission!\n\n" +
+                "if the wrong vessel is recorded you can change the vessel by using the Debug Tools in settings for Agena Contract";
+            MessageSystem.Message m = new MessageSystem.Message("Important Agena Target Contract Information", AgenaMessage.ToString(), MessageSystemButton.MessageButtonColor.YELLOW, MessageSystemButton.ButtonIcons.MESSAGE);
+            MessageSystem.Instance.AddMessage(m);
+        }
+
+        public override bool CanBeCancelled()
+        {
+            return true;
+        }
+        public override bool CanBeDeclined()
+        {
+            return true;
+        }
+
+        protected override string GetHashString()
+        {
+            return targetBody.bodyName + GMaxApA.ToString() + GMinApA.ToString();
+        }
+        protected override string GetTitle()
+        {
+            return "Agena Target Vehicle Orbital Test Around Kerbin - Launch Agena Vehicle";
+        }
+        protected override string GetDescription()
+        {
+
+            return "The Agena Target Vehicle (ATV) was an unmanned spacecraft used by NASA during its Gemini program to develop and practice orbital space rendezvous and docking techniques and\n" +
+                "to perform large orbital changes, in preparation for the Apollo program lunar missions.\n\n" +
+                "Your first task is to launch an Agena Type vehicle into orbit\n\n" +
+                "Please Take Note when you finish the Agena Contract that vessel will be recorded as the Agena Vessel for next mission!";
+        }
+        protected override string GetSynopsys()
+        {
+            return "Agena Test " + targetBody.theName;
+        }
+        protected override string MessageCompleted()
+        {
+            SaveInfo.Agena1Done = true;
+            SaveInfo.AgenaTargetVesselID = FlightGlobals.ActiveVessel.id.ToString();
+            SaveInfo.AgenaTargetVesselName = FlightGlobals.ActiveVessel.vesselName.Replace("(unloaded)", "");
+            return FlightGlobals.ActiveVessel.name + " Vessel ID is " + FlightGlobals.ActiveVessel.id + "\n\n" +
+                "If this is not correct you can change this is Debug menu using select Agena vessel Debug Tool\n\n" +
+                "Congradulations you have succesfully launched your Agena Target Vehicle, now you must get you Manned Orbital vehicle to Dock with the ATV\n\n" +
+                "The Gemini-Agena Target Vehicle design was an adaptation of the basic Agena-D vehicle using the alternate Model 8247 rocket engine and additional program-peculiar equipment required for the Gemini mission.\n" +
+                "This GATV was divided into:\n\n" +
+
+"The program-peculiar forward auxiliary section. This section consisted of the auxiliary equipment rack, the McDonnell Aircraft Company-furnished docking-adapter module, and the clamshell nose shroud.\n" +
+"The Agena-D forward and mid-body sections. The Agena-D forward section housed the main equipment bay, and the mid-body contained the main fuel and oxidizer tanks which supplied propellants through a feed and\n" +
+"load system for the main engine. (3) the program-peculiar aft section. The Model 8247 multi-start main engine and the smaller Model 8250 maneuvering and ullage orientation engines were located in this section.\n" +
+"Orbital length of the GATV was approximately 26 feet. Vehicle weight-on-orbit was approximately 7200 lb. This weight included propellants still remaining in the main tanks and available for Model 8247 engine operation\n" +
+"after the Agena achieved orbit.\n\n" +
+"The Gemini-ATV propulsion system consisted of the following:\n\n" +
+
+"Model 8247 rocket engine, also known as XLR-81-BA-13, and its controls, mount, gimbals, and titanium nozzle extension\n" +
+"Pyrotechnically operated helium-control valve (POHCV) and associated pressurization plumbing\n" +
+"Fuel and oxidizer feed and load system, including propellant tanks, vents, and fill quick disconnects\n" +
+"Propellant isolation valves (PIV's)\n" +
+"All associated pyro devices and solid-propellant rockets.\n\n" +
+"All Information For Agena was Gathered From www.astronautix.com";
+        }
+
+        protected override void OnLoad(ConfigNode node)
+        {
+            int bodyID = int.Parse(node.GetValue("targetBody"));
+            foreach (var body in FlightGlobals.Bodies)
+            {
+                if (body.flightGlobalsIndex == bodyID)
+                    targetBody = body;
+            }
+            double maxApa = double.Parse(node.GetValue("maxaPa"));
+            GMaxApA = maxApa;
+            double minApa = double.Parse(node.GetValue("minaPa"));
+            GMinApA = minApa;
+
+            double masxPpaID = double.Parse(node.GetValue("maxpEa"));
+            GMaxPeA = masxPpaID;
+            double minPeAID = double.Parse(node.GetValue("minpEa"));
+            GMinPeA = minPeAID;
+
+            ModuleTitle = node.GetValue("moduletitle");
+            partName = node.GetValue("pName");
+            crewCount = int.Parse(node.GetValue("crewcount"));
+
+        }
+        protected override void OnSave(ConfigNode node)
+        {
+            int bodyID = targetBody.flightGlobalsIndex;
+            node.AddValue("targetBody", bodyID);
+
+            double maxApa = GMaxApA;
+            node.AddValue("maxaPa", GMaxApA);
+            double minApa = GMinApA;
+            node.AddValue("minaPa", GMinApA);
+
+            double maxPpAID = GMaxPeA;
+            node.AddValue("maxpEa", GMaxPeA);
+            double MinPeAID = GMinPeA;
+            node.AddValue("minpEa", GMinPeA);
+
+
+
+            string pname = partName;
+            node.AddValue("pName", partName);
+            node.AddValue("moduletitle", ModuleTitle);
+
+            node.AddValue("crewcount", crewCount);
+        }
+
+        //for testing purposes
+        public override bool MeetRequirements()
+        {
+            bool techUnlock = ResearchAndDevelopment.GetTechnologyState("specializedConstruction") == RDTech.State.Available;
+            if (!techUnlock || st.all_Historical_Contracts_Off == true)
+                return false;
+            else
+                return true;
+        }
+
+
+    }
+    #endregion
+    # region Agena Contract 2
+    public class AgenaTargetPracticeContractDocking : Contract
+    {
+        Settings st = new Settings("Config.cfg");
+        CelestialBody targetBody = null;
+        public int crewCount = 1;
+        public int partAmount = 1;
+        public string partName = "Clamp-O-Tron Docking Port";
+        public double GMaxApA = 0;
+        public double GMinApA = 0;
+        public double GMaxPeA = 0;
+        public double GMinPeA = 0;
+        public string vesselTestID = "none";
+        public string vesselTestName = "none";
+        public int totalContracts;
+        public int Agena1Done;
+        public int Agena2Done;
+        ContractParameter AgenaDockParameter;
+
+
+        protected override bool Generate()
+        {
+            totalContracts = ContractSystem.Instance.GetCurrentContracts<AgenaTargetPracticeContractDocking>().Count();
+            Agena1Done = ContractSystem.Instance.GetCompletedContracts<AgenaTargetPracticeContract>().Count();
+            Agena2Done = ContractSystem.Instance.GetCompletedContracts<AgenaTargetPracticeContractDocking>().Count();
+
+            //Debug.Log("Satellite Delivery Totalcontracts " + totalContracts + " - " + " Total Finsihed " + TotalFinished)
+            if (Agena1Done != 1 || Agena2Done == 1 || SaveInfo.Agena2Done)
+            {
+                //Debug.Log("Agena 1 Is not Done Yet, rejecting Contract 2 Docking");
+                return false;
+            }
+            if (totalContracts >= 1)
+            {
+                //Debug.Log("Agena 2 is already loaded.");
+                return false;
+            }
+            targetBody = Planetarium.fetch.Home;
+            GMaxApA = UnityEngine.Random.Range((int)st.contrac_Satellite_Max_ApA_Except, (int)st.contrac_Satellite_Max_ApA_Except + (int)st.contrac_Satellite_Max_Total_Height_Except);
+            GMinApA = GMaxApA - st.contrac_Satellite_Between_Difference;
+            GMaxPeA = GMaxApA;
+            GMinPeA = GMinApA;
+
+            vesselTestID = SaveInfo.AgenaTargetVesselID;
+            vesselTestName = SaveInfo.AgenaTargetVesselName;
+            AgenaDockParameter = this.AddParameter(new TargetDockingGoal(vesselTestID, vesselTestName), null);
+            AgenaDockParameter.SetFunds(3000.0f, targetBody);
+            AgenaDockParameter.SetReputation(30f, targetBody);
+
+            this.AddParameter(new ApAOrbitGoal(targetBody, (double)GMaxApA, (double)GMinApA), null);
+            this.AddParameter(new PeAOrbitGoal(targetBody, (double)GMaxPeA, (double)GMinPeA), null);
+
+            this.AddParameter(new PartGoal(partName, partAmount), null);
+            this.AddParameter(new GetCrewCount(crewCount), null);
+
+            base.SetExpiry(15f, 35f);
+            base.SetScience(25f, targetBody);
+            base.SetDeadlineDays(20f, targetBody);
+            base.SetReputation(50f, 35f, targetBody);
+            base.SetFunds(29000f * st.Contract_Payment_Multiplier, 48000f * st.Contract_Payment_Multiplier, 42000f * st.Contract_Payment_Multiplier, targetBody);
+
+            return true;
+        }
+
+        public override bool CanBeCancelled()
+        {
+            return true;
+        }
+        public override bool CanBeDeclined()
+        {
+            return true;
+        }
+
+        protected override string GetHashString()
+        {
+            return targetBody.bodyName + vesselTestName;
+        }
+        protected override string GetTitle()
+        {
+            return "Agena Target Vehicle Orbital Test Around Kerbin - Dock With ATV " + vesselTestName;
+        }
+        protected override string GetDescription()
+        {
+
+            return "Project Gemini was the second human spaceflight program of NASA, the civilian space agency of the United States government. Project Gemini was conducted between projects Mercury\n" +
+                " and Apollo, with ten manned flights occurring in 1965 and 1966.\n\n" +
+
+                 "Its objective was to develop space travel techniques in support of Apollo, which had the goal of landing men on the Moon. Gemini achieved missions long enough for a trip to the Moon\n" +
+                 "and back, perfected extra-vehicular activity (working outside a spacecraft), and orbital maneuvers necessary to achieve rendezvous and docking. All Gemini flights were launched from \n" +
+                 " Cape Canaveral, Florida using the Titan II Gemini launch vehicle\n\n" +
+                 "Info For Gemini From Wikipedia.org\n\n" +
+                "Your Second Task Is To Dock your Manned Orbital Pod with Agena Target Vehicle.  Then you are required to change Altitude to the selected ApA and PeA";
+        }
+        protected override string GetSynopsys()
+        {
+            return "Agena Test " + targetBody.theName;
+        }
+        protected override string MessageCompleted()
+        {
+            SaveInfo.Agena2Done = true;
+            return "You have been succesful with Launching an Agena Type Craft, Docking with it, and changing your Orbital Altitude.  Congradulations!\n\n" +
+                "The first GATV was launched on October 25, 1965 while the Gemini 6 astronauts were waiting on the pad. While the Atlas performed normally,\n" +
+                "the Agena's engine exploded during orbital injection. Since the rendezvous and docking was the primary objective, the Gemini 6 mission was scrubbed,\n" +
+                "and replaced with the alternate mission Gemini 6A, which rendezvoused (but could not dock) with Gemini 7 in December.\n\n" +
+                "Was not until Gemini 10 That all objectives of Launching, Docking, and boosting Gemini 10 to 412-nautical-mile change succeded.";
+        }
+
+        protected override void OnLoad(ConfigNode node)
+        {
+            int bodyID = int.Parse(node.GetValue("targetBody"));
+            foreach (var body in FlightGlobals.Bodies)
+            {
+                if (body.flightGlobalsIndex == bodyID)
+                    targetBody = body;
+            }
+            double maxApa = double.Parse(node.GetValue("maxaPa"));
+            GMaxApA = maxApa;
+            double minApa = double.Parse(node.GetValue("minaPa"));
+            GMinApA = minApa;
+
+            double masxPpaID = double.Parse(node.GetValue("maxpEa"));
+            GMaxPeA = masxPpaID;
+            double minPeAID = double.Parse(node.GetValue("minpEa"));
+            GMinPeA = minPeAID;
+
+            int pcount = int.Parse(node.GetValue("pCount"));
+            partAmount = pcount;
+            partName = (node.GetValue("pName"));
+            crewCount = int.Parse(node.GetValue("crewcount"));
+
+            vesselTestID = node.GetValue("vesselid");
+            vesselTestName = node.GetValue("vesselname");
+
+        }
+        protected override void OnSave(ConfigNode node)
+        {
+            int bodyID = targetBody.flightGlobalsIndex;
+            node.AddValue("targetBody", bodyID);
+
+            double maxApa = GMaxApA;
+            node.AddValue("maxaPa", GMaxApA);
+            double minApa = GMinApA;
+            node.AddValue("minaPa", GMinApA);
+
+            double maxPpAID = GMaxPeA;
+            node.AddValue("maxpEa", GMaxPeA);
+            double MinPeAID = GMinPeA;
+            node.AddValue("minpEa", GMinPeA);
+
+
+            int pcount = partAmount;
+            node.AddValue("pCount", partAmount);
+            string pname = partName;
+            node.AddValue("pName", partName);
+
+            node.AddValue("crewcount", crewCount);
+
+            node.AddValue("vesselid", vesselTestID);
+            node.AddValue("vesselname", vesselTestName);
+        }
+
+        //for testing purposes
+        public override bool MeetRequirements()
+        {
+            bool techUnlock = ResearchAndDevelopment.GetTechnologyState("specializedConstruction") == RDTech.State.Available;
+            if (!techUnlock || st.all_Historical_Contracts_Off == true)
+                return false;
+            else
+                return true;
+        }
+
+
     }
     #endregion
     # region SkyLab 1
@@ -688,11 +1025,7 @@ namespace MissionControllerEC
         public int totalContracts;
     
         protected override bool Generate()
-        {
-            if (settings.allHistoricalContractsOff)
-            {
-                return false;
-            }
+        {            
             totalContracts = ContractSystem.Instance.GetCurrentContracts<SkyLab1>().Count();
             if (totalContracts >= 1) { return false; }
             if (HighLogic.LoadedSceneIsFlight) { return false; }
@@ -803,8 +1136,8 @@ namespace MissionControllerEC
             bool techUnlock = ResearchAndDevelopment.GetTechnologyState("largeElectrics") == RDTech.State.Available;
             bool techUnlock2 = ResearchAndDevelopment.GetTechnologyState("specializedConstruction") == RDTech.State.Available;
 
-            if (SaveInfo.skylab1done == true) { return false; }
-            if (!techUnlock && !techUnlock2 && !SaveInfo.Agena2Done) { return false; }
+            if (SaveInfo.skylab1done == true || SaveInfo.Agena2Done == false || settings.all_Historical_Contracts_Off == true) { return false; }
+            if (!techUnlock && !techUnlock2) { return false; }
             else { return true; }
         }
     }
@@ -817,13 +1150,10 @@ namespace MissionControllerEC
         public int contractTime = 605448;
         public string contractName = "Launch And Repair " + SaveInfo.skyLabName;
         public string contTimeTitle = " Must keep crew in orbit for ";
-
         string repairParts = "repairParts";
         string Ctitle = "To Repair Station You must have at Least ";
         double RPamount = 1;
-
         CelestialBody targetBody = Planetarium.fetch.Home;
-
         ContractParameter skylab1;
         ContractParameter skylab2;
         ContractParameter skylab3;
@@ -833,11 +1163,7 @@ namespace MissionControllerEC
         public int totalContracts;
 
         protected override bool Generate()
-        {
-            if (settings.allHistoricalContractsOff)
-            {
-                return false;
-            }
+        {            
             totalContracts = ContractSystem.Instance.GetCurrentContracts<SkyLab2>().Count();
             if (HighLogic.LoadedSceneIsFlight) { return false; }
             if (totalContracts >= 1) { return false; }
@@ -965,7 +1291,7 @@ namespace MissionControllerEC
 
         public override bool MeetRequirements()
         {
-            if (SaveInfo.skylab2done == true) { return false; }
+            if (SaveInfo.skylab2done == true || settings.all_Historical_Contracts_Off == true) { return false; }
             if (SaveInfo.skylab1done == false) { return false; }
             if (SaveInfo.Agena2Done == false) { return false; }
             else { return true; }
@@ -992,7 +1318,7 @@ namespace MissionControllerEC
 
         protected override bool Generate()
         {
-            if (settings.allHistoricalContractsOff)
+            if (settings.all_Historical_Contracts_Off)
             {
                 return false;
             }
@@ -1111,7 +1437,7 @@ namespace MissionControllerEC
 
         public override bool MeetRequirements()
         {
-            if (SaveInfo.skylab3done == true) { return false; }
+            if (SaveInfo.skylab3done == true || settings.all_Historical_Contracts_Off == true) { return false; }
             if (SaveInfo.skylab2done == false) { return false; }
             if (SaveInfo.Agena2Done == false) { return false; }
             else { return true; }
@@ -1144,11 +1470,7 @@ namespace MissionControllerEC
         public int totalContracts;
 
         protected override bool Generate()
-        {
-            if (settings.allHistoricalContractsOff)
-            {
-                return false;
-            }
+        {           
             totalContracts = ContractSystem.Instance.GetCurrentContracts<SkyLab4>().Count();
             if (HighLogic.LoadedSceneIsFlight) { return false; }
             if (totalContracts >= 1) { return false; }
@@ -1311,7 +1633,7 @@ namespace MissionControllerEC
 
         public override bool MeetRequirements()
         {
-            if (SaveInfo.skylab4done == true) { return false; }
+            if (SaveInfo.skylab4done == true || settings.all_Historical_Contracts_Off == true) { return false; }
             if (SaveInfo.skylab3done == false) { return false; }
             if (SaveInfo.Agena2Done == false) { return false; }
             else { return true; }

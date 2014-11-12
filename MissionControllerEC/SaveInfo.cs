@@ -22,6 +22,12 @@ namespace MissionControllerEC
         public static bool skylab4done = false;
         public static bool MessageHelpers = false;
 
+        public static bool ComSateContractOn = false;
+        public static double comSatmaxOrbital = 0;
+        public static double comSatminOrbital = 0;
+        public static string ComSatContractName = "None";
+        public static int comSatBodyName = 1;
+
         public static string skyLabName = "none";
         public static string skyLabVesID = "none";
 
@@ -53,5 +59,7 @@ namespace MissionControllerEC
 
         public static bool CivilianApPod = false;
         public static string CivilianApName = "none";
+
+        public static bool spResourceSet = false;
     }   
 }

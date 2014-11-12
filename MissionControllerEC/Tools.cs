@@ -6,14 +6,20 @@ namespace MissionControllerEC
 {
     class Tools
     {
-        public static bool RandomBool(bool value)
+        public static bool RandomBool(int randomvalue)
         {
             int test = 0;
             test = UnityEngine.Random.Range(0, 100);
-            if (test > 50)
-                return true;
+            if (test > randomvalue)
+            {
+                Debug.Log("MCE Random Check for " + randomvalue + " is TRUE");
+                return true;                
+            }
             else
+            {
+                Debug.Log("MCE Random Check for " + randomvalue + " is FALSE");
                 return false;
+            }
         }
 
         public static int RandomNumber(int range1, int range2)

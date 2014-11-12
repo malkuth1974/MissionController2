@@ -27,9 +27,9 @@ namespace MissionControllerEC
             GUILayout.Space(10);
             GUILayout.BeginHorizontal();
             GUILayout.Box("Kerbal Insurance Cost",MCE_ScenarioStartup.StyleBold, GUILayout.Width(300));
-            insuranceme = settings.DeathInsurance.ToString();
+            insuranceme = settings.Death_Insurance.ToString();
             insuranceme = Regex.Replace(GUILayout.TextField(insuranceme), "[^.0-9]", "");           
-            settings.DeathInsurance = double.Parse(insuranceme);
+            settings.Death_Insurance = double.Parse(insuranceme);
             GUILayout.EndHorizontal();
 
             GUILayout.Space(10);
@@ -42,15 +42,15 @@ namespace MissionControllerEC
             GUILayout.Space(10);
             GUILayout.BeginHorizontal();
             GUILayout.Box("Rescue Kerbal Contracts Off (Needs Restart)",MCE_ScenarioStartup.StyleBold, GUILayout.Width(300));
-            GUILayout.Box("" + settings.NoRescueKerbalContracts, MCE_ScenarioStartup.styleBlueBold, GUILayout.Width(75));
-            settings.NoRescueKerbalContracts = GUILayout.Toggle(settings.NoRescueKerbalContracts, "Set", GUILayout.Width(25));
+            GUILayout.Box("" + settings.No_Rescue_Kerbal_Contracts, MCE_ScenarioStartup.styleBlueBold, GUILayout.Width(75));
+            settings.No_Rescue_Kerbal_Contracts = GUILayout.Toggle(settings.No_Rescue_Kerbal_Contracts, "Set", GUILayout.Width(25));
             GUILayout.EndHorizontal();
 
             GUILayout.Space(10);
             GUILayout.BeginHorizontal();
             GUILayout.Box("Part Test Contracts Off (Needs Restart)", MCE_ScenarioStartup.StyleBold, GUILayout.Width(300));
-            GUILayout.Box("" + settings.NoPartTestContracts, MCE_ScenarioStartup.styleBlueBold, GUILayout.Width(75));
-            settings.NoPartTestContracts = GUILayout.Toggle(settings.NoPartTestContracts, "Set", GUILayout.Width(25));
+            GUILayout.Box("" + settings.No_Part_Test_Contracts, MCE_ScenarioStartup.styleBlueBold, GUILayout.Width(75));
+            settings.No_Part_Test_Contracts = GUILayout.Toggle(settings.No_Part_Test_Contracts, "Set", GUILayout.Width(25));
             GUILayout.EndHorizontal();
 
             GUILayout.Space(10);
@@ -91,15 +91,15 @@ namespace MissionControllerEC
             GUILayout.Space(10);
             GUILayout.BeginHorizontal();
             GUILayout.Box("No MCE Civilian Contracts", MCE_ScenarioStartup.StyleBold, GUILayout.Width(300));
-            GUILayout.Box("" + settings.CivilianContractsOff, MCE_ScenarioStartup.styleBlueBold, GUILayout.Width(75));
-            settings.CivilianContractsOff = GUILayout.Toggle(settings.CivilianContractsOff, "Set", GUILayout.Width(25));
+            GUILayout.Box("" + settings.Civilian_Contracts_Off, MCE_ScenarioStartup.styleBlueBold, GUILayout.Width(75));
+            settings.Civilian_Contracts_Off = GUILayout.Toggle(settings.Civilian_Contracts_Off, "Set", GUILayout.Width(25));
             GUILayout.EndHorizontal();
 
             GUILayout.Space(10);
             GUILayout.BeginHorizontal();
             GUILayout.Box("No MCE Historic Contracts", MCE_ScenarioStartup.StyleBold, GUILayout.Width(300));
-            GUILayout.Box("" + settings.allHistoricalContractsOff, MCE_ScenarioStartup.styleBlueBold, GUILayout.Width(75));
-            settings.allHistoricalContractsOff = GUILayout.Toggle(settings.allHistoricalContractsOff, "Set", GUILayout.Width(25));
+            GUILayout.Box("" + settings.all_Historical_Contracts_Off, MCE_ScenarioStartup.styleBlueBold, GUILayout.Width(75));
+            settings.all_Historical_Contracts_Off = GUILayout.Toggle(settings.all_Historical_Contracts_Off, "Set", GUILayout.Width(25));
             GUILayout.EndHorizontal();
            
             GUILayout.Space(10);

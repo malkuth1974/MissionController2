@@ -421,7 +421,7 @@ namespace MissionControllerEC
 
         protected override void OnUpdate()
         {
-            if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel)
+            if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel && FlightGlobals.ActiveVessel.orbit.referenceBody.Equals(targetBody))
             Orbits(FlightGlobals.ActiveVessel);           
         }
 

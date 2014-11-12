@@ -193,7 +193,7 @@ namespace MissionControllerEC
             DontDestroyOnLoad(this);
             loadTextures();
             loadFiles();
-            CreateButtons();
+            CreateButtons();          
             GameEvents.Contract.onContractsLoaded.Add(this.onContractLoaded);
             GameEvents.onCrewKilled.Add(this.chargeKerbalDeath);
             GameEvents.onKerbalTypeChange.Add(this.hireKerbals);
@@ -204,8 +204,10 @@ namespace MissionControllerEC
         }    
                 
         public void Start()
-        {                     
+        {                 
             FlightglobalsIndexCheck();
+            
+            ActivateEVASpareParts();
         }            
                       
         void OnDestroy()
@@ -401,6 +403,12 @@ namespace MissionControllerEC
         [Persistent]public bool noRepairContract = false;
         [Persistent]public bool noOrbitalPeriodContract = false;
 
+        [Persistent]internal bool com_Sat_Start_Building = false;
+        [Persistent]internal double com_Sat_maxOrbP = 10860;
+        [Persistent]internal double com_Sat_minOrbP = 10680;
+        [Persistent]internal string com_Sat_contractName = "Deliever COMSAT Satellite";
+        [Persistent]internal int com_Sat_bodyNumber = 1;
+
         public override void OnDecodeFromConfigNode()
         {
             SaveInfo.TotalSpentKerbals = TotalSpentKerbals;
@@ -420,6 +428,12 @@ namespace MissionControllerEC
             SaveInfo.skylab3done = skylab3done;
             SaveInfo.skylab4done = skylab4done;
             SaveInfo.MessageHelpers = messagehelpers;
+
+            SaveInfo.ComSateContractOn = com_Sat_Start_Building;
+            SaveInfo.comSatmaxOrbital = com_Sat_maxOrbP;
+            SaveInfo.comSatminOrbital = com_Sat_minOrbP;
+            SaveInfo.ComSatContractName = com_Sat_contractName;
+            SaveInfo.comSatBodyName = com_Sat_bodyNumber;
 
             SaveInfo.crewContractOn = crewcontracton;
             SaveInfo.crewAmount = crewamount;
@@ -470,6 +484,12 @@ namespace MissionControllerEC
             skylab3done = SaveInfo.skylab3done;
             skylab4done = SaveInfo.skylab4done;
             messagehelpers = SaveInfo.MessageHelpers;
+
+            com_Sat_Start_Building = SaveInfo.ComSateContractOn;
+            com_Sat_maxOrbP = SaveInfo.comSatmaxOrbital;
+            com_Sat_minOrbP = SaveInfo.comSatminOrbital;
+            com_Sat_contractName = SaveInfo.ComSatContractName;
+            com_Sat_bodyNumber = SaveInfo.comSatBodyName;
 
             crewcontracton = SaveInfo.crewContractOn;
             crewamount = SaveInfo.crewAmount;

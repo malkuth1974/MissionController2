@@ -119,7 +119,7 @@ namespace MissionControllerEC
         public void drawCustomGUI(int id)
         {
             CelestialBody targetbody = null;
-            targetbody = FlightGlobals.Bodies[settings.bodyNumber];           
+            targetbody = FlightGlobals.Bodies[SaveInfo.comSatBodyName];           
            
             GUI.skin = HighLogic.Skin;
             GUILayout.BeginVertical();
@@ -137,41 +137,41 @@ namespace MissionControllerEC
                 GUILayout.Space(10);
                 GUILayout.BeginHorizontal();
                 GUILayout.Box("ComSat Network Contracts On", MCE_ScenarioStartup.StyleBold, GUILayout.Width(200));
-                GUILayout.Box("" + settings.StartBuilding,MCE_ScenarioStartup.styleBlueBold, GUILayout.Width(200));
+                GUILayout.Box("" + SaveInfo.ComSateContractOn,MCE_ScenarioStartup.styleBlueBold, GUILayout.Width(200));
                 GUILayout.EndHorizontal();
                 GUILayout.BeginHorizontal();
                 if (GUILayout.Button("Turn On Contracts"))
                 {
-                    settings.StartBuilding = true;
+                    SaveInfo.ComSateContractOn = true;
                 }
                 if (GUILayout.Button("Turn Off Contracts"))
                 {
-                    settings.StartBuilding = false;
+                    SaveInfo.ComSateContractOn = false;
                 }
                 GUILayout.EndHorizontal();
 
                 GUILayout.Space(5);
                 GUILayout.BeginHorizontal();
                 GUILayout.Box("ComSat Max Orbital Period", MCE_ScenarioStartup.StyleBold, GUILayout.Width(200));
-                GUILayout.Box("" + Tools.formatTime(settings.maxOrbP), MCE_ScenarioStartup.styleBlueBold, GUILayout.Width(200));
+                GUILayout.Box("" + Tools.ConvertMinsHours(SaveInfo.comSatmaxOrbital), MCE_ScenarioStartup.styleBlueBold, GUILayout.Width(200));
                 GUILayout.EndHorizontal();
                 GUILayout.BeginHorizontal();
-                if (GUILayout.Button("- Hour", GUILayout.Width(75))) { settings.maxOrbP -= 3600; }
-                if (GUILayout.Button("+ Hour", GUILayout.Width(75))) { settings.maxOrbP += 3600; }
-                if (GUILayout.Button("- Minute", GUILayout.Width(75))) { settings.maxOrbP -= 60; }
-                if (GUILayout.Button("+ Minute", GUILayout.Width(75))) { settings.maxOrbP += 60; }
+                if (GUILayout.Button("- Hour", GUILayout.Width(75))) { SaveInfo.comSatmaxOrbital -= 3600; }
+                if (GUILayout.Button("+ Hour", GUILayout.Width(75))) { SaveInfo.comSatmaxOrbital += 3600; }
+                if (GUILayout.Button("- Minute", GUILayout.Width(75))) { SaveInfo.comSatmaxOrbital -= 60; }
+                if (GUILayout.Button("+ Minute", GUILayout.Width(75))) { SaveInfo.comSatmaxOrbital += 60; }
                 GUILayout.EndHorizontal();
 
                 GUILayout.Space(5);
                 GUILayout.BeginHorizontal();
                 GUILayout.Box("ComSat Min Orbital Period", MCE_ScenarioStartup.StyleBold, GUILayout.Width(200));
-                GUILayout.Box("" + Tools.formatTime(settings.minOrbP), MCE_ScenarioStartup.styleBlueBold, GUILayout.Width(200));
+                GUILayout.Box("" + Tools.ConvertMinsHours(SaveInfo.comSatminOrbital), MCE_ScenarioStartup.styleBlueBold, GUILayout.Width(200));
                 GUILayout.EndHorizontal();
                 GUILayout.BeginHorizontal();
-                if (GUILayout.Button("- Hour", GUILayout.Width(75))) { settings.minOrbP -= 3600; }
-                if (GUILayout.Button("+ Hour", GUILayout.Width(75))) { settings.minOrbP += 3600; }
-                if (GUILayout.Button("- Minute", GUILayout.Width(75))) { settings.minOrbP -= 60; }
-                if (GUILayout.Button("+ Minute", GUILayout.Width(75))) { settings.minOrbP += 60; }
+                if (GUILayout.Button("- Hour", GUILayout.Width(75))) { SaveInfo.comSatminOrbital -= 3600; }
+                if (GUILayout.Button("+ Hour", GUILayout.Width(75))) { SaveInfo.comSatminOrbital += 3600; }
+                if (GUILayout.Button("- Minute", GUILayout.Width(75))) { SaveInfo.comSatminOrbital -= 60; }
+                if (GUILayout.Button("+ Minute", GUILayout.Width(75))) { SaveInfo.comSatminOrbital += 60; }
                 GUILayout.EndHorizontal();
 
                 GUILayout.Space(5);
@@ -182,19 +182,19 @@ namespace MissionControllerEC
                 GUILayout.BeginHorizontal();
                 if (GUILayout.Button("- Previous"))
                 {
-                    settings.bodyNumber--;
-                    if (settings.bodyNumber < 1 || settings.bodyNumber > 16)
+                    SaveInfo.comSatBodyName--;
+                    if (SaveInfo.comSatBodyName < 1 || SaveInfo.comSatBodyName > 16)
                     {
-                        settings.bodyNumber = 1;
+                        SaveInfo.comSatBodyName = 1;
                     }
                 }
 
                 if (GUILayout.Button("+ Next"))
                 {
-                    settings.bodyNumber++;
-                    if (settings.bodyNumber > 16 || settings.bodyNumber < 1)
+                    SaveInfo.comSatBodyName++;
+                    if (SaveInfo.comSatBodyName > 16 || SaveInfo.comSatBodyName < 1)
                     {
-                        settings.bodyNumber = 1;
+                        SaveInfo.comSatBodyName = 1;
                     }
 
                 }
@@ -204,7 +204,7 @@ namespace MissionControllerEC
                 GUILayout.Space(5);
                 GUILayout.BeginHorizontal();
                 GUILayout.Box("Contract Name", MCE_ScenarioStartup.StyleBold, GUILayout.Width(150), GUILayout.Height(30));
-                settings.contractName = GUILayout.TextField(settings.contractName, 50);
+                SaveInfo.ComSatContractName = GUILayout.TextField(SaveInfo.ComSatContractName, 50);
                 GUILayout.EndHorizontal();
 
                 GUILayout.Space(10);

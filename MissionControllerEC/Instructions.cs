@@ -8,6 +8,7 @@ using System.Reflection;
 using Contracts;
 using Contracts.Parameters;
 
+
 namespace MissionControllerEC
 {
     public partial class MissionControllerEC
@@ -20,6 +21,7 @@ namespace MissionControllerEC
         public bool showMiniTons = false;
         public float vesselResourceTons;
         public int currentContractType = 0;
+        public string sPResource = "SpareParts";       
 
         public static int supplyCount;
 
@@ -219,15 +221,15 @@ namespace MissionControllerEC
             RandomContractsCheck[0].value = 0;
 
             RandomContractsCheck[1] = new Tools.MC2RandomWieghtSystem.Item<int>();
-            RandomContractsCheck[1].weight = 20;
+            RandomContractsCheck[1].weight = settings.contract_repair_Random_percent;
             RandomContractsCheck[1].value = 1;
 
             RandomContractsCheck[2] = new Tools.MC2RandomWieghtSystem.Item<int>();
-            RandomContractsCheck[2].weight = 40;
+            RandomContractsCheck[2].weight = settings.contract_civilian_Low_Orbit_Percent;
             RandomContractsCheck[2].value = 2;
 
             RandomContractsCheck[3] = new Tools.MC2RandomWieghtSystem.Item<int>();
-            RandomContractsCheck[3].weight = 20;
+            RandomContractsCheck[3].weight = settings.contract_civilian_Landing_Percent;
             RandomContractsCheck[3].value = 3;           
         }
 
@@ -328,8 +330,8 @@ namespace MissionControllerEC
 
 
         public void onContractLoaded()
-        {
-            if (settings.NoRescueKerbalContracts && ContractSystem.ContractTypes.Contains(typeof(Contracts.Templates.RescueKerbal)))          
+        {           
+            if (settings.No_Rescue_Kerbal_Contracts && ContractSystem.ContractTypes.Contains(typeof(Contracts.Templates.RescueKerbal)))          
             {
                 try
                 {
@@ -339,7 +341,7 @@ namespace MissionControllerEC
 
                 catch { Debug.LogError("could not run NoRescueKerbalContracts Returned Null");}
             }
-            if (settings.NoPartTestContracts && ContractSystem.ContractTypes.Contains(typeof(Contracts.Templates.PartTest)))
+            if (settings.No_Part_Test_Contracts && ContractSystem.ContractTypes.Contains(typeof(Contracts.Templates.PartTest)))
             {
                 try
                 {
@@ -372,11 +374,11 @@ namespace MissionControllerEC
 
         public void chargeKerbalDeath(EventReport value)
         {
-            Funding.Instance.AddFunds( - settings.DeathInsurance, TransactionReasons.Any);
+            Funding.Instance.AddFunds( - settings.Death_Insurance, TransactionReasons.Any);
             StringBuilder deathmessage = new StringBuilder();
             deathmessage.AppendLine("A Kerbal named " + value.sender + " has died in the line of duty");
             deathmessage.AppendLine();
-            deathmessage.AppendLine("This is a tragic loss and will cost you " + settings.DeathInsurance + " Funds.");
+            deathmessage.AppendLine("This is a tragic loss and will cost you " + settings.Death_Insurance + " Funds.");
             deathmessage.AppendLine();
             deathmessage.AppendLine(value.sender + " will be remembered by the Kerbal People as a hero who though of Kerbal kind before his own safety");
             deathmessage.AppendLine();
@@ -399,6 +401,46 @@ namespace MissionControllerEC
                     //Debug.Log("Found Vessel " + v.name + " " + v.vesselType + " Count is: " + supplyCount);
                 }
             } 
+        }
+
+        public void ActivateEVASpareParts()
+        {
+            if (!SaveInfo.spResourceSet)
+            {
+                try
+                {
+                    AvailablePart part = PartLoader.LoadedPartsList.Find(p => p.name.Equals("kerbalEVA"));
+                    Part sPPart = part.partPrefab;
+                    EvaAddResource(sPPart, sPResource);
+                    SaveInfo.spResourceSet = true;
+                }
+                catch (Exception ex)
+                {
+                    Debug.LogError("MCE Failed EVA SpareParts On Load! .\n" + ex.Message + "\n" + ex.StackTrace);
+                }
+            }
+            
+        }
+        
+
+        public void EvaAddResource(Part part, string name)
+        {
+            try
+            {
+                PartResource resource = part.gameObject.AddComponent<PartResource>();
+                resource.SetInfo(PartResourceLibrary.Instance.resourceDefinitions[name]);
+                resource.maxAmount = 1;
+                resource.part = part;
+                resource.amount = 0;
+                part.Resources.list.Add(resource);
+            }
+            catch (Exception ex)
+            {
+                if (!ex.Message.Contains("Object reference not set"))
+                {
+                    Debug.LogError("MCE Error adding SpareParts to the EVA: " + ex.Message + "\n" + ex.StackTrace);
+                }
+            }
         }
     }
    

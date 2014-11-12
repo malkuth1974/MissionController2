@@ -19,26 +19,18 @@ namespace MissionControllerEC
         public double GMinApA = 0;
         public double GMaxPeA = 0;
         public double GMinPeA = 0;
-
         public float maxTon = 0;
-
         public double capResources;
         public string ResourceName = "ElectricCharge";
-
         public int crewCount = 0;
-
         public bool techUnlocked = false;
         public double MinInc = 0;
-
         public int partAmount = 1;
         public string partName = "Repair Panel";
-
         public double MaxInc = UnityEngine.Random.Range(10, 90);
         public int test = UnityEngine.Random.Range(0, 100);
-
         public int totalContracts;
         public int TotalFinished;
-
         ContractParameter satellite1;
         ContractParameter satellite2;
         ContractParameter satellite3;
@@ -74,18 +66,18 @@ namespace MissionControllerEC
             MinInc = MaxInc - 10;
             if (this.prestige == ContractPrestige.Trivial)
             {
-                maxTon = UnityEngine.Random.Range(st.contracSatelliteMinAMassTrivial, st.contracSatelliteMaxAMassTrivial);
+                maxTon = UnityEngine.Random.Range(st.contrac_Satellite_Min_Mass_Trivial, st.contrac_Satellite_Max_Mass_Trivial);
                 capResources = UnityEngine.Random.Range(2, 5) * 100;
-                GMaxApA = UnityEngine.Random.Range((int)st.contracSatelliteMaxApATrivial, (int)st.contracSatelliteMaxTotalHeightTrivial + (int)st.contracSatelliteMaxApATrivial);
-                GMinApA = GMaxApA - st.contracSatelliteBetweenDifference;
+                GMaxApA = UnityEngine.Random.Range((int)st.contrac_Satellite_Max_ApA_Trivial, (int)st.contrac_Satellite_Max_Total_Height_Trivial + (int)st.contrac_Satellite_Max_ApA_Trivial);
+                GMinApA = GMaxApA - st.contrac_Satellite_Between_Difference;
                 GMaxPeA = GMaxApA;
                 GMinPeA = GMinApA;
-                base.SetFunds(35000f * st.ContractPaymentMultiplier, 56000f * st.ContractPaymentMultiplier, 35000f * st.ContractPaymentMultiplier, targetBody);
+                base.SetFunds(35000f * st.Contract_Payment_Multiplier, 56000f * st.Contract_Payment_Multiplier, 35000f * st.Contract_Payment_Multiplier, targetBody);
                 base.SetReputation(15f, 35f, targetBody);
             }
             else if (this.prestige == ContractPrestige.Significant)
             {
-                maxTon = UnityEngine.Random.Range(st.contracSatelliteMinMassSignificant, st.contracSatelliteMaxMassSignificant);
+                maxTon = UnityEngine.Random.Range(st.contrac_Satellite_Min_Mass_Significant, st.contrac_Satellite_Max_Mass_Significant);
                 capResources = UnityEngine.Random.Range(3, 9) * 100;
                 if (targetBody.flightGlobalsIndex == 2 || targetBody.flightGlobalsIndex == 3)
                 {
@@ -93,17 +85,17 @@ namespace MissionControllerEC
                 }
                 else
                 {
-                    GMaxApA = UnityEngine.Random.Range((int)st.contracSatelliteMaxApASignificant, (int)st.contracSatelliteMaxTotalHeightSignificant + (int)st.contracSatelliteMaxApASignificant);
+                    GMaxApA = UnityEngine.Random.Range((int)st.contrac_Satellite_Max_ApA_Significant, (int)st.contrac_Satellite_Max_Total_Height_Significant + (int)st.contrac_Satellite_Max_ApA_Significant);
                 }
-                GMinApA = GMaxApA - st.contracSatelliteBetweenDifference;
+                GMinApA = GMaxApA - st.contrac_Satellite_Between_Difference;
                 GMaxPeA = GMaxApA;
                 GMinPeA = GMinApA;
-                base.SetFunds(45000f * st.ContractPaymentMultiplier, 78000f * st.ContractPaymentMultiplier, 45000f * st.ContractPaymentMultiplier, targetBody);
+                base.SetFunds(45000f * st.Contract_Payment_Multiplier, 78000f * st.Contract_Payment_Multiplier, 45000f * st.Contract_Payment_Multiplier, targetBody);
                 base.SetReputation(25f, 45f, targetBody);
             }
             else if (this.prestige == ContractPrestige.Exceptional)
             {
-                maxTon = UnityEngine.Random.Range(st.contracSatelliteMinMassExcept, st.contracSatelliteMaxMassExcept);
+                maxTon = UnityEngine.Random.Range(st.contrac_Satellite_Min_Mass_Except, st.contrac_Satellite_Max_Mass_Except);
                 capResources = UnityEngine.Random.Range(5, 13) * 100;
                 if (targetBody.flightGlobalsIndex == 2 || targetBody.flightGlobalsIndex == 3)
                 {
@@ -111,12 +103,12 @@ namespace MissionControllerEC
                 }
                 else
                 {
-                    GMaxApA = UnityEngine.Random.Range((int)st.contracSatelliteMaxApAExcept, (int)st.contracSatelliteMaxTotalHeightExcept + (int)st.contracSatelliteMaxApAExcept);
+                    GMaxApA = UnityEngine.Random.Range((int)st.contrac_Satellite_Max_ApA_Except, (int)st.contrac_Satellite_Max_Total_Height_Except + (int)st.contrac_Satellite_Max_ApA_Except);
                 }
-                GMinApA = GMaxApA - st.contracSatelliteBetweenDifference;
+                GMinApA = GMaxApA - st.contrac_Satellite_Between_Difference;
                 GMaxPeA = GMaxApA;
                 GMinPeA = GMinApA;
-                base.SetFunds(55000f * st.ContractPaymentMultiplier, 95000f * st.ContractPaymentMultiplier, 55000f * st.ContractPaymentMultiplier, targetBody);
+                base.SetFunds(55000f * st.Contract_Payment_Multiplier, 95000f * st.Contract_Payment_Multiplier, 55000f * st.Contract_Payment_Multiplier, targetBody);
                 base.SetReputation(35f, 345f, targetBody);
             }
             bool ifInclination = false;
@@ -285,7 +277,6 @@ namespace MissionControllerEC
     {
         Settings st = new Settings("Config.cfg");
         CelestialBody targetBody = null;
-
         public double MinOrb = 21480;
         public double MaxOrb = 21660;
         public double MinInc = 0;
@@ -293,18 +284,13 @@ namespace MissionControllerEC
         public int test = UnityEngine.Random.Range(0, 100);
         public bool testThis = false;
         public int crewCount = 0;
-
         public float maxTon = 0;
-
         public double capResources;
         public string ResourceName = "ElectricCharge";
-
         public int partAmount = 1;
         public string partName = "Repair Panel";
-
         public int totalContracts;
         public int TotalFinished;
-
         ContractParameter satellite1;
         ContractParameter satellite2;
 
@@ -328,8 +314,8 @@ namespace MissionControllerEC
 
             targetBody = Planetarium.fetch.Home;
             MinInc = MaxInc - 10;
-            MinOrb = st.contractOrbitalPeriodMinInSeconds;
-            MaxOrb = st.contractOrbitalPeriodMaxInSeconds;
+            MinOrb = st.contract_Orbital_Period_Min_InSeconds;
+            MaxOrb = st.contract_Orbital_Period_Max_InSeconds;
             bool ifInclination = false;
 
             if (test >= 75)
@@ -339,23 +325,23 @@ namespace MissionControllerEC
 
             if (this.prestige == ContractPrestige.Trivial)
             {
-                maxTon = UnityEngine.Random.Range(st.contracSatelliteMinAMassTrivial, st.contracSatelliteMaxAMassTrivial);
+                maxTon = UnityEngine.Random.Range(st.contrac_Satellite_Min_Mass_Trivial, st.contrac_Satellite_Max_Mass_Trivial);
                 capResources = UnityEngine.Random.Range(2, 5) * 100;
-                base.SetFunds(39000f * st.ContractPaymentMultiplier, 68000f * st.ContractPaymentMultiplier, 39000f * st.ContractPaymentMultiplier, targetBody);
+                base.SetFunds(39000f * st.Contract_Payment_Multiplier, 68000f * st.Contract_Payment_Multiplier, 39000f * st.Contract_Payment_Multiplier, targetBody);
                 base.SetReputation(15f, 35f, targetBody);
             }
             else if (this.prestige == ContractPrestige.Significant)
             {
-                maxTon = UnityEngine.Random.Range(st.contracSatelliteMinMassSignificant, st.contracSatelliteMaxMassSignificant);
+                maxTon = UnityEngine.Random.Range(st.contrac_Satellite_Min_Mass_Significant, st.contrac_Satellite_Max_Mass_Significant);
                 capResources = UnityEngine.Random.Range(3, 6) * 100;
-                base.SetFunds(49000f * st.ContractPaymentMultiplier, 89000f * st.ContractPaymentMultiplier, 49000f * st.ContractPaymentMultiplier, targetBody);
+                base.SetFunds(49000f * st.Contract_Payment_Multiplier, 89000f * st.Contract_Payment_Multiplier, 49000f * st.Contract_Payment_Multiplier, targetBody);
                 base.SetReputation(25f, 45f, targetBody);
             }
             else if (this.prestige == ContractPrestige.Exceptional)
             {
-                maxTon = UnityEngine.Random.Range(st.contracSatelliteMinMassExcept, st.contracSatelliteMaxMassSignificant);
+                maxTon = UnityEngine.Random.Range(st.contrac_Satellite_Min_Mass_Except, st.contrac_Satellite_Max_Mass_Significant);
                 capResources = UnityEngine.Random.Range(4, 9) * 100;
-                base.SetFunds(59000f * st.ContractPaymentMultiplier, 108000f * st.ContractPaymentMultiplier, 59000f * st.ContractPaymentMultiplier, targetBody);
+                base.SetFunds(59000f * st.Contract_Payment_Multiplier, 108000f * st.Contract_Payment_Multiplier, 59000f * st.Contract_Payment_Multiplier, targetBody);
                 base.SetReputation(35f, 345f, targetBody);
             }
 
@@ -487,29 +473,25 @@ namespace MissionControllerEC
     public class AdvSatellite : Contract
     {
         Settings st = new Settings("Config.cfg");
-        CelestialBody targetBody = null;
+        CelestialBody targetBody = Planetarium.fetch.Home;
         public double GMaxecc = 0;
         public double GMinecc = 0;
-        public double MaxAltitude = 0;
-               
+        public double MaxAltitude = 0;               
         public int crewCount = 0;
-
         public List<TechList> techlist = new List<TechList>();
-
         public bool techUnlocked = false;
         public double MinInc = 0;
-
         public int partAmount = 1;
-        public string partName = "Repair Panel";
-        
+        public string partName = "Repair Panel";        
         public string sciPartname = "Communotron 16";
         public int scipartamount = 1;
         public int scipartcount;
         public int scipartFinalcount;
-
         public double timeOnStation;
         public string TOSName = "We need this amount of time to conduct our studies\n ";
-
+        public bool RandomCheck = false;
+        public double maxorbital = 0;
+        public double minorbital = 0;
         public int totalContracts;
         public int TotalFinished;
 
@@ -531,6 +513,7 @@ namespace MissionControllerEC
         ContractParameter satellite2;
         ContractParameter satellite3;
         ContractParameter satellite4;
+        ContractParameter satellite5;
 
         protected override bool Generate()
         {
@@ -549,20 +532,25 @@ namespace MissionControllerEC
             techlist.Clear();
             loadscienceparts();
             scipartcount = techlist.Count();
-            scipartFinalcount = UnityEngine.Random.Range(0, scipartcount);
+            scipartFinalcount = Tools.RandomNumber(0, scipartcount);
             sciPartname = techlist[scipartFinalcount].techName;
+
+            RandomCheck = Tools.RandomBool(40);
 
             GMinecc = UnityEngine.Random.Range(0f, .9f);
             GMaxecc = GMinecc + .09f;
 
-            MaxAltitude = UnityEngine.Random.Range(70000, 400000);
+            MaxAltitude = Tools.RandomNumber(70000, 400000);
 
-            timeOnStation = UnityEngine.Random.Range(102400, 900000);
+            timeOnStation = Tools.RandomNumber(102400, 900000);
+
+            minorbital = Tools.RandomNumber((int)st.contract_Random_Orbital_Period_MinInSeconds, (int)st.contract_Random_Orbital_Period_MaxInSeconds);
+            maxorbital = minorbital + st.contract_Random_Orbital_Period_Difference;
             
             bool parttechUnlock = ResearchAndDevelopment.GetTechnologyState("advConstruction") == RDTech.State.Available;
-            int bodyrandom = UnityEngine.Random.Range(1, 3);
-            int bodyrandomchance = UnityEngine.Random.Range(0, 100);
-            if (bodyrandomchance > 60)
+            int bodyrandom = Tools.RandomNumber(1, 3);
+            int bodyrandomchance = Tools.RandomNumber(0, 100);
+            if (bodyrandomchance > 70 && RandomCheck)
             {
                 targetBody = FlightGlobals.Bodies[bodyrandom];
             }
@@ -571,11 +559,26 @@ namespace MissionControllerEC
                 targetBody = Planetarium.fetch.Home;
             }                       
             this.AddParameter(new PreLaunch(), null);
-            this.satellite1 = this.AddParameter(new AltitudeGoal(targetBody, MaxAltitude), null);
-            satellite1.SetFunds(5000, 5000,targetBody);
-            this.satellite2 = this.AddParameter(new EccentricGoal(GMinecc, GMaxecc), null);
-            satellite2.SetFunds(8000,8000, targetBody);
-            satellite2.DisableOnStateChange = false;          
+            if (RandomCheck)
+            {
+                this.satellite1 = this.AddParameter(new AltitudeGoal(targetBody, MaxAltitude), null);
+                satellite1.SetFunds(5000, 5000, targetBody);
+                this.satellite2 = this.AddParameter(new EccentricGoal(GMinecc, GMaxecc), null);
+                satellite2.SetFunds(8000, 8000, targetBody);
+                satellite2.DisableOnStateChange = false;
+            }
+            else
+            {
+                this.satellite5 = this.AddParameter(new OrbitalPeriod(minorbital, maxorbital), null);
+                if (maxorbital > 300000)
+                {
+                    satellite5.SetFunds(37000, 37000, targetBody);
+                }
+                else
+                {
+                    satellite5.SetFunds(18000, 18000, targetBody);
+                }
+            }
             this.satellite4 = this.AddParameter(new TimeCountdownOrbits(targetBody, timeOnStation,TOSName), null);
             satellite4.SetFunds(20000,20000, targetBody);          
             this.satellite3 = this.AddParameter(new PartGoal(sciPartname, scipartamount), null);
@@ -609,7 +612,7 @@ namespace MissionControllerEC
 
         protected override string GetHashString()
         {
-            return targetBody.bodyName + GMaxecc.ToString() + GMinecc.ToString() + " - Total Done: " + TotalFinished;
+            return targetBody.bodyName + " For specified Orbit " + " - Total Done: " + TotalFinished;
         }
         protected override string GetTitle()
         {
@@ -655,6 +658,10 @@ namespace MissionControllerEC
             GMinecc = double.Parse(node.GetValue("minecc"));
             MaxAltitude = double.Parse(node.GetValue("altitude"));
 
+            maxorbital = double.Parse(node.GetValue("maxorbital"));
+            minorbital = double.Parse(node.GetValue("minorbital"));
+            RandomCheck = bool.Parse(node.GetValue("randomcheck"));
+
         }
         protected override void OnSave(ConfigNode node)
         {
@@ -675,6 +682,10 @@ namespace MissionControllerEC
             node.AddValue("sciamount", scipartamount);
             node.AddValue("timestation", timeOnStation);
             node.AddValue("tosname", TOSName);
+
+            node.AddValue("maxorbital", maxorbital);
+            node.AddValue("minorbital", minorbital);
+            node.AddValue("randomcheck", RandomCheck);
         }
 
         //for testing purposes
@@ -699,31 +710,22 @@ namespace MissionControllerEC
         public double GMaxecc = 0;
         public double GMinecc = 0;
         public double MaxAltitude = 0;
-
         public double MaxInc = UnityEngine.Random.Range(10, 90);
         public double MinInc;
-
         public int crewCount = 0;
-
         public List<TechList> techlist = new List<TechList>();
-
         public bool techUnlocked = false;
-
         public int partAmount = 1;
         public string partName = "Repair Panel";
-
         public string sciPartname = "Communotron 16";
         public int scipartamount = 1;
         public int scipartcount;
         public int scipartFinalcount;
-
         public string sciPartname2 = "Communotron 16";
         public int scipartamount2 = 1;
         public int scipartFinalcount2;
-
         public double timeOnStation;
         public string TOSName = "We need this amount of time to conduct our studies\n ";
-
         public int totalContracts;
         public int TotalFinished;
 
@@ -943,31 +945,23 @@ namespace MissionControllerEC
     {
         Settings st = new Settings("Config.cfg");
         CelestialBody targetBody = null;
-        public double GMaxOrbital = 21698;
-        public double GMinOrbital = 21598;
-
+        public double GMaxOrbital;
+        public double GMinOrbital;
         public int crewCount = 0;
-
         public List<TechList> techlist = new List<TechList>();
-
         public bool techUnlocked = false;
         public double MinInc = 0;
-
         public int partAmount = 1;
         public string partName = "Repair Panel";
-
         public string sciPartname = "Communotron 16";
         public int scipartamount = 1;
         public int scipartcount;
         public int scipartFinalcount;
-
         public string sciPartname2 = "Communotron 16";
         public int scipartamount2 = 1;
-        public int scipartFinalcount2;
-        
+        public int scipartFinalcount2;        
         public double timeOnStation;
         public string TOSName = "We need this amount of time to conduct our studies\n ";
-
         public int totalContracts;
         public int TotalFinished;
 
@@ -1046,6 +1040,9 @@ namespace MissionControllerEC
             bool parttechUnlock = ResearchAndDevelopment.GetTechnologyState("advConstruction") == RDTech.State.Available;
                       
             targetBody = Planetarium.fetch.Home;
+
+            GMaxOrbital = st.contract_Orbital_Period_Max_InSeconds;
+            GMinOrbital = st.contract_Orbital_Period_Min_InSeconds;
             
             this.AddParameter(new PreLaunch(), null);           
             this.satellite2 = this.AddParameter(new OrbitalPeriod(GMinOrbital, GMaxOrbital), null);
@@ -1185,16 +1182,11 @@ namespace MissionControllerEC
         string vesselName;
         bool NoVessel = false;
         string titleName = "Repair Vessel ";
-
         double maxApA;
         string repairParts = "SpareParts";
-
         double RPamount = 1;
-
         ContractParameter repairgoal2;
-
         string Ctitle = "To Repair Vessel You must have at Least ";
-
         public List<RepairVesselsList> repairvesselList = new List<RepairVesselsList>();
 
         public void findVeselWithRepairPart()
@@ -1295,19 +1287,19 @@ namespace MissionControllerEC
             
             if (maxApA <= 120000)
             {
-                base.SetFunds(45000f * st.ContractPaymentMultiplier, 71000f * st.ContractPaymentMultiplier, 51000f * st.ContractPaymentMultiplier, targetBody);
+                base.SetFunds(45000f * st.Contract_Payment_Multiplier, 71000f * st.Contract_Payment_Multiplier, 51000f * st.Contract_Payment_Multiplier, targetBody);
                 base.SetReputation(20f, 25f, targetBody);
                 base.SetScience(3.0f, targetBody);
             }
             if (maxApA > 120000 && maxApA <= 1000000)
             {
-                base.SetFunds(70000f * st.ContractPaymentMultiplier, 95000f * st.ContractPaymentMultiplier, 70000f * st.ContractPaymentMultiplier, targetBody);
+                base.SetFunds(70000f * st.Contract_Payment_Multiplier, 95000f * st.Contract_Payment_Multiplier, 70000f * st.Contract_Payment_Multiplier, targetBody);
                 base.SetReputation(20f, 25f, targetBody);
                 base.SetScience(10.0f, targetBody);
             }
             if (maxApA > 1000001)
             {
-                base.SetFunds(120000f * st.ContractPaymentMultiplier, 130000f * st.ContractPaymentMultiplier, 120000f * st.ContractPaymentMultiplier, targetBody);
+                base.SetFunds(120000f * st.Contract_Payment_Multiplier, 130000f * st.Contract_Payment_Multiplier, 120000f * st.Contract_Payment_Multiplier, targetBody);
                 base.SetReputation(20f, 25f, targetBody);
                 base.SetScience(20.0f, targetBody);
             }
@@ -1430,12 +1422,9 @@ namespace MissionControllerEC
         public double testpos = 0;
         string partName = "Orbital Research Scanner";
         int partNumber = 1;
-
         double missionTime = 0;
-
         public int totalContracts = 0;
         public int TotalFinished = 0;
-
         ContractParameter orbitresearch1;
         ContractParameter orbitresearch2;
 
@@ -1482,7 +1471,7 @@ namespace MissionControllerEC
             base.SetScience(30f, targetBody);
             base.SetDeadlineYears(3f, targetBody);
             base.SetReputation(5f, 3f, targetBody);
-            base.SetFunds(34000f * st.ContractPaymentMultiplier, 53000f * st.ContractPaymentMultiplier, 34000f * st.ContractPaymentMultiplier, targetBody);
+            base.SetFunds(34000f * st.Contract_Payment_Multiplier, 53000f * st.Contract_Payment_Multiplier, 34000f * st.Contract_Payment_Multiplier, targetBody);
 
             return true;
         }
@@ -1502,7 +1491,7 @@ namespace MissionControllerEC
         }
         protected override string GetTitle()
         {
-            return "Conduct Unmanned Orbital Research around " + targetBody.theName;
+            return "Scientific orbital research mission of  " + targetBody.theName + " with " + partName;
         }
         protected override string GetDescription()
         {
@@ -1511,12 +1500,13 @@ namespace MissionControllerEC
         }
         protected override string GetSynopsys()
         {
-            return "Conduct Orbital Reasearch around " + targetBody.theName;
+            return "Scientific orbital research mission of  " + targetBody.theName + " with " + partName;
         }
         protected override string MessageCompleted()
         {
             MCEOrbitalScanning.doOrbitResearch = false;
-            return "You have successfully researched the planet body " + targetBody.theName;
+            return "You have reached the target body " + targetBody.theName + ", and conducted orbital research.  We have learned a lot of new information about the composition " +
+                "of this planetary body in preparation for a possible landing in the future by our manned program or Robotic Legions.";
         }
 
         protected override void OnLoad(ConfigNode node)
@@ -1576,12 +1566,9 @@ namespace MissionControllerEC
         public double testpos = 0;
         string partName = "Ground Based Research Scanner";
         int partNumber = 1;
-
         double amountTime = Tools.RandomNumber(200, 1500);
-
         public int totalContracts;
         public int TotalFinished;
-
         ContractParameter landerscan1;
         ContractParameter landerscan2;
         ContractParameter landerscan3;
@@ -1638,7 +1625,7 @@ namespace MissionControllerEC
             base.SetScience(55f, targetBody);
             base.SetDeadlineYears(3f, targetBody);
             base.SetReputation(35f, 11f, targetBody);
-            base.SetFunds(37000f * st.ContractPaymentMultiplier, 66000f * st.ContractPaymentMultiplier, 77000f * st.ContractPaymentMultiplier, targetBody);
+            base.SetFunds(37000f * st.Contract_Payment_Multiplier, 66000f * st.Contract_Payment_Multiplier, 77000f * st.Contract_Payment_Multiplier, targetBody);
 
             return true;
         }
@@ -1658,7 +1645,7 @@ namespace MissionControllerEC
         }
         protected override string GetTitle()
         {
-            return "Conduct Ground research on " + targetBody.theName;
+            return "Scientific and research landing contract of  " + targetBody.theName + " with " + partName;;
         }
         protected override string GetDescription()
         {
@@ -1672,7 +1659,9 @@ namespace MissionControllerEC
         protected override string MessageCompleted()
         {
             MCELanderResearch.doLanderResearch = false;
-            return "You have successfully landed and researched on " + targetBody.theName;
+            return "You have successfully landed and researched on " + targetBody.theName + " After landing we have found out many fascinating secrets about what makes up the composition of the landing site.\n\n" +
+
+            "Further research missions manned and robotic will be needed in the future to unlock the secrets of " + targetBody.theName;
         }
 
         protected override void OnLoad(ConfigNode node)
@@ -1731,14 +1720,10 @@ namespace MissionControllerEC
         public double MinOrb;
         public double MaxOrb;
         public int crewCount = 0;
-
         public string ContractPlayerName;
-
         public int partAmount = 1;
         public string partName = "Repair Panel";
-
         public bool StartNetwork;
-
         public int totalContracts;
         public int TotalFinished;
 
@@ -1757,16 +1742,16 @@ namespace MissionControllerEC
                 return false;
             }
             settings.Load();
-            StartNetwork = settings.StartBuilding;
+            StartNetwork = SaveInfo.ComSateContractOn;
             if (!StartNetwork)
             {
                 //Debug.Log("ComSat Network is shut off, and set to false");
                 return false;
             }
-            targetBody = FlightGlobals.Bodies[settings.bodyNumber];
-            ContractPlayerName = settings.contractName;
-            MinOrb = settings.minOrbP;
-            MaxOrb = settings.maxOrbP;
+            targetBody = FlightGlobals.Bodies[SaveInfo.comSatBodyName];
+            ContractPlayerName = SaveInfo.ComSatContractName;
+            MinOrb = SaveInfo.comSatminOrbital;
+            MaxOrb = SaveInfo.comSatmaxOrbital;
 
             this.AddParameter(new OrbitalPeriod(MinOrb, MaxOrb), null);
             if (parttechUnlock)
@@ -1779,7 +1764,7 @@ namespace MissionControllerEC
             base.SetScience(5f, targetBody);
             base.SetDeadlineYears(1f, targetBody);
             base.SetReputation(25f, 40f, targetBody);
-            base.SetFunds(39000f * settings.ContractPaymentMultiplier, 52000f * settings.ContractPaymentMultiplier, 37000f * settings.ContractPaymentMultiplier, targetBody);
+            base.SetFunds(39000f * settings.Contract_Payment_Multiplier, 52000f * settings.Contract_Payment_Multiplier, 37000f * settings.Contract_Payment_Multiplier, targetBody);
 
             return true;
         }
@@ -1859,387 +1844,20 @@ namespace MissionControllerEC
         }
     }
 #endregion
-    # region Agena Contract 1
-    public class AgenaTargetPracticeContract : Contract
-    {
-        Settings st = new Settings("Config.cfg");
-        CelestialBody targetBody = null;
-        public double GMaxApA = 0;
-        public double GMinApA = 0;
-        public double GMaxPeA = 0;
-        public double GMinPeA = 0;
-        public int crewCount = 0;
-        public string partName = "ModuleDockingNode";
-        public string ModuleTitle = "Any Docking Port";
-
-        public int totalContracts;
-        public int TotalFinished;
-        public int Agena1Done;
-
-        ContractParameter AgenaParameter;
-
-        protected override bool Generate()
-        {
-            if (HighLogic.LoadedSceneIsFlight) { return false; }
-            totalContracts = ContractSystem.Instance.GetCurrentContracts<AgenaTargetPracticeContract>().Count();
-            Agena1Done = ContractSystem.Instance.GetCompletedContracts<AgenaTargetPracticeContract>().Count();
-
-            //Debug.Log("Satellite Delivery Totalcontracts " + totalContracts + " - " + " Total Finsihed " + TotalFinished);
-            if (Agena1Done == 1 || SaveInfo.Agena1Done)
-            {
-                return false;
-            }           
-            if (totalContracts >= 1)
-            {
-                //Debug.Log("contract is generated right now terminating Normal Satellite Mission");
-                //Debug.Log("count is " + totalContracts);
-                return false;
-            }
-            targetBody = Planetarium.fetch.Home;
-            GMaxApA = UnityEngine.Random.Range((int)st.contracSatelliteMaxApATrivial, (int)st.contracSatelliteMaxTotalHeightTrivial + (int)st.contracSatelliteMaxApATrivial);
-            GMinApA = GMaxApA - st.contracSatelliteBetweenDifference;
-            GMaxPeA = GMaxApA;
-            GMinPeA = GMinApA;
-          
-            AgenaParameter = this.AddParameter(new AgenaInOrbit(targetBody), null);
-            AgenaParameter.SetFunds(2000.0f, targetBody);
-            AgenaParameter.SetReputation(20f, targetBody); 
-            this.AddParameter(new ApAOrbitGoal(targetBody, (double)GMaxApA, (double)GMinApA), null);
-            this.AddParameter(new PeAOrbitGoal(targetBody, (double)GMaxPeA, (double)GMinPeA), null);
-            this.AddParameter(new ModuleGoal(partName, ModuleTitle), null);            
-            this.AddParameter(new GetCrewCount(crewCount), null);
-           
-            base.SetExpiry(15f, 35f);
-            base.SetScience(25f, targetBody);
-            base.SetDeadlineDays(19f, targetBody);
-            base.SetReputation(35f, 35f, targetBody);
-            base.SetFunds(28000f * st.ContractPaymentMultiplier, 54000f * st.ContractPaymentMultiplier, 39000f * st.ContractPaymentMultiplier, targetBody);
-
-            return true;
-        }
-
-        protected override void OnAccepted()
-        {
-            string AgenaMessage = "Please Take Note when you finish the Agena Contract that vessel will be recorded as the Agena Vessel for next mission!\n\n"+
-                "if the wrong vessel is recorded you can change the vessel by using the Debug Tools in settings for Agena Contract";
-            MessageSystem.Message m = new MessageSystem.Message("Important Agena Target Contract Information", AgenaMessage.ToString(), MessageSystemButton.MessageButtonColor.YELLOW,MessageSystemButton.ButtonIcons.MESSAGE);             
-            MessageSystem.Instance.AddMessage(m);
-        }
-
-        public override bool CanBeCancelled()
-        {
-            return true;
-        }
-        public override bool CanBeDeclined()
-        {
-            return true;
-        }
-        
-        protected override string GetHashString()
-        {
-            return targetBody.bodyName + GMaxApA.ToString() + GMinApA.ToString();
-        }
-        protected override string GetTitle()
-        {
-            return "Agena Target Vehicle Orbital Test Around Kerbin - Launch Agena Vehicle";
-        }
-        protected override string GetDescription()
-        {
-
-            return "The Agena Target Vehicle (ATV) was an unmanned spacecraft used by NASA during its Gemini program to develop and practice orbital space rendezvous and docking techniques and\n" +
-                "to perform large orbital changes, in preparation for the Apollo program lunar missions.\n\n" +
-                "Your first task is to launch an Agena Type vehicle into orbit\n\n" +
-                "Please Take Note when you finish the Agena Contract that vessel will be recorded as the Agena Vessel for next mission!";
-        }
-        protected override string GetSynopsys()
-        {
-            return "Agena Test " + targetBody.theName;
-        }
-        protected override string MessageCompleted()
-        {
-            SaveInfo.Agena1Done = true;
-            SaveInfo.AgenaTargetVesselID = FlightGlobals.ActiveVessel.id.ToString();
-            SaveInfo.AgenaTargetVesselName = FlightGlobals.ActiveVessel.vesselName.Replace("(unloaded)", ""); 
-            return FlightGlobals.ActiveVessel.name + " Vessel ID is " + FlightGlobals.ActiveVessel.id + "\n\n" +
-                "If this is not correct you can change this is Debug menu using select Agena vessel Debug Tool\n\n" +
-                "Congradulations you have succesfully launched your Agena Target Vehicle, now you must get you Manned Orbital vehicle to Dock with the ATV\n\n" +
-                "The Gemini-Agena Target Vehicle design was an adaptation of the basic Agena-D vehicle using the alternate Model 8247 rocket engine and additional program-peculiar equipment required for the Gemini mission.\n" +
-                "This GATV was divided into:\n\n" +
-
-"The program-peculiar forward auxiliary section. This section consisted of the auxiliary equipment rack, the McDonnell Aircraft Company-furnished docking-adapter module, and the clamshell nose shroud.\n" +
-"The Agena-D forward and mid-body sections. The Agena-D forward section housed the main equipment bay, and the mid-body contained the main fuel and oxidizer tanks which supplied propellants through a feed and\n" +
-"load system for the main engine. (3) the program-peculiar aft section. The Model 8247 multi-start main engine and the smaller Model 8250 maneuvering and ullage orientation engines were located in this section.\n" +
-"Orbital length of the GATV was approximately 26 feet. Vehicle weight-on-orbit was approximately 7200 lb. This weight included propellants still remaining in the main tanks and available for Model 8247 engine operation\n" +
-"after the Agena achieved orbit.\n\n" +
-"The Gemini-ATV propulsion system consisted of the following:\n\n" +
-
-"Model 8247 rocket engine, also known as XLR-81-BA-13, and its controls, mount, gimbals, and titanium nozzle extension\n" +
-"Pyrotechnically operated helium-control valve (POHCV) and associated pressurization plumbing\n" +
-"Fuel and oxidizer feed and load system, including propellant tanks, vents, and fill quick disconnects\n" +
-"Propellant isolation valves (PIV's)\n" +
-"All associated pyro devices and solid-propellant rockets.\n\n" +
-"All Information For Agena was Gathered From www.astronautix.com";            
-        }
-
-        protected override void OnLoad(ConfigNode node)
-        {
-            int bodyID = int.Parse(node.GetValue("targetBody"));
-            foreach (var body in FlightGlobals.Bodies)
-            {
-                if (body.flightGlobalsIndex == bodyID)
-                    targetBody = body;
-            }
-            double maxApa = double.Parse(node.GetValue("maxaPa"));
-            GMaxApA = maxApa;
-            double minApa = double.Parse(node.GetValue("minaPa"));
-            GMinApA = minApa;
-
-            double masxPpaID = double.Parse(node.GetValue("maxpEa"));
-            GMaxPeA = masxPpaID;
-            double minPeAID = double.Parse(node.GetValue("minpEa"));
-            GMinPeA = minPeAID;
-
-            ModuleTitle = node.GetValue("moduletitle");
-            partName = node.GetValue("pName");
-            crewCount = int.Parse(node.GetValue("crewcount"));
-
-        }
-        protected override void OnSave(ConfigNode node)
-        {
-            int bodyID = targetBody.flightGlobalsIndex;
-            node.AddValue("targetBody", bodyID);
-
-            double maxApa = GMaxApA;
-            node.AddValue("maxaPa", GMaxApA);
-            double minApa = GMinApA;
-            node.AddValue("minaPa", GMinApA);
-
-            double maxPpAID = GMaxPeA;
-            node.AddValue("maxpEa", GMaxPeA);
-            double MinPeAID = GMinPeA;
-            node.AddValue("minpEa", GMinPeA);
-
-            
-            
-            string pname = partName;
-            node.AddValue("pName", partName);
-            node.AddValue("moduletitle", ModuleTitle);
-
-            node.AddValue("crewcount", crewCount);
-        }
-
-        //for testing purposes
-        public override bool MeetRequirements()
-        {
-            bool techUnlock = ResearchAndDevelopment.GetTechnologyState("specializedConstruction") == RDTech.State.Available;
-            if (techUnlock)
-                return true;
-            else
-                return false;
-        }
-
-
-    }
-#endregion
-    # region Agena Contract 2
-    public class AgenaTargetPracticeContractDocking : Contract
-    {
-        Settings st = new Settings("Config.cfg");
-        CelestialBody targetBody = null;        
-        public int crewCount = 1;
-        public int partAmount = 1;
-        public string partName = "Clamp-O-Tron Docking Port";
-
-        public double GMaxApA = 0;
-        public double GMinApA = 0;
-        public double GMaxPeA = 0;
-        public double GMinPeA = 0;
-
-        public string vesselTestID = "none";
-        public string vesselTestName = "none";
-
-        public int totalContracts;
-        public int Agena1Done;
-        public int Agena2Done;
-
-        ContractParameter AgenaDockParameter;
-
-
-        protected override bool Generate()
-        {
-            totalContracts = ContractSystem.Instance.GetCurrentContracts<AgenaTargetPracticeContractDocking>().Count();
-            Agena1Done = ContractSystem.Instance.GetCompletedContracts<AgenaTargetPracticeContract>().Count();
-            Agena2Done = ContractSystem.Instance.GetCompletedContracts<AgenaTargetPracticeContractDocking>().Count();
-
-            //Debug.Log("Satellite Delivery Totalcontracts " + totalContracts + " - " + " Total Finsihed " + TotalFinished)
-            if (Agena1Done != 1 || Agena2Done == 1 || SaveInfo.Agena2Done)
-            {
-                //Debug.Log("Agena 1 Is not Done Yet, rejecting Contract 2 Docking");
-                return false;
-            }
-            if (totalContracts >= 1)
-            {
-                //Debug.Log("Agena 2 is already loaded.");
-                return false;
-            }
-            targetBody = Planetarium.fetch.Home;
-            GMaxApA = UnityEngine.Random.Range((int)st.contracSatelliteMaxApAExcept, (int)st.contracSatelliteMaxApAExcept + (int)st.contracSatelliteMaxTotalHeightExcept);
-            GMinApA = GMaxApA - st.contracSatelliteBetweenDifference;
-            GMaxPeA = GMaxApA;
-            GMinPeA = GMinApA;
-
-            vesselTestID = SaveInfo.AgenaTargetVesselID;
-            vesselTestName = SaveInfo.AgenaTargetVesselName;
-            AgenaDockParameter = this.AddParameter(new TargetDockingGoal(vesselTestID, vesselTestName), null);
-            AgenaDockParameter.SetFunds(3000.0f, targetBody);
-            AgenaDockParameter.SetReputation(30f, targetBody);
-
-            this.AddParameter(new ApAOrbitGoal(targetBody, (double)GMaxApA, (double)GMinApA), null);
-            this.AddParameter(new PeAOrbitGoal(targetBody, (double)GMaxPeA, (double)GMinPeA), null);  
-
-            this.AddParameter(new PartGoal(partName, partAmount), null);
-            this.AddParameter(new GetCrewCount(crewCount), null);
-
-            base.SetExpiry(15f, 35f);
-            base.SetScience(25f, targetBody);
-            base.SetDeadlineDays(20f, targetBody);
-            base.SetReputation(50f, 35f, targetBody);
-            base.SetFunds(29000f * st.ContractPaymentMultiplier, 48000f * st.ContractPaymentMultiplier, 42000f * st.ContractPaymentMultiplier, targetBody);
-
-            return true;
-        }
-
-        public override bool CanBeCancelled()
-        {
-            return true;
-        }
-        public override bool CanBeDeclined()
-        {
-            return true;
-        }
-
-        protected override string GetHashString()
-        {
-            return targetBody.bodyName + vesselTestName;
-        }
-        protected override string GetTitle()
-        {
-            return "Agena Target Vehicle Orbital Test Around Kerbin - Dock With ATV " + vesselTestName;
-        }
-        protected override string GetDescription()
-        {
-
-            return "Project Gemini was the second human spaceflight program of NASA, the civilian space agency of the United States government. Project Gemini was conducted between projects Mercury\n" +
-                " and Apollo, with ten manned flights occurring in 1965 and 1966.\n\n"+
-
-                 "Its objective was to develop space travel techniques in support of Apollo, which had the goal of landing men on the Moon. Gemini achieved missions long enough for a trip to the Moon\n" +
-                 "and back, perfected extra-vehicular activity (working outside a spacecraft), and orbital maneuvers necessary to achieve rendezvous and docking. All Gemini flights were launched from \n" + 
-                 " Cape Canaveral, Florida using the Titan II Gemini launch vehicle\n\n" +
-                 "Info For Gemini From Wikipedia.org\n\n" +
-                "Your Second Task Is To Dock your Manned Orbital Pod with Agena Target Vehicle.  Then you are required to change Altitude to the selected ApA and PeA";
-        }
-        protected override string GetSynopsys()
-        {
-            return "Agena Test " + targetBody.theName;
-        }
-        protected override string MessageCompleted()
-        {
-            SaveInfo.Agena2Done = true;
-            return "You have been succesful with Launching an Agena Type Craft, Docking with it, and changing your Orbital Altitude.  Congradulations!\n\n" +                
-                "The first GATV was launched on October 25, 1965 while the Gemini 6 astronauts were waiting on the pad. While the Atlas performed normally,\n" +
-                "the Agena's engine exploded during orbital injection. Since the rendezvous and docking was the primary objective, the Gemini 6 mission was scrubbed,\n" +
-                "and replaced with the alternate mission Gemini 6A, which rendezvoused (but could not dock) with Gemini 7 in December.\n\n" +
-                "Was not until Gemini 10 That all objectives of Launching, Docking, and boosting Gemini 10 to 412-nautical-mile change succeded.";
-        }
-
-        protected override void OnLoad(ConfigNode node)
-        {
-            int bodyID = int.Parse(node.GetValue("targetBody"));
-            foreach (var body in FlightGlobals.Bodies)
-            {
-                if (body.flightGlobalsIndex == bodyID)
-                    targetBody = body;
-            }
-            double maxApa = double.Parse(node.GetValue("maxaPa"));
-            GMaxApA = maxApa;
-            double minApa = double.Parse(node.GetValue("minaPa"));
-            GMinApA = minApa;
-
-            double masxPpaID = double.Parse(node.GetValue("maxpEa"));
-            GMaxPeA = masxPpaID;
-            double minPeAID = double.Parse(node.GetValue("minpEa"));
-            GMinPeA = minPeAID;
-
-            int pcount = int.Parse(node.GetValue("pCount"));
-            partAmount = pcount;
-            partName = (node.GetValue("pName"));
-            crewCount = int.Parse(node.GetValue("crewcount"));
-
-            vesselTestID = node.GetValue("vesselid");
-            vesselTestName = node.GetValue("vesselname");
-
-        }
-        protected override void OnSave(ConfigNode node)
-        {
-            int bodyID = targetBody.flightGlobalsIndex;
-            node.AddValue("targetBody", bodyID);
-
-            double maxApa = GMaxApA;
-            node.AddValue("maxaPa", GMaxApA);
-            double minApa = GMinApA;
-            node.AddValue("minaPa", GMinApA);
-
-            double maxPpAID = GMaxPeA;
-            node.AddValue("maxpEa", GMaxPeA);
-            double MinPeAID = GMinPeA;
-            node.AddValue("minpEa", GMinPeA);
-
-
-            int pcount = partAmount;
-            node.AddValue("pCount", partAmount);
-            string pname = partName;
-            node.AddValue("pName", partName);
-
-            node.AddValue("crewcount", crewCount);
-
-            node.AddValue("vesselid", vesselTestID);
-            node.AddValue("vesselname", vesselTestName);
-        }
-
-        //for testing purposes
-        public override bool MeetRequirements()
-        {
-            bool techUnlock = ResearchAndDevelopment.GetTechnologyState("specializedConstruction") == RDTech.State.Available;
-            if (techUnlock)
-                return true;
-            else
-                return false;
-        }
-
-
-    }
-    #endregion
     #region Custom Supply Contract
     public class CustomSupply : Contract
     {
         Settings st = new Settings("Config.cfg");
         CelestialBody targetBody = null;      
-
         public string vesselName;
         public string vesselId;
-
         public string ResourceName;
-
         public string ContractPlayerName;
-
         public bool StartSupply;
         public double resourcesAmount;
-
         public int totalContracts;
         public int TotalFinished;
-
         public string CTitle = "Supply your Station Or Base with ";
-
         ContractParameter suppy1;
         ContractParameter suppy2;
 
@@ -2369,21 +1987,15 @@ namespace MissionControllerEC
     {
         Settings st = new Settings("Config.cfg");
         CelestialBody targetBody = null;
-
         public string vesselName;
         public string vesselId;
         public bool Startcrewtrans;
         public int crewAmount;
-
         public string ContractPlayerName;
-
         public double crewTime;
-
         public int totalContracts;
         public int TotalFinished;
-
         public string CTitle = "Supply your Station Or Base with ";
-
         ContractParameter ctrans1;
         ContractParameter ctrans2;
         ContractParameter ctrans3;
@@ -2519,31 +2131,24 @@ namespace MissionControllerEC
     {
         Settings st = new Settings("Config.cfg");
         CelestialBody targetBody = null;
-
         public double altitudeGoal;
         public double eccmax;
         public double eccmin;
-
         public int civiliansAmount = 0;
         public string civdestination = " Kerbin Civilian Tour";
         public string crewSeatTitle = "You must have these many open seats for Civilians";
-
         public string name1 = "Civilian Randall";
         public string name2 = "Civilian Lisa";
         public string name3 = "Civilian Roberts";
         public string name4 = "Civilian Johnsons";
-
         public double TripTime;
-        public string TripText = "The civilians have contracted to spend this amount of time in orbit\n";
-        
+        public string TripText = "The civilians have contracted to spend this amount of time in orbit\n";        
         public int totalContracts;
         public int TotalFinished;
-
         private int choice1;
         private int choice2;
         private int choice3;
         private int choice4;
-
         ContractParameter civ1;
         ContractParameter civ2;
         ContractParameter civ3;
@@ -2557,7 +2162,7 @@ namespace MissionControllerEC
             totalContracts = ContractSystem.Instance.GetCurrentContracts<CivilianLowOrbit>().Count();
             TotalFinished = ContractSystem.Instance.GetCompletedContracts<CivilianLowOrbit>().Count();
 
-            if (totalContracts >= 1 || st.CivilianContractsOff)
+            if (totalContracts >= 1)
             {
                 return false;
             }
@@ -2730,10 +2335,10 @@ namespace MissionControllerEC
         public override bool MeetRequirements()
         {
             bool techUnlock = ResearchAndDevelopment.GetTechnologyState("advFlightControl") == RDTech.State.Available;
-            if (techUnlock)
-                return true;
-            else
+            if (!techUnlock || st.Civilian_Contracts_Off == true)
                 return false;
+            else
+                return true;
         }
     }
     #endregion
@@ -2741,30 +2346,23 @@ namespace MissionControllerEC
     public class CivilianLanding : Contract
     {
         Settings st = new Settings("Config.cfg");
-        CelestialBody targetBody = null;
-       
+        CelestialBody targetBody = null;     
         public int civiliansAmount = 0;
         public string civdestination = " Kerbin Civilian Landing Expedition";
         public string crewSeatTitle = "You must have these many open seats for Civilians";
-
         public string name1 = "Civilian Randall";
         public string name2 = "Civilian Lisa";
         public string name3 = "Civilian Roberts";
         public string name4 = "Civilian Johnsons";
-
         public int civplanetnumber = 2;
-
         public double TripTime;
         public string TripText = "You must stay landed on this Expedition for  \n";
-
         public int totalContracts;
         public int TotalFinished;
-
         private int choice1;
         private int choice2;
         private int choice3;
         private int choice4;
-
         ContractParameter civ1;
         ContractParameter civ2;
         ContractParameter civ3;
@@ -2778,7 +2376,7 @@ namespace MissionControllerEC
             totalContracts = ContractSystem.Instance.GetCurrentContracts<CivilianLanding>().Count();
             TotalFinished = ContractSystem.Instance.GetCompletedContracts<CivilianLanding>().Count();
 
-            if (totalContracts >= 1 || st.CivilianContractsOff)
+            if (totalContracts >= 1)
             {
                 return false;
             }
@@ -2952,10 +2550,10 @@ namespace MissionControllerEC
         {
             bool techUnlock = ResearchAndDevelopment.GetTechnologyState("advFlightControl") == RDTech.State.Available;
             bool techUnlock2 = ResearchAndDevelopment.GetTechnologyState("advLanding") == RDTech.State.Available;
-            if (techUnlock && techUnlock2)
-                return true;
-            else
+            if (!techUnlock && !techUnlock2 || st.Civilian_Contracts_Off == true)
                 return false;
+            else
+                return true;
         }
     }
     #endregion
