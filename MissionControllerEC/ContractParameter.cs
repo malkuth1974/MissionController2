@@ -1862,6 +1862,7 @@ namespace MissionControllerEC
     public class CrashGoal : ContractParameter
     {
         public CelestialBody targetBody;
+        public bool ReadyToCrash = false;
 
         public CrashGoal()
         {
@@ -1880,9 +1881,16 @@ namespace MissionControllerEC
             return "Crash your vessel into " + targetBody;
         }
 
-        protected override void OnRegister()
+        protected override void OnUpdate()
         {
-            if (HighLogic.LoadedSceneIsFlight && (FlightGlobals.ActiveVessel.orbit.referenceBody.Equals(targetBody) || FlightGlobals.ship_orbit.referenceBody.Equals(targetBody)))
+            if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel.orbit.referenceBody.Equals(targetBody))
+            {
+                ReadyToCrash = true;
+            }
+        }  
+
+        protected override void OnRegister()
+        {           
             GameEvents.onCrash.Add(crashGoal);
         }
         protected override void OnUnregister()
@@ -1898,15 +1906,18 @@ namespace MissionControllerEC
                 if (body.flightGlobalsIndex == bodyID)
                     targetBody = body;
             }
+            ReadyToCrash = bool.Parse(node.GetValue("readybool"));
         }
         protected override void OnSave(ConfigNode node)
         {
             int bodyID = targetBody.flightGlobalsIndex;
             node.AddValue("targetBody", bodyID);
+            node.AddValue("readybool", ReadyToCrash);
         }
 
         public void crashGoal(EventReport ev)
-        {           
+        { 
+            if (ReadyToCrash)
                 base.SetComplete();
         }
 

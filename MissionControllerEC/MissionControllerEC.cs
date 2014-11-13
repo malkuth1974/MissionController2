@@ -199,7 +199,7 @@ namespace MissionControllerEC
             GameEvents.onKerbalTypeChange.Add(this.hireKerbals);
             GameEvents.onGameSceneLoadRequested.Add(this.CheckRandomContractTypes);
             //Debug.Log("MCE Awake");
-            getSupplyList();
+            getSupplyList(false);
             LoadResourceDictionary();
         }    
                 
@@ -322,24 +322,15 @@ namespace MissionControllerEC
             {
                 SaveInfo.Luna16Done = false;
             }
-            if (GUILayout.Button("Set Repair True"))
+            if (GUILayout.Button("Turn On All Repair Mission At Once"))
             {
                 SaveInfo.RepairContractOn = true;
             }
-            if (GUILayout.Button("Set Civilian Orbit True"))
+            if (GUILayout.Button("Turn On All Civilian Contracts At Once"))
             {
-                SaveInfo.CivilianLowOrbit = true;
+                SaveInfo.CivilianLowOrbit = true; SaveInfo.CivilianLanding = true; SaveInfo.CivilianStationExpedition = true;
             }
-            if (GUILayout.Button("Set Civilian Landing True"))
-            {
-                SaveInfo.CivilianLanding = true;
-            }
-
-            if (HighLogic.LoadedSceneIsEditor && GUILayout.Button("Price Out Vessel Parts"))
-            {
-                GetPartsCost();
-            }    
-
+                          
             GUILayout.EndVertical();
             if (GUILayout.Button("Exit Save Settings"))
             {

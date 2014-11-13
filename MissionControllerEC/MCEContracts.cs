@@ -2278,7 +2278,7 @@ namespace MissionControllerEC
         protected override string GetDescription()
         {
             //those 3 strings appear to do nothing
-            return civiliansAmount + " Civilian kerbals have sighed a contracted with us to bring them to Low Kerbin Orbit for a set amount of time.\n The vessel must have room for the amount of civilians specified in the contract. " +
+            return civiliansAmount + " Civilian kerbals have signed a contracted with us to bring them to Low Kerbin Orbit for a set amount of time.\n The vessel must have room for the amount of civilians specified in the contract. " +
                 "Failure to have the space available will cause the contract to be null and void.\n\n" +
                 "It’s also very important that nothing bad happens to our guest while in our care.  If anything tragic happens the financial burdens on the Space Agency could be the end of us!\n\n" +
                 "Please take note civilians are not allowed to take part in operations of KSC Personal duties, they are on the vessel as passengers only.  For this reason you as player cannot use them as an in game asset.  \n" +
@@ -2335,7 +2335,8 @@ namespace MissionControllerEC
         public override bool MeetRequirements()
         {
             bool techUnlock = ResearchAndDevelopment.GetTechnologyState("advFlightControl") == RDTech.State.Available;
-            if (!techUnlock || st.Civilian_Contracts_Off == true)
+            bool techUnlock2 = ResearchAndDevelopment.GetTechnologyState("specializedConstruction") == RDTech.State.Available;
+            if (!techUnlock || !techUnlock2 || st.Civilian_Contracts_Off == true)
                 return false;
             else
                 return true;
@@ -2496,7 +2497,7 @@ namespace MissionControllerEC
         protected override string GetDescription()
         {
             //those 3 strings appear to do nothing
-            return civiliansAmount + " Civilian kerbals have sighed a contracted with us to bring them on a landing expedition of the " + targetBody.theName + ".\n\n" + 
+            return civiliansAmount + " Civilian kerbals have signed a contracted with us to bring them on a landing expedition of the " + targetBody.theName + ".\n\n" + 
                 "The vessel must have room for the amount of civilians specified in the contract. " +
                 "Failure to have the space available will cause the contract to be null and void.\n\n" +
                 "It’s also very important that nothing bad happens to our guest while in our care.  If anything tragic happens the financial burdens on the Space Agency could be the end of us!\n\n" +
@@ -2557,6 +2558,234 @@ namespace MissionControllerEC
         }
     }
     #endregion
+    #region Civilian Station Expedition
+    public class CivilianStationExpedition : Contract
+    {
+        MissionControllerEC mc = new MissionControllerEC();
+        Settings st = new Settings("Config.cfg");
+        CelestialBody targetBody = null;
+               
+        public int civiliansAmount = 0;
+        public string civdestination = " Civilian Station Expedition";
+        public string crewSeatTitle = "You must have these many open seats for Civilians";
+        public string name1 = "Civilian Randall";
+        public string name2 = "Civilian Lisa";
+        public string name3 = "Civilian Roberts";
+        public string name4 = "Civilian Johnsons";
+        public double TripTime;
+        public string TripText = "The civilians have contracted to spend this amount of time in The station\n";
+        public int totalContracts;
+        public int TotalFinished;
+        private int choice1;
+        private int choice2;
+        private int choice3;
+        private int choice4;
+        public string vesselID;
+        public string vesselName;
+        ContractParameter civ1;
+        ContractParameter civ2;
+        ContractParameter civ3;
+        ContractParameter civ5;
+        ContractParameter civ6;
+
+        protected override bool Generate()
+        {
+            if (HighLogic.LoadedSceneIsFlight) { return false; }
+            totalContracts = ContractSystem.Instance.GetCurrentContracts<CivilianStationExpedition>().Count();
+            TotalFinished = ContractSystem.Instance.GetCompletedContracts<CivilianStationExpedition>().Count();
+
+            if (totalContracts >= 1)
+            {
+                return false;
+            }
+
+            if (!SaveInfo.CivilianStationExpedition)
+            {
+                return false;
+            }
+
+            
+
+            mc.getSupplyList(true);
+            if (MissionControllerEC.SupVes.Count == 0)
+            {
+                Debug.LogWarning("No stations in orbit cannot Generate Civilian Expedition Station Contracts");
+                return false;              
+            }
+            Debug.LogWarning("Found stations in orbit Generating Civilian Expedition Station Contracts");
+            int randomStation;
+            int randomStationCount;
+            int randomStationBodyID;
+            randomStationCount = MissionControllerEC.SupVes.Count;            
+            randomStation = Tools.RandomNumber(0, randomStationCount);
+
+            vesselID = MissionControllerEC.SupVes[randomStation].vesselId.ToString();
+            vesselName = MissionControllerEC.SupVes[randomStation].vesselName;
+            randomStationBodyID = MissionControllerEC.SupVes[randomStation].body.flightGlobalsIndex;
+
+            targetBody = FlightGlobals.Bodies[randomStationBodyID];
+
+            civiliansAmount = UnityEngine.Random.Range(2, 4);          
+            TripTime = UnityEngine.Random.Range(210000, 970000);
+
+            this.civ1 = this.AddParameter(new PreLaunch(), null);
+            civ1.SetFunds(5000, 5000, targetBody);
+            civ1.SetReputation(5, 10, targetBody);
+
+            this.civ6 = this.AddParameter(new TimeCountdownOrbits(targetBody, TripTime, TripText), null);
+            civ1.SetFunds(50000, 50000, targetBody);
+            civ1.SetReputation(15, 30, targetBody);         
+
+            this.AddParameter(new PreLaunch(), null);
+            this.civ3 = this.AddParameter(new TargetDockingGoal(vesselID, vesselName), null);
+
+            MissionControllerEC.CivName.Clear();
+            MissionControllerEC.civNamesListAdd();
+
+            choice1 = UnityEngine.Random.Range(0, 7);
+            name1 = MissionControllerEC.CivName[choice1];
+            choice2 = UnityEngine.Random.Range(8, 12);
+            name2 = MissionControllerEC.CivName[choice2];
+            choice3 = UnityEngine.Random.Range(13, 17);
+            name3 = MissionControllerEC.CivName[choice3];
+            choice4 = UnityEngine.Random.Range(18, 23);
+            name4 = MissionControllerEC.CivName[choice4];
+
+            if (civiliansAmount == 2)
+            {
+                this.civ2 = this.AddParameter(new CivilianModule(targetBody, civiliansAmount, name1, name2, civdestination), null);
+                civ2.SetFunds(50000, 5000, targetBody);
+                civ2.SetReputation(20, 40, targetBody);
+                civ2.DisableOnStateChange = false;
+            }
+            if (civiliansAmount == 3)
+            {
+                this.civ2 = this.AddParameter(new CivilianModule(targetBody, civiliansAmount, name1, name2, name3, civdestination), null);
+                civ2.SetFunds(75000, 5000, targetBody);
+                civ2.SetReputation(30, 60, targetBody);
+                civ2.DisableOnStateChange = false;
+            }
+            if (civiliansAmount == 4)
+            {
+                this.civ2 = this.AddParameter(new CivilianModule(targetBody, civiliansAmount, name1, name2, name3, name4, civdestination), null);
+                civ2.SetFunds(100000, 5000, targetBody);
+                civ2.SetReputation(40, 80, targetBody);
+                civ2.DisableOnStateChange = false;
+            }
+           
+            this.civ5 = this.AddParameter(new LandOnBody(targetBody), null);
+            civ5.SetFunds(20000, 20000, targetBody);
+            civ5.SetReputation(20, 40, targetBody);            
+
+            this.AddParameter(new GetSeatCount(civiliansAmount, crewSeatTitle), null);
+
+            base.SetExpiry(3f, 10f);
+            base.SetDeadlineYears(3f, targetBody);
+            base.SetFunds(15000, 225000, 350000, targetBody);
+            base.SetReputation(50, 150, targetBody);
+            return true;
+        }
+
+        protected override void OnAccepted()
+        {
+
+            string AgenaMessage = "The civilians that are assigned to your vessel for the Contract Tour are represented in game by seats.  They do not show up as Individual Kerbals in " +
+                "the game! Make no mistake though they are on your vessel.  If you fill the seats they need, then you cannot finish the contract.\n" +
+
+                "Even if the objective is Green Check marked,  If you try to cheat and Fill the seat later on the objective will GO BACK to Not Finished!";
+
+            MessageSystem.Message m = new MessageSystem.Message("About the Passengers", AgenaMessage.ToString(), MessageSystemButton.MessageButtonColor.YELLOW, MessageSystemButton.ButtonIcons.MESSAGE);
+            MessageSystem.Instance.AddMessage(m);
+        }
+        public override bool CanBeCancelled()
+        {
+            return true;
+        }
+        public override bool CanBeDeclined()
+        {
+            return true;
+        }
+
+        protected override string GetNotes()
+        {
+            return "Civilian Station Expedition";
+        }
+
+        protected override string GetHashString()
+        {
+            return "Bring Civilians on an Expedition of your station named " + vesselName;
+        }
+        protected override string GetTitle()
+        {
+            return "Bring Civilians on an Expedition of your station named " + vesselName;
+        }
+        protected override string GetDescription()
+        {
+            //those 3 strings appear to do nothing
+            return civiliansAmount + " Civilian kerbals have signed a contracted with us to bring them to your orbital station named " + vesselName + " for a set amount of time.\n The vessel must have room for the amount of civilians specified in the contract. " +
+                "Failure to have the space available will cause the contract to be null and void.\n\n" +
+                "It’s also very important that nothing bad happens to our guest while in our care.  If anything tragic happens the financial burdens on the Space Agency could be the end of us!\n\n" +
+                "Please take note civilians are not allowed to take part in operations of KSC Personal duties, they are on the vessel as passengers only.  For this reason you as player cannot use them as an in game asset.  \n" +
+                "But do not take up their seats or you will lose the contract!"
+;
+        }
+        protected override string GetSynopsys()
+        {
+            return "Civilian expedition to Space Station " + vesselName  + " " + targetBody.theName;
+        }
+        protected override string MessageCompleted()
+        {
+            return "The civilians thank you for bringing them home alive and showing them the wonders of your Space Station, they have learned a lot of iformation while staying at " + vesselName;
+        }
+
+        protected override void OnLoad(ConfigNode node)
+        {
+            int bodyID = int.Parse(node.GetValue("targetBody"));
+            foreach (var body in FlightGlobals.Bodies)
+            {
+                if (body.flightGlobalsIndex == bodyID)
+                    targetBody = body;
+            }
+            civiliansAmount = int.Parse(node.GetValue("civilians"));
+            name1 = node.GetValue("name1");
+            name2 = node.GetValue("name2");
+            name3 = node.GetValue("name3");
+            name4 = node.GetValue("name4");           
+            TripTime = double.Parse(node.GetValue("time"));
+            TripText = node.GetValue("triptext");
+            civdestination = node.GetValue("civd");
+            vesselID = node.GetValue("vesselid");
+            vesselName = node.GetValue("vesselname");
+
+        }
+        protected override void OnSave(ConfigNode node)
+        {
+            int bodyID = targetBody.flightGlobalsIndex;
+            node.AddValue("targetBody", bodyID);
+            node.AddValue("civilians", civiliansAmount);
+            node.AddValue("name1", name1);
+            node.AddValue("name2", name2);
+            node.AddValue("name3", name3);
+            node.AddValue("name4", name4);            
+            node.AddValue("time", TripTime);
+            node.AddValue("triptext", TripText);
+            node.AddValue("civd", civdestination);
+            node.AddValue("vesselid", vesselID);
+            node.AddValue("vesselname", vesselName);
+        }
+
+        public override bool MeetRequirements()
+        {
+            bool techUnlock = ResearchAndDevelopment.GetTechnologyState("advFlightControl") == RDTech.State.Available;
+            bool techUnlock2 = ResearchAndDevelopment.GetTechnologyState("specializedConstruction") == RDTech.State.Available;
+            if (!techUnlock || !techUnlock2 || st.Civilian_Contracts_Off == true)
+                return false;
+            else
+                return true;
+        }
+    }
+    #endregion
+
     public class TechList
     {
         public string techName = "";

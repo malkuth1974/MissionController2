@@ -188,6 +188,8 @@ namespace MissionControllerEC
                 SaveInfo.RepairContractOn = false;
                 SaveInfo.CivilianLowOrbit = false;
                 SaveInfo.CivilianLanding = false;
+                SaveInfo.CivilianStationExpedition = false;
+                SaveInfo.RepairStationContract = false;
                 Debug.Log("No random contracts at this time");
             }            
             if (currentContractType == 1)
@@ -195,6 +197,8 @@ namespace MissionControllerEC
                 SaveInfo.RepairContractOn = true;
                 SaveInfo.CivilianLowOrbit = false;
                 SaveInfo.CivilianLanding = false;
+                SaveInfo.CivilianStationExpedition = false;
+                SaveInfo.RepairStationContract = false;
                 Debug.Log("Repair Contract Selected");
             }            
             if (currentContractType == 2)
@@ -202,6 +206,8 @@ namespace MissionControllerEC
                 SaveInfo.RepairContractOn = false;
                 SaveInfo.CivilianLowOrbit = true;
                 SaveInfo.CivilianLanding = false;
+                SaveInfo.CivilianStationExpedition = false;
+                SaveInfo.RepairStationContract = false;
                 Debug.Log("Civilian Low Orbit Contract Selected");
             }           
             if (currentContractType == 3)
@@ -209,15 +215,35 @@ namespace MissionControllerEC
                 SaveInfo.RepairContractOn = false;
                 SaveInfo.CivilianLowOrbit = false;
                 SaveInfo.CivilianLanding = true;
+                SaveInfo.CivilianStationExpedition = false;
+                SaveInfo.RepairStationContract = false;
                 Debug.Log("Civilian Landing Contract Selected");
-            }            
+            }
+            if (currentContractType == 4)
+            {
+                SaveInfo.RepairContractOn = false;
+                SaveInfo.CivilianLowOrbit = false;
+                SaveInfo.CivilianLanding = false;
+                SaveInfo.CivilianStationExpedition = true;
+                SaveInfo.RepairStationContract = false;
+                Debug.Log("Civilian Station Expedition Contract Selected");
+            }
+            if (currentContractType == 5)
+            {
+                SaveInfo.RepairContractOn = false;
+                SaveInfo.CivilianLowOrbit = false;
+                SaveInfo.CivilianLanding = false;
+                SaveInfo.CivilianStationExpedition = false;
+                SaveInfo.RepairStationContract = true;
+                Debug.Log("Repair Station Contract Selected");
+            }    
         }
 
         public void randomContractsCheck()
         {
-            RandomContractsCheck = new Tools.MC2RandomWieghtSystem.Item<int>[4];
+            RandomContractsCheck = new Tools.MC2RandomWieghtSystem.Item<int>[6];
             RandomContractsCheck[0] = new Tools.MC2RandomWieghtSystem.Item<int>();
-            RandomContractsCheck[0].weight = 20;
+            RandomContractsCheck[0].weight = 10;
             RandomContractsCheck[0].value = 0;
 
             RandomContractsCheck[1] = new Tools.MC2RandomWieghtSystem.Item<int>();
@@ -230,7 +256,15 @@ namespace MissionControllerEC
 
             RandomContractsCheck[3] = new Tools.MC2RandomWieghtSystem.Item<int>();
             RandomContractsCheck[3].weight = settings.contract_civilian_Landing_Percent;
-            RandomContractsCheck[3].value = 3;           
+            RandomContractsCheck[3].value = 3;
+
+            RandomContractsCheck[4] = new Tools.MC2RandomWieghtSystem.Item<int>();
+            RandomContractsCheck[4].weight = settings.contract_Civilian_Station_Expedition;
+            RandomContractsCheck[4].value = 4;
+
+            RandomContractsCheck[5] = new Tools.MC2RandomWieghtSystem.Item<int>();
+            RandomContractsCheck[5].weight = settings.contract_repair_Station_Random_percent;
+            RandomContractsCheck[5].value = 5;
         }
 
         public void GetPartsCost()
@@ -388,19 +422,36 @@ namespace MissionControllerEC
             //Debug.Log("Death Event " + value.msg);
         }
 
-        public void getSupplyList()
+        public void getSupplyList(bool stationOnly)
         {
+            bool boolStation = stationOnly;
             supplyCount = 0;
             SupVes.Clear();
-            foreach (Vessel v in FlightGlobals.Vessels)
+
+            if (!stationOnly)
             {
-                if (v.vesselType == VesselType.Station || v.vesselType == VesselType.Base)
+                foreach (Vessel v in FlightGlobals.Vessels)
                 {
-                    SupVes.Add(new SupplyVesselList(v.name.Replace("(unloaded)", ""), v.id.ToString(), v.mainBody));
-                    supplyCount++;
-                    //Debug.Log("Found Vessel " + v.name + " " + v.vesselType + " Count is: " + supplyCount);
+                    if (v.vesselType == VesselType.Station || v.vesselType == VesselType.Base)
+                    {
+                        SupVes.Add(new SupplyVesselList(v.name.Replace("(unloaded)", ""), v.id.ToString(), v.mainBody));
+                        supplyCount++;
+                        //Debug.Log("Found Vessel " + v.name + " " + v.vesselType + " Count is: " + supplyCount);
+                    }
                 }
-            } 
+            }
+            else
+            {
+                foreach (Vessel v in FlightGlobals.Vessels)
+                {
+                    if (v.vesselType == VesselType.Station)
+                    {
+                        SupVes.Add(new SupplyVesselList(v.name.Replace("(unloaded)", ""), v.id.ToString(), v.mainBody));
+                        supplyCount++;
+                        //Debug.Log("Found Vessel " + v.name + " " + v.vesselType + " Count is: " + supplyCount);
+                    }
+                }
+            }
         }
 
         public void ActivateEVASpareParts()

@@ -96,7 +96,7 @@ namespace MissionControllerEC
             if (GUILayout.Button("Custom Contracts"))
             {
                 MCE_ScenarioStartup.ShowCustomWindow = true;
-                getSupplyList();
+                getSupplyList(false);
             }
             if (GUILayout.Button("Settings Menu"))
             {

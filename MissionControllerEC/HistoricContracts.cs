@@ -426,6 +426,15 @@ namespace MissionControllerEC
 
         }
 
+        protected override void OnAccepted()
+        {
+            string AgenaMessage = "For best results with the Luna 2 and its Crash Goal I have found it best to make sure that the Command Pod does not get destroyed first!!\n\n" +
+                "Had many reports of issue with this contract, and it seems that sometimes when the pod goes first then KSP doesn't have time to register the destruction of you personal Vessel.\n\n" +
+                "If this contract does give you issue's with the crash goal feel free to ALT F-12, select contracts and used the COM with the Luna 2 contract to complete it, its not cheating its a bug";
+            MessageSystem.Message m = new MessageSystem.Message("Important Luna 2 CrashGoal Contract Information", AgenaMessage.ToString(), MessageSystemButton.MessageButtonColor.YELLOW, MessageSystemButton.ButtonIcons.MESSAGE);
+            MessageSystem.Instance.AddMessage(m);
+        }
+
         public override bool CanBeCancelled()
         {
             return true;
@@ -549,7 +558,7 @@ namespace MissionControllerEC
             base.SetScience(50f, targetBody);
             return true;
         }
-
+      
         public override bool CanBeCancelled()
         {
             return true;
