@@ -26,8 +26,7 @@ namespace MissionControllerEC
         protected override bool Generate()
         {           
             if (HighLogic.LoadedSceneIsFlight) { return false; }
-            minHeight = settings.vostok12height;
-            this.AddParameter(new PreLaunch(), null);   
+            minHeight = settings.vostok12height;  
             vostok1 = this.AddParameter(new AltitudeGoal(targetBody,minHeight),null);
             vostok1.SetFunds(1000f, targetBody);
             vostok1.SetReputation(2f, targetBody);
@@ -160,14 +159,13 @@ namespace MissionControllerEC
             
             if (HighLogic.LoadedSceneIsFlight) { return false; }
             minHeight = settings.vostok12height;
-            this.AddParameter(new PreLaunch(), null);
             vostok1 = this.AddParameter(new AltitudeGoal(targetBody, minHeight), null);
             vostok1.SetFunds(1000f, targetBody);
             vostok1.SetReputation(2f, targetBody);
             vostok2 = this.AddParameter(new InOrbitGoal(targetBody), null);
             vostok2.SetFunds(2000f, targetBody);
             vostok2.SetReputation(3f, targetBody);
-            vostok4 = this.AddParameter(new TimeCountdownOrbits(targetBody, missionTime), null);
+            vostok4 = this.AddParameter(new TimeCountdownOrbits(targetBody, missionTime, true), null);
             vostok4.SetFunds(3000f, targetBody);
             vostok4.SetReputation(6f, targetBody);
             vostok4.SetScience(10f, targetBody);
@@ -280,10 +278,13 @@ namespace MissionControllerEC
         ContractParameter vostok4;
 
         protected override bool Generate()
-        {        
+        {
+            if (prestige == ContractPrestige.Trivial)
+            {
+                return false;
+            }
             if (HighLogic.LoadedSceneIsFlight) { return false; }
             minHeight = settings.voshodheight;
-            this.AddParameter(new PreLaunch(), null);
             vostok1 = this.AddParameter(new AltitudeGoal(targetBody, minHeight), null);
             vostok1.SetFunds(2000f, targetBody);
             vostok1.SetReputation(2f, targetBody);
@@ -399,9 +400,12 @@ namespace MissionControllerEC
         ContractParameter luna2;
         ContractParameter luna3;
         protected override bool Generate()
-        {          
+        {
+            if (prestige == ContractPrestige.Trivial)
+            {
+                return false;
+            }
             if (HighLogic.LoadedSceneIsFlight) { return false; }
-            this.AddParameter(new PreLaunch(), null);
             luna1 = this.AddParameter(new InOrbitGoal(targetBody), null);
             luna1.SetFunds(4000f, targetBody);
             luna1.SetReputation(8f, targetBody);
@@ -530,10 +534,11 @@ namespace MissionControllerEC
 
         protected override bool Generate()
         {
-            Settings settings = new Settings("config.cfg");
-            
+            if (prestige == ContractPrestige.Trivial)
+            {
+                return false;
+            }
             if (HighLogic.LoadedSceneIsFlight) { return false; }
-            this.AddParameter(new PreLaunch(), null);
             luna1 = this.AddParameter(new InOrbitGoal(targetBody), null);
             luna1.SetFunds(8000f, targetBody);
             luna1.SetReputation(8f, targetBody);
@@ -667,6 +672,10 @@ namespace MissionControllerEC
 
         protected override bool Generate()
         {
+            if (prestige == ContractPrestige.Trivial)
+            {
+                return false;
+            }
             if (HighLogic.LoadedSceneIsFlight) { return false; }
             totalContracts = ContractSystem.Instance.GetCurrentContracts<AgenaTargetPracticeContract>().Count();
             Agena1Done = ContractSystem.Instance.GetCompletedContracts<AgenaTargetPracticeContract>().Count();
@@ -850,6 +859,10 @@ namespace MissionControllerEC
 
         protected override bool Generate()
         {
+            if (prestige == ContractPrestige.Trivial)
+            {
+                return false;
+            }
             totalContracts = ContractSystem.Instance.GetCurrentContracts<AgenaTargetPracticeContractDocking>().Count();
             Agena1Done = ContractSystem.Instance.GetCompletedContracts<AgenaTargetPracticeContract>().Count();
             Agena2Done = ContractSystem.Instance.GetCompletedContracts<AgenaTargetPracticeContractDocking>().Count();
@@ -1005,6 +1018,7 @@ namespace MissionControllerEC
     # region SkyLab 1
     public class SkyLab1 : Contract
     {
+        
         Settings settings = new Settings("config.cfg");
         public double minHeight = 90000;
 
@@ -1034,12 +1048,15 @@ namespace MissionControllerEC
         public int totalContracts;
     
         protected override bool Generate()
-        {            
+        {
+            if (prestige == ContractPrestige.Trivial)
+            {
+                return false;
+            }
             totalContracts = ContractSystem.Instance.GetCurrentContracts<SkyLab1>().Count();
             if (totalContracts >= 1) { return false; }
             if (HighLogic.LoadedSceneIsFlight) { return false; }
             minHeight = settings.skyLabheight;
-            this.AddParameter(new PreLaunch(), null);
             this.AddParameter(new AltitudeGoal(targetBody,minHeight), null);
             this.AddParameter(new InOrbitGoal(targetBody), null);
             this.AddParameter(new PartGoal(part1goal, part1amount), null);
@@ -1172,12 +1189,14 @@ namespace MissionControllerEC
         public int totalContracts;
 
         protected override bool Generate()
-        {            
+        {
+            if (prestige == ContractPrestige.Trivial)
+            {
+                return false;
+            }
             totalContracts = ContractSystem.Instance.GetCurrentContracts<SkyLab2>().Count();
             if (HighLogic.LoadedSceneIsFlight) { return false; }
             if (totalContracts >= 1) { return false; }
-
-            this.AddParameter(new PreLaunch(), null);
             
             this.skylab1 = this.AddParameter(new TargetDockingGoal(SaveInfo.skyLabVesID, SaveInfo.skyLabName), null);
             skylab1.SetFunds(7000, targetBody);
@@ -1193,7 +1212,7 @@ namespace MissionControllerEC
             skylab3.SetReputation(10, targetBody);
             skylab3.SetScience(10, targetBody);
             
-            this.skylab4 = this.AddParameter(new TimeCountdownOrbits(targetBody, contractTime, contTimeTitle), null);
+            this.skylab4 = this.AddParameter(new TimeCountdownDocking(targetBody, contractTime, contTimeTitle,SaveInfo.skyLabVesID), null);
             skylab4.SetFunds(20000, targetBody);
             skylab4.SetReputation(25, targetBody);
             skylab4.SetScience(25, targetBody);
@@ -1327,6 +1346,10 @@ namespace MissionControllerEC
 
         protected override bool Generate()
         {
+            if (prestige == ContractPrestige.Trivial)
+            {
+                return false;
+            }
             if (settings.all_Historical_Contracts_Off)
             {
                 return false;
@@ -1334,8 +1357,6 @@ namespace MissionControllerEC
             totalContracts = ContractSystem.Instance.GetCurrentContracts<SkyLab3>().Count();
             if (HighLogic.LoadedSceneIsFlight) { return false; }
             if (totalContracts >= 1) { return false; }
-
-            this.AddParameter(new PreLaunch(), null);
 
             this.skylab1 = this.AddParameter(new TargetDockingGoal(SaveInfo.skyLabVesID, SaveInfo.skyLabName), null);
             skylab1.SetFunds(5000, targetBody);
@@ -1351,7 +1372,7 @@ namespace MissionControllerEC
             skylab2.SetReputation(3, targetBody);
             skylab2.SetScience(5, targetBody);
 
-            this.skylab4 = this.AddParameter(new TimeCountdownOrbits(targetBody, contractTime, contTimeTitle), null);
+            this.skylab4 = this.AddParameter(new TimeCountdownDocking(targetBody, contractTime, contTimeTitle, SaveInfo.skyLabVesID), null);
             skylab4.SetFunds(10000, targetBody);
             skylab4.SetReputation(15, targetBody);
             skylab4.SetScience(15, targetBody);
@@ -1479,7 +1500,11 @@ namespace MissionControllerEC
         public int totalContracts;
 
         protected override bool Generate()
-        {           
+        {
+            if (prestige == ContractPrestige.Trivial)
+            {
+                return false;
+            }
             totalContracts = ContractSystem.Instance.GetCurrentContracts<SkyLab4>().Count();
             if (HighLogic.LoadedSceneIsFlight) { return false; }
             if (totalContracts >= 1) { return false; }
@@ -1488,8 +1513,6 @@ namespace MissionControllerEC
             GMaxPeA = settings.skyLab4MaxPeA;
             GMinApA = GMaxApA - 5000;
             GMinPeA = GMaxPeA - 5000;
-
-            this.AddParameter(new PreLaunch(), null);
 
             this.skylab1 = this.AddParameter(new TargetDockingGoal(SaveInfo.skyLabVesID, SaveInfo.skyLabName), null);
             skylab1.SetFunds(5000, targetBody);
@@ -1511,7 +1534,7 @@ namespace MissionControllerEC
             skylab7 = this.AddParameter(new PeAOrbitGoal(targetBody, (double)GMaxPeA, (double)GMinPeA), null);
             skylab7.SetFunds(1000, targetBody);
 
-            this.skylab4 = this.AddParameter(new TimeCountdownOrbits(targetBody, contractTime, contTimeTitle), null);
+            this.skylab4 = this.AddParameter(new TimeCountdownDocking(targetBody, contractTime, contTimeTitle, SaveInfo.skyLabVesID), null);
             skylab4.SetFunds(10000, targetBody);
             skylab4.SetReputation(15, targetBody);
             skylab4.SetScience(15, targetBody);

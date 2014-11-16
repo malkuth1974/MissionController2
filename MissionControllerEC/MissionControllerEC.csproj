@@ -33,9 +33,11 @@
   <ItemGroup>
     <Reference Include="Assembly-CSharp">
       <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Kerbal Space Program\KSP_x64_Data\Managed\Assembly-CSharp.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Assembly-CSharp-firstpass">
       <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Kerbal Space Program\KSP_x64_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -45,21 +47,22 @@
     <Reference Include="System.Xml" />
     <Reference Include="UnityEngine">
       <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Kerbal Space Program\KSP_x64_Data\Managed\UnityEngine.dll</HintPath>
+      <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConfigNodeStorage.cs" />
-    <Compile Include="ContractParameter.cs" />
+    <Compile Include="Parameters\ContractParameter.cs" />
     <Compile Include="FinanceWindow1.cs" />
-    <Compile Include="HistoricContracts.cs" />
+    <Compile Include="Contracts\HistoricContracts.cs" />
     <Compile Include="Instructions.cs" />
-    <Compile Include="MCEContracts.cs" />
-    <Compile Include="MCELanderResearch.cs" />
-    <Compile Include="MCEOrbitalScanning.cs" />
+    <Compile Include="Contracts\MCEContracts.cs" />
+    <Compile Include="PartModules\MCELanderResearch.cs" />
+    <Compile Include="PartModules\MCEOrbitalScanning.cs" />
     <Compile Include="MissionControllerEC.cs" />
     <Compile Include="PopUps.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RepairPanel.cs" />
+    <Compile Include="PartModules\RepairPanel.cs" />
     <Compile Include="SaveInfo.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="SettingsWindow.cs" />

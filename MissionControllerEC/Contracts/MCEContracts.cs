@@ -5,6 +5,7 @@ using UnityEngine;
 using Contracts;
 using Contracts.Parameters;
 using KSP;
+using System.Text;
 using KSPAchievements;
 
 
@@ -37,6 +38,10 @@ namespace MissionControllerEC
             
         protected override bool Generate()
         {
+            if (prestige != ContractPrestige.Trivial)
+            {
+                return false;
+            }
             if (HighLogic.LoadedSceneIsFlight) { return false; }
             if (SaveInfo.NoSatelliteContracts)
             {
@@ -117,7 +122,6 @@ namespace MissionControllerEC
                 ifInclination = true;
             else
                 ifInclination = false;            
-            this.AddParameter(new PreLaunch(), null);
 
             this.satellite1 = this.AddParameter(new ApAOrbitGoal(targetBody, (double)GMaxApA, (double)GMinApA), null);
             satellite1.SetFunds(2000, targetBody);
@@ -137,7 +141,7 @@ namespace MissionControllerEC
 
             if (parttechUnlock)
             {
-                this.AddParameter(new PartGoal(partName, partAmount), null);
+                this.AddParameter(new PartGoal(partName, "Small Repair Panel", partAmount,true), null);
             }
 
             this.AddParameter(new TotalMasGoal(targetBody, maxTon), null);
@@ -296,6 +300,10 @@ namespace MissionControllerEC
 
         protected override bool Generate()
         {
+            if (prestige != ContractPrestige.Trivial)
+            {
+                return false;
+            }
             if (HighLogic.LoadedSceneIsFlight) { return false; }
             if (SaveInfo.NoOrbitalPeriodcontracts)
             {
@@ -345,7 +353,6 @@ namespace MissionControllerEC
                 base.SetReputation(35f, 345f, targetBody);
             }
 
-            this.AddParameter(new PreLaunch(), null);
             this.satellite1 = this.AddParameter(new OrbitalPeriod(MinOrb, MaxOrb), null);
             satellite1.SetFunds(8000, targetBody);
             satellite1.SetReputation(10, targetBody);
@@ -357,7 +364,7 @@ namespace MissionControllerEC
             }
             if (parttechUnlock)
             {
-                this.AddParameter(new PartGoal(partName, partAmount), null);
+                this.AddParameter(new PartGoal(partName, "Small Repair Panel", partAmount, true), null);
             }
             this.AddParameter(new TotalMasGoal(targetBody, maxTon), null);
             this.AddParameter(new ResourceGoalCap(ResourceName, capResources), null);
@@ -517,6 +524,10 @@ namespace MissionControllerEC
 
         protected override bool Generate()
         {
+            if (prestige == ContractPrestige.Trivial)
+            {
+                return false;
+            }
             if (HighLogic.LoadedSceneIsFlight) { return false; }
             if (SaveInfo.NoSatelliteContracts)
             {
@@ -558,7 +569,6 @@ namespace MissionControllerEC
             {
                 targetBody = Planetarium.fetch.Home;
             }                       
-            this.AddParameter(new PreLaunch(), null);
             if (RandomCheck)
             {
                 this.satellite1 = this.AddParameter(new AltitudeGoal(targetBody, MaxAltitude), null);
@@ -579,13 +589,13 @@ namespace MissionControllerEC
                     satellite5.SetFunds(18000, 18000, targetBody);
                 }
             }
-            this.satellite4 = this.AddParameter(new TimeCountdownOrbits(targetBody, timeOnStation,TOSName), null);
+            this.satellite4 = this.AddParameter(new TimeCountdownOrbits(targetBody, timeOnStation,TOSName, false), null);
             satellite4.SetFunds(20000,20000, targetBody);          
             this.satellite3 = this.AddParameter(new PartGoal(sciPartname, scipartamount), null);
             satellite3.SetFunds(2000, 2000, targetBody);
             if (parttechUnlock)
             {
-                this.AddParameter(new PartGoal(partName, partAmount), null);
+                this.AddParameter(new PartGoal(partName, "Small Repair Panel", partAmount, true), null);
             }
             this.AddParameter(new GetCrewCount(crewCount), null);
 
@@ -752,6 +762,10 @@ namespace MissionControllerEC
 
         protected override bool Generate()
         {
+            if (prestige != ContractPrestige.Exceptional)
+            {
+                return false;
+            }
             if (HighLogic.LoadedSceneIsFlight) { return false; }
             if (SaveInfo.NoSatelliteContracts)
             {
@@ -801,7 +815,6 @@ namespace MissionControllerEC
             {
                 targetBody = Planetarium.fetch.Home;
             }
-            this.AddParameter(new PreLaunch(), null);
             this.satellite1 = this.AddParameter(new AltitudeGoal(targetBody, MaxAltitude), null);
             satellite1.SetFunds(5000, 5000, targetBody);
             this.satellite2 = this.AddParameter(new EccentricGoal(GMinecc, GMaxecc), null);
@@ -809,7 +822,7 @@ namespace MissionControllerEC
             satellite2.DisableOnStateChange = false;
             this.satellite6 = this.AddParameter(new Inclination(MinInc, MaxInc), null);
             satellite6.SetFunds(5000, 5000, targetBody);
-            this.satellite4 = this.AddParameter(new TimeCountdownOrbits(targetBody, timeOnStation, TOSName), null);
+            this.satellite4 = this.AddParameter(new TimeCountdownOrbits(targetBody, timeOnStation, TOSName, false), null);
             satellite4.SetFunds(20000, 20000, targetBody);
             this.satellite3 = this.AddParameter(new PartGoal(sciPartname, scipartamount), null);
             satellite3.SetFunds(2000, 2000, targetBody);
@@ -817,7 +830,7 @@ namespace MissionControllerEC
             satellite5.SetFunds(2000, 2000, targetBody);
             if (parttechUnlock)
             {
-                this.AddParameter(new PartGoal(partName, partAmount), null);
+                this.AddParameter(new PartGoal(partName, "Small Repair Panel", partAmount, true), null);
             }
             this.AddParameter(new GetCrewCount(crewCount), null);
 
@@ -1006,6 +1019,10 @@ namespace MissionControllerEC
 
         protected override bool Generate()
         {
+            if (prestige != ContractPrestige.Exceptional)
+            {
+                return false;
+            }
             if (HighLogic.LoadedSceneIsFlight) { return false; }
             if (SaveInfo.NoSatelliteContracts)
             {
@@ -1043,12 +1060,11 @@ namespace MissionControllerEC
 
             GMaxOrbital = st.contract_Orbital_Period_Max_InSeconds;
             GMinOrbital = st.contract_Orbital_Period_Min_InSeconds;
-            
-            this.AddParameter(new PreLaunch(), null);           
+                       
             this.satellite2 = this.AddParameter(new OrbitalPeriod(GMinOrbital, GMaxOrbital), null);
             satellite2.SetFunds(8000, 8000, targetBody);
             satellite2.DisableOnStateChange = false;
-            this.satellite4 = this.AddParameter(new TimeCountdownOrbits(targetBody, timeOnStation, TOSName), null);
+            this.satellite4 = this.AddParameter(new TimeCountdownOrbits(targetBody, timeOnStation, TOSName, false), null);
             satellite4.SetFunds(20000, 20000, targetBody);
             this.satellite3 = this.AddParameter(new PartGoal(sciPartname, scipartamount), null);
             satellite3.SetFunds(2000, 2000, targetBody);
@@ -1056,7 +1072,7 @@ namespace MissionControllerEC
             satellite5.SetFunds(2000, 2000, targetBody);           
             if (parttechUnlock)
             {
-                this.AddParameter(new PartGoal(partName, partAmount), null);
+                this.AddParameter(new PartGoal(partName, "Small Repair Panel", partAmount, true), null);
             }
             this.AddParameter(new GetCrewCount(crewCount), null);
 
@@ -1177,16 +1193,16 @@ namespace MissionControllerEC
     {
         Settings st = new Settings("Config.cfg");
         CelestialBody targetBody = null;
-        int bodyIDX = 1;
-        string vesselID;
-        string vesselName;
-        bool NoVessel = false;
-        string titleName = "Repair Vessel ";
-        double maxApA;
-        string repairParts = "SpareParts";
-        double RPamount = 1;
+        public int planetIDX = 1;
+        public string vesselID;
+        public string vesselName;
+        public bool NoVessel = false;
+        public string titleName = "Repair Vessel ";
+        public double maxApA;
+        public string repairParts = "SpareParts";
+        public double RPamount = 1;
         ContractParameter repairgoal2;
-        string Ctitle = "To Repair Vessel You must have at Least ";
+        public string Ctitle = "To Repair Vessel You must have at Least ";
         public List<RepairVesselsList> repairvesselList = new List<RepairVesselsList>();
 
         public void findVeselWithRepairPart()
@@ -1198,8 +1214,11 @@ namespace MissionControllerEC
                     foreach (ProtoPartModuleSnapshot m in p.modules)
                     {
                         if (m.moduleName.Equals("RepairPanel"))
-                        {                           
-                           repairvesselList.Add(new RepairVesselsList(vs.vesselName,vs.id.ToString(),vs.orbit.ApA,vs.mainBody.flightGlobalsIndex));
+                        {
+                            if (vs.vesselType == VesselType.Probe)
+                            {
+                                repairvesselList.Add(new RepairVesselsList(vs.vesselName, vs.id.ToString(), vs.orbit.ApA, vs.mainBody.flightGlobalsIndex));
+                            }
                         }
                     }
                 }
@@ -1242,19 +1261,23 @@ namespace MissionControllerEC
                 vesselID = random.vesselId.ToString();
                 vesselName = random.vesselName.Replace("(unloaded)", "");
                 maxApA = random.MaxApA;
-                bodyIDX = random.bodyidx;
-                //Debug.LogWarning("(repair)bodyIDX is: " + bodyIDX + "   " + random.bodyidx);
-                //Debug.LogWarning("Random Repair Vessel Selected " + random.vesselName + "  " + random.vesselId + "  " + random.MaxApA);
+                planetIDX = random.bodyidx;
+                Debug.LogWarning("(repair)bodyIDX is: " + "   " + random.bodyidx);
+                Debug.LogWarning("Random Repair Vessel Selected " + random.vesselName + "  " + random.vesselId + "  " + random.MaxApA);
                 NoVessel = true;
             }
-            //else { Debug.LogError(" Vessel Selection Null, skiped process"); NoVessel = false; }
+            else { Debug.LogError(" Vessel Selection Null for repair Contract, skiped process"); NoVessel = false; }
         }
 
         public int totalContracts;
         public int TotalFinished;
 
         protected override bool Generate()
-        {            
+        {
+            if (prestige == ContractPrestige.Trivial)
+            {
+                return false;
+            }
             if (HighLogic.LoadedSceneIsFlight)
             {
                 return false;
@@ -1279,7 +1302,7 @@ namespace MissionControllerEC
             {
                 return false;
             }
-            targetBody = FlightGlobals.Bodies[bodyIDX];
+            targetBody = FlightGlobals.Bodies[planetIDX];
             if (targetBody = null)
             {
                 targetBody = Planetarium.fetch.Home;
@@ -1348,9 +1371,11 @@ namespace MissionControllerEC
         protected override string GetDescription()
         {
             //those 3 strings appear to do nothing
-            return "Hello, we would like you to launch a Manned Vessel to our satellite.  DOCK WITH IT, transfer some repair Parts to the RepairPanel.  After this you will have to go EVA and open the door and conduct Repairs.\n\n"+
-                "Don't forget to bring at least 1 (Resource) repair Parts with you to conduct the repairs with.  Contact payout are adjusted for travel time, and what Celestrial Body you are going to. \n\n"+
-                "If no docking port is on the Satellite you can use the claw to attach to the satellite, or any number of Mods that add attachment type systems.  As long as they count as DOCKED you will be good.";
+            return "An issue has arised from one of our satellites in orbit, we would like to contract your agency out to launch and fix this issue\n\n" +
+                "How To Conduct Repairs\n\n" +
+                "1. You need Spare Parts To conduct Repairs.\n 2. Launch and intercept the target satellite (no need to dock unless you want to). \n" +
+                "3. When you go EVA Grab some SpareParts while EVA using KERT, right click part that has Spare Parts and use the KERT GUI to transfer the Spare Parts to your EVA Kerbal\n" +
+                "4. Go to the nearest Repair Panel and Transfer the Spare Parts to The Repair Panel using KERT GUI Again.\n5. Open the Repair Panel and Select Test System.\n6. Once system is tested and passes select Repair. All Done!";
         }
         protected override string GetSynopsys()
         {
@@ -1365,18 +1390,7 @@ namespace MissionControllerEC
 
         protected override void OnLoad(ConfigNode node)
         {
-            int bodyID = int.Parse(node.GetValue("targetBody"));
-            try
-            {
-                targetBody = FlightGlobals.Bodies[bodyID];
-                //Debug.LogWarning("(repair)Target Body is: " + targetBody.theName + " BodyID was: " + bodyID);
-            }
-            catch
-            {
-                targetBody = Planetarium.fetch.Home;
-                //Debug.LogWarning("(repair)On load defaulted to homebody");
-            }
-            
+            planetIDX = int.Parse(node.GetValue("planetIDX"));
             vesselID = node.GetValue("VesselID");
             vesselName = node.GetValue("VesselName");
             titleName = node.GetValue("titlename");
@@ -1384,14 +1398,12 @@ namespace MissionControllerEC
             repairParts = node.GetValue("repairparts");
             RPamount = double.Parse(node.GetValue("rpamount"));
             Ctitle = node.GetValue("ctitle");
-            bodyIDX = int.Parse(node.GetValue("bodyidx"));
-
+            NoVessel = bool.Parse(node.GetValue("novessel"));
+            targetBody = FlightGlobals.Bodies[planetIDX];
         }
         protected override void OnSave(ConfigNode node)
-        {
-            node.AddValue("targetBody", bodyIDX);
-            //Debug.LogWarning("(repair)OnSave targetBody saved as: " + bodyIDX);
-
+        {            
+            node.AddValue("planetIDX", planetIDX);
             node.AddValue("VesselID", vesselID);
             node.AddValue("VesselName", vesselName);
             node.AddValue("titlename", titleName);
@@ -1399,7 +1411,7 @@ namespace MissionControllerEC
             node.AddValue("repairparts", repairParts);
             node.AddValue("rpamount", RPamount);
             node.AddValue("ctitle",Ctitle);
-            node.AddValue("bodyidx", bodyIDX);
+            node.AddValue("novessel", NoVessel);
         }
 
         //for testing purposes
@@ -1412,7 +1424,227 @@ namespace MissionControllerEC
                 return false;
         }
     }
-#endregion
+#endregion  
+    #region Repair Station Contract
+    public class RepairStation : Contract
+    {
+        Settings st = new Settings("Config.cfg");
+        CelestialBody targetBody = null;
+        public int planetIDX = 1;
+        public string vesselID;
+        public string vesselName;
+        public bool NoVessel = false;
+        public string titleName = "Test";
+        public string repairParts = "SpareParts";
+        public double RPamount = 1;
+        ContractParameter repairgoal2;
+        public string Ctitle = "To Repair Station You must have at Least ";
+        public List<RepairVesselsList> repairvesselListStations = new List<RepairVesselsList>();
+
+        public int randomString = 0;
+                
+        public void findVeselWithRepairPartAndStation()
+        {
+            foreach (Vessel vs in FlightGlobals.Vessels)
+            {
+                foreach (ProtoPartSnapshot p in vs.protoVessel.protoPartSnapshots)
+                {
+                    foreach (ProtoPartModuleSnapshot m in p.modules)
+                    {
+                        if (m.moduleName.Equals("RepairPanel"))
+                        {
+                            if (vs.vesselType == VesselType.Station)
+                            {
+                                repairvesselListStations.Add(new RepairVesselsList(vs.vesselName, vs.id.ToString(), vs.orbit.ApA, vs.mainBody.flightGlobalsIndex));
+                            }
+                        }
+                    }
+                }
+            }
+
+        }
+             
+        public void chooseVesselRepairStationFromList()
+        {
+            System.Random rnd = new System.Random();
+            if (repairvesselListStations.Count > 0)
+            {
+                RepairVesselsList random = repairvesselListStations[rnd.Next(repairvesselListStations.Count)];
+                vesselID = random.vesselId.ToString();
+                vesselName = random.vesselName.Replace("(unloaded)", "");
+                planetIDX = random.bodyidx;
+                Debug.LogWarning("(repair station)bodyIDX is: " + random.bodyidx);
+                Debug.LogWarning("Random Repair Orbital Station Selected " + random.vesselName + "  " + random.vesselId + "  " + random.MaxApA);
+                NoVessel = true;
+            }
+            //else { Debug.LogError(" Vessel Selection Null, skiped process"); NoVessel = false; }
+        }
+
+        public int totalContracts;
+        public int TotalFinished;
+
+        protected override bool Generate()
+        {
+            if (prestige == ContractPrestige.Trivial)
+            {
+                return false;
+            }
+            if (HighLogic.LoadedSceneIsFlight)
+            {
+                return false;
+            }
+            totalContracts = ContractSystem.Instance.GetCurrentContracts<RepairStation>().Count();
+            TotalFinished = ContractSystem.Instance.GetCompletedContracts<RepairStation>().Count();          
+            if (totalContracts >= 1 || SaveInfo.NoRepairContracts)
+            {
+                return false;
+            }
+            if (!SaveInfo.RepairStationContract)
+            {
+                Debug.LogWarning("(Repair Station) contract random is false, contract not generated");
+                return false;
+            }
+            titleName = "Find the Repair Panel on " + vesselName + " And start conducting repairs.";
+            findVeselWithRepairPartAndStation();
+            chooseVesselRepairStationFromList();
+            randomString = Tools.RandomNumber(0, 4);
+            targetBody = FlightGlobals.Bodies[planetIDX];
+            if (targetBody = null)
+            {
+                targetBody = Planetarium.fetch.Home;
+            }
+            if (!NoVessel)
+            {
+                return false;
+            }
+
+            this.AddParameter(new EvaGoal(FlightGlobals.Bodies[planetIDX]), null);
+            this.repairgoal2 = this.AddParameter(new RepairPanelPartCheck(titleName, vesselID, vesselName), null);
+            repairgoal2.SetFunds(2000, targetBody);
+            repairgoal2.SetReputation(10, targetBody);
+            //this.AddParameter(new ResourceSupplyGoal(repairParts, RPamount, Ctitle), null);
+            base.SetExpiry(1f, 3f);
+            base.SetDeadlineYears(1f, targetBody);
+            base.SetFunds(5000f * st.Contract_Payment_Multiplier, 30000f * st.Contract_Payment_Multiplier, 35000f * st.Contract_Payment_Multiplier, targetBody);
+            base.SetReputation(75f, 125f, targetBody);
+            base.SetScience(1.0f, targetBody);
+
+            return true;
+        }
+
+        public override bool CanBeCancelled()
+        {
+            return true;
+        }
+        public override bool CanBeDeclined()
+        {
+            return true;
+        }
+       
+        protected override string GetHashString()
+        {
+            return "Eva And Repair Space Station ";
+        }
+        protected override string GetTitle()
+        {
+            return "EVA and Repair Contract for Space Station: " + " " + vesselName;
+        }
+        protected override string GetDescription()
+        {
+            //those 3 strings appear to do nothing
+            return "Space Station " + vesselName + " has some issue and needs attention.  You are to EVA and head for the Repair panel and start repairs on the issues.\n\n"+
+                "How To Conduct Repairs\n\n"+
+                "1. You need Spare Parts To conduct Repairs.\n2. When you go EVA Grab some SpareParts while EVA using KERT, right click part that has Spare Parts and use the KERT GUI to transfer the Spare Parts to your EVA Kerbal\n" +
+                "3. Go to the nearest Repair Panel and Transfer the Spare Parts to The Repair Panel using KERT GUI Again.\n4. Open the Repair Panel and Select Test System.\n5. Once system is tested and passes select Repair. All Done!";
+        }
+        protected override string GetSynopsys()
+        {
+            if (randomString == 0)
+            {
+                return "A solar panel section overloaded last night, we shut a small part of the panel down, but you need to reprogram the system to compensate for the new energy output.";
+            }
+            if (randomString == 1)
+            {
+                return "The four Main Bus Switching Units (MBSUs), control the routing of power from the the solar array wings to the rest of the Station " + vesselName + "." +
+                " Yesterday MBSU-1, while still routing power correctly, ceased responding.  We need you to reset the system from the Repair Panel.";
+            }
+            if (randomString == 2)
+            {
+                return "An incorrect command sequence caused the Current altitude maintenance rocket control system to misfire during an altitude re-boost manoeuvre, fix the issue by using the Repair Panel Outside.";
+            }
+            if (randomString == 3)
+            {
+                return " A failure in cooling Loop A (starboard side), one of two external cooling loops failed, leaving the station with only half of its normal cooling capacity and zero redundancy in some systems. The repair panel can be used to adjust for this issue and get the system back online.";
+            }
+            else
+            {
+                return "A Fuel leak has been detected, we closed off the system form Mission Control but the system needs a reset.  Go to the Repair Panel and fix the issue.";
+            }
+        }
+        protected override string MessageCompleted()
+        {
+            NoVessel = false;
+            RepairPanel.repair = false;
+            return "You have successfully repair the Space Station " + vesselName + " hopefully that will be the last of these issue's!";
+        }
+
+        protected override void OnLoad(ConfigNode node)
+        {
+            planetIDX = int.Parse(node.GetValue("planetIDX"));
+            Debug.LogWarning("planetIDX loaded");
+            vesselID = node.GetValue("VesselID");
+            Debug.LogWarning("VesselID loaded");
+            vesselName = node.GetValue("VesselName");
+            Debug.LogWarning("VesselName loaded");
+            titleName = node.GetValue("titlename");
+            Debug.LogWarning("TitleName loaded");
+            repairParts = node.GetValue("repairparts");
+            Debug.LogWarning("RepairParts loaded");
+            RPamount = double.Parse(node.GetValue("rpamount"));
+            Debug.LogWarning("RpAmount loaded");
+            Ctitle = node.GetValue("ctitle");
+            Debug.LogWarning("CTitle loaded");
+            randomString = int.Parse(node.GetValue("randomstring"));
+            Debug.LogWarning("RandomString loaded");
+            NoVessel = bool.Parse(node.GetValue("novessel"));
+            Debug.LogWarning("NoVessel loaded");
+            targetBody = FlightGlobals.Bodies[planetIDX];
+            Debug.LogWarning("target body loaded as: " + targetBody.theName);
+        }
+        protected override void OnSave(ConfigNode node)
+        {
+            Debug.LogWarning("Starting Save Process for OnSave Repair Station Contracts");
+
+            node.AddValue("planetIDX", planetIDX);
+            Debug.LogWarning("PlanetIDX Saved");
+            node.AddValue("VesselID", vesselID);
+            Debug.LogWarning("targetbody saved");
+            node.AddValue("VesselName", vesselName);
+            Debug.LogWarning("VesselName saved");
+            node.AddValue("titlename", titleName);
+            Debug.LogWarning("TitleName saved");
+            node.AddValue("repairparts", repairParts);
+            Debug.LogWarning("RepairParts saved");
+            node.AddValue("rpamount", RPamount);
+            Debug.LogWarning("RpAmount saved");
+            node.AddValue("ctitle", Ctitle);
+            Debug.LogWarning("CTitle saved");
+            node.AddValue("randomstring", randomString);
+            Debug.LogWarning("RandomString saved");
+            node.AddValue("novessel", NoVessel);
+            Debug.LogWarning("NoVessel saved");
+        }
+
+        public override bool MeetRequirements()
+        {
+            bool techUnlock = ResearchAndDevelopment.GetTechnologyState("advConstruction") == RDTech.State.Available;
+            if (techUnlock)
+                return true;
+            else
+                return false;
+        }
+    }
+    #endregion  
     #region OrbitalScan Contract
     public class OrbitalScanContract : Contract
     {
@@ -1430,6 +1662,10 @@ namespace MissionControllerEC
 
         protected override bool Generate()
         {
+            if (prestige != ContractPrestige.Trivial)
+            {
+                return false;
+            }
             if (HighLogic.LoadedSceneIsFlight) { return false; }
             targetBody = GetUnreachedTargets();
             if (targetBody != null)
@@ -1455,7 +1691,6 @@ namespace MissionControllerEC
                 return false;
             }
             missionTime = Tools.RandomNumber(200, 1500);
-            this.AddParameter(new PreLaunch(), null);
             this.orbitresearch1 = this.AddParameter(new InOrbitGoal(targetBody), null);
             orbitresearch1.SetFunds(8000, targetBody);
             orbitresearch1.SetReputation(3, targetBody);
@@ -1575,6 +1810,10 @@ namespace MissionControllerEC
 
         protected override bool Generate()
         {
+            if (prestige != ContractPrestige.Trivial)
+            {
+                return false;
+            }
             if (HighLogic.LoadedSceneIsFlight) { return false; }
             targetBody = GetUnreachedTargets();
 
@@ -1605,7 +1844,6 @@ namespace MissionControllerEC
                 Debug.LogWarning("Landing Goal Body set to: " + targetBody.theName + " Contract Generate cancelled");
                 return false;
             }
-            this.AddParameter(new PreLaunch(), null);
             this.landerscan1 = this.AddParameter(new InOrbitGoal(targetBody), null);
             landerscan1.SetFunds(8000, targetBody);
             landerscan1.SetReputation(4, targetBody);
@@ -1758,7 +1996,6 @@ namespace MissionControllerEC
             {
                 this.AddParameter(new PartGoal(partName, partAmount), null);
             }
-            this.AddParameter(new PreLaunch(), null);
             this.AddParameter(new GetCrewCount(crewCount), null);
             base.SetExpiry(3f, 15f);
             base.SetScience(5f, targetBody);
@@ -1893,7 +2130,6 @@ namespace MissionControllerEC
             
             ContractPlayerName = SaveInfo.SupplyContractName;
 
-            this.AddParameter(new PreLaunch(), null);
             this.suppy1 = this.AddParameter(new TargetDockingGoal(vesselId,vesselName),null);
             suppy1.SetFunds(1000, 2000, targetBody);
             suppy1.SetReputation(5, 10, targetBody);
@@ -2019,6 +2255,7 @@ namespace MissionControllerEC
                 //Debug.Log("supply contract is shut off, and set to false");
                 return false;
             }
+
             targetBody = FlightGlobals.Bodies[SaveInfo.crewBodyIDX];
             if (targetBody == null)
             {
@@ -2032,11 +2269,10 @@ namespace MissionControllerEC
 
             ContractPlayerName = SaveInfo.crewTransferName;
 
-            this.AddParameter(new PreLaunch(), null);
-            this.ctrans1 = this.AddParameter(new TargetDockingGoal(vesselId, vesselName), null);
+            this.ctrans1 = this.AddParameter(new TargetDockingGoal(vesselId, vesselName),null);
             ctrans1.SetFunds(2000, 2000, targetBody);
             ctrans1.SetReputation(3, targetBody);
-            this.ctrans2 = this.AddParameter(new TimeCountdownOrbits(targetBody, crewTime), null);
+            this.ctrans2 = this.AddParameter(new TimeCountdownDocking(targetBody, crewTime, "Crew will Stay For This Amount Of Time ",vesselId), null);
             ctrans2.SetFunds(2000, 2000, targetBody);
             ctrans2.SetReputation(3, targetBody);
             this.ctrans3 = this.AddParameter(new LandOnBody(Planetarium.fetch.Home), null);
@@ -2149,7 +2385,6 @@ namespace MissionControllerEC
         private int choice2;
         private int choice3;
         private int choice4;
-        ContractParameter civ1;
         ContractParameter civ2;
         ContractParameter civ3;
         ContractParameter civ4;
@@ -2158,9 +2393,17 @@ namespace MissionControllerEC
 
         protected override bool Generate()
         {
+            if (prestige == ContractPrestige.Trivial)
+            {
+                return false;
+            }
             if (HighLogic.LoadedSceneIsFlight) { return false; }
             totalContracts = ContractSystem.Instance.GetCurrentContracts<CivilianLowOrbit>().Count();
             TotalFinished = ContractSystem.Instance.GetCompletedContracts<CivilianLowOrbit>().Count();
+            if (prestige != ContractPrestige.Significant || prestige != ContractPrestige.Exceptional)
+            {
+                return false;
+            }
 
             if (totalContracts >= 1)
             {
@@ -2178,11 +2421,7 @@ namespace MissionControllerEC
             eccmax = eccmin + .10f;
             altitudeGoal = UnityEngine.Random.Range(70000, 225000);
             TripTime = UnityEngine.Random.Range(14000, 150000);
-
-            this.civ1 = this.AddParameter(new PreLaunch(), null);
-            civ1.SetFunds(5000, 5000, targetBody);
-            civ1.SetReputation(5, 10, targetBody);
-
+           
             MissionControllerEC.CivName.Clear();
             MissionControllerEC.civNamesListAdd();
 
@@ -2229,9 +2468,9 @@ namespace MissionControllerEC
             civ5.SetFunds(20000, 20000, targetBody);
             civ5.SetReputation(20, 40, targetBody);
                         
-            this.civ6 = this.AddParameter(new TimeCountdownOrbits(targetBody, TripTime, TripText), null);
-            civ1.SetFunds(50000, 50000, targetBody);
-            civ1.SetReputation(15, 30, targetBody);
+            this.civ6 = this.AddParameter(new TimeCountdownOrbits(targetBody, TripTime, TripText, true), null);
+            civ6.SetFunds(50000, 50000, targetBody);
+            civ6.SetReputation(15, 30, targetBody);
 
             this.AddParameter(new GetSeatCount(civiliansAmount, crewSeatTitle), null);
                                        
@@ -2364,7 +2603,6 @@ namespace MissionControllerEC
         private int choice2;
         private int choice3;
         private int choice4;
-        ContractParameter civ1;
         ContractParameter civ2;
         ContractParameter civ3;
         ContractParameter civ4;
@@ -2373,6 +2611,10 @@ namespace MissionControllerEC
 
         protected override bool Generate()
         {
+            if (prestige == ContractPrestige.Trivial)
+            {
+                return false;
+            }
             if (HighLogic.LoadedSceneIsFlight) { return false; }
             totalContracts = ContractSystem.Instance.GetCurrentContracts<CivilianLanding>().Count();
             TotalFinished = ContractSystem.Instance.GetCompletedContracts<CivilianLanding>().Count();
@@ -2397,11 +2639,7 @@ namespace MissionControllerEC
             civiliansAmount = UnityEngine.Random.Range(2, 4);
 
             TripTime = Tools.RandomNumber(78000, 350000);
-
-            this.civ1 = this.AddParameter(new PreLaunch(), null);
-            civ1.SetFunds(5000, 5000, targetBody);
-            civ1.SetReputation(5, 10, targetBody);
-
+            
             MissionControllerEC.CivName.Clear();
             MissionControllerEC.civNamesListAdd();
 
@@ -2445,8 +2683,8 @@ namespace MissionControllerEC
             civ4.SetReputation(5, 10, targetBody);
 
             this.civ6 = this.AddParameter(new TimeCountdownLanding(targetBody, TripTime, TripText), null);
-            civ1.SetFunds(50000, 50000, targetBody);
-            civ1.SetReputation(15, 30, targetBody);
+            civ6.SetFunds(50000, 50000, targetBody);
+            civ6.SetReputation(15, 30, targetBody);
 
             this.civ5 = this.AddParameter(new LandOnBody(Planetarium.fetch.Home), null);
             civ5.SetFunds(25000, 25000, targetBody);
@@ -2582,7 +2820,6 @@ namespace MissionControllerEC
         private int choice4;
         public string vesselID;
         public string vesselName;
-        ContractParameter civ1;
         ContractParameter civ2;
         ContractParameter civ3;
         ContractParameter civ5;
@@ -2590,6 +2827,10 @@ namespace MissionControllerEC
 
         protected override bool Generate()
         {
+            if (prestige == ContractPrestige.Trivial)
+            {
+                return false;
+            }
             if (HighLogic.LoadedSceneIsFlight) { return false; }
             totalContracts = ContractSystem.Instance.GetCurrentContracts<CivilianStationExpedition>().Count();
             TotalFinished = ContractSystem.Instance.GetCompletedContracts<CivilianStationExpedition>().Count();
@@ -2628,16 +2869,12 @@ namespace MissionControllerEC
             civiliansAmount = UnityEngine.Random.Range(2, 4);          
             TripTime = UnityEngine.Random.Range(210000, 970000);
 
-            this.civ1 = this.AddParameter(new PreLaunch(), null);
-            civ1.SetFunds(5000, 5000, targetBody);
-            civ1.SetReputation(5, 10, targetBody);
-
-            this.civ6 = this.AddParameter(new TimeCountdownOrbits(targetBody, TripTime, TripText), null);
-            civ1.SetFunds(50000, 50000, targetBody);
-            civ1.SetReputation(15, 30, targetBody);         
-
-            this.AddParameter(new PreLaunch(), null);
+            this.civ6 = this.AddParameter(new TimeCountdownDocking(targetBody, TripTime, TripText, vesselID), null);
+            civ6.SetFunds(50000, 50000, targetBody);
+            civ6.SetReputation(15, 30, targetBody); 
+                            
             this.civ3 = this.AddParameter(new TargetDockingGoal(vesselID, vesselName), null);
+               
 
             MissionControllerEC.CivName.Clear();
             MissionControllerEC.civNamesListAdd();

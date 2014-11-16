@@ -243,7 +243,7 @@ namespace MissionControllerEC
         {
             RandomContractsCheck = new Tools.MC2RandomWieghtSystem.Item<int>[6];
             RandomContractsCheck[0] = new Tools.MC2RandomWieghtSystem.Item<int>();
-            RandomContractsCheck[0].weight = 10;
+            RandomContractsCheck[0].weight = 0;
             RandomContractsCheck[0].value = 0;
 
             RandomContractsCheck[1] = new Tools.MC2RandomWieghtSystem.Item<int>();
@@ -491,6 +491,13 @@ namespace MissionControllerEC
                 {
                     Debug.LogError("MCE Error adding SpareParts to the EVA: " + ex.Message + "\n" + ex.StackTrace);
                 }
+            }
+        }
+        public void GetPlanetList()
+        {
+            foreach (var body in FlightGlobals.Bodies)
+            {
+                Debug.Log("Body Name: " + body.theName + " Body Number: " + body.flightGlobalsIndex);
             }
         }
     }

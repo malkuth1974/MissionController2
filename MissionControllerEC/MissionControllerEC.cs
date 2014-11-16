@@ -324,7 +324,7 @@ namespace MissionControllerEC
             }
             if (GUILayout.Button("Turn On All Repair Mission At Once"))
             {
-                SaveInfo.RepairContractOn = true;
+                SaveInfo.RepairContractOn = true; SaveInfo.RepairStationContract = true;
             }
             if (GUILayout.Button("Turn On All Civilian Contracts At Once"))
             {

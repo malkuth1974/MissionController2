@@ -9,9 +9,10 @@ namespace MissionControllerEC
     #region ApA OrbitGaol
     public class ApAOrbitGoal : ContractParameter
     {
-        public CelestialBody targetBody;
-        public double maxApA = 0.0;
-        public double minApA = 0.0;
+        private CelestialBody targetBody;
+        private double maxApA = 0.0;
+        private double minApA = 0.0;
+        private bool updated = false;
 
         public ApAOrbitGoal()
         {
@@ -32,8 +33,29 @@ namespace MissionControllerEC
             return "Enter Orbit Around: " + targetBody.theName + "  MaxApA: " + maxApA + "  MinApA: " + minApA;
         }
 
-        protected override void OnUpdate()
+        protected override void OnRegister()
         {
+            this.disableOnStateChange = false;
+            updated = false;
+            if (Root.ContractState == Contract.State.Active)
+            {
+                GameEvents.onFlightReady.Add(flightReady);
+                GameEvents.onVesselChange.Add(vesselChange);
+                updated = true;
+            }
+        }
+
+        protected override void OnUnregister()
+        {
+            if (updated)
+            {
+                GameEvents.onFlightReady.Remove(flightReady);
+                GameEvents.onVesselChange.Remove(vesselChange);
+            }
+        }
+
+        protected override void OnUpdate()
+        {           
             if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel.situation == Vessel.Situations.ORBITING)
             Orbits(FlightGlobals.ActiveVessel);           
         }
@@ -74,14 +96,21 @@ namespace MissionControllerEC
             else
                 base.SetIncomplete();
         }
-
-        
+        public void flightReady()
+        {
+            base.SetIncomplete();
+        }
+        public void vesselChange(Vessel v)
+        {
+            base.SetIncomplete();
+        }       
     }
 #endregion
     #region InOrbit Goal
     public class InOrbitGoal : ContractParameter
     {
         public CelestialBody targetBody;
+        private bool updated = false;
        
         public InOrbitGoal()
         {
@@ -98,6 +127,27 @@ namespace MissionControllerEC
         protected override string GetTitle()
         {
             return "Enter Orbit Around Goal: " + targetBody.theName;
+        }
+
+        protected override void OnRegister()
+        {
+            this.disableOnStateChange = false;
+            updated = false;
+            if (Root.ContractState == Contract.State.Active)
+            {
+                GameEvents.onFlightReady.Add(flightReady);
+                GameEvents.onVesselChange.Add(vesselChange);
+                updated = true;
+            }
+        }
+
+        protected override void OnUnregister()
+        {
+            if (updated)
+            {
+                GameEvents.onFlightReady.Remove(flightReady);
+                GameEvents.onVesselChange.Remove(vesselChange);
+            }
         }
 
         protected override void OnUpdate()
@@ -129,14 +179,24 @@ namespace MissionControllerEC
                 ScreenMessages.PostScreenMessage("You Have achieved Orbit of Target Body: " + targetBody.theName);
             }
         }
+
+        public void flightReady()
+        {
+            base.SetIncomplete();
+        }
+        public void vesselChange(Vessel v)
+        {
+            base.SetIncomplete();
+        }    
     }
     #endregion
     #region PeA OrbitGoal
     public class PeAOrbitGoal : ContractParameter
     {
-        public CelestialBody targetBody;
-        public double maxPeA = 0.0;
-        public double minPeA = 0.0;
+        private CelestialBody targetBody;
+        private double maxPeA = 0.0;
+        private double minPeA = 0.0;
+        private bool updated = false;
 
         public PeAOrbitGoal()
         {
@@ -155,6 +215,27 @@ namespace MissionControllerEC
         protected override string GetTitle()
         {
             return "Enter Orbit Around PeA Goal: " + targetBody.theName + "  MaxPeA: " + maxPeA + "  MinPeA: " + minPeA;
+        }
+
+        protected override void OnRegister()
+        {
+            this.disableOnStateChange = false;
+            updated = false;
+            if (Root.ContractState == Contract.State.Active)
+            {
+                GameEvents.onFlightReady.Add(flightReady);
+                GameEvents.onVesselChange.Add(vesselChange);
+                updated = true;
+            }
+        }
+
+        protected override void OnUnregister()
+        {
+            if (updated)
+            {
+                GameEvents.onFlightReady.Remove(flightReady);
+                GameEvents.onVesselChange.Remove(vesselChange);
+            }
         }
 
         protected override void OnUpdate()
@@ -204,7 +285,15 @@ namespace MissionControllerEC
             }
             else
                 base.SetIncomplete();
-        }       
+        }
+        public void flightReady()
+        {
+            base.SetIncomplete();
+        }
+        public void vesselChange(Vessel v)
+        {
+            base.SetIncomplete();
+        }    
     }
     #endregion
     #region inclinationGoal
@@ -212,8 +301,9 @@ namespace MissionControllerEC
     public class Inclination : ContractParameter
     {
         Settings settings = new Settings("Config.cfg");
-        public double minInclination = 0.0;
-        public double maxInclination = 0.0;
+        private double minInclination = 0.0;
+        private double maxInclination = 0.0;
+        private bool updated = false;
 
         public Inclination()
         {
@@ -233,7 +323,28 @@ namespace MissionControllerEC
         {
             return "Reach Max Inclination Between: " + maxInclination + " and: " + minInclination;
         }
-       
+
+        protected override void OnRegister()
+        {
+            this.disableOnStateChange = false;
+            updated = false;
+            if (Root.ContractState == Contract.State.Active)
+            {
+                GameEvents.onFlightReady.Add(flightReady);
+                GameEvents.onVesselChange.Add(vesselChange);
+                updated = true;
+            }
+        }
+
+        protected override void OnUnregister()
+        {
+            if (updated)
+            {
+                GameEvents.onFlightReady.Remove(flightReady);
+                GameEvents.onVesselChange.Remove(vesselChange);
+            }
+        }
+
         protected override void OnUpdate()
         {
             if (HighLogic.LoadedSceneIsFlight)
@@ -264,14 +375,23 @@ namespace MissionControllerEC
                     base.SetComplete();
             }
         }
+        public void flightReady()
+        {
+            base.SetIncomplete();
+        }
+        public void vesselChange(Vessel v)
+        {
+            base.SetIncomplete();
+        } 
     }
         #endregion
     #region EccentricGoal
 
     public class EccentricGoal : ContractParameter
     {
-        public double mineccn = 0.0;
-        public double maxeccn = 0.0;
+        private double mineccn = 0.0;
+        private double maxeccn = 0.0;
+        private bool updated = false;
 
         public EccentricGoal()
         {
@@ -290,6 +410,27 @@ namespace MissionControllerEC
         protected override string GetTitle()
         {
             return "Bring vessel to Target Eccentricity between " + mineccn.ToString("F2") + " " + maxeccn.ToString("F2");
+        }
+
+        protected override void OnRegister()
+        {
+            this.disableOnStateChange = false;
+            updated = false;
+            if (Root.ContractState == Contract.State.Active)
+            {
+                GameEvents.onFlightReady.Add(flightReady);
+                GameEvents.onVesselChange.Add(vesselChange);
+                updated = true;
+            }
+        }
+
+        protected override void OnUnregister()
+        {
+            if (updated)
+            {
+                GameEvents.onFlightReady.Remove(flightReady);
+                GameEvents.onVesselChange.Remove(vesselChange);
+            }
         }
 
         protected override void OnUpdate()
@@ -332,13 +473,22 @@ namespace MissionControllerEC
             if (vessel.orbit.eccentricity > maxeccn && vessel.orbit.eccentricity < mineccn)
                 base.SetIncomplete();
         }
+        public void flightReady()
+        {
+            base.SetIncomplete();
+        }
+        public void vesselChange(Vessel v)
+        {
+            base.SetIncomplete();
+        }    
     }
     #endregion
     #region OrbiatlPeriod Goal
     public class OrbitalPeriod : ContractParameter
     {
-        public double minOrbitalPeriod = 0.0;
-        public double maxOrbitalPeriod = 0.0;
+        private double minOrbitalPeriod = 0.0;
+        private double maxOrbitalPeriod = 0.0;
+        private bool updated = false;
 
         public OrbitalPeriod()
         {
@@ -358,7 +508,28 @@ namespace MissionControllerEC
         {
             return "Reach Orbital Period Between: " + Tools.ConvertMinsHours(maxOrbitalPeriod) + " and: " + Tools.ConvertMinsHours(minOrbitalPeriod);
         }
-        
+
+        protected override void OnRegister()
+        {
+            this.disableOnStateChange = false;
+            updated = false;
+            if (Root.ContractState == Contract.State.Active)
+            {
+                GameEvents.onFlightReady.Add(flightReady);
+                GameEvents.onVesselChange.Add(vesselChange);
+                updated = true;
+            }
+        }
+
+        protected override void OnUnregister()
+        {
+            if (updated)
+            {
+                GameEvents.onFlightReady.Remove(flightReady);
+                GameEvents.onVesselChange.Remove(vesselChange);
+            }
+        }
+
         protected override void OnUpdate()
         {
             if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel.situation == Vessel.Situations.ORBITING)
@@ -392,21 +563,30 @@ namespace MissionControllerEC
                 if (vessel.orbit.period <= maxOrbitalPeriod && vessel.orbit.period >= minOrbitalPeriod)
                     base.SetComplete();
             }
-        }      
+        }
+        public void flightReady()
+        {
+            base.SetIncomplete();
+        }
+        public void vesselChange(Vessel v)
+        {
+            base.SetIncomplete();
+        }    
     }
     #endregion
     #region AltitudeGoal
     public class AltitudeGoal : ContractParameter
     {
-        public CelestialBody targetBody;
-        public double minAlt = 0.0;
+        private CelestialBody targetBody;
+        private double minAlt = 0.0;
+        private bool updated = false;
 
         public AltitudeGoal()
         {
         }
 
         public AltitudeGoal(CelestialBody target, double minapA)
-        {
+        {           
             this.targetBody = target;
             this.minAlt = minapA;
         }
@@ -417,6 +597,27 @@ namespace MissionControllerEC
         protected override string GetTitle()
         {
             return "Achieve an altitude of at least: " + minAlt;
+        }
+
+        protected override void OnRegister()
+        {
+            this.disableOnStateChange = false;
+            updated = false;
+            if (Root.ContractState == Contract.State.Active)
+            {
+                GameEvents.onFlightReady.Add(flightReady);
+                GameEvents.onVesselChange.Add(vesselChange);
+                updated = true;
+            }
+        }
+
+        protected override void OnUnregister()
+        {
+            if (updated)
+            {
+                GameEvents.onFlightReady.Remove(flightReady);
+                GameEvents.onVesselChange.Remove(vesselChange);
+            }
         }
 
         protected override void OnUpdate()
@@ -455,6 +656,14 @@ namespace MissionControllerEC
             else
                 base.SetIncomplete();
         }
+        public void flightReady()
+        {
+            base.SetIncomplete();
+        }
+        public void vesselChange(Vessel v)
+        {
+            base.SetIncomplete();
+        }    
 
         
     }
@@ -462,9 +671,12 @@ namespace MissionControllerEC
     #region PartGoal
     public class PartGoal : ContractParameter
     {
-        public String partName = "";
-        public int partCount = 0;
-        public int maxPartCount = 0;
+        private String partName = "";
+        private String partName2 = "";
+        private int partCount = 0;
+        private int maxPartCount = 0;
+        private bool twoPartsTrue = false;
+        private bool updated = false;
 
         public PartGoal()
         {
@@ -478,25 +690,58 @@ namespace MissionControllerEC
         public static string iPartName(ContractParameter cp)
         {
             PartGoal instance = (PartGoal)cp;
-            return instance.partName;
+            return instance.partName;           
+        }
+
+        public PartGoal(string name, string name2 , int maxCount, bool partTrue)
+        {
+            this.partName = name;
+            this.partName2 = name2;
+            this.maxPartCount = maxCount;
+            this.twoPartsTrue = partTrue;
+                
         }
 
         public PartGoal(string name, int maxCount)
         {
             this.partName = name;
             this.maxPartCount = maxCount;
-                
+
         }
 
         protected override string GetHashString()
         {
-            return "You Must Have " + maxPartCount + " Part Type " + partName + "On your vessel"; 
+            if (twoPartsTrue)
+                return "You Must Have " + maxPartCount + " Part Type " + partName + " On your vessel"; 
+            else
+                return "You Must Have " + maxPartCount + " Part Type " + partName + " or " + partName2 + " On your vessel";
         }
         protected override string GetTitle()
         {
             return "Have part type " + partName;
         }
 
+        protected override void OnRegister()
+        {
+            this.disableOnStateChange = false;
+            updated = false;
+            if (Root.ContractState == Contract.State.Active)
+            {
+                GameEvents.onFlightReady.Add(flightReady);
+                GameEvents.onVesselChange.Add(vesselChange);
+                updated = true;
+            }
+        }
+
+        protected override void OnUnregister()
+        {
+            if (updated)
+            {
+                GameEvents.onFlightReady.Remove(flightReady);
+                GameEvents.onVesselChange.Remove(vesselChange);
+            }
+        }
+        
         protected override void OnUpdate()
         {
             if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel)
@@ -507,12 +752,14 @@ namespace MissionControllerEC
         {
 
             partName = (node.GetValue("partname"));
+            partName2 = node.GetValue("partname2");
             maxPartCount = int.Parse(node.GetValue("maxcount"));
         }
         protected override void OnSave(ConfigNode node)
         {
             
-            node.AddValue("partname", partName);            
+            node.AddValue("partname", partName);
+            node.AddValue("partname2", partName2);
             node.AddValue("maxcount", maxPartCount);
         }
 
@@ -524,7 +771,7 @@ namespace MissionControllerEC
                 {
                     foreach (Part p in vessel.Parts)
                     {
-                        if (p.partInfo.title.Equals(partName))
+                        if (p.partInfo.title.Equals(partName) || p.partInfo.title.Equals(partName2))
                         {
                             ++partCount;
                         }
@@ -541,11 +788,20 @@ namespace MissionControllerEC
                 
             }
         }
+        public void flightReady()
+        {
+            base.SetIncomplete();
+        }
+        public void vesselChange(Vessel v)
+        {
+            base.SetIncomplete();
+        } 
     }
     #endregion
     #region DockingGoal
     public class DockingGoal : ContractParameter
     {
+        private bool updated = false;
         
         public DockingGoal()
         {
@@ -562,11 +818,26 @@ namespace MissionControllerEC
         
         protected override void OnRegister()
         {
-            GameEvents.onPartCouple.Add(onPartCouple);
+            this.disableOnStateChange = false;
+            updated = false;
+            if (Root.ContractState == Contract.State.Active)
+            {
+                GameEvents.onFlightReady.Add(flightReady);
+                GameEvents.onVesselChange.Add(vesselChange);
+                GameEvents.onPartCouple.Add(onPartCouple);
+                updated = true;
+            }
+            
         }
         protected override void OnUnregister()
         {
-            GameEvents.onPartCouple.Remove(onPartCouple);
+            if (updated)
+            {
+                GameEvents.onFlightReady.Remove(flightReady);
+                GameEvents.onVesselChange.Remove(vesselChange);
+                GameEvents.onPartCouple.Remove(onPartCouple);
+            }
+            
         }
 
         protected override void OnLoad(ConfigNode node)
@@ -592,37 +863,45 @@ namespace MissionControllerEC
                 base.SetComplete();
             }
         }
+        public void flightReady()
+        {
+            base.SetIncomplete();
+        }
+        public void vesselChange(Vessel v)
+        {
+            base.SetIncomplete();
+        } 
     }
 #endregion
     #region Target Docking Goal
     public class TargetDockingGoal : ContractParameter
     {
-        public string targetDockingID;
-        public string targetDockingName;
-
+        private string targetDockingID;
+        private string targetDockingName;
+        private bool updated = false;
+        private static bool DockedTrue = false;
+       
         public TargetDockingGoal()
         {
         }
 
-        /// <summary>
-        /// used return the name of vessel for this docking goal
-        /// </summary>
-        /// <param name="cp"></param>
-        /// <returns></returns>
+        
         public static string ItargetDockingName(ContractParameter cp)
         {
             TargetDockingGoal instance = (TargetDockingGoal)cp;
             return instance.targetDockingName;
         }
-        /// <summary>
-        /// used to return the Vessel ID of the To DOCK TO vessel
-        /// </summary>
-        /// <param name="cp"></param>
-        /// <returns></returns>
+       
         public static string ItargetDockingID(ContractParameter cp)
         {
             TargetDockingGoal instance = (TargetDockingGoal)cp;
             return instance.targetDockingID;
+        }
+       
+        internal static bool isDockedTrue
+        {
+            get { return DockedTrue; }
+            private set{}
         }
 
         public TargetDockingGoal(string targetID,string targetName)
@@ -642,11 +921,26 @@ namespace MissionControllerEC
 
         protected override void OnRegister()
         {
-            GameEvents.onPartCouple.Add(onPartCouple);
+            this.disableOnStateChange = false;
+            updated = false;
+            if (Root.ContractState == Contract.State.Active)
+            {
+                GameEvents.onFlightReady.Add(flightReady);
+                GameEvents.onVesselChange.Add(vesselChange);
+                GameEvents.onPartCouple.Add(onPartCouple);
+                updated = true;
+            }
+            
         }
         protected override void OnUnregister()
         {
-            GameEvents.onPartCouple.Remove(onPartCouple);
+            if (updated)
+            {
+                GameEvents.onFlightReady.Remove(flightReady);
+                GameEvents.onVesselChange.Remove(vesselChange);
+                GameEvents.onPartCouple.Remove(onPartCouple);
+            }
+            
         }
 
         protected override void OnLoad(ConfigNode node)
@@ -676,6 +970,7 @@ namespace MissionControllerEC
                 if (targetDockingID == action.from.vessel.id.ToString() || targetDockingID == action.to.vessel.id.ToString())
                 {
                     ScreenMessages.PostScreenMessage("You have docked to the Target Vessel, Goal Complete");
+                    DockedTrue = true;
                     base.SetComplete();
                     action.from.vessel.vesselName = action.from.vessel.vesselName.Replace("(Repair)", "");
                     action.to.vessel.vesselName = action.to.vessel.vesselName.Replace("(Repair)", "");
@@ -684,18 +979,27 @@ namespace MissionControllerEC
                     ScreenMessages.PostScreenMessage("Did not connect to the correct target ID vessel, Try Again");
             }
         }
+        public void flightReady()
+        {
+            base.SetIncomplete();
+        }
+        public void vesselChange(Vessel v)
+        {
+            base.SetIncomplete();
+        } 
     }
     #endregion
     #region Orbital Research Part Check
     public class OrbialResearchPartCheck : ContractParameter
     {
-        public CelestialBody targetBody;
+        private CelestialBody targetBody;
 
-        public double diff;
-        public double savedTime;
-        public double missionTime;
+        private double diff;
+        private double savedTime;
+        private double missionTime;
 
-        public bool setTime = true;
+        private bool setTime = true;
+        private bool updated = false;
 
         public OrbialResearchPartCheck()
         {
@@ -714,6 +1018,27 @@ namespace MissionControllerEC
         protected override string GetTitle()
         {
             return "Conduct Orbital Research. Time For Completion: " + Tools.formatTime(missionTime);
+        }
+
+        protected override void OnRegister()
+        {
+            this.disableOnStateChange = false;
+            updated = false;
+            if (Root.ContractState == Contract.State.Active)
+            {
+                GameEvents.onFlightReady.Add(flightReady);
+                GameEvents.onVesselChange.Add(vesselChange);
+                updated = true;
+            }
+        }
+
+        protected override void OnUnregister()
+        {
+            if (updated)
+            {
+                GameEvents.onFlightReady.Remove(flightReady);
+                GameEvents.onVesselChange.Remove(vesselChange);
+            }
         }
 
         protected override void OnUpdate()
@@ -778,7 +1103,16 @@ namespace MissionControllerEC
 
                 }
             }
+
         }
+        public void flightReady()
+        {
+            base.SetIncomplete();
+        }
+        public void vesselChange(Vessel v)
+        {
+            base.SetIncomplete();
+        } 
         public void contractSetTime()
         {
             savedTime = Planetarium.GetUniversalTime();
@@ -792,10 +1126,11 @@ namespace MissionControllerEC
     #region Repair Panel Part Check
     public class RepairPanelPartCheck : ContractParameter
     {
-        string TitleName;
-        string ShipVesselID;
-        string ShipName;
-        public string SavedOriginalID = "NONE";
+        private string TitleName;
+        private string ShipVesselID;
+        private string ShipName;
+        private string SavedOriginalID = "NONE";
+        private bool updated = false;
         //bool must be static and global for check.
 
         public RepairPanelPartCheck()
@@ -826,11 +1161,26 @@ namespace MissionControllerEC
 
         protected override void OnRegister()
         {
-            GameEvents.onPartCouple.Add(onPartCouple);
+            this.disableOnStateChange = false;
+            updated = false;
+            if (Root.ContractState == Contract.State.Active)
+            {
+                GameEvents.onFlightReady.Add(flightReady);
+                GameEvents.onVesselChange.Add(vesselChange);
+                GameEvents.onPartCouple.Add(onPartCouple);
+                updated = true;
+            }
+            
         }
         protected override void OnUnregister()
         {
-            GameEvents.onPartCouple.Remove(onPartCouple);
+            if (updated)
+            {
+                GameEvents.onFlightReady.Remove(flightReady);
+                GameEvents.onVesselChange.Remove(vesselChange);
+                GameEvents.onPartCouple.Remove(onPartCouple);
+            }
+            
         }
        
         protected override void OnLoad(ConfigNode node)
@@ -885,12 +1235,21 @@ namespace MissionControllerEC
                 else Debug.Log("Docked to vessel was not repair vessel, no ID change needed");
             }
         }
+        public void flightReady()
+        {
+            base.SetIncomplete();
+        }
+        public void vesselChange(Vessel v)
+        {
+            base.SetIncomplete();
+        } 
     }
     #endregion
     #region Get Crew Count
     public class GetCrewCount : ContractParameter
     {
-        public int crewCount = 0;
+        private int crewCount = 0;
+        private bool updated = false;
 
         public GetCrewCount()
         {
@@ -913,6 +1272,27 @@ namespace MissionControllerEC
                 return "Vessel Must Have This Amount Of crew " + crewCount;
             else
                 return "Vessel is automated: (nocrew)";
+        }
+
+        protected override void OnRegister()
+        {
+            this.disableOnStateChange = false;
+            updated = false;
+            if (Root.ContractState == Contract.State.Active)
+            {
+                GameEvents.onFlightReady.Add(flightReady);
+                GameEvents.onVesselChange.Add(vesselChange);
+                updated = true;
+            }
+        }
+
+        protected override void OnUnregister()
+        {
+            if (updated)
+            {
+                GameEvents.onFlightReady.Remove(flightReady);
+                GameEvents.onVesselChange.Remove(vesselChange);
+            }
         }
 
         protected override void OnUpdate()
@@ -943,13 +1323,22 @@ namespace MissionControllerEC
                 }
             }
         }
+        public void flightReady()
+        {
+            base.SetIncomplete();
+        }
+        public void vesselChange(Vessel v)
+        {
+            base.SetIncomplete();
+        } 
     }
 #endregion
     #region Get Seat Count
     public class GetSeatCount : ContractParameter
     {
-        public int seatCount = 0;
-        public string title = "none";
+        private int seatCount = 0;
+        private string title = "none";
+        private bool updated = false;
 
         public GetSeatCount()
         {
@@ -967,6 +1356,27 @@ namespace MissionControllerEC
         protected override string GetTitle()
         {
             return title + " " + seatCount + " Plus Crew.";
+        }
+
+        protected override void OnRegister()
+        {
+            this.disableOnStateChange = false;
+            updated = false;
+            if (Root.ContractState == Contract.State.Active)
+            {
+                GameEvents.onFlightReady.Add(flightReady);
+                GameEvents.onVesselChange.Add(vesselChange);
+                updated = true;
+            }
+        }
+
+        protected override void OnUnregister()
+        {
+            if (updated)
+            {
+                GameEvents.onFlightReady.Remove(flightReady);
+                GameEvents.onVesselChange.Remove(vesselChange);
+            }
         }
 
         protected override void OnUpdate()
@@ -1000,18 +1410,27 @@ namespace MissionControllerEC
                 base.SetComplete();
             }
         }
+        public void flightReady()
+        {
+            base.SetIncomplete();
+        }
+        public void vesselChange(Vessel v)
+        {
+            base.SetIncomplete();
+        } 
     }
     #endregion
     #region Lander Research Part Check
     public class LanderResearchPartCheck : ContractParameter
     {
-        public CelestialBody targetBody;
+        private CelestialBody targetBody;
 
-        public double diff;
-        public double savedTime;
-        public double missionTime;
+        private double diff;
+        private double savedTime;
+        private double missionTime;
 
-        public bool setTime = true;
+        private bool setTime = true;
+        private bool updated = false;
 
         public LanderResearchPartCheck()
         {
@@ -1030,6 +1449,27 @@ namespace MissionControllerEC
         protected override string GetTitle()
         {
             return "Conduct Research. Time For Completion: " + Tools.formatTime(missionTime);
+        }
+
+        protected override void OnRegister()
+        {
+            this.disableOnStateChange = false;
+            updated = false;
+            if (Root.ContractState == Contract.State.Active)
+            {
+                GameEvents.onFlightReady.Add(flightReady);
+                GameEvents.onVesselChange.Add(vesselChange);
+                updated = true;
+            }
+        }
+
+        protected override void OnUnregister()
+        {
+            if (updated)
+            {
+                GameEvents.onFlightReady.Remove(flightReady);
+                GameEvents.onVesselChange.Remove(vesselChange);
+            }
         }
 
         protected override void OnUpdate()
@@ -1099,13 +1539,22 @@ namespace MissionControllerEC
             setTime = false;
             Debug.Log("Time countdown has been set");
         }
+        public void flightReady()
+        {
+            base.SetIncomplete();
+        }
+        public void vesselChange(Vessel v)
+        {
+            base.SetIncomplete();
+        } 
     }
     #endregion    
     #region Agena In Orbit Goal
     public class AgenaInOrbit : ContractParameter
     {
-        public CelestialBody targetBody;
-        public string vesselID = "none";
+        private CelestialBody targetBody;
+        private string vesselID = "none";
+        private bool updated = false;
 
         public AgenaInOrbit()
         {
@@ -1124,6 +1573,27 @@ namespace MissionControllerEC
             return "Build and Launch Agena Target Vehicle\n"+
                 "Your current active vehicle at launch will be\n" +
                 "Recorded as the Agena Vehicle";
+        }
+
+        protected override void OnRegister()
+        {
+            this.disableOnStateChange = false;
+            updated = false;
+            if (Root.ContractState == Contract.State.Active)
+            {
+                GameEvents.onFlightReady.Add(flightReady);
+                GameEvents.onVesselChange.Add(vesselChange);
+                updated = true;
+            }
+        }
+
+        protected override void OnUnregister()
+        {
+            if (updated)
+            {
+                GameEvents.onFlightReady.Remove(flightReady);
+                GameEvents.onVesselChange.Remove(vesselChange);
+            }
         }
 
         protected override void OnUpdate()
@@ -1156,13 +1626,22 @@ namespace MissionControllerEC
               base.SetComplete();             
             }
         }
+        public void flightReady()
+        {
+            base.SetIncomplete();
+        }
+        public void vesselChange(Vessel v)
+        {
+            base.SetIncomplete();
+        } 
     }
     #endregion
     #region Module Goal
     public class ModuleGoal : ContractParameter
     {
-        public String moduleName;
-        public String ModuleGoalname;
+        private String moduleName;
+        private String ModuleGoalname;
+        private bool updated = false;
         //public int partCount = 0;
         //public int maxPartCount = 0;
 
@@ -1184,6 +1663,27 @@ namespace MissionControllerEC
         protected override string GetTitle()
         {
             return "Must Have  " + ModuleGoalname + " On your vessel";
+        }
+
+        protected override void OnRegister()
+        {
+            this.disableOnStateChange = false;
+            updated = false;
+            if (Root.ContractState == Contract.State.Active)
+            {
+                GameEvents.onFlightReady.Add(flightReady);
+                GameEvents.onVesselChange.Add(vesselChange);
+                updated = true;
+            }
+        }
+
+        protected override void OnUnregister()
+        {
+            if (updated)
+            {
+                GameEvents.onFlightReady.Remove(flightReady);
+                GameEvents.onVesselChange.Remove(vesselChange);
+            }
         }
 
         protected override void OnUpdate()
@@ -1225,40 +1725,23 @@ namespace MissionControllerEC
             }            
 
         }
+        public void flightReady()
+        {
+            base.SetIncomplete();
+        }
+        public void vesselChange(Vessel v)
+        {
+            base.SetIncomplete();
+        } 
     }
     
-    #endregion
-    #region Prelaunch Goal
-    public class PreLaunch : ContractParameter
-    {
-        
-        public PreLaunch()
-        {
-        }
-       
-        protected override string GetHashString()
-        {
-            return "Launch Vessel";
-        }
-        protected override string GetTitle()
-        {
-            return "Ready To Launch Your Vessel";
-        }
-
-        protected override void OnUpdate()
-        {
-            if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel.situation == Vessel.Situations.PRELAUNCH)
-            {
-                base.SetComplete();
-            }
-        }        
-    }
-#endregion
+    #endregion  
     #region TotalMassGoal
     public class TotalMasGoal : ContractParameter
     {
-        public CelestialBody targetBody;
-        public float maxweight = 0.0f;
+        private CelestialBody targetBody;
+        private float maxweight = 0.0f;
+        private bool updated = false;
 
         public TotalMasGoal()
         {
@@ -1276,6 +1759,27 @@ namespace MissionControllerEC
         protected override string GetTitle()
         {
             return "Satellite Mass Must Not Exceed: " + maxweight.ToString("F2") + " Tons. (InOrbit)";
+        }
+
+        protected override void OnRegister()
+        {
+            this.disableOnStateChange = false;
+            updated = false;
+            if (Root.ContractState == Contract.State.Active)
+            {
+                GameEvents.onFlightReady.Add(flightReady);
+                GameEvents.onVesselChange.Add(vesselChange);
+                updated = true;
+            }
+        }
+
+        protected override void OnUnregister()
+        {
+            if (updated)
+            {
+                GameEvents.onFlightReady.Remove(flightReady);
+                GameEvents.onVesselChange.Remove(vesselChange);
+            }
         }
 
         protected override void OnUpdate()
@@ -1315,15 +1819,24 @@ namespace MissionControllerEC
                     base.SetComplete();
                 }               
             }
-        }       
+        }
+        public void flightReady()
+        {
+            base.SetIncomplete();
+        }
+        public void vesselChange(Vessel v)
+        {
+            base.SetIncomplete();
+        } 
     }
     #endregion
     #region Resource Goal Check
     public class ResourceGoal : ContractParameter
     {
-        public string targetName;
-        public double maxAmountt = 0.0f;
-        public double minAmount = 0.0f;
+        private string targetName;
+        private double maxAmountt = 0.0f;
+        private double minAmount = 0.0f;
+        private bool updated = false;
 
         /// <summary>
         /// Returns the name of the Resource goal for this parameter
@@ -1353,6 +1866,27 @@ namespace MissionControllerEC
         protected override string GetTitle()
         {
             return "Must Have " + targetName + " Between "+ minAmount + " and " + maxAmountt + " (InOrbit)";
+        }
+
+        protected override void OnRegister()
+        {
+            this.disableOnStateChange = false;
+            updated = false;
+            if (Root.ContractState == Contract.State.Active)
+            {
+                GameEvents.onFlightReady.Add(flightReady);
+                GameEvents.onVesselChange.Add(vesselChange);
+                updated = true;
+            }
+        }
+
+        protected override void OnUnregister()
+        {
+            if (updated)
+            {
+                GameEvents.onFlightReady.Remove(flightReady);
+                GameEvents.onVesselChange.Remove(vesselChange);
+            }
         }
 
         protected override void OnUpdate()
@@ -1406,12 +1940,21 @@ namespace MissionControllerEC
                 
             }
         }
+        public void flightReady()
+        {
+            base.SetIncomplete();
+        }
+        public void vesselChange(Vessel v)
+        {
+            base.SetIncomplete();
+        } 
     }
     #endregion
     #region Resource Goal Cap Check
     public class ResourceGoalCap : ContractParameter
-    {
-        public string targetName;        
+    {       
+        public bool updated = false;
+        public string targetName;
         public double RsAmount = 0.0f;
 
         /// <summary>
@@ -1421,7 +1964,7 @@ namespace MissionControllerEC
         /// <returns></returns>
         public static string iTargetName(ContractParameter cp)
         {
-            ResourceGoal instance = (ResourceGoal)cp;
+            ResourceGoalCap instance = (ResourceGoalCap)cp;
             return instance.targetName;
         }
 
@@ -1441,6 +1984,27 @@ namespace MissionControllerEC
         protected override string GetTitle()
         {
             return "Must Have " + targetName + " Greater Than " + RsAmount + " (InOrbit)";
+        }
+
+        protected override void OnRegister()
+        {
+            this.disableOnStateChange = false;
+            updated = false;
+            if (Root.ContractState == Contract.State.Active)
+            {
+                GameEvents.onFlightReady.Add(flightReady);
+                GameEvents.onVesselChange.Add(vesselChange);
+                updated = true;
+            }
+        }
+
+        protected override void OnUnregister()
+        {
+            if (updated)
+            {
+                GameEvents.onFlightReady.Remove(flightReady);
+                GameEvents.onVesselChange.Remove(vesselChange);
+            }
         }
 
         protected override void OnUpdate()
@@ -1492,15 +2056,24 @@ namespace MissionControllerEC
 
             }
         }
+        public void flightReady()
+        {
+            base.SetIncomplete();
+        }
+        public void vesselChange(Vessel v)
+        {
+            base.SetIncomplete();
+        } 
     }
     #endregion
     #region Resource Supply Goal Check
     public class ResourceSupplyGoal : ContractParameter
     {
-        public string targetName;
-        public double ResourceAmount = 0.0f;
-        public string contractTitle;
-        public double resources = 0;
+        private string targetName;
+        private double ResourceAmount = 0.0f;
+        private string contractTitle;
+        private double resources = 0.0;
+        private bool updated = false;
 
         public ResourceSupplyGoal()
         {
@@ -1522,9 +2095,30 @@ namespace MissionControllerEC
              return contractTitle + " " + ResourceAmount + " " + targetName;           
         }
 
+        protected override void OnRegister()
+        {
+            this.disableOnStateChange = false;
+            updated = false;
+            if (Root.ContractState == Contract.State.Active)
+            {
+                GameEvents.onFlightReady.Add(flightReady);
+                GameEvents.onVesselChange.Add(vesselChange);
+                updated = true;
+            }
+        }
+
+        protected override void OnUnregister()
+        {
+            if (updated)
+            {
+                GameEvents.onFlightReady.Remove(flightReady);
+                GameEvents.onVesselChange.Remove(vesselChange);
+            }
+        }
+
         protected override void OnUpdate()
         {
-            if (HighLogic.LoadedSceneIsFlight)
+            if (Root.ContractState == Contract.State.Active && HighLogic.LoadedSceneIsFlight)
                 OnResourceCheck(FlightGlobals.ActiveVessel);
         }
         
@@ -1545,14 +2139,14 @@ namespace MissionControllerEC
       
         private void OnResourceCheck(Vessel v)
         {
-            if (FlightGlobals.ActiveVessel)
+            if (v != null)
             {              
-                foreach (Part p in FlightGlobals.ActiveVessel.parts)
+                foreach (Part p in v.parts)
                 {
-                    if (p.Resources[targetName] != null)
+                    if (p.Resources[targetName])
                     {
-                        resources = p.Resources[targetName].amount;
-                    }                   
+                        resources =+ p.Resources[targetName].amount;
+                    }                                   
                 }
                 if (resources > 0)
                 {
@@ -1560,12 +2154,17 @@ namespace MissionControllerEC
                     {
                         base.SetComplete();
                     }
-                }
-
-
-
+                }  
             }
         }
+        public void flightReady()
+        {
+            base.SetIncomplete();
+        }
+        public void vesselChange(Vessel v)
+        {
+            base.SetIncomplete();
+        } 
     }
     #endregion
     #region Time Countdown Orbits
@@ -1573,34 +2172,38 @@ namespace MissionControllerEC
     {
         public CelestialBody targetBody;
 
-        public double diff;
-        public double savedTime;
-        public double missionTime;
-        public string contractTimeTitle = "Reach Orbit and stay for amount of Time Specified: ";
-        public string vesselID = "none";
+        private double diff;
+        private double savedTime;
+        private double missionTime;
+        private string contractTimeTitle = "Reach Orbit and stay for amount of Time Specified: ";
+        private string vesselID = "none";
 
-        public bool PreFlightCheck = false;
+        private bool PreFlightCheck = false;
 
-        public bool setTime = true;
-        public bool timebool = false;
+        private bool setTime = true;
+        private bool timebool = false;
 
+        private bool AllChildOff = false;
+      
         public TimeCountdownOrbits()
         {
         }
 
-        public TimeCountdownOrbits(CelestialBody target, double Mtime)
+        public TimeCountdownOrbits(CelestialBody target, double Mtime, bool childOff)
         {
             this.targetBody = target;
-            this.missionTime = Mtime;            
+            this.missionTime = Mtime;
+            this.AllChildOff = childOff;
         }
-
-        public TimeCountdownOrbits(CelestialBody target, double Mtime, string title)
+       
+        public TimeCountdownOrbits(CelestialBody target, double Mtime, string title, bool childOff)
         {
             this.targetBody = target;
             this.missionTime = Mtime;
             this.contractTimeTitle = title;
+            this.AllChildOff = true;
         }
-       
+               
         protected override string GetHashString()
         {
             return "Orbit " + targetBody.theName + " and conduct research.";
@@ -1608,26 +2211,22 @@ namespace MissionControllerEC
         protected override string GetTitle()
         {
             return contractTimeTitle + Tools.formatTime(missionTime);
-        }
+        }      
 
         protected override void OnUpdate()
         {
-            if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel.situation == Vessel.Situations.PRELAUNCH)
+            if (Root.ContractState == Contract.State.Active && HighLogic.LoadedSceneIsFlight)
             {
-                PreFlightCheck = true;
-                
-            }
-            if (PreFlightCheck)
-            {
-                if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel.orbit.referenceBody.Equals(targetBody) && FlightGlobals.ActiveVessel.situation == Vessel.Situations.ORBITING)
+                if (FlightGlobals.ActiveVessel.orbit.referenceBody.Equals(targetBody))                   
                 {
-                    timebool = true;
+                    if (FlightGlobals.ActiveVessel.situation == Vessel.Situations.ORBITING)
+                    {                     
+                            CheckIfOrbit(FlightGlobals.ActiveVessel);
+                            timeCountDown();                      
+                    }
                 }
             }
-            if (timebool)
-            {
-                CheckIfOrbit(FlightGlobals.ActiveVessel);
-            }
+            
         }
         protected override void OnLoad(ConfigNode node)
         {
@@ -1647,6 +2246,7 @@ namespace MissionControllerEC
             vesselID = node.GetValue("vesid");
 
             PreFlightCheck = bool.Parse(node.GetValue("preflightcheck"));
+            AllChildOff = bool.Parse(node.GetValue("AllChildOff"));
         }
         protected override void OnSave(ConfigNode node)
         {
@@ -1662,21 +2262,26 @@ namespace MissionControllerEC
             node.AddValue("vesid", vesselID);
 
             node.AddValue("preflightcheck", PreFlightCheck);
+            node.AddValue("AllChildOff", AllChildOff);
 
         }
 
         private void CheckIfOrbit(Vessel vessel)
         {
-            if (HighLogic.LoadedSceneIsFlight && setTime)
+
+            if (vessel.launchTime > this.Root.DateAccepted)
             {
                 contractSetTime();
                 vesselID = vessel.id.ToString();
             }
 
+        }
+        public void timeCountDown()
+        {
             if (!setTime)
             {
                 diff = Planetarium.GetUniversalTime() - savedTime;
-                if (HighLogic.LoadedSceneIsFlight && vessel.id.ToString() == vesselID)
+                if (HighLogic.LoadedSceneIsFlight &&  FlightGlobals.ActiveVessel.id.ToString() == vesselID)
                 {
                     ScreenMessages.PostScreenMessage("Time Left To Complete: " + Tools.formatTime(missionTime - diff), .001f);
                 }
@@ -1692,6 +2297,14 @@ namespace MissionControllerEC
             savedTime = Planetarium.GetUniversalTime();
             setTime = false;
         }
+        public void flightReady()
+        {
+            base.SetIncomplete();
+        }
+        public void vesselChange(Vessel v)
+        {
+            base.SetIncomplete();
+        } 
     } 
      #endregion             
     #region Time Countdown Landing
@@ -1699,14 +2312,14 @@ namespace MissionControllerEC
     {
         public CelestialBody targetBody;
 
-        public double diff;
-        public double savedTime;
-        public double missionTime;
-        public string contractTimeTitle = "Land Vessel and stay for amount of Time Specified: ";
-        public string vesselID = "none";
+        private double diff;
+        private double savedTime;
+        private double missionTime;
+        private string contractTimeTitle = "Land Vessel and stay for amount of Time Specified: ";
+        private string vesselID = "none";
 
-        public bool setTime = true;
-        public bool timebool = false;
+        private bool setTime = true;
+        private bool timebool = false;
 
         public TimeCountdownLanding()
         {
@@ -1733,7 +2346,7 @@ namespace MissionControllerEC
         {
             return contractTimeTitle + Tools.formatTime(missionTime);
         }
-
+      
         protected override void OnUpdate()
         {
             if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel.orbit.referenceBody.Equals(targetBody) && 
@@ -1804,12 +2417,152 @@ namespace MissionControllerEC
             savedTime = Planetarium.GetUniversalTime();
             setTime = false;
         }
+        public void flightReady()
+        {
+            base.SetIncomplete();
+        }
+        public void vesselChange(Vessel v)
+        {
+            base.SetIncomplete();
+        } 
     }
     #endregion             
+    #region Time Countdown Docking
+    public class TimeCountdownDocking : ContractParameter
+    {
+        public CelestialBody targetBody;
+
+        private double diff;
+        private double savedTime;
+        private double missionTime;
+        private string contractTimeTitle = "Reach Orbit and stay for amount of Time Specified: ";
+        private string vesselID = "none";
+
+        private bool PreFlightCheck = false;
+
+        private bool setTime = true;
+        private bool timebool = false;
+
+        public TimeCountdownDocking()
+        {
+        }
+
+        public TimeCountdownDocking(CelestialBody target, double Mtime, string vesId)
+        {
+            this.targetBody = target;
+            this.missionTime = Mtime;
+            this.vesselID = vesId;
+        }
+        
+        public TimeCountdownDocking(CelestialBody target, double Mtime, string title, string vesId)
+        {
+            this.targetBody = target;
+            this.missionTime = Mtime;
+            this.contractTimeTitle = title;
+            this.vesselID = vesId;
+        }
+
+        protected override string GetHashString()
+        {
+            return "Orbit " + targetBody.theName + " and conduct research.";
+        }
+        protected override string GetTitle()
+        {
+            return contractTimeTitle + Tools.formatTime(missionTime);
+        }
+
+        protected override void OnUpdate()
+        {
+            if (Root.ContractState == Contract.State.Active && HighLogic.LoadedSceneIsFlight)
+                timeCountDown();
+        }
+        protected override void OnLoad(ConfigNode node)
+        {
+            int bodyID = int.Parse(node.GetValue("targetBody"));
+            foreach (var body in FlightGlobals.Bodies)
+            {
+                if (body.flightGlobalsIndex == bodyID)
+                    targetBody = body;
+            }
+
+            savedTime = double.Parse(node.GetValue("savedtime"));
+            missionTime = double.Parse(node.GetValue("missiontime"));
+            diff = double.Parse(node.GetValue("diff"));
+
+            setTime = bool.Parse(node.GetValue("settime"));
+            timebool = bool.Parse(node.GetValue("timebool"));
+            vesselID = node.GetValue("vesid");
+
+            PreFlightCheck = bool.Parse(node.GetValue("preflightcheck"));
+        }
+        protected override void OnSave(ConfigNode node)
+        {
+            int bodyID = targetBody.flightGlobalsIndex;
+            node.AddValue("targetBody", bodyID);
+
+            node.AddValue("savedtime", savedTime);
+            node.AddValue("missiontime", missionTime);
+            node.AddValue("diff", diff);
+
+            node.AddValue("settime", setTime);
+            node.AddValue("timebool", timebool);
+            node.AddValue("vesid", vesselID);
+
+            node.AddValue("preflightcheck", PreFlightCheck);
+        }
+       
+        private void onPartCouple(GameEvents.FromToAction<Part, Part> action)
+        {
+            if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel)
+            {
+              
+                if (vesselID == action.from.vessel.id.ToString() ||vesselID == action.to.vessel.id.ToString())
+                {
+                    ScreenMessages.PostScreenMessage("You have docked to the Target Vessel, time started");
+                    contractSetTime();
+                    action.from.vessel.vesselName = action.from.vessel.vesselName.Replace("(Repair)", "");
+                    action.to.vessel.vesselName = action.to.vessel.vesselName.Replace("(Repair)", "");
+                }
+                else
+                    ScreenMessages.PostScreenMessage("Did not connect to the correct target ID vessel, Try Again");
+            }
+        }
+        public void timeCountDown()
+        {
+            if (!setTime)
+            {
+                diff = Planetarium.GetUniversalTime() - savedTime;
+                if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel.id.ToString() == vesselID)
+                {
+                    ScreenMessages.PostScreenMessage("Time Left To Complete: " + Tools.formatTime(missionTime - diff), .001f);
+                }
+
+                if (diff > missionTime)
+                {
+                    base.SetComplete();
+                }
+            }
+        }
+        public void contractSetTime()
+        {
+            savedTime = Planetarium.GetUniversalTime();
+            setTime = false;
+        }
+        public void flightReady()
+        {
+            base.SetIncomplete();
+        }
+        public void vesselChange(Vessel v)
+        {
+            base.SetIncomplete();
+        }
+    }
+    #endregion         
     #region EVA Goal
     public class EvaGoal : ContractParameter
     {
-        public CelestialBody targetBody;
+        CelestialBody targetBody;
+        private bool updated = false;
 
         public EvaGoal()
         {
@@ -1821,13 +2574,13 @@ namespace MissionControllerEC
         }
         protected override string GetHashString()
         {
-            return targetBody.bodyName;
+            return "EVA outside of your vessel";
         }
         protected override string GetTitle()
         {
             return "Exit your vessel and conduct an EVA";
         }
-
+       
         protected override void OnUpdate()
         {
             if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel.situation == Vessel.Situations.ORBITING)
@@ -1855,14 +2608,22 @@ namespace MissionControllerEC
                 base.SetComplete();
         }
 
-
+        public void flightReady()
+        {
+            base.SetIncomplete();
+        }
+        public void vesselChange(Vessel v)
+        {
+            base.SetIncomplete();
+        } 
     }
     #endregion
     #region Crash Goal
     public class CrashGoal : ContractParameter
     {
-        public CelestialBody targetBody;
-        public bool ReadyToCrash = false;
+        private CelestialBody targetBody;
+        private bool ReadyToCrash = false;
+        private bool updated = false;
 
         public CrashGoal()
         {
@@ -1891,11 +2652,21 @@ namespace MissionControllerEC
 
         protected override void OnRegister()
         {           
-            GameEvents.onCrash.Add(crashGoal);
+            updated = false;
+            if (Root.ContractState == Contract.State.Active)
+            {            
+                GameEvents.onCrash.Add(crashGoal);
+                updated = true;
+            }
+            
         }
         protected override void OnUnregister()
         {
-            GameEvents.onCrash.Remove(crashGoal);
+            if (updated)
+            {               
+                GameEvents.onCrash.Remove(crashGoal);
+            }
+            
         }
 
         protected override void OnLoad(ConfigNode node)
@@ -1921,25 +2692,33 @@ namespace MissionControllerEC
                 base.SetComplete();
         }
 
-
+        public void flightReady()
+        {
+            base.SetIncomplete();
+        }
+        public void vesselChange(Vessel v)
+        {
+            base.SetIncomplete();
+        } 
     }
     #endregion
     #region Civilian Module
     public class CivilianModule : ContractParameter
     {
-        public int crewSpace = 0;
-        public int civilianSpace = 0;
-        public int FreeSpace = 0;
-        public int UsedSpace = 0;
+        private int crewSpace = 0;
+        private int civilianSpace = 0;
+        private int FreeSpace = 0;
+        private int UsedSpace = 0;
 
-        public string name1 = "none";
-        public string name2 = "none";
-        public string name3 = "none";
-        public string name4 = "none";
+        private string name1 = "none";
+        private string name2 = "none";
+        private string name3 = "none";
+        private string name4 = "none";
 
         public string vesselID;
 
-        public string destination = "none";       
+        public string destination = "none";
+        private bool updated = false;
 
         public CelestialBody targetBody;
 
@@ -1995,7 +2774,27 @@ namespace MissionControllerEC
                 return "Have Room in vessel for following 4 Civilians for the " + destination + "\n\n" + "-" + name1 + "\n" + "-" + name2 + "\n" + "-" + name3 + "\n" + "-" + name4 + "\n";
             }
         }
-        
+
+        protected override void OnRegister()
+        {
+            updated = false;
+            if (Root.ContractState == Contract.State.Active)
+            {
+                GameEvents.onFlightReady.Add(flightReady);
+                GameEvents.onVesselChange.Add(vesselChange);
+                updated = true;
+            }
+        }
+
+        protected override void OnUnregister()
+        {
+            if (updated)
+            {
+                GameEvents.onFlightReady.Remove(flightReady);
+                GameEvents.onVesselChange.Remove(vesselChange);
+            }
+        }
+
         protected override void OnUpdate()
         {
             if (Root.ContractState == Contract.State.Active)
@@ -2087,7 +2886,16 @@ namespace MissionControllerEC
                     ScreenMessages.PostScreenMessage("You have taken up the space that is required for your Civilian Passengers.  Please make room for them again!");
                 }
             }             
-        }       
+        }
+
+        public void flightReady()
+        {
+            base.SetIncomplete();
+        }
+        public void vesselChange(Vessel v)
+        {
+            base.SetIncomplete();
+        } 
     }
     #endregion
 }
