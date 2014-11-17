@@ -52,11 +52,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConfigNodeStorage.cs" />
-    <Compile Include="Parameters\ContractParameter.cs" />
     <Compile Include="FinanceWindow1.cs" />
     <Compile Include="Contracts\HistoricContracts.cs" />
     <Compile Include="Instructions.cs" />
     <Compile Include="Contracts\MCEContracts.cs" />
+    <Compile Include="Parameters\CrewTypeParameters.cs" />
+    <Compile Include="Parameters\DockingParameters.cs" />
+    <Compile Include="Parameters\OrbitalParameters.cs" />
+    <Compile Include="Parameters\PartParameters.cs" />
+    <Compile Include="Parameters\ResourcesParameters.cs" />
+    <Compile Include="Parameters\TimedParameters.cs" />
     <Compile Include="PartModules\MCELanderResearch.cs" />
     <Compile Include="PartModules\MCEOrbitalScanning.cs" />
     <Compile Include="MissionControllerEC.cs" />
