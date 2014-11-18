@@ -87,11 +87,10 @@ namespace MissionControllerEC
         }
 
         protected override void OnLoad(ConfigNode node)
-        {
-
-            partName = (node.GetValue("partname"));
-            partName2 = node.GetValue("partname2");
-            maxPartCount = int.Parse(node.GetValue("maxcount"));
+        {          
+            Tools.ContractLoadCheck(node, ref partName, "Error Defaults Loaded", partName, "partname");
+            Tools.ContractLoadCheck(node, ref partName2, "Error Defaults Loaded", partName2, "partname2");
+            Tools.ContractLoadCheck(node, ref maxPartCount, 1, maxPartCount, "maxcount");
         }
         protected override void OnSave(ConfigNode node)
         {
@@ -201,10 +200,10 @@ namespace MissionControllerEC
 
         protected override void OnLoad(ConfigNode node)
         {
-            TitleName = node.GetValue("titlename");
-            ShipVesselID = node.GetValue("vesselid");
-            ShipName = node.GetValue("shipname");
-            SavedOriginalID = node.GetValue("savedid");
+            Tools.ContractLoadCheck(node, ref TitleName, "Error Defaults Loaded",TitleName, "titlename");
+            Tools.ContractLoadCheck(node, ref ShipVesselID, "Defaults Loaded", ShipVesselID, "vesselid");
+            Tools.ContractLoadCheck(node, ref ShipName, "Error Defaults Loaded", ShipName, "shipname");
+            Tools.ContractLoadCheck(node, ref SavedOriginalID, "Error Defaults Loaded", SavedOriginalID, "savedid");          
         }
         protected override void OnSave(ConfigNode node)
         {
@@ -321,29 +320,20 @@ namespace MissionControllerEC
             }
         }
         protected override void OnLoad(ConfigNode node)
-        {
-            int bodyID = int.Parse(node.GetValue("targetBody"));
-            foreach (var body in FlightGlobals.Bodies)
-            {
-                if (body.flightGlobalsIndex == bodyID)
-                    targetBody = body;
-            }
-
-            savedTime = double.Parse(node.GetValue("savedtime"));
-            missionTime = double.Parse(node.GetValue("missiontime"));
-            diff = double.Parse(node.GetValue("diff"));
-
-            setTime = bool.Parse(node.GetValue("settime"));
+        {         
+            Tools.ContractLoadCheck(node, ref targetBody, Planetarium.fetch.Home, targetBody, "targetBody");
+            Tools.ContractLoadCheck(node, ref savedTime, 0, savedTime, "savedtime");
+            Tools.ContractLoadCheck(node, ref missionTime, 1000, missionTime, "missiontime");
+            Tools.ContractLoadCheck(node, ref diff, 0, diff, "diff");
+            Tools.ContractLoadCheck(node, ref setTime, false, setTime, "settime");
         }
         protected override void OnSave(ConfigNode node)
         {
             int bodyID = targetBody.flightGlobalsIndex;
             node.AddValue("targetBody", bodyID);
-
             node.AddValue("savedtime", savedTime);
             node.AddValue("missiontime", missionTime);
             node.AddValue("diff", diff);
-
             node.AddValue("settime", setTime);
         }
 
@@ -456,19 +446,12 @@ namespace MissionControllerEC
             }
         }
         protected override void OnLoad(ConfigNode node)
-        {
-            int bodyID = int.Parse(node.GetValue("targetBody"));
-            foreach (var body in FlightGlobals.Bodies)
-            {
-                if (body.flightGlobalsIndex == bodyID)
-                    targetBody = body;
-            }
-
-            savedTime = double.Parse(node.GetValue("savedtime"));
-            missionTime = double.Parse(node.GetValue("missiontime"));
-            diff = double.Parse(node.GetValue("diff"));
-
-            setTime = bool.Parse(node.GetValue("settime"));
+        {           
+            Tools.ContractLoadCheck(node, ref targetBody, Planetarium.fetch.Home, targetBody, "targetBody");
+            Tools.ContractLoadCheck(node, ref savedTime, 0, savedTime, "savedtime");
+            Tools.ContractLoadCheck(node, ref missionTime, 1000, missionTime, "missiontime");
+            Tools.ContractLoadCheck(node, ref diff, 0, diff, "diff");
+            Tools.ContractLoadCheck(node, ref setTime, false, setTime, "settime");
         }
         protected override void OnSave(ConfigNode node)
         {
@@ -587,9 +570,8 @@ namespace MissionControllerEC
 
         protected override void OnLoad(ConfigNode node)
         {
-
-            moduleName = (node.GetValue("partname"));
-            ModuleGoalname = node.GetValue("modulegoalname");
+            Tools.ContractLoadCheck(node, ref moduleName, "Error Defaults Loaded", moduleName, "partname");
+            Tools.ContractLoadCheck(node, ref ModuleGoalname, "Error Defaults Loaded", ModuleGoalname, "modulegoalname");
         }
         protected override void OnSave(ConfigNode node)
         {

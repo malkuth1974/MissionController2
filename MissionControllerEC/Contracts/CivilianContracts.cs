@@ -181,24 +181,19 @@ namespace MissionControllerEC
         }
 
         protected override void OnLoad(ConfigNode node)
-        {
-            int bodyID = int.Parse(node.GetValue("targetBody"));
-            foreach (var body in FlightGlobals.Bodies)
-            {
-                if (body.flightGlobalsIndex == bodyID)
-                    targetBody = body;
-            }
-            civiliansAmount = int.Parse(node.GetValue("civilians"));
-            name1 = node.GetValue("name1");
-            name2 = node.GetValue("name2");
-            name3 = node.GetValue("name3");
-            name4 = node.GetValue("name4");
-            altitudeGoal = double.Parse(node.GetValue("altitude"));
-            eccmax = double.Parse(node.GetValue("eccmax"));
-            eccmin = double.Parse(node.GetValue("eccmin"));
-            TripTime = double.Parse(node.GetValue("time"));
-            TripText = node.GetValue("triptext");
-            civdestination = node.GetValue("civd");
+        {          
+            Tools.ContractLoadCheck(node, ref targetBody, Planetarium.fetch.Home, targetBody, "targetBody");
+            Tools.ContractLoadCheck(node, ref civiliansAmount, 2, civiliansAmount, "civilians");
+            Tools.ContractLoadCheck(node, ref name1, "George Error", name1, "name1");
+            Tools.ContractLoadCheck(node, ref name2, "Sam Error", name2, "name2");
+            Tools.ContractLoadCheck(node, ref name3, "Dave Error", name3, "name3");
+            Tools.ContractLoadCheck(node, ref name4, "Fracking Error", name4, "name4");
+            Tools.ContractLoadCheck(node, ref altitudeGoal, 71000, altitudeGoal, "altitude");
+            Tools.ContractLoadCheck(node, ref eccmax, .5, eccmax, "eccmax");
+            Tools.ContractLoadCheck(node, ref eccmin, 0, eccmin, "eccmin");
+            Tools.ContractLoadCheck(node, ref TripTime, 10000, TripTime, "time");
+            Tools.ContractLoadCheck(node, ref TripText, "Woops Loaded Default", TripText, "triptext");
+            Tools.ContractLoadCheck(node, ref civdestination, "Loaded Error Draults Loaded", civdestination, "civd");
 
         }
         protected override void OnSave(ConfigNode node)
@@ -341,7 +336,7 @@ namespace MissionControllerEC
 
             base.SetExpiry(3f, 10f);
             base.SetDeadlineYears(3f, targetBody);
-            base.SetFunds(25000, 300000, 300000, targetBody);
+            base.SetFunds(25000, 300000, 350000, targetBody);
             base.SetReputation(50, 150, targetBody);
             return true;
         }
@@ -401,21 +396,16 @@ namespace MissionControllerEC
         }
 
         protected override void OnLoad(ConfigNode node)
-        {
-            int bodyID = int.Parse(node.GetValue("targetBody"));
-            foreach (var body in FlightGlobals.Bodies)
-            {
-                if (body.flightGlobalsIndex == bodyID)
-                    targetBody = body;
-            }
-            civiliansAmount = int.Parse(node.GetValue("civilians"));
-            name1 = node.GetValue("name1");
-            name2 = node.GetValue("name2");
-            name3 = node.GetValue("name3");
-            name4 = node.GetValue("name4");
-            TripTime = double.Parse(node.GetValue("time"));
-            TripText = node.GetValue("triptext");
-            civdestination = node.GetValue("civd");
+        {           
+            Tools.ContractLoadCheck(node, ref targetBody, Planetarium.fetch.Home, targetBody, "targetBody");
+            Tools.ContractLoadCheck(node, ref civiliansAmount, 2, civiliansAmount, "civilians");
+            Tools.ContractLoadCheck(node, ref name1, "George Error", name1, "name1");
+            Tools.ContractLoadCheck(node, ref name2, "Sam Error", name2, "name2");
+            Tools.ContractLoadCheck(node, ref name3, "Dave Error", name3, "name3");
+            Tools.ContractLoadCheck(node, ref name4, "Fracking Error", name4, "name4");            
+            Tools.ContractLoadCheck(node, ref TripTime, 10000, TripTime, "time");
+            Tools.ContractLoadCheck(node, ref TripText, "Woops Loaded Default", TripText, "triptext");
+            Tools.ContractLoadCheck(node, ref civdestination, "Loaded Error Draults Loaded", civdestination, "civd");
 
         }
         protected override void OnSave(ConfigNode node)
@@ -565,7 +555,7 @@ namespace MissionControllerEC
 
             base.SetExpiry(3f, 10f);
             base.SetDeadlineYears(3f, targetBody);
-            base.SetFunds(15000, 225000, 350000, targetBody);
+            base.SetFunds(15000, 225000, 275000, targetBody);
             base.SetReputation(50, 150, targetBody);
             return true;
         }
@@ -623,24 +613,18 @@ namespace MissionControllerEC
         }
 
         protected override void OnLoad(ConfigNode node)
-        {
-            int bodyID = int.Parse(node.GetValue("targetBody"));
-            foreach (var body in FlightGlobals.Bodies)
-            {
-                if (body.flightGlobalsIndex == bodyID)
-                    targetBody = body;
-            }
-            civiliansAmount = int.Parse(node.GetValue("civilians"));
-            name1 = node.GetValue("name1");
-            name2 = node.GetValue("name2");
-            name3 = node.GetValue("name3");
-            name4 = node.GetValue("name4");
-            TripTime = double.Parse(node.GetValue("time"));
-            TripText = node.GetValue("triptext");
-            civdestination = node.GetValue("civd");
-            vesselID = node.GetValue("vesselid");
-            vesselName = node.GetValue("vesselname");
-
+        {          
+            Tools.ContractLoadCheck(node, ref targetBody, Planetarium.fetch.Home, targetBody, "targetBody");
+            Tools.ContractLoadCheck(node, ref civiliansAmount, 2, civiliansAmount, "civilians");
+            Tools.ContractLoadCheck(node, ref name1, "George Error", name1, "name1");
+            Tools.ContractLoadCheck(node, ref name2, "Sam Error", name2, "name2");
+            Tools.ContractLoadCheck(node, ref name3, "Dave Error", name3, "name3");
+            Tools.ContractLoadCheck(node, ref name4, "Fracking Error", name4, "name4");           
+            Tools.ContractLoadCheck(node, ref TripTime, 10000, TripTime, "time");
+            Tools.ContractLoadCheck(node, ref TripText, "Woops Loaded Default", TripText, "triptext");
+            Tools.ContractLoadCheck(node, ref civdestination, "Loaded Error Draults Loaded", civdestination, "civd");
+            Tools.ContractLoadCheck(node, ref vesselID, "Defualt Loaded", vesselID, "vesselid");
+            Tools.ContractLoadCheck(node, ref vesselName, "Error Defaults Loaded", vesselName, "vesselname");
         }
         protected override void OnSave(ConfigNode node)
         {

@@ -69,23 +69,15 @@ namespace MissionControllerEC
         }
         protected override void OnLoad(ConfigNode node)
         {
-            int bodyID = int.Parse(node.GetValue("targetBody"));
-            foreach (var body in FlightGlobals.Bodies)
-            {
-                if (body.flightGlobalsIndex == bodyID)
-                    targetBody = body;
-            }
-
-            savedTime = double.Parse(node.GetValue("savedtime"));
-            missionTime = double.Parse(node.GetValue("missiontime"));
-            diff = double.Parse(node.GetValue("diff"));
-
-            setTime = bool.Parse(node.GetValue("settime"));
-            timebool = bool.Parse(node.GetValue("timebool"));
-            vesselID = node.GetValue("vesid");
-
-            PreFlightCheck = bool.Parse(node.GetValue("preflightcheck"));
-            AllChildOff = bool.Parse(node.GetValue("AllChildOff"));
+            Tools.ContractLoadCheck(node, ref targetBody, Planetarium.fetch.Home, targetBody, "targetBody");
+            Tools.ContractLoadCheck(node, ref savedTime, 0, savedTime, "savedtime");
+            Tools.ContractLoadCheck(node, ref missionTime, 1000, missionTime, "missiontime");
+            Tools.ContractLoadCheck(node, ref diff, 0, diff, "diff");
+            Tools.ContractLoadCheck(node, ref setTime, false, setTime, "settime");
+            Tools.ContractLoadCheck(node, ref timebool, false, timebool, "timebool");
+            Tools.ContractLoadCheck(node, ref vesselID, "Defaults Loaded", vesselID, "vesid");
+            Tools.ContractLoadCheck(node, ref PreFlightCheck, false, PreFlightCheck, "preflightcheck");
+            Tools.ContractLoadCheck(node, ref AllChildOff, false, AllChildOff, "AllChildOff");
         }
         protected override void OnSave(ConfigNode node)
         {
@@ -199,21 +191,14 @@ namespace MissionControllerEC
             }
         }
         protected override void OnLoad(ConfigNode node)
-        {
-            int bodyID = int.Parse(node.GetValue("targetBody"));
-            foreach (var body in FlightGlobals.Bodies)
-            {
-                if (body.flightGlobalsIndex == bodyID)
-                    targetBody = body;
-            }
-
-            savedTime = double.Parse(node.GetValue("savedtime"));
-            missionTime = double.Parse(node.GetValue("missiontime"));
-            diff = double.Parse(node.GetValue("diff"));
-
-            setTime = bool.Parse(node.GetValue("settime"));
-            timebool = bool.Parse(node.GetValue("timebool"));
-            vesselID = node.GetValue("vesid");
+        {          
+            Tools.ContractLoadCheck(node, ref targetBody, Planetarium.fetch.Home, targetBody, "targetBody");
+            Tools.ContractLoadCheck(node, ref savedTime, 0, savedTime, "savedtime");
+            Tools.ContractLoadCheck(node, ref missionTime, 1000, missionTime, "missiontime");
+            Tools.ContractLoadCheck(node, ref diff, 0, diff, "diff");
+            Tools.ContractLoadCheck(node, ref setTime, false, setTime, "settime");
+            Tools.ContractLoadCheck(node, ref timebool, false, timebool, "timebool");
+            Tools.ContractLoadCheck(node, ref vesselID, "Defaults Loaded", vesselID, "vesid");          
         }
         protected override void OnSave(ConfigNode node)
         {
@@ -318,23 +303,15 @@ namespace MissionControllerEC
                 timeCountDown();
         }
         protected override void OnLoad(ConfigNode node)
-        {
-            int bodyID = int.Parse(node.GetValue("targetBody"));
-            foreach (var body in FlightGlobals.Bodies)
-            {
-                if (body.flightGlobalsIndex == bodyID)
-                    targetBody = body;
-            }
-
-            savedTime = double.Parse(node.GetValue("savedtime"));
-            missionTime = double.Parse(node.GetValue("missiontime"));
-            diff = double.Parse(node.GetValue("diff"));
-
-            setTime = bool.Parse(node.GetValue("settime"));
-            timebool = bool.Parse(node.GetValue("timebool"));
-            vesselID = node.GetValue("vesid");
-
-            PreFlightCheck = bool.Parse(node.GetValue("preflightcheck"));
+        {           
+            Tools.ContractLoadCheck(node, ref targetBody, Planetarium.fetch.Home, targetBody, "targetBody");
+            Tools.ContractLoadCheck(node, ref savedTime, 0, savedTime, "savedtime");
+            Tools.ContractLoadCheck(node, ref missionTime, 1000, missionTime, "missiontime");
+            Tools.ContractLoadCheck(node, ref diff, 0, diff, "diff");
+            Tools.ContractLoadCheck(node, ref setTime, false, setTime, "settime");
+            Tools.ContractLoadCheck(node, ref timebool, false, timebool, "timebool");
+            Tools.ContractLoadCheck(node, ref vesselID, "Defaults Loaded", vesselID, "vesid");
+            Tools.ContractLoadCheck(node, ref PreFlightCheck, false, PreFlightCheck, "preflightcheck");
         }
         protected override void OnSave(ConfigNode node)
         {

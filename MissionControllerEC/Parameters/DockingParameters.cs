@@ -153,8 +153,8 @@ namespace MissionControllerEC
 
         protected override void OnLoad(ConfigNode node)
         {
-            targetDockingID = node.GetValue("VesselID");
-            targetDockingName = node.GetValue("VesselName");
+            Tools.ContractLoadCheck(node, ref targetDockingID, "defaults Loaded", targetDockingID, "VesselID");
+            Tools.ContractLoadCheck(node, ref targetDockingName, "Error Defaults Loaded", targetDockingName, "VesselName");
         }
         protected override void OnSave(ConfigNode node)
         {
