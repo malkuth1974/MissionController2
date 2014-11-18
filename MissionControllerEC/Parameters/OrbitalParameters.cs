@@ -57,8 +57,18 @@ namespace MissionControllerEC
 
         protected override void OnUpdate()
         {
-            if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel.situation == Vessel.Situations.ORBITING)
-                Orbits(FlightGlobals.ActiveVessel);
+            if (Root.ContractState == Contract.State.Active)
+            {
+                if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel.situation == Vessel.Situations.ORBITING)
+                    if (this.state == ParameterState.Incomplete)
+                    {
+                        Orbits(FlightGlobals.ActiveVessel);
+                    }
+                if (this.state == ParameterState.Complete)
+                    {
+                    OffOrbits(FlightGlobals.ActiveVessel);
+                    }
+            }
         }
 
         protected override void OnLoad(ConfigNode node)
@@ -87,15 +97,33 @@ namespace MissionControllerEC
 
         public void Orbits(Vessel vessel)
         {
-            if (vessel.isActiveVessel && FlightGlobals.ActiveVessel.orbit.referenceBody.Equals(targetBody))
+            if (vessel.launchTime > this.Root.DateAccepted)
             {
-                if (vessel.orbit.ApA >= minApA && vessel.orbit.ApA <= maxApA)
+                if (vessel.isActiveVessel && FlightGlobals.ActiveVessel.orbit.referenceBody.Equals(targetBody))
                 {
-                    base.SetComplete();
+                    if (vessel.orbit.ApA >= minApA && vessel.orbit.ApA <= maxApA)
+                    {
+                        base.SetComplete();
+                    }
                 }
+                else
+                    base.SetIncomplete();
             }
-            else
-                base.SetIncomplete();
+        }
+        public void OffOrbits(Vessel vessel)
+        {
+            if (vessel.launchTime > this.Root.DateAccepted)
+            {
+                if (vessel.isActiveVessel && FlightGlobals.ActiveVessel.orbit.referenceBody.Equals(targetBody))
+                {
+                    if (vessel.orbit.ApA <= minApA && vessel.orbit.ApA >= maxApA)
+                    {
+                        base.SetIncomplete();
+                    }
+                }
+                else
+                    base.SetComplete();
+            }
         }
         public void flightReady()
         {
@@ -153,8 +181,15 @@ namespace MissionControllerEC
 
         protected override void OnUpdate()
         {
-            if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel.situation == Vessel.Situations.ORBITING && FlightGlobals.ActiveVessel.orbit.referenceBody.Equals(targetBody))
-                InOrbit(FlightGlobals.ActiveVessel);
+            if (Root.ContractState == Contract.State.Active)
+            {
+                if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel.situation == Vessel.Situations.ORBITING && FlightGlobals.ActiveVessel.orbit.referenceBody.Equals(targetBody))
+                {
+
+                    InOrbit(FlightGlobals.ActiveVessel);
+                }
+            }
+                
         }
 
         protected override void OnLoad(ConfigNode node)
@@ -174,10 +209,13 @@ namespace MissionControllerEC
 
         public void InOrbit(Vessel vessel)
         {
-            if (FlightGlobals.ActiveVessel)
+            if (vessel.launchTime > this.Root.DateAccepted)
             {
-                base.SetComplete();
-                ScreenMessages.PostScreenMessage("You Have achieved Orbit of Target Body: " + targetBody.theName);
+                if (FlightGlobals.ActiveVessel)
+                {
+                    base.SetComplete();
+                    ScreenMessages.PostScreenMessage("You Have achieved Orbit of Target Body: " + targetBody.theName);
+                }
             }
         }
 
@@ -241,8 +279,23 @@ namespace MissionControllerEC
 
         protected override void OnUpdate()
         {
-            if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel.situation == Vessel.Situations.ORBITING)
-                Orbits(FlightGlobals.ActiveVessel);
+            if (Root.ContractState == Contract.State.Active)
+            {
+                if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel.situation == Vessel.Situations.ORBITING)
+                {
+                    if (FlightGlobals.ActiveVessel.orbit.referenceBody.Equals(targetBody))
+                    {
+                        if (this.state == ParameterState.Incomplete)
+                        {
+                            Orbits(FlightGlobals.ActiveVessel);
+                        }
+                        if (this.state == ParameterState.Complete)
+                        {
+                            OffOrbits(FlightGlobals.ActiveVessel);
+                        }
+                    }
+                }
+            }
 
             if (HighLogic.LoadedSceneIsFlight && SaveInfo.MessageHelpers == true)
             {
@@ -276,16 +329,35 @@ namespace MissionControllerEC
 
         public void Orbits(Vessel vessel)
         {
-            if (vessel.isActiveVessel)
+            if (vessel.launchTime > this.Root.DateAccepted)
             {
-
-                if (vessel.orbit.PeA >= minPeA && vessel.orbit.PeA <= maxPeA)
+                if (vessel.isActiveVessel)
                 {
-                    base.SetComplete();
+
+                    if (vessel.orbit.PeA >= minPeA && vessel.orbit.PeA <= maxPeA)
+                    {
+                        base.SetComplete();
+                    }
                 }
+                else
+                    base.SetIncomplete();
             }
-            else
-                base.SetIncomplete();
+        }
+        public void OffOrbits(Vessel vessel)
+        {
+            if (vessel.launchTime > this.Root.DateAccepted)
+            {
+                if (vessel.isActiveVessel)
+                {
+
+                    if (vessel.orbit.PeA <= minPeA && vessel.orbit.PeA >= maxPeA)
+                    {
+                        base.SetIncomplete();
+                    }
+                }
+                else
+                    base.SetComplete();
+            }
         }
         public void flightReady()
         {
@@ -302,6 +374,7 @@ namespace MissionControllerEC
     public class Inclination : ContractParameter
     {
         Settings settings = new Settings("Config.cfg");
+        CelestialBody targetBody;
         private double minInclination = 0.0;
         private double maxInclination = 0.0;
         private bool updated = false;
@@ -310,10 +383,11 @@ namespace MissionControllerEC
         {
         }
 
-        public Inclination(double minInc, double maxInc)
+        public Inclination(CelestialBody body ,double minInc, double maxInc)
         {
             this.minInclination = minInc;
             this.maxInclination = maxInc;
+            this.targetBody = body;
         }
 
         protected override string GetHashString()
@@ -348,12 +422,30 @@ namespace MissionControllerEC
 
         protected override void OnUpdate()
         {
-            if (HighLogic.LoadedSceneIsFlight)
-                CheckInclination(FlightGlobals.ActiveVessel);
+            if (Root.ContractState == Contract.State.Active)
+            {
+                if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel.orbit.referenceBody.Equals(targetBody))
+                {
+                    if (this.state == ParameterState.Incomplete)
+                    {
+                        CheckInclination(FlightGlobals.ActiveVessel);
+                    }
+                    if (this.state == ParameterState.Complete)
+                    {
+                        OffCheckInclination(FlightGlobals.ActiveVessel);
+                    }
+                }
+            }
         }
 
         protected override void OnLoad(ConfigNode node)
         {
+            int bodyID = int.Parse(node.GetValue("targetBody"));
+            foreach (var body in FlightGlobals.Bodies)
+            {
+                if (body.flightGlobalsIndex == bodyID)
+                    targetBody = body;
+            }
 
             double maxincID = double.Parse(node.GetValue("maxincID"));
             maxInclination = maxincID;
@@ -362,6 +454,8 @@ namespace MissionControllerEC
         }
         protected override void OnSave(ConfigNode node)
         {
+            int bodyID = targetBody.flightGlobalsIndex;
+            node.AddValue("targetBody", bodyID);
             double maxincID = maxInclination;
             node.AddValue("maxincID", maxInclination);
             double minincID = minInclination;
@@ -370,10 +464,24 @@ namespace MissionControllerEC
 
         public void CheckInclination(Vessel vessel)
         {
-            if (FlightGlobals.ActiveVessel)
+            if (vessel.launchTime > this.Root.DateAccepted)
             {
-                if (vessel.orbit.inclination <= maxInclination && vessel.orbit.inclination >= minInclination)
-                    base.SetComplete();
+                if (FlightGlobals.ActiveVessel)
+                {
+                    if (vessel.orbit.inclination <= maxInclination && vessel.orbit.inclination >= minInclination)
+                        base.SetComplete();
+                }
+            }
+        }
+        public void OffCheckInclination(Vessel vessel)
+        {
+            if (vessel.launchTime > this.Root.DateAccepted)
+            {
+                if (FlightGlobals.ActiveVessel)
+                {
+                    if (vessel.orbit.inclination >= maxInclination && vessel.orbit.inclination <= minInclination)
+                        base.SetIncomplete();
+                }
             }
         }
         public void flightReady()
@@ -390,6 +498,7 @@ namespace MissionControllerEC
 
     public class EccentricGoal : ContractParameter
     {
+        CelestialBody targetBody;
         private double mineccn = 0.0;
         private double maxeccn = 0.0;
         private bool updated = false;
@@ -398,10 +507,11 @@ namespace MissionControllerEC
         {
         }
 
-        public EccentricGoal(double minEcc, double maxEcc)
+        public EccentricGoal(CelestialBody body,double minEcc, double maxEcc)
         {
             this.mineccn = minEcc;
             this.maxeccn = maxEcc;
+            this.targetBody = body;
         }
 
         protected override string GetHashString()
@@ -438,7 +548,7 @@ namespace MissionControllerEC
         {
             if (this.Root.ContractState == Contract.State.Active)
             {
-                if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel)
+                if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel && FlightGlobals.ActiveVessel.orbit.referenceBody.Equals(targetBody))
                 {
                     if (this.state == ParameterState.Incomplete)
                     {
@@ -454,25 +564,42 @@ namespace MissionControllerEC
 
         protected override void OnLoad(ConfigNode node)
         {
+            int bodyID = int.Parse(node.GetValue("targetBody"));
+            foreach (var body in FlightGlobals.Bodies)
+            {
+                if (body.flightGlobalsIndex == bodyID)
+                    targetBody = body;
+            }
             mineccn = double.Parse(node.GetValue("mineccn"));
             maxeccn = double.Parse(node.GetValue("maxeccn"));
+            //Tools.NodeLoad(node, targetBody, "targetbody");
+            //Tools.NodeLoad(node, mineccn, "mineccn");
+            //Tools.NodeLoad(node, maxeccn, "maxeccn");
 
         }
         protected override void OnSave(ConfigNode node)
         {
+            int bodyID = targetBody.flightGlobalsIndex;
+            node.AddValue("targetBody", bodyID);
             node.AddValue("mineccn", mineccn);
             node.AddValue("maxeccn", maxeccn);
         }
 
         public void CheckEccentricity(Vessel vessel)
         {
-            if (vessel.situation == Vessel.Situations.ORBITING && vessel.orbit.eccentricity <= maxeccn && vessel.orbit.eccentricity >= mineccn)
-                base.SetComplete();
+            if (vessel.launchTime > this.Root.DateAccepted)
+            {
+                if (vessel.situation == Vessel.Situations.ORBITING && vessel.orbit.eccentricity <= maxeccn && vessel.orbit.eccentricity >= mineccn)
+                    base.SetComplete();
+            }
         }
         public void ReCheckEccentricity(Vessel vessel)
         {
-            if (vessel.orbit.eccentricity > maxeccn && vessel.orbit.eccentricity < mineccn)
-                base.SetIncomplete();
+            if (vessel.launchTime > this.Root.DateAccepted)
+            {
+                if (vessel.situation == Vessel.Situations.ORBITING && vessel.orbit.eccentricity > maxeccn && vessel.orbit.eccentricity < mineccn)
+                    base.SetIncomplete();
+            }
         }
         public void flightReady()
         {
@@ -487,6 +614,7 @@ namespace MissionControllerEC
     #region OrbiatlPeriod Goal
     public class OrbitalPeriod : ContractParameter
     {
+        CelestialBody targetBody;
         private double minOrbitalPeriod = 0.0;
         private double maxOrbitalPeriod = 0.0;
         private bool updated = false;
@@ -533,11 +661,24 @@ namespace MissionControllerEC
 
         protected override void OnUpdate()
         {
-            if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel.situation == Vessel.Situations.ORBITING)
-                CheckOrbitalPeriod(FlightGlobals.ActiveVessel);
-            if (HighLogic.LoadedSceneIsFlight && SaveInfo.MessageHelpers == true)
+            if (Root.ContractState == Contract.State.Active)
             {
-                Tools.ObitalPeriodHelper(FlightGlobals.ActiveVessel);
+                if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel.situation == Vessel.Situations.ORBITING)
+                    if (FlightGlobals.ActiveVessel.orbit.referenceBody.Equals(targetBody))
+                    {
+                        if (this.state == ParameterState.Incomplete)
+                        {
+                            CheckOrbitalPeriod(FlightGlobals.ActiveVessel);
+                        }
+                        if (this.state == ParameterState.Complete)
+                        {
+                            OffCheckOrbitalPeriod(FlightGlobals.ActiveVessel);
+                        }
+                        if (HighLogic.LoadedSceneIsFlight && SaveInfo.MessageHelpers == true)
+                        {
+                            Tools.ObitalPeriodHelper(FlightGlobals.ActiveVessel);
+                        }
+                    }             
             }
         }
 
@@ -559,10 +700,24 @@ namespace MissionControllerEC
 
         public void CheckOrbitalPeriod(Vessel vessel)
         {
-            if (vessel.isActiveVessel)
+            if (vessel.launchTime > this.Root.DateAccepted)
             {
-                if (vessel.orbit.period <= maxOrbitalPeriod && vessel.orbit.period >= minOrbitalPeriod)
-                    base.SetComplete();
+                if (vessel.isActiveVessel)
+                {
+                    if (vessel.orbit.period <= maxOrbitalPeriod && vessel.orbit.period >= minOrbitalPeriod)
+                        base.SetComplete();
+                }
+            }
+        }
+        public void OffCheckOrbitalPeriod(Vessel vessel)
+        {
+            if (vessel.launchTime > this.Root.DateAccepted)
+            {
+                if (vessel.isActiveVessel)
+                {
+                    if (vessel.orbit.period >= maxOrbitalPeriod && vessel.orbit.period <= minOrbitalPeriod)
+                        base.SetComplete();
+                }
             }
         }
         public void flightReady()
@@ -623,8 +778,20 @@ namespace MissionControllerEC
 
         protected override void OnUpdate()
         {
-            if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel && FlightGlobals.ActiveVessel.orbit.referenceBody.Equals(targetBody))
-                Orbits(FlightGlobals.ActiveVessel);
+            if (Root.ContractState == Contract.State.Active)
+            {
+                if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel && FlightGlobals.ActiveVessel.orbit.referenceBody.Equals(targetBody))
+                {
+                    if (this.state == ParameterState.Incomplete)
+                    {
+                        Orbits(FlightGlobals.ActiveVessel);
+                    }
+                    if (this.state == ParameterState.Complete)
+                    {
+                        OffOrbits(FlightGlobals.ActiveVessel);
+                    }
+                }
+            }
         }
 
         protected override void OnLoad(ConfigNode node)
@@ -647,15 +814,33 @@ namespace MissionControllerEC
 
         public void Orbits(Vessel vessel)
         {
-            if (vessel.isActiveVessel)
+            if (vessel.launchTime > this.Root.DateAccepted)
             {
-                if (vessel.orbit.altitude >= minAlt)
+                if (vessel.isActiveVessel)
                 {
-                    base.SetComplete();
+                    if (vessel.orbit.altitude >= minAlt)
+                    {
+                        base.SetComplete();
+                    }
                 }
+                else
+                    base.SetIncomplete();
             }
-            else
-                base.SetIncomplete();
+        }
+        public void OffOrbits(Vessel vessel)
+        {
+            if (vessel.launchTime > this.Root.DateAccepted)
+            {
+                if (vessel.isActiveVessel)
+                {
+                    if (vessel.orbit.altitude <= minAlt)
+                    {
+                        base.SetComplete();
+                    }
+                }
+                else
+                    base.SetIncomplete();
+            }
         }
         public void flightReady()
         {

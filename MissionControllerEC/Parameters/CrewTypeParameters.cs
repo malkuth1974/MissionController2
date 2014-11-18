@@ -381,7 +381,6 @@ namespace MissionControllerEC
     public class EvaGoal : ContractParameter
     {
         CelestialBody targetBody;
-        private bool updated = false;
 
         public EvaGoal()
         {

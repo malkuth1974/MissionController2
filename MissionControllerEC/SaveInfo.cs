@@ -58,6 +58,7 @@ namespace MissionControllerEC
         public static bool CivilianLowOrbit = false;
         public static bool CivilianLanding = false;
         public static bool CivilianStationExpedition = false;
+        public static int SatelliteTypeChoice = 0;
 
         public static bool CivilianApPod = false;
         public static string CivilianApName = "none";

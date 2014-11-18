@@ -30,6 +30,7 @@ namespace MissionControllerEC
         public static List<string> CivName = new List<string>();
 
         Tools.MC2RandomWieghtSystem.Item<int>[] RandomContractsCheck;
+        Tools.MC2RandomWieghtSystem.Item<int>[] RandomSatelliteContractsCheck;
         
         public void loadTextures()
         {
@@ -192,7 +193,7 @@ namespace MissionControllerEC
                 SaveInfo.RepairStationContract = false;
                 Debug.Log("No random contracts at this time");
             }            
-            if (currentContractType == 1)
+            else if (currentContractType == 1)
             {
                 SaveInfo.RepairContractOn = true;
                 SaveInfo.CivilianLowOrbit = false;
@@ -201,7 +202,7 @@ namespace MissionControllerEC
                 SaveInfo.RepairStationContract = false;
                 Debug.Log("Repair Contract Selected");
             }            
-            if (currentContractType == 2)
+            else if (currentContractType == 2)
             {
                 SaveInfo.RepairContractOn = false;
                 SaveInfo.CivilianLowOrbit = true;
@@ -210,7 +211,7 @@ namespace MissionControllerEC
                 SaveInfo.RepairStationContract = false;
                 Debug.Log("Civilian Low Orbit Contract Selected");
             }           
-            if (currentContractType == 3)
+            else if (currentContractType == 3)
             {
                 SaveInfo.RepairContractOn = false;
                 SaveInfo.CivilianLowOrbit = false;
@@ -219,7 +220,7 @@ namespace MissionControllerEC
                 SaveInfo.RepairStationContract = false;
                 Debug.Log("Civilian Landing Contract Selected");
             }
-            if (currentContractType == 4)
+            else if (currentContractType == 4)
             {
                 SaveInfo.RepairContractOn = false;
                 SaveInfo.CivilianLowOrbit = false;
@@ -228,7 +229,7 @@ namespace MissionControllerEC
                 SaveInfo.RepairStationContract = false;
                 Debug.Log("Civilian Station Expedition Contract Selected");
             }
-            if (currentContractType == 5)
+            else if (currentContractType == 5)
             {
                 SaveInfo.RepairContractOn = false;
                 SaveInfo.CivilianLowOrbit = false;
@@ -236,7 +237,18 @@ namespace MissionControllerEC
                 SaveInfo.CivilianStationExpedition = false;
                 SaveInfo.RepairStationContract = true;
                 Debug.Log("Repair Station Contract Selected");
-            }    
+            }
+            else
+            {
+                Debug.LogWarning("MCE failed to load random contract Check, defaulting");
+            }
+        }
+
+        public void CheckRandomSatelliteContractTypes()
+        {
+            randomSatelliteContractsCheck();
+            SaveInfo.SatelliteTypeChoice = Tools.MC2RandomWieghtSystem.PickOne<int>(RandomSatelliteContractsCheck); 
+            Debug.LogWarning("Satellite Type Chosen Is Number " + SaveInfo.SatelliteTypeChoice);         
         }
 
         public void randomContractsCheck()
@@ -265,6 +277,26 @@ namespace MissionControllerEC
             RandomContractsCheck[5] = new Tools.MC2RandomWieghtSystem.Item<int>();
             RandomContractsCheck[5].weight = settings.contract_repair_Station_Random_percent;
             RandomContractsCheck[5].value = 5;
+        }
+
+        public void randomSatelliteContractsCheck()
+        {
+            RandomSatelliteContractsCheck = new Tools.MC2RandomWieghtSystem.Item<int>[4];
+            RandomSatelliteContractsCheck[0] = new Tools.MC2RandomWieghtSystem.Item<int>();
+            RandomSatelliteContractsCheck[0].weight = 25;
+            RandomSatelliteContractsCheck[0].value = 0;
+
+            RandomSatelliteContractsCheck[1] = new Tools.MC2RandomWieghtSystem.Item<int>();
+            RandomSatelliteContractsCheck[1].weight = 25;
+            RandomSatelliteContractsCheck[1].value = 1;
+
+            RandomSatelliteContractsCheck[2] = new Tools.MC2RandomWieghtSystem.Item<int>();
+            RandomSatelliteContractsCheck[2].weight = 25;
+            RandomSatelliteContractsCheck[2].value = 2;
+
+            RandomSatelliteContractsCheck[3] = new Tools.MC2RandomWieghtSystem.Item<int>();
+            RandomSatelliteContractsCheck[3].weight = 25;
+            RandomSatelliteContractsCheck[3].value = 3;           
         }
 
         public void GetPartsCost()
@@ -499,7 +531,7 @@ namespace MissionControllerEC
             {
                 Debug.Log("Body Name: " + body.theName + " Body Number: " + body.flightGlobalsIndex);
             }
-        }
+        }        
     }
    
     public class RepairVesselsList

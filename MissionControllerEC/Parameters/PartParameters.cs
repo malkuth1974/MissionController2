@@ -103,27 +103,30 @@ namespace MissionControllerEC
 
         public void CheckPartGoal(Vessel vessel)
         {
-            if (vessel.isActiveVessel)
+            if (vessel.launchTime > this.Root.DateAccepted)
             {
-                if (vessel != null)
+                if (vessel.isActiveVessel)
                 {
-                    foreach (Part p in vessel.Parts)
+                    if (vessel != null)
                     {
-                        if (p.partInfo.title.Equals(partName) || p.partInfo.title.Equals(partName2))
+                        foreach (Part p in vessel.Parts)
                         {
-                            ++partCount;
+                            if (p.partInfo.title.Equals(partName) || p.partInfo.title.Equals(partName2))
+                            {
+                                ++partCount;
+                            }
                         }
                     }
-                }
-                if (partCount > 0)
-                {
-                    if (partCount >= maxPartCount)
+                    if (partCount > 0)
                     {
-                        base.SetComplete();
+                        if (partCount >= maxPartCount)
+                        {
+                            base.SetComplete();
+                        }
                     }
+
+
                 }
-
-
             }
         }
         public void flightReady()
@@ -346,33 +349,34 @@ namespace MissionControllerEC
 
         private void CheckIfOrbit(Vessel vessel)
         {
-
-            if (vessel.isActiveVessel)
+            if (vessel.launchTime > this.Root.DateAccepted)
             {
-
-                if (MCEOrbitalScanning.doOrbitResearch)
+                if (vessel.isActiveVessel)
                 {
-                    if (HighLogic.LoadedSceneIsFlight && setTime)
+
+                    if (MCEOrbitalScanning.doOrbitResearch)
                     {
-                        contractSetTime();
-                    }
-
-                    if (!setTime)
-                    {
-                        diff = Planetarium.GetUniversalTime() - savedTime;
-
-                        ScreenMessages.PostScreenMessage("Time Left To Complete: " + Tools.formatTime(missionTime - diff), .001f);
-
-                        if (diff > missionTime)
+                        if (HighLogic.LoadedSceneIsFlight && setTime)
                         {
-                            base.SetComplete();
-                            Debug.Log("Time Completed");
+                            contractSetTime();
                         }
-                    }
 
+                        if (!setTime)
+                        {
+                            diff = Planetarium.GetUniversalTime() - savedTime;
+
+                            ScreenMessages.PostScreenMessage("Time Left To Complete: " + Tools.formatTime(missionTime - diff), .001f);
+
+                            if (diff > missionTime)
+                            {
+                                base.SetComplete();
+                                Debug.Log("Time Completed");
+                            }
+                        }
+
+                    }
                 }
             }
-
         }
         public void flightReady()
         {
@@ -480,28 +484,30 @@ namespace MissionControllerEC
 
         private void CheckIflanded(Vessel vessel)
         {
-
-            if (vessel.isActiveVessel && (FlightGlobals.ActiveVessel.situation == Vessel.Situations.LANDED || FlightGlobals.ActiveVessel.situation == Vessel.Situations.SPLASHED))
+            if (vessel.launchTime > this.Root.DateAccepted)
             {
-                if (MCELanderResearch.doLanderResearch)
+                if (vessel.isActiveVessel && (FlightGlobals.ActiveVessel.situation == Vessel.Situations.LANDED || FlightGlobals.ActiveVessel.situation == Vessel.Situations.SPLASHED))
                 {
-                    if (HighLogic.LoadedSceneIsFlight && setTime)
+                    if (MCELanderResearch.doLanderResearch)
                     {
-                        contractSetTime();
-                    }
-                    if (!setTime)
-                    {
-                        diff = Planetarium.GetUniversalTime() - savedTime;
-
-                        ScreenMessages.PostScreenMessage("Time Left To Complete: " + Tools.formatTime(missionTime - diff), .001f);
-
-                        if (diff > missionTime)
+                        if (HighLogic.LoadedSceneIsFlight && setTime)
                         {
-                            base.SetComplete();
-                            Debug.Log("Time Completed");
+                            contractSetTime();
                         }
-                    }
+                        if (!setTime)
+                        {
+                            diff = Planetarium.GetUniversalTime() - savedTime;
 
+                            ScreenMessages.PostScreenMessage("Time Left To Complete: " + Tools.formatTime(missionTime - diff), .001f);
+
+                            if (diff > missionTime)
+                            {
+                                base.SetComplete();
+                                Debug.Log("Time Completed");
+                            }
+                        }
+
+                    }
                 }
             }
         }
@@ -595,20 +601,22 @@ namespace MissionControllerEC
 
         public void CheckPartGoal(Vessel vessel)
         {
-            if (FlightGlobals.ActiveVessel.situation == Vessel.Situations.PRELAUNCH)
+            if (vessel.launchTime > this.Root.DateAccepted)
             {
-                foreach (Part p in vessel.parts)
+                if (FlightGlobals.ActiveVessel.situation == Vessel.Situations.PRELAUNCH)
                 {
-                    foreach (PartModule pm in p.Modules)
+                    foreach (Part p in vessel.parts)
                     {
-                        if (pm.moduleName.Equals(moduleName))
+                        foreach (PartModule pm in p.Modules)
                         {
-                            base.SetComplete();
+                            if (pm.moduleName.Equals(moduleName))
+                            {
+                                base.SetComplete();
+                            }
                         }
                     }
                 }
             }
-
         }
         public void flightReady()
         {

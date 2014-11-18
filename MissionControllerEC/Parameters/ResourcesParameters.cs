@@ -79,20 +79,23 @@ namespace MissionControllerEC
 
         private void OnResourceCheck(Vessel v)
         {
-            if (v != null)
+            if (v.launchTime > this.Root.DateAccepted)
             {
-                foreach (Part p in v.parts)
+                if (v != null)
                 {
-                    if (p.Resources[targetName])
+                    foreach (Part p in v.parts)
                     {
-                        resources = +p.Resources[targetName].amount;
+                        if (p.Resources[targetName])
+                        {
+                            resources = +p.Resources[targetName].amount;
+                        }
                     }
-                }
-                if (resources > 0)
-                {
-                    if (resources >= ResourceAmount)
+                    if (resources > 0)
                     {
-                        base.SetComplete();
+                        if (resources >= ResourceAmount)
+                        {
+                            base.SetComplete();
+                        }
                     }
                 }
             }
@@ -183,11 +186,14 @@ namespace MissionControllerEC
 
         public void MassCheck(Vessel vessel)
         {
-            if (vessel.isActiveVessel)
+            if (vessel.launchTime > this.Root.DateAccepted)
             {
-                if (vessel.GetTotalMass() <= maxweight)
+                if (vessel.isActiveVessel)
                 {
-                    base.SetComplete();
+                    if (vessel.GetTotalMass() <= maxweight)
+                    {
+                        base.SetComplete();
+                    }
                 }
             }
         }
@@ -286,29 +292,30 @@ namespace MissionControllerEC
 
         public void ResourceCheck(Vessel vessel)
         {
-            if (vessel.isActiveVessel)
+            if (vessel.launchTime > this.Root.DateAccepted)
             {
-                double resources = 0;
-
-                if (vessel != null)
+                if (vessel.isActiveVessel)
                 {
-                    foreach (Part p in vessel.parts)
+                    double resources = 0;
+
+                    if (vessel != null)
                     {
-                        if (p.Resources[targetName] != null)
+                        foreach (Part p in vessel.parts)
                         {
-                            resources += p.Resources[targetName].amount;
+                            if (p.Resources[targetName] != null)
+                            {
+                                resources += p.Resources[targetName].amount;
+                            }
                         }
-                    }
-                    if (resources > 0)
-                    {
-                        if (resources >= minAmount && resources <= maxAmountt)
+                        if (resources > 0)
                         {
-                            base.SetComplete();
+                            if (resources >= minAmount && resources <= maxAmountt)
+                            {
+                                base.SetComplete();
+                            }
                         }
                     }
                 }
-
-
             }
         }
         public void flightReady()
@@ -402,29 +409,30 @@ namespace MissionControllerEC
 
         public void ResourceCheck(Vessel vessel)
         {
-            if (vessel.isActiveVessel)
+            if (vessel.launchTime > this.Root.DateAccepted)
             {
-                double resources = 0;
-
-                if (vessel != null)
+                if (vessel.isActiveVessel)
                 {
-                    foreach (Part p in vessel.parts)
+                    double resources = 0;
+
+                    if (vessel != null)
                     {
-                        if (p.Resources[targetName] != null)
+                        foreach (Part p in vessel.parts)
                         {
-                            resources += p.Resources[targetName].amount;
+                            if (p.Resources[targetName] != null)
+                            {
+                                resources += p.Resources[targetName].amount;
+                            }
                         }
-                    }
-                    if (resources > 0)
-                    {
-                        if (resources >= RsAmount)
+                        if (resources > 0)
                         {
-                            base.SetComplete();
+                            if (resources >= RsAmount)
+                            {
+                                base.SetComplete();
+                            }
                         }
                     }
                 }
-
-
             }
         }
         public void flightReady()

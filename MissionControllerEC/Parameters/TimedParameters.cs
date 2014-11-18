@@ -195,7 +195,7 @@ namespace MissionControllerEC
             }
             if (timebool)
             {
-                CheckIfOrbit(FlightGlobals.ActiveVessel);
+                CheckIfLanded(FlightGlobals.ActiveVessel);
             }
         }
         protected override void OnLoad(ConfigNode node)
@@ -229,25 +229,28 @@ namespace MissionControllerEC
             node.AddValue("vesid", vesselID);
         }
 
-        private void CheckIfOrbit(Vessel vessel)
+        private void CheckIfLanded(Vessel vessel)
         {
-            if (HighLogic.LoadedSceneIsFlight && setTime)
+            if (vessel.launchTime > this.Root.DateAccepted)
             {
-                contractSetTime();
-                vesselID = vessel.id.ToString();
-            }
-
-            if (!setTime)
-            {
-                diff = Planetarium.GetUniversalTime() - savedTime;
-                if (HighLogic.LoadedSceneIsFlight && vessel.id.ToString() == vesselID)
+                if (HighLogic.LoadedSceneIsFlight && setTime)
                 {
-                    ScreenMessages.PostScreenMessage("Time Left To Complete: " + Tools.formatTime(missionTime - diff), .001f);
+                    contractSetTime();
+                    vesselID = vessel.id.ToString();
                 }
 
-                if (diff > missionTime)
+                if (!setTime)
                 {
-                    base.SetComplete();
+                    diff = Planetarium.GetUniversalTime() - savedTime;
+                    if (HighLogic.LoadedSceneIsFlight && vessel.id.ToString() == vesselID)
+                    {
+                        ScreenMessages.PostScreenMessage("Time Left To Complete: " + Tools.formatTime(missionTime - diff), .001f);
+                    }
+
+                    if (diff > missionTime)
+                    {
+                        base.SetComplete();
+                    }
                 }
             }
         }
@@ -352,18 +355,21 @@ namespace MissionControllerEC
        
         private void onPartCouple(GameEvents.FromToAction<Part, Part> action)
         {
-            if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel)
+            if ( FlightGlobals.ActiveVessel.launchTime > this.Root.DateAccepted)
             {
-              
-                if (vesselID == action.from.vessel.id.ToString() ||vesselID == action.to.vessel.id.ToString())
+                if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel)
                 {
-                    ScreenMessages.PostScreenMessage("You have docked to the Target Vessel, time started");
-                    contractSetTime();
-                    action.from.vessel.vesselName = action.from.vessel.vesselName.Replace("(Repair)", "");
-                    action.to.vessel.vesselName = action.to.vessel.vesselName.Replace("(Repair)", "");
+
+                    if (vesselID == action.from.vessel.id.ToString() || vesselID == action.to.vessel.id.ToString())
+                    {
+                        ScreenMessages.PostScreenMessage("You have docked to the Target Vessel, time started");
+                        contractSetTime();
+                        action.from.vessel.vesselName = action.from.vessel.vesselName.Replace("(Repair)", "");
+                        action.to.vessel.vesselName = action.to.vessel.vesselName.Replace("(Repair)", "");
+                    }
+                    else
+                        ScreenMessages.PostScreenMessage("Did not connect to the correct target ID vessel, Try Again");
                 }
-                else
-                    ScreenMessages.PostScreenMessage("Did not connect to the correct target ID vessel, Try Again");
             }
         }
         public void timeCountDown()

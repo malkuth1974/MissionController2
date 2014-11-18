@@ -52,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConfigNodeStorage.cs" />
+    <Compile Include="Contracts\SatelliteContracts.cs" />
     <Compile Include="FinanceWindow1.cs" />
     <Compile Include="Contracts\HistoricContracts.cs" />
     <Compile Include="Instructions.cs" />

@@ -124,6 +124,78 @@ namespace MissionControllerEC
                 "Current eccentricity is: " + FlightGlobals.ActiveVessel.orbit.eccentricity.ToString("F2"), .001f);
         }
 
+        public static void NodeLoad(ConfigNode node, string stringValue, string NodeName)
+        {
+            try
+            {
+                stringValue = node.GetValue(NodeName);
+            }
+            catch (Exception ex)
+            {
+                Debug.LogWarning("MCE failed to load contract save " + NodeName);
+                Debug.LogWarning(ex.Message + " " + ex.StackTrace);
+
+            }
+        }
+        public static void NodeLoad(ConfigNode node, int intValue, string NodeName)
+        {
+            try
+            {
+                intValue = int.Parse(node.GetValue(NodeName));
+            }
+            catch (Exception ex)
+            {
+                Debug.LogWarning("MCE failed to load contract save " + NodeName);
+                Debug.LogWarning(ex.Message + " " + ex.StackTrace);
+
+            }
+        }
+        public static void NodeLoad(ConfigNode node, double doubleValue, string NodeName)
+        {
+            try
+            {
+                doubleValue = double.Parse(node.GetValue(NodeName));
+            }
+            catch (Exception ex)
+            {
+                Debug.LogWarning("MCE failed to load contract save " + NodeName);
+                Debug.LogWarning(ex.Message + " " + ex.StackTrace);
+
+            }
+        }
+        public static void NodeLoad(ConfigNode node, bool dboolValue, string NodeName)
+        {
+            try
+            {
+                dboolValue = bool.Parse(node.GetValue(NodeName));
+            }
+            catch (Exception ex)
+            {
+                Debug.LogWarning("MCE failed to load contract save " + NodeName);
+                Debug.LogWarning(ex.Message + " " + ex.StackTrace);
+
+            }
+        }
+        public static void NodeLoad(ConfigNode node, CelestialBody body, string NodeName)
+        {
+            try
+            {
+                int bodyID = int.Parse(node.GetValue(NodeName));
+                foreach (var CBody in FlightGlobals.Bodies)
+                {
+                    if (body.flightGlobalsIndex == bodyID)
+                        body = CBody;
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.LogWarning("MCE failed to load contract save " + NodeName);
+                Debug.LogWarning("MCE CelestrialBody Failed Load " + body.theName);
+                Debug.LogWarning(ex.Message + " " + ex.StackTrace);
+
+            }
+        }
+
         public class MC2RandomWieghtSystem
         {
             public class Item<T>
@@ -178,6 +250,7 @@ namespace MissionControllerEC
                 return p_itens[p_itens.Length - 1].value;
 
             }
+            
         }
         
     }
