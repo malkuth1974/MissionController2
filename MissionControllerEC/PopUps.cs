@@ -8,8 +8,10 @@ namespace MissionControllerEC
         public void drawPopUpWindow3(int id)
         {
             GUI.skin = HighLogic.Skin;
+            double revertcost = settings.Revert_Cost;
+
             GUILayout.BeginVertical();
-            GUILayout.Label("You can use this Revert button to test your Rockets and Planes \n you will be charged 1000 Funds for the test!");
+            GUILayout.Label("You can use this Revert button to test your Rockets and Planes \n you will be charged " + revertcost + " Funds for the test!");
             if (MCE_ScenarioStartup.RevertHalt)
             {
                 GUILayout.Label("WAIT FOR EDITOR TO LOAD BEFORE EXIT BUTTON!");
@@ -18,12 +20,12 @@ namespace MissionControllerEC
 
             if (!MCE_ScenarioStartup.RevertHalt)
             {
-                if (GUILayout.Button("Revert To VAB Pay 1000 Funds"))
+                if (GUILayout.Button("Revert To VAB Pay " + revertcost + " Funds"))
                 {
                     FlightDriver.RevertToPrelaunch(GameScenes.EDITOR);
                     MCE_ScenarioStartup.RevertHalt = true;
                 }
-                if (GUILayout.Button("Revert To SPH Pay 1000 Funds"))
+                if (GUILayout.Button("Revert To SPH Pay " + revertcost + " Funds"))
                 {
                     FlightDriver.RevertToPrelaunch(GameScenes.SPH);
                     MCE_ScenarioStartup.RevertHalt = true;
@@ -38,8 +40,8 @@ namespace MissionControllerEC
                 if (GUILayout.Button("Exit Window And Charge Funds"))
                 {
                     MCE_ScenarioStartup.ShowPopUpWindow3 = false;
-                    Funding.Instance.AddFunds(-1000,TransactionReasons.Any );
-                    SaveInfo.TotalSpentOnRocketTest += 1000;
+                    Funding.Instance.AddFunds(-revertcost,TransactionReasons.Any );
+                    SaveInfo.TotalSpentOnRocketTest += revertcost;
                     MCE_ScenarioStartup.RevertHalt = false;
                 }
             }

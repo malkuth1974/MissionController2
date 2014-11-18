@@ -11,6 +11,7 @@ namespace MissionControllerEC
     {
         private string hireme;
         private string insuranceme;
+        private string revertme;
         private void drawSettings(int id)
         {
             GUI.skin = HighLogic.Skin;
@@ -30,6 +31,14 @@ namespace MissionControllerEC
             insuranceme = settings.Death_Insurance.ToString();
             insuranceme = Regex.Replace(GUILayout.TextField(insuranceme), "[^.0-9]", "");           
             settings.Death_Insurance = double.Parse(insuranceme);
+            GUILayout.EndHorizontal();
+
+            GUILayout.Space(10);
+            GUILayout.BeginHorizontal();
+            GUILayout.Box("Revert Cost",MCE_ScenarioStartup.StyleBold, GUILayout.Width(300));
+            revertme = settings.Revert_Cost.ToString();
+            revertme = Regex.Replace(GUILayout.TextField(revertme), "[^.0-9]", "");           
+            settings.Revert_Cost = double.Parse(revertme);
             GUILayout.EndHorizontal();
 
             GUILayout.Space(10);
