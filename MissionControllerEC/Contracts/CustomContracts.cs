@@ -100,21 +100,14 @@ namespace MissionControllerEC
         }
 
         protected override void OnLoad(ConfigNode node)
-        {
-            int bodyID = int.Parse(node.GetValue("targetBody"));
-            foreach (var body in FlightGlobals.Bodies)
-            {
-                if (body.flightGlobalsIndex == bodyID)
-                    targetBody = body;
-            }
-            double ApaID = double.Parse(node.GetValue("aPa"));
-            MaxOrb = ApaID;
-            double PeAID = double.Parse(node.GetValue("pEa"));
-            MinOrb = PeAID;
-            crewCount = int.Parse(node.GetValue("crewcount"));
-            partAmount = int.Parse(node.GetValue("partamount"));
-            partName = node.GetValue("partname");
-            ContractPlayerName = node.GetValue("contractplayername");
+        {          
+            Tools.ContractLoadCheck(node, ref targetBody, Planetarium.fetch.Home, targetBody, "targetbody");           
+            Tools.ContractLoadCheck(node, ref MaxOrb, 71000, MaxOrb, "aPa");           
+            Tools.ContractLoadCheck(node, ref MinOrb, 70500, MinOrb, "pEa");
+            Tools.ContractLoadCheck(node, ref crewCount, 1, crewCount, "crewcount");
+            Tools.ContractLoadCheck(node, ref partAmount, 1, partAmount, "partamount");
+            Tools.ContractLoadCheck(node, ref partName, "Repair Panel", partName, "partname");
+            Tools.ContractLoadCheck(node, ref ContractPlayerName, "Woops Defaults Loaded Error", ContractPlayerName, "contractplayername");
         }
         protected override void OnSave(ConfigNode node)
         {
@@ -239,20 +232,14 @@ namespace MissionControllerEC
         }
 
         protected override void OnLoad(ConfigNode node)
-        {
-            int bodyID = int.Parse(node.GetValue("targetBody"));
-            foreach (var body in FlightGlobals.Bodies)
-            {
-                if (body.flightGlobalsIndex == bodyID)
-                    targetBody = body;
-                Debug.LogWarning("(supply) loaded targetbody is " + targetBody);
-            }
-            vesselName = node.GetValue("vesselname");
-            vesselId = node.GetValue("vesselid");
-            ContractPlayerName = node.GetValue("contractplayername");
-            ResourceName = node.GetValue("supplies");
-            resourcesAmount = double.Parse(node.GetValue("resourceamount"));
-            CTitle = node.GetValue("ctitle");
+        {          
+            Tools.ContractLoadCheck(node, ref targetBody, Planetarium.fetch.Home, targetBody, "targetbody");
+            Tools.ContractLoadCheck(node, ref vesselName, "defaults Loaded Error", vesselName, "vesselname");
+            Tools.ContractLoadCheck(node, ref vesselId, "defaults", vesselId, "vesselid");
+            Tools.ContractLoadCheck(node, ref ContractPlayerName, "Woops Defaults Loaded Error", ContractPlayerName, "contractplayername");
+            Tools.ContractLoadCheck(node, ref ResourceName, "Woops Defaults Loaded Error", ResourceName, "supplies");
+            Tools.ContractLoadCheck(node, ref resourcesAmount, 1, resourcesAmount, "resourceamount");
+            Tools.ContractLoadCheck(node, ref CTitle, "Defaults Loaded Error", CTitle, "ctitle");
         }
         protected override void OnSave(ConfigNode node)
         {
@@ -384,19 +371,13 @@ namespace MissionControllerEC
 
         protected override void OnLoad(ConfigNode node)
         {
-            int bodyID = int.Parse(node.GetValue("targetBody"));
-            foreach (var body in FlightGlobals.Bodies)
-            {
-                if (body.flightGlobalsIndex == bodyID)
-                    targetBody = body;
-                Debug.LogWarning("(supply) loaded targetbody is " + targetBody);
-            }
-            vesselName = node.GetValue("vesselname");
-            vesselId = node.GetValue("vesselid");
-            ContractPlayerName = node.GetValue("contractplayername");
-            crewAmount = int.Parse(node.GetValue("crew"));
-            crewTime = double.Parse(node.GetValue("time"));
-            CTitle = node.GetValue("ctitle");
+            Tools.ContractLoadCheck(node, ref targetBody, Planetarium.fetch.Home, targetBody, "targetbody");
+            Tools.ContractLoadCheck(node, ref vesselName, "defaults Loaded Error", vesselName, "vesselname");
+            Tools.ContractLoadCheck(node, ref vesselId, "defaults", vesselId, "vesselid");
+            Tools.ContractLoadCheck(node, ref ContractPlayerName, "Woops Defaults Loaded Error", ContractPlayerName, "contractplayername");
+            Tools.ContractLoadCheck(node, ref crewAmount, 1, crewAmount, "crew");
+            Tools.ContractLoadCheck(node, ref crewTime, 10000, crewTime, "time");
+            Tools.ContractLoadCheck(node, ref CTitle, "Defaults Loaded Error", CTitle, "ctitle");
         }
         protected override void OnSave(ConfigNode node)
         {

@@ -72,17 +72,10 @@ namespace MissionControllerEC
         }
 
         protected override void OnLoad(ConfigNode node)
-        {
-            int bodyID = int.Parse(node.GetValue("targetBody"));
-            foreach (var body in FlightGlobals.Bodies)
-            {
-                if (body.flightGlobalsIndex == bodyID)
-                    targetBody = body;
-            }
-            double ApaID = double.Parse(node.GetValue("aPa"));
-            maxApA = ApaID;
-            double PeAID = double.Parse(node.GetValue("pEa"));
-            minApA = PeAID;
+        {           
+            Tools.ContractLoadCheck(node, ref targetBody, Planetarium.fetch.Home, targetBody, "targetbody");          
+            Tools.ContractLoadCheck(node, ref maxApA, 71000, maxApA , "aPa");           
+            Tools.ContractLoadCheck(node, ref minApA, 70500, minApA, "pEa");
 
         }
         protected override void OnSave(ConfigNode node)
@@ -193,13 +186,8 @@ namespace MissionControllerEC
         }
 
         protected override void OnLoad(ConfigNode node)
-        {
-            int bodyID = int.Parse(node.GetValue("targetBody"));
-            foreach (var body in FlightGlobals.Bodies)
-            {
-                if (body.flightGlobalsIndex == bodyID)
-                    targetBody = body;
-            }
+        {           
+            Tools.ContractLoadCheck(node, ref targetBody, Planetarium.fetch.Home, targetBody, "targetbody");          
         }
         protected override void OnSave(ConfigNode node)
         {
@@ -304,17 +292,10 @@ namespace MissionControllerEC
         }
 
         protected override void OnLoad(ConfigNode node)
-        {
-            int bodyID = int.Parse(node.GetValue("targetBody"));
-            foreach (var body in FlightGlobals.Bodies)
-            {
-                if (body.flightGlobalsIndex == bodyID)
-                    targetBody = body;
-            }
-            double masxPpaID = double.Parse(node.GetValue("maxpEa"));
-            maxPeA = masxPpaID;
-            double minPeAID = double.Parse(node.GetValue("minpEa"));
-            minPeA = minPeAID;
+        {                     
+            Tools.ContractLoadCheck(node, ref targetBody, Planetarium.fetch.Home, targetBody, "targetbody");
+            Tools.ContractLoadCheck(node, ref maxPeA, 71000, maxPeA, "maxpEa");
+            Tools.ContractLoadCheck(node, ref minPeA, 70500, minPeA, "minpEa");
 
         }
         protected override void OnSave(ConfigNode node)
@@ -439,18 +420,10 @@ namespace MissionControllerEC
         }
 
         protected override void OnLoad(ConfigNode node)
-        {
-            int bodyID = int.Parse(node.GetValue("targetBody"));
-            foreach (var body in FlightGlobals.Bodies)
-            {
-                if (body.flightGlobalsIndex == bodyID)
-                    targetBody = body;
-            }
-
-            double maxincID = double.Parse(node.GetValue("maxincID"));
-            maxInclination = maxincID;
-            double minincID = double.Parse(node.GetValue("minincID"));
-            minInclination = minincID;
+        {           
+            Tools.ContractLoadCheck(node, ref targetBody, Planetarium.fetch.Home, targetBody, "targetbody");
+            Tools.ContractLoadCheck(node, ref maxInclination, 10, maxInclination, "maxincID");
+            Tools.ContractLoadCheck(node, ref minInclination, 70500, minInclination, "minincID");
         }
         protected override void OnSave(ConfigNode node)
         {
@@ -677,16 +650,9 @@ namespace MissionControllerEC
 
         protected override void OnLoad(ConfigNode node)
         {
-            int bodyID = int.Parse(node.GetValue("targetBody"));
-            foreach (var body in FlightGlobals.Bodies)
-            {
-                if (body.flightGlobalsIndex == bodyID)
-                    targetBody = body;
-            }
-            double maxOrbID = double.Parse(node.GetValue("maxOrbID"));
-            maxOrbitalPeriod = maxOrbID;
-            double minOrbID = double.Parse(node.GetValue("minOrbID"));
-            minOrbitalPeriod = minOrbID;
+            Tools.ContractLoadCheck(node, ref targetBody, Planetarium.fetch.Home, targetBody, "targetbody");
+            Tools.ContractLoadCheck(node, ref maxOrbitalPeriod, 10000, maxOrbitalPeriod, "maxOrbID");
+            Tools.ContractLoadCheck(node, ref minOrbitalPeriod, 95000, minOrbitalPeriod, "minOrbID");
         }
         protected override void OnSave(ConfigNode node)
         {
@@ -795,14 +761,9 @@ namespace MissionControllerEC
         }
 
         protected override void OnLoad(ConfigNode node)
-        {
-            int bodyID = int.Parse(node.GetValue("targetBody"));
-            foreach (var body in FlightGlobals.Bodies)
-            {
-                if (body.flightGlobalsIndex == bodyID)
-                    targetBody = body;
-            }
-            minAlt = double.Parse(node.GetValue("alt"));
+        {           
+            Tools.ContractLoadCheck(node, ref targetBody, Planetarium.fetch.Home, targetBody, "targetbody");
+            Tools.ContractLoadCheck(node, ref minAlt, 71000, minAlt, "alt");
         }
         protected override void OnSave(ConfigNode node)
         {
@@ -908,14 +869,9 @@ namespace MissionControllerEC
         }
 
         protected override void OnLoad(ConfigNode node)
-        {
-            int bodyID = int.Parse(node.GetValue("targetBody"));
-            foreach (var body in FlightGlobals.Bodies)
-            {
-                if (body.flightGlobalsIndex == bodyID)
-                    targetBody = body;
-            }
-            vesselID = node.GetValue("vesselid");
+        {         
+            Tools.ContractLoadCheck(node, ref targetBody, Planetarium.fetch.Home, targetBody, "targetbody");
+            Tools.ContractLoadCheck(node, ref vesselID, "DefaultLoaded", vesselID, "vesselid");
         }
         protected override void OnSave(ConfigNode node)
         {
@@ -993,14 +949,9 @@ namespace MissionControllerEC
         }
 
         protected override void OnLoad(ConfigNode node)
-        {
-            int bodyID = int.Parse(node.GetValue("targetBody"));
-            foreach (var body in FlightGlobals.Bodies)
-            {
-                if (body.flightGlobalsIndex == bodyID)
-                    targetBody = body;
-            }
-            ReadyToCrash = bool.Parse(node.GetValue("readybool"));
+        {           
+            Tools.ContractLoadCheck(node, ref targetBody, Planetarium.fetch.Home, targetBody, "targetbody");
+            Tools.ContractLoadCheck(node, ref ReadyToCrash, false, ReadyToCrash, "readybool");
         }
         protected override void OnSave(ConfigNode node)
         {

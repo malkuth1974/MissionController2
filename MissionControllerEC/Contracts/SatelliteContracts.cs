@@ -33,11 +33,7 @@ namespace MissionControllerEC
         public int scipartcount = 1;
         public int scipartFinalcount;
         public double timeOnStation;
-        public string TOSName = "We need this amount of time to conduct our studies\n ";
-        public bool SatelliteType1 = false;
-        public bool SatelliteType2 = false;
-        public bool SatelliteType3 = false;
-        public bool SatelliteType4 = false;
+        public string TOSName = "We need this amount of time to conduct our studies\n ";      
         public double maxorbital = 0;
         public double minorbital = 0;
         public int totalContracts;
@@ -277,68 +273,47 @@ namespace MissionControllerEC
         }
 
         protected override void OnLoad(ConfigNode node)
-        {
-            int bodyID = int.Parse(node.GetValue("targetBody"));
-            foreach (var body in FlightGlobals.Bodies)
-            {
-                if (body.flightGlobalsIndex == bodyID)
-                    targetBody = body;
-            }
-
-            int pcount = int.Parse(node.GetValue("pCount"));
-            partAmount = pcount;
-            partName = (node.GetValue("pName"));
-            crewCount = int.Parse(node.GetValue("crewcount"));
-
-            sciPartname = node.GetValue("sciname");
-            scipartamount = int.Parse(node.GetValue("sciamount"));
-            timeOnStation = double.Parse(node.GetValue("timestation"));
-            TOSName = node.GetValue("tosname");
-
-            GMaxecc = double.Parse(node.GetValue("maxecc"));
-            GMinecc = double.Parse(node.GetValue("minecc"));
-            MaxAltitude = double.Parse(node.GetValue("altitude"));
-
-            maxorbital = double.Parse(node.GetValue("maxorbital"));
-            minorbital = double.Parse(node.GetValue("minorbital"));
-            SatelliteType1 = bool.Parse(node.GetValue("randomcheck"));
-
-            MaxInc = int.Parse(node.GetValue("maxinclination"));
-            MinInc = int.Parse(node.GetValue("mininclination"));
-
-            MaxApA = int.Parse(node.GetValue("maxApA"));
-            MinApA = int.Parse(node.GetValue("minApA"));
-            MaxPeA = int.Parse(node.GetValue("maxPeA"));
-            MinPeA = int.Parse(node.GetValue("minPeA"));
+        {           
+            Tools.ContractLoadCheck(node, ref targetBody, Planetarium.fetch.Home, targetBody, "targetbody");           
+            Tools.ContractLoadCheck(node, ref partAmount, 1, partAmount, "pCount");            
+            Tools.ContractLoadCheck(node, ref partName, "Default", partName, "pName");
+            Tools.ContractLoadCheck(node, ref crewCount, 1, crewCount, "crewcount");      
+            Tools.ContractLoadCheck(node, ref scipartamount, 1, scipartamount, "sciamount");           
+            Tools.ContractLoadCheck(node, ref timeOnStation, 25000, timeOnStation, "timestation");
+            Tools.ContractLoadCheck(node, ref TOSName, "Default", TOSName, "tosname");
+            Tools.ContractLoadCheck(node, ref GMaxecc, 71000, GMaxecc, "maxecc");
+            Tools.ContractLoadCheck(node, ref GMinecc, 70500, GMinecc, "minecc");
+            Tools.ContractLoadCheck(node, ref MaxAltitude, 71500, MaxAltitude, "altitude");
+            Tools.ContractLoadCheck(node, ref maxorbital, 71000, maxorbital, "maxorbital");
+            Tools.ContractLoadCheck(node, ref minorbital, 70500, minorbital, "minorbital");            
+            Tools.ContractLoadCheck(node, ref MaxInc, 30, MaxInc, "maxinclination");
+            Tools.ContractLoadCheck(node, ref MinInc, 1, MinInc, "mininclination");
+            Tools.ContractLoadCheck(node, ref MaxApA, 71000, MaxApA, "maxApA");
+            Tools.ContractLoadCheck(node, ref MinApA, 75000, MinApA, "minApA");
+            Tools.ContractLoadCheck(node, ref MaxPeA, 71000, MaxPeA, "maxPeA");
+            Tools.ContractLoadCheck(node, ref MinPeA, 70500, MinPeA, "minPeA");
 
         }
         protected override void OnSave(ConfigNode node)
         {
             int bodyID = targetBody.flightGlobalsIndex;
             node.AddValue("targetBody", bodyID);
-
             node.AddValue("maxecc", GMaxecc);
             node.AddValue("minecc", GMinecc);
             node.AddValue("altitude", MaxAltitude);
-
             int pcount = partAmount;
             node.AddValue("pCount", partAmount);
             string pname = partName;
             node.AddValue("pName", partName);
             node.AddValue("crewcount", crewCount);
-
             node.AddValue("sciname", sciPartname);
             node.AddValue("sciamount", scipartamount);
             node.AddValue("timestation", timeOnStation);
             node.AddValue("tosname", TOSName);
-
             node.AddValue("maxorbital", maxorbital);
             node.AddValue("minorbital", minorbital);
-            node.AddValue("randomcheck", SatelliteType1);
-
             node.AddValue("maxinclination", MaxInc);
             node.AddValue("mininclination", MinInc);
-
             node.AddValue("maxApA",MaxApA);
             node.AddValue("minApA",MinApA);
             node.AddValue("maxPeA",MaxPeA);

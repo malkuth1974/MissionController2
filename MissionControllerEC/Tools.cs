@@ -139,6 +139,21 @@ namespace MissionControllerEC
 
             }
         }
+        public static void ContractLoadCheck<t>(ConfigNode node, ref t value, t backupDefault, float stringValue, string NodeName)
+        {
+            try
+            {
+                stringValue = float.Parse(node.GetValue(NodeName));
+                value = (t)(object)stringValue;
+            }
+            catch (Exception ex)
+            {
+                Debug.LogWarning("MCE Exeption failed to load contract save " + NodeName + "Backup Loaded");
+                Debug.LogWarning(ex.Message + " " + ex.StackTrace);
+                value = backupDefault;
+
+            }
+        }
         public static void ContractLoadCheck<t>(ConfigNode node, ref t value, t backupDefault, int intValue, string NodeName)
         {
             try

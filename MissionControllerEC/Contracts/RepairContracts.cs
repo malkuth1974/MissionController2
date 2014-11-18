@@ -211,15 +211,15 @@ namespace MissionControllerEC
 
         protected override void OnLoad(ConfigNode node)
         {
-            planetIDX = int.Parse(node.GetValue("planetIDX"));
-            vesselID = node.GetValue("VesselID");
-            vesselName = node.GetValue("VesselName");
-            titleName = node.GetValue("titlename");
-            maxApA = double.Parse(node.GetValue("maxapa"));
-            repairParts = node.GetValue("repairparts");
-            RPamount = double.Parse(node.GetValue("rpamount"));
-            Ctitle = node.GetValue("ctitle");
-            NoVessel = bool.Parse(node.GetValue("novessel"));
+            Tools.ContractLoadCheck(node, ref planetIDX, 1, planetIDX, "planetIDX");
+            Tools.ContractLoadCheck(node, ref vesselID, "Default", vesselID, "VesselID");
+            Tools.ContractLoadCheck(node, ref vesselName, "Woops Default Loaded", vesselName, "VesselName");
+            Tools.ContractLoadCheck(node, ref titleName, "Woops Default Loaded", titleName, "titlename");
+            Tools.ContractLoadCheck(node, ref maxApA, 300000, maxApA, "maxapa");
+            Tools.ContractLoadCheck(node, ref repairParts, "SpareParts", repairParts, "repairparts");
+            Tools.ContractLoadCheck(node, ref RPamount, 1, RPamount, "rpamount");
+            Tools.ContractLoadCheck(node, ref Ctitle, "Woops Default Loaded", Ctitle, "ctitle");
+            Tools.ContractLoadCheck(node, ref NoVessel, false, NoVessel, "novessel");
             targetBody = FlightGlobals.Bodies[planetIDX];
         }
         protected override void OnSave(ConfigNode node)
@@ -410,50 +410,29 @@ namespace MissionControllerEC
         }
 
         protected override void OnLoad(ConfigNode node)
-        {
-            planetIDX = int.Parse(node.GetValue("planetIDX"));
-            Debug.LogWarning("planetIDX loaded");
-            vesselID = node.GetValue("VesselID");
-            Debug.LogWarning("VesselID loaded");
-            vesselName = node.GetValue("VesselName");
-            Debug.LogWarning("VesselName loaded");
-            titleName = node.GetValue("titlename");
-            Debug.LogWarning("TitleName loaded");
-            repairParts = node.GetValue("repairparts");
-            Debug.LogWarning("RepairParts loaded");
-            RPamount = double.Parse(node.GetValue("rpamount"));
-            Debug.LogWarning("RpAmount loaded");
-            Ctitle = node.GetValue("ctitle");
-            Debug.LogWarning("CTitle loaded");
-            randomString = int.Parse(node.GetValue("randomstring"));
-            Debug.LogWarning("RandomString loaded");
-            NoVessel = bool.Parse(node.GetValue("novessel"));
-            Debug.LogWarning("NoVessel loaded");
+        {                     
+            Tools.ContractLoadCheck(node, ref planetIDX, 1, planetIDX, "planetIDX");
+            Tools.ContractLoadCheck(node, ref vesselID, "Default", vesselID, "VesselID");
+            Tools.ContractLoadCheck(node, ref vesselName, "Woops Default Loaded", vesselName, "VesselName");
+            Tools.ContractLoadCheck(node, ref titleName, "Woops Default Loaded", titleName, "titlename");
+            Tools.ContractLoadCheck(node, ref repairParts, "SpareParts", repairParts, "repairparts");
+            Tools.ContractLoadCheck(node, ref RPamount, 1, RPamount, "rpamount");
+            Tools.ContractLoadCheck(node, ref Ctitle, "Woops Default Loaded", Ctitle, "ctitle");
+            Tools.ContractLoadCheck(node, ref randomString, 1,randomString,"randomstring");
+            Tools.ContractLoadCheck(node, ref NoVessel, false, NoVessel, "novessel");
             targetBody = FlightGlobals.Bodies[planetIDX];
-            Debug.LogWarning("target body loaded as: " + targetBody.theName);
         }
         protected override void OnSave(ConfigNode node)
         {
-            Debug.LogWarning("Starting Save Process for OnSave Repair Station Contracts");
-
             node.AddValue("planetIDX", planetIDX);
-            Debug.LogWarning("PlanetIDX Saved");
             node.AddValue("VesselID", vesselID);
-            Debug.LogWarning("targetbody saved");
             node.AddValue("VesselName", vesselName);
-            Debug.LogWarning("VesselName saved");
             node.AddValue("titlename", titleName);
-            Debug.LogWarning("TitleName saved");
             node.AddValue("repairparts", repairParts);
-            Debug.LogWarning("RepairParts saved");
             node.AddValue("rpamount", RPamount);
-            Debug.LogWarning("RpAmount saved");
             node.AddValue("ctitle", Ctitle);
-            Debug.LogWarning("CTitle saved");
             node.AddValue("randomstring", randomString);
-            Debug.LogWarning("RandomString saved");
             node.AddValue("novessel", NoVessel);
-            Debug.LogWarning("NoVessel saved");
         }
 
         public override bool MeetRequirements()

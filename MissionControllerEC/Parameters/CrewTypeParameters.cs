@@ -61,9 +61,9 @@ namespace MissionControllerEC
         }
 
         protected override void OnLoad(ConfigNode node)
-        {
-            seatCount = int.Parse(node.GetValue("crewcount"));
-            title = node.GetValue("title");
+        {           
+            Tools.ContractLoadCheck(node, ref seatCount, 71000, seatCount, "crewcount");
+            Tools.ContractLoadCheck(node, ref title, "Defualts Loaded Error", title, "title");
         }
         protected override void OnSave(ConfigNode node)
         {
@@ -151,7 +151,7 @@ namespace MissionControllerEC
 
         protected override void OnLoad(ConfigNode node)
         {
-            crewCount = int.Parse(node.GetValue("crewcount"));
+            Tools.ContractLoadCheck(node, ref crewCount, 1, crewCount, "crewcount");
         }
         protected override void OnSave(ConfigNode node)
         {
@@ -293,25 +293,18 @@ namespace MissionControllerEC
         }
 
         protected override void OnLoad(ConfigNode node)
-        {
-            int bodyID = int.Parse(node.GetValue("targetBody"));
-            foreach (var body in FlightGlobals.Bodies)
-            {
-                if (body.flightGlobalsIndex == bodyID)
-                    targetBody = body;
-            }
-
-            crewSpace = int.Parse(node.GetValue("crewspace"));
-            civilianSpace = int.Parse(node.GetValue("civspace"));
-            FreeSpace = int.Parse(node.GetValue("freespace"));
-            UsedSpace = int.Parse(node.GetValue("usedspace"));
-            destination = node.GetValue("destination");
-            name1 = node.GetValue("name1");
-            name2 = node.GetValue("name2");
-            name3 = node.GetValue("name3");
-            name4 = node.GetValue("name4");
-            vesselID = node.GetValue("vesselid");
-
+        {                                 
+            Tools.ContractLoadCheck(node, ref targetBody, Planetarium.fetch.Home, targetBody, "targetbody");
+            Tools.ContractLoadCheck(node, ref crewSpace, 2, crewSpace, "crewspace");
+            Tools.ContractLoadCheck(node, ref civilianSpace, 2, civilianSpace, "civspace");
+            Tools.ContractLoadCheck(node, ref FreeSpace, 4, FreeSpace, "freespace");
+            Tools.ContractLoadCheck(node, ref UsedSpace, 2, UsedSpace, "usedspace");
+            Tools.ContractLoadCheck(node, ref destination, "Error Defaults Loaded", destination, "destination");
+            Tools.ContractLoadCheck(node, ref name1, "George Error", name1, "name1");
+            Tools.ContractLoadCheck(node, ref name2, "Sam Error", name2, "name2");
+            Tools.ContractLoadCheck(node, ref name3, "Dave Error", name3, "name3");
+            Tools.ContractLoadCheck(node, ref name4, "Fracking Error", name4, "name4");           
+            Tools.ContractLoadCheck(node, ref vesselID, "Defualt Loaded", vesselID, "vesselid");           
         }
         protected override void OnSave(ConfigNode node)
         {
@@ -406,13 +399,8 @@ namespace MissionControllerEC
         }
 
         protected override void OnLoad(ConfigNode node)
-        {
-            int bodyID = int.Parse(node.GetValue("targetBody"));
-            foreach (var body in FlightGlobals.Bodies)
-            {
-                if (body.flightGlobalsIndex == bodyID)
-                    targetBody = body;
-            }
+        {           
+            Tools.ContractLoadCheck(node, ref targetBody, Planetarium.fetch.Home, targetBody, "targetbody");
         }
         protected override void OnSave(ConfigNode node)
         {

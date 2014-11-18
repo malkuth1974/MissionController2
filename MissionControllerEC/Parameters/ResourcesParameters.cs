@@ -64,10 +64,9 @@ namespace MissionControllerEC
 
         protected override void OnLoad(ConfigNode node)
         {
-
-            targetName = node.GetValue("targetname");
-            ResourceAmount = float.Parse(node.GetValue("resourceamount"));
-            contractTitle = node.GetValue("contracttitle");
+            Tools.ContractLoadCheck(node, ref targetName, "Error Defaults Loaded", targetName, "targetname");
+            Tools.ContractLoadCheck(node, ref ResourceAmount, 1.0f, ResourceAmount, "resourceamount");
+            Tools.ContractLoadCheck(node, ref contractTitle, "Error Defaults Loaded", contractTitle, "contracttitle");
         }
         protected override void OnSave(ConfigNode node)
         {
@@ -163,16 +162,9 @@ namespace MissionControllerEC
         }
 
         protected override void OnLoad(ConfigNode node)
-        {
-            int bodyID = int.Parse(node.GetValue("targetBody"));
-            foreach (var body in FlightGlobals.Bodies)
-            {
-                if (body.flightGlobalsIndex == bodyID)
-                    targetBody = body;
-            }
-
-            maxweight = float.Parse(node.GetValue("maxtons"));
-
+        {          
+            Tools.ContractLoadCheck(node, ref targetBody, Planetarium.fetch.Home, targetBody, "targetbody");
+            Tools.ContractLoadCheck(node, ref maxweight, 2.0f, maxweight, "maxtons");
 
         }
         protected override void OnSave(ConfigNode node)
@@ -207,127 +199,7 @@ namespace MissionControllerEC
         }
     }
     #endregion
-    #region Resource Goal Check
-    public class ResourceGoal : ContractParameter
-    {
-        private string targetName;
-        private double maxAmountt = 0.0f;
-        private double minAmount = 0.0f;
-        private bool updated = false;
-
-        /// <summary>
-        /// Returns the name of the Resource goal for this parameter
-        /// </summary>
-        /// <param name="cp"></param>
-        /// <returns></returns>
-        public static string iTargetName(ContractParameter cp)
-        {
-            ResourceGoal instance = (ResourceGoal)cp;
-            return instance.targetName;
-        }
-
-        public ResourceGoal()
-        {
-        }
-
-        public ResourceGoal(string target, double maxAmt, double minAmt)
-        {
-            this.targetName = target;
-            this.maxAmountt = maxAmt;
-            this.minAmount = minAmt;
-        }
-        protected override string GetHashString()
-        {
-            return targetName;
-        }
-        protected override string GetTitle()
-        {
-            return "Must Have " + targetName + " Between " + minAmount + " and " + maxAmountt + " (InOrbit)";
-        }
-
-        protected override void OnRegister()
-        {
-            this.disableOnStateChange = false;
-            updated = false;
-            if (Root.ContractState == Contract.State.Active)
-            {
-                GameEvents.onFlightReady.Add(flightReady);
-                GameEvents.onVesselChange.Add(vesselChange);
-                updated = true;
-            }
-        }
-
-        protected override void OnUnregister()
-        {
-            if (updated)
-            {
-                GameEvents.onFlightReady.Remove(flightReady);
-                GameEvents.onVesselChange.Remove(vesselChange);
-            }
-        }
-
-        protected override void OnUpdate()
-        {
-            if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel.situation == Vessel.Situations.ORBITING)
-                ResourceCheck(FlightGlobals.ActiveVessel);
-        }
-
-        protected override void OnLoad(ConfigNode node)
-        {
-
-            targetName = node.GetValue("targetname");
-            maxAmountt = float.Parse(node.GetValue("maxtons"));
-            minAmount = float.Parse(node.GetValue("mintons"));
-
-
-        }
-        protected override void OnSave(ConfigNode node)
-        {
-
-            node.AddValue("targetname", targetName);
-            node.AddValue("maxtons", maxAmountt);
-            node.AddValue("mintons", minAmount);
-
-        }
-
-        public void ResourceCheck(Vessel vessel)
-        {
-            if (vessel.launchTime > this.Root.DateAccepted)
-            {
-                if (vessel.isActiveVessel)
-                {
-                    double resources = 0;
-
-                    if (vessel != null)
-                    {
-                        foreach (Part p in vessel.parts)
-                        {
-                            if (p.Resources[targetName] != null)
-                            {
-                                resources += p.Resources[targetName].amount;
-                            }
-                        }
-                        if (resources > 0)
-                        {
-                            if (resources >= minAmount && resources <= maxAmountt)
-                            {
-                                base.SetComplete();
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        public void flightReady()
-        {
-            base.SetIncomplete();
-        }
-        public void vesselChange(Vessel v)
-        {
-            base.SetIncomplete();
-        }
-    }
-    #endregion
+    
     #region Resource Goal Cap Check
     public class ResourceGoalCap : ContractParameter
     {
@@ -393,10 +265,8 @@ namespace MissionControllerEC
 
         protected override void OnLoad(ConfigNode node)
         {
-
-            targetName = node.GetValue("targetname");
-            RsAmount = float.Parse(node.GetValue("mintons"));
-
+            Tools.ContractLoadCheck(node,ref targetName, "Error Defaults Loaded", targetName, "targetname");
+            Tools.ContractLoadCheck(node, ref RsAmount, 1.0f, RsAmount, "mintons");
 
         }
         protected override void OnSave(ConfigNode node)

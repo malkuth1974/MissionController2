@@ -111,32 +111,24 @@ namespace MissionControllerEC
         }
 
         protected override void OnLoad(ConfigNode node)
-        {
-            int bodyID = int.Parse(node.GetValue("targetBody"));
-            foreach (var body in FlightGlobals.Bodies)
-            {
-                if (body.flightGlobalsIndex == bodyID)
-                    targetBody = body;
-            }
-
-            crewCount = int.Parse(node.GetValue("crewcount"));
-            partName = (node.GetValue("partname"));
-            partNumber = int.Parse(node.GetValue("maxcount"));
-            missionTime = double.Parse(node.GetValue("missiontime"));
+        {           
+            Tools.ContractLoadCheck(node, ref targetBody,Planetarium.fetch.Home, targetBody, "targetbody");
+            Tools.ContractLoadCheck(node, ref crewCount, 1, crewCount, "crewcount");
+            Tools.ContractLoadCheck(node, ref partName, "Orbital Research Scanner", partName, "partname");
+            Tools.ContractLoadCheck(node, ref partNumber, 1, partNumber, "maxcount");
+            Tools.ContractLoadCheck(node, ref missionTime, 10000, missionTime, "missiontime");
 
         }
         protected override void OnSave(ConfigNode node)
         {
             int bodyID = targetBody.flightGlobalsIndex;
             node.AddValue("targetBody", bodyID);
-
             node.AddValue("crewcount", crewCount);
             node.AddValue("partname", partName);
             node.AddValue("maxcount", partNumber);
             node.AddValue("missiontime", missionTime);
         }
 
-        //for testing purposes
         public override bool MeetRequirements()
         {           
             bool techUnlock = ResearchAndDevelopment.GetTechnologyState("electrics") == RDTech.State.Available;
@@ -269,19 +261,12 @@ namespace MissionControllerEC
         }
 
         protected override void OnLoad(ConfigNode node)
-        {
-            int bodyID = int.Parse(node.GetValue("targetBody"));
-            foreach (var body in FlightGlobals.Bodies)
-            {
-                if (body.flightGlobalsIndex == bodyID)
-                    targetBody = body;
-            }
-
-            crewCount = int.Parse(node.GetValue("crewcount"));
-            partName = (node.GetValue("partname"));
-            partNumber = int.Parse(node.GetValue("maxcount"));
-
-            amountTime = double.Parse(node.GetValue("amountTime"));
+        {           
+            Tools.ContractLoadCheck(node, ref targetBody, Planetarium.fetch.Home, targetBody, "targetbody");
+            Tools.ContractLoadCheck(node, ref crewCount, 1, crewCount, "crewcount");
+            Tools.ContractLoadCheck(node, ref partName, "Orbital Research Scanner", partName, "partname");
+            Tools.ContractLoadCheck(node, ref partNumber, 1, partNumber, "maxcount");
+            Tools.ContractLoadCheck(node, ref amountTime, 10000, amountTime, "amountTime");
         }
         protected override void OnSave(ConfigNode node)
         {
