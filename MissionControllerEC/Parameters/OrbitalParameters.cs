@@ -563,18 +563,10 @@ namespace MissionControllerEC
         }
 
         protected override void OnLoad(ConfigNode node)
-        {
-            int bodyID = int.Parse(node.GetValue("targetBody"));
-            foreach (var body in FlightGlobals.Bodies)
-            {
-                if (body.flightGlobalsIndex == bodyID)
-                    targetBody = body;
-            }
-            mineccn = double.Parse(node.GetValue("mineccn"));
-            maxeccn = double.Parse(node.GetValue("maxeccn"));
-            //Tools.NodeLoad(node, targetBody, "targetbody");
-            //Tools.NodeLoad(node, mineccn, "mineccn");
-            //Tools.NodeLoad(node, maxeccn, "maxeccn");
+        {           
+            Tools.ContractLoadCheck(node, ref targetBody, Planetarium.fetch.Home, targetBody, "targetbody");
+            Tools.ContractLoadCheck(node,ref mineccn,0,mineccn,"mineccn");
+            Tools.ContractLoadCheck(node,ref maxeccn,.2,mineccn,"maxeccn");
 
         }
         protected override void OnSave(ConfigNode node)

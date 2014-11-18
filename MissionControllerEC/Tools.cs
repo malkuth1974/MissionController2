@@ -124,74 +124,88 @@ namespace MissionControllerEC
                 "Current eccentricity is: " + FlightGlobals.ActiveVessel.orbit.eccentricity.ToString("F2"), .001f);
         }
 
-        public static void NodeLoad(ConfigNode node, string stringValue, string NodeName)
+        public static void ContractLoadCheck<t>(ConfigNode node, ref t value, t backupDefault, string stringValue, string NodeName)
         {
             try
             {
                 stringValue = node.GetValue(NodeName);
+                value = (t)(object)stringValue;
             }
             catch (Exception ex)
             {
-                Debug.LogWarning("MCE failed to load contract save " + NodeName);
+                Debug.LogWarning("MCE Exeption failed to load contract save " + NodeName + "Backup Loaded");
                 Debug.LogWarning(ex.Message + " " + ex.StackTrace);
+                value = backupDefault;
 
             }
         }
-        public static void NodeLoad(ConfigNode node, int intValue, string NodeName)
+        public static void ContractLoadCheck<t>(ConfigNode node, ref t value, t backupDefault, int intValue, string NodeName)
         {
             try
             {
                 intValue = int.Parse(node.GetValue(NodeName));
+                value = (t)(object)intValue;
             }
             catch (Exception ex)
             {
-                Debug.LogWarning("MCE failed to load contract save " + NodeName);
+                Debug.LogWarning("MCE Exeption failed to load contract save " + NodeName + "Backup Loaded");
                 Debug.LogWarning(ex.Message + " " + ex.StackTrace);
-
+                value = backupDefault;
             }
         }
-        public static void NodeLoad(ConfigNode node, double doubleValue, string NodeName)
+        public static void ContractLoadCheck<t>(ConfigNode node, ref t value, t backupDefault, double doubleValue, string NodeName)
         {
             try
             {
                 doubleValue = double.Parse(node.GetValue(NodeName));
+                value = (t)(object)doubleValue;
             }
             catch (Exception ex)
             {
-                Debug.LogWarning("MCE failed to load contract save " + NodeName);
+                Debug.LogWarning("MCE Exeption failed to load contract save " + NodeName + "Backup Loaded");
                 Debug.LogWarning(ex.Message + " " + ex.StackTrace);
-
+                value = backupDefault;
             }
         }
-        public static void NodeLoad(ConfigNode node, bool dboolValue, string NodeName)
+        public static void ContractLoadCheck<t>(ConfigNode node, ref t value, t backupDefault, bool dboolValue, string NodeName)
         {
             try
             {
                 dboolValue = bool.Parse(node.GetValue(NodeName));
+                value = (t)(object)dboolValue;
             }
             catch (Exception ex)
             {
-                Debug.LogWarning("MCE failed to load contract save " + NodeName);
+                Debug.LogWarning("MCE Exeption failed to load contract save " + NodeName + "Backup Loaded");
                 Debug.LogWarning(ex.Message + " " + ex.StackTrace);
-
+                value = backupDefault;
             }
         }
-        public static void NodeLoad(ConfigNode node, CelestialBody body, string NodeName)
+        public static void ContractLoadCheck<t>(ConfigNode node, ref t value,t backupDefault,CelestialBody body, string NodeName)
         {
             try
             {
+                CelestialBody loadedTarget = null;
                 int bodyID = int.Parse(node.GetValue(NodeName));
                 foreach (var CBody in FlightGlobals.Bodies)
                 {
                     if (body.flightGlobalsIndex == bodyID)
-                        body = CBody;
+                        loadedTarget = CBody;
                 }
+                if (loadedTarget == null)
+                {
+                    Debug.LogWarning("MCE Loading Celestrial body cannot be Null, Loading Failed Backup Loaded");
+                    value = backupDefault;
+                }
+                else
+                    value = (t)(object)loadedTarget;
             }
             catch (Exception ex)
             {
-                Debug.LogWarning("MCE failed to load contract save " + NodeName);
+                Debug.LogWarning("MCE Exeption failed to load contract save " + NodeName + "Backup Loaded");
                 Debug.LogWarning("MCE CelestrialBody Failed Load " + body.theName);
                 Debug.LogWarning(ex.Message + " " + ex.StackTrace);
+                value = backupDefault;
 
             }
         }
