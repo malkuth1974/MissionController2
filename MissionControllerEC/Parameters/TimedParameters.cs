@@ -54,16 +54,16 @@ namespace MissionControllerEC
 
         protected override void OnUpdate()
         {
-            if (Root.ContractState == Contract.State.Active && HighLogic.LoadedSceneIsFlight)
+            if (Root.ContractState == Contract.State.Active)
             {
-                if (FlightGlobals.ActiveVessel.orbit.referenceBody.Equals(targetBody))                   
+                if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel.orbit.referenceBody.Equals(targetBody))                   
                 {
                     if (FlightGlobals.ActiveVessel.situation == Vessel.Situations.ORBITING)
                     {                     
-                            CheckIfOrbit(FlightGlobals.ActiveVessel);
-                            timeCountDown();                      
+                            CheckIfOrbit(FlightGlobals.ActiveVessel);                                               
                     }
                 }
+                timeCountDown(); 
             }
             
         }
@@ -108,7 +108,7 @@ namespace MissionControllerEC
         private void CheckIfOrbit(Vessel vessel)
         {
 
-            if (vessel.launchTime > this.Root.DateAccepted)
+            if (vessel.launchTime > this.Root.DateAccepted && setTime)
             {
                 contractSetTime();
                 vesselID = vessel.id.ToString();
@@ -237,20 +237,19 @@ namespace MissionControllerEC
                 {
                     contractSetTime();
                     vesselID = vessel.id.ToString();
+                }             
+            }
+            if (!setTime)
+            {
+                diff = Planetarium.GetUniversalTime() - savedTime;
+                if (HighLogic.LoadedSceneIsFlight && vessel.id.ToString() == vesselID)
+                {
+                    ScreenMessages.PostScreenMessage("Time Left To Complete: " + Tools.formatTime(missionTime - diff), .001f);
                 }
 
-                if (!setTime)
+                if (diff > missionTime)
                 {
-                    diff = Planetarium.GetUniversalTime() - savedTime;
-                    if (HighLogic.LoadedSceneIsFlight && vessel.id.ToString() == vesselID)
-                    {
-                        ScreenMessages.PostScreenMessage("Time Left To Complete: " + Tools.formatTime(missionTime - diff), .001f);
-                    }
-
-                    if (diff > missionTime)
-                    {
-                        base.SetComplete();
-                    }
+                    base.SetComplete();
                 }
             }
         }

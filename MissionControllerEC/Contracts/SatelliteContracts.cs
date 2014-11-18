@@ -130,7 +130,7 @@ namespace MissionControllerEC
             {
                 minorbital = Tools.RandomNumber((int)st.contract_Random_Orbital_Period_MinInSeconds, (int)st.contract_Random_Orbital_Period_MaxInSeconds);
                 maxorbital = minorbital + st.contract_Random_Orbital_Period_Difference;
-                this.satellite3 = this.AddParameter(new OrbitalPeriod(minorbital, maxorbital), null);
+                this.satellite3 = this.AddParameter(new OrbitalPeriod(targetBody,minorbital, maxorbital), null);
                 if (maxorbital > 300000)
                 {
                     satellite3.SetFunds(37000, 37000, targetBody);
@@ -157,7 +157,7 @@ namespace MissionControllerEC
             {
                 maxorbital = st.contract_Orbital_Period_Max_InSeconds;
                 minorbital = st.contract_Orbital_Period_Min_InSeconds;
-                this.satellite7 = this.AddParameter(new OrbitalPeriod(minorbital, maxorbital), null);
+                this.satellite7 = this.AddParameter(new OrbitalPeriod(targetBody,minorbital, maxorbital), null);
                 satellite7.SetFunds(37000, 37000, targetBody);
                 Debug.Log("Loaded KeoSync Orbit Satellite Contract");
             }

@@ -623,10 +623,11 @@ namespace MissionControllerEC
         {
         }
 
-        public OrbitalPeriod(double minOrb, double maxOrb)
+        public OrbitalPeriod(CelestialBody body,double minOrb, double maxOrb)
         {
             this.minOrbitalPeriod = minOrb;
             this.maxOrbitalPeriod = maxOrb;
+            this.targetBody = body;
         }
 
         protected override string GetHashString()
@@ -684,7 +685,12 @@ namespace MissionControllerEC
 
         protected override void OnLoad(ConfigNode node)
         {
-
+            int bodyID = int.Parse(node.GetValue("targetBody"));
+            foreach (var body in FlightGlobals.Bodies)
+            {
+                if (body.flightGlobalsIndex == bodyID)
+                    targetBody = body;
+            }
             double maxOrbID = double.Parse(node.GetValue("maxOrbID"));
             maxOrbitalPeriod = maxOrbID;
             double minOrbID = double.Parse(node.GetValue("minOrbID"));
@@ -692,6 +698,8 @@ namespace MissionControllerEC
         }
         protected override void OnSave(ConfigNode node)
         {
+            int bodyID = targetBody.flightGlobalsIndex;
+            node.AddValue("targetBody", bodyID);
             double maxOrbID = maxOrbitalPeriod;
             node.AddValue("maxOrbID", maxOrbitalPeriod);
             double minOrbID = minOrbitalPeriod;

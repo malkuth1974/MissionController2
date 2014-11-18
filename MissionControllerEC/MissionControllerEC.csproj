@@ -17,7 +17,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\..\%28testMods%29\GameData\MissionControllerEC\</OutputPath>
+    <OutputPath>..\..\..\..\Kerbal Space Program\GameData\MissionControllerEC\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -52,11 +52,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConfigNodeStorage.cs" />
+    <Compile Include="Contracts\CivilianContracts.cs" />
+    <Compile Include="Contracts\CustomContracts.cs" />
+    <Compile Include="Contracts\RepairContracts.cs" />
     <Compile Include="Contracts\SatelliteContracts.cs" />
     <Compile Include="FinanceWindow1.cs" />
     <Compile Include="Contracts\HistoricContracts.cs" />
     <Compile Include="Instructions.cs" />
-    <Compile Include="Contracts\MCEContracts.cs" />
+    <Compile Include="Contracts\ResearchContracts.cs" />
     <Compile Include="Parameters\CrewTypeParameters.cs" />
     <Compile Include="Parameters\DockingParameters.cs" />
     <Compile Include="Parameters\OrbitalParameters.cs" />
