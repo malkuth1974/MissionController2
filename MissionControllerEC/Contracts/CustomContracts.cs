@@ -61,7 +61,7 @@ namespace MissionControllerEC
             base.SetScience(5f, targetBody);
             base.SetDeadlineYears(1f, targetBody);
             base.SetReputation(25f, 40f, targetBody);
-            base.SetFunds(39000f * settings.Contract_Payment_Multiplier, 52000f * settings.Contract_Payment_Multiplier, 37000f * settings.Contract_Payment_Multiplier, targetBody);
+            base.SetFunds(39000f * settings.Contract_Payment_Multiplier, 52000f * settings.Contract_Payment_Multiplier, 100000f * settings.Contract_Payment_Multiplier, targetBody);
 
             return true;
         }
@@ -101,7 +101,7 @@ namespace MissionControllerEC
 
         protected override void OnLoad(ConfigNode node)
         {          
-            Tools.ContractLoadCheck(node, ref targetBody, Planetarium.fetch.Home, targetBody, "targetbody");           
+            Tools.ContractLoadCheck(node, ref targetBody, Planetarium.fetch.Home, targetBody, "targetBody");           
             Tools.ContractLoadCheck(node, ref MaxOrb, 71000, MaxOrb, "aPa");           
             Tools.ContractLoadCheck(node, ref MinOrb, 70500, MinOrb, "pEa");
             Tools.ContractLoadCheck(node, ref crewCount, 1, crewCount, "crewcount");
@@ -233,7 +233,7 @@ namespace MissionControllerEC
 
         protected override void OnLoad(ConfigNode node)
         {          
-            Tools.ContractLoadCheck(node, ref targetBody, Planetarium.fetch.Home, targetBody, "targetbody");
+            Tools.ContractLoadCheck(node, ref targetBody, Planetarium.fetch.Home, targetBody, "targetBody");
             Tools.ContractLoadCheck(node, ref vesselName, "defaults Loaded Error", vesselName, "vesselname");
             Tools.ContractLoadCheck(node, ref vesselId, "defaults", vesselId, "vesselid");
             Tools.ContractLoadCheck(node, ref ContractPlayerName, "Woops Defaults Loaded Error", ContractPlayerName, "contractplayername");
@@ -330,7 +330,7 @@ namespace MissionControllerEC
             base.SetScience(1f, targetBody);
             base.SetDeadlineYears(700, targetBody);
             base.SetReputation(25f, 50f, targetBody);
-            base.SetFunds(15000, 100000, 110000, targetBody);
+            base.SetFunds(15000, 100000, 130000, targetBody);
 
             return true;
         }
@@ -371,7 +371,7 @@ namespace MissionControllerEC
 
         protected override void OnLoad(ConfigNode node)
         {
-            Tools.ContractLoadCheck(node, ref targetBody, Planetarium.fetch.Home, targetBody, "targetbody");
+            Tools.ContractLoadCheck(node, ref targetBody, Planetarium.fetch.Home, targetBody, "targetBody");
             Tools.ContractLoadCheck(node, ref vesselName, "defaults Loaded Error", vesselName, "vesselname");
             Tools.ContractLoadCheck(node, ref vesselId, "defaults", vesselId, "vesselid");
             Tools.ContractLoadCheck(node, ref ContractPlayerName, "Woops Defaults Loaded Error", ContractPlayerName, "contractplayername");

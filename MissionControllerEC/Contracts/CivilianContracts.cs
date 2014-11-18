@@ -182,7 +182,7 @@ namespace MissionControllerEC
 
         protected override void OnLoad(ConfigNode node)
         {          
-            Tools.ContractLoadCheck(node, ref targetBody, Planetarium.fetch.Home, targetBody, "targetbody");
+            Tools.ContractLoadCheck(node, ref targetBody, Planetarium.fetch.Home, targetBody, "targetBody");
             Tools.ContractLoadCheck(node, ref civiliansAmount, 2, civiliansAmount, "civilians");
             Tools.ContractLoadCheck(node, ref name1, "George Error", name1, "name1");
             Tools.ContractLoadCheck(node, ref name2, "Sam Error", name2, "name2");
@@ -336,7 +336,7 @@ namespace MissionControllerEC
 
             base.SetExpiry(3f, 10f);
             base.SetDeadlineYears(3f, targetBody);
-            base.SetFunds(25000, 300000, 300000, targetBody);
+            base.SetFunds(25000, 300000, 350000, targetBody);
             base.SetReputation(50, 150, targetBody);
             return true;
         }
@@ -397,7 +397,7 @@ namespace MissionControllerEC
 
         protected override void OnLoad(ConfigNode node)
         {           
-            Tools.ContractLoadCheck(node, ref targetBody, Planetarium.fetch.Home, targetBody, "targetbody");
+            Tools.ContractLoadCheck(node, ref targetBody, Planetarium.fetch.Home, targetBody, "targetBody");
             Tools.ContractLoadCheck(node, ref civiliansAmount, 2, civiliansAmount, "civilians");
             Tools.ContractLoadCheck(node, ref name1, "George Error", name1, "name1");
             Tools.ContractLoadCheck(node, ref name2, "Sam Error", name2, "name2");
@@ -555,7 +555,7 @@ namespace MissionControllerEC
 
             base.SetExpiry(3f, 10f);
             base.SetDeadlineYears(3f, targetBody);
-            base.SetFunds(15000, 225000, 350000, targetBody);
+            base.SetFunds(15000, 225000, 275000, targetBody);
             base.SetReputation(50, 150, targetBody);
             return true;
         }
@@ -614,7 +614,7 @@ namespace MissionControllerEC
 
         protected override void OnLoad(ConfigNode node)
         {          
-            Tools.ContractLoadCheck(node, ref targetBody, Planetarium.fetch.Home, targetBody, "targetbody");
+            Tools.ContractLoadCheck(node, ref targetBody, Planetarium.fetch.Home, targetBody, "targetBody");
             Tools.ContractLoadCheck(node, ref civiliansAmount, 2, civiliansAmount, "civilians");
             Tools.ContractLoadCheck(node, ref name1, "George Error", name1, "name1");
             Tools.ContractLoadCheck(node, ref name2, "Sam Error", name2, "name2");

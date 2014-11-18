@@ -294,7 +294,7 @@ namespace MissionControllerEC
 
         protected override void OnLoad(ConfigNode node)
         {                                 
-            Tools.ContractLoadCheck(node, ref targetBody, Planetarium.fetch.Home, targetBody, "targetbody");
+            Tools.ContractLoadCheck(node, ref targetBody, Planetarium.fetch.Home, targetBody, "targetBody");
             Tools.ContractLoadCheck(node, ref crewSpace, 2, crewSpace, "crewspace");
             Tools.ContractLoadCheck(node, ref civilianSpace, 2, civilianSpace, "civspace");
             Tools.ContractLoadCheck(node, ref FreeSpace, 4, FreeSpace, "freespace");
@@ -400,7 +400,7 @@ namespace MissionControllerEC
 
         protected override void OnLoad(ConfigNode node)
         {           
-            Tools.ContractLoadCheck(node, ref targetBody, Planetarium.fetch.Home, targetBody, "targetbody");
+            Tools.ContractLoadCheck(node, ref targetBody, Planetarium.fetch.Home, targetBody, "targetBody");
         }
         protected override void OnSave(ConfigNode node)
         {

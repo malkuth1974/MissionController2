@@ -176,7 +176,7 @@ namespace MissionControllerEC
 
             base.SetExpiry(3f, 10f);
             base.SetDeadlineYears(3f, targetBody);
-            base.SetFunds(10000, 145000, 145000, targetBody);
+            base.SetFunds(10000, 145000, 160000, targetBody);
             base.SetReputation(25, 50, targetBody);
             return true;
         }
@@ -274,7 +274,7 @@ namespace MissionControllerEC
 
         protected override void OnLoad(ConfigNode node)
         {           
-            Tools.ContractLoadCheck(node, ref targetBody, Planetarium.fetch.Home, targetBody, "targetbody");           
+            Tools.ContractLoadCheck(node, ref targetBody, Planetarium.fetch.Home, targetBody, "targetBody");           
             Tools.ContractLoadCheck(node, ref partAmount, 1, partAmount, "pCount");            
             Tools.ContractLoadCheck(node, ref partName, "Default", partName, "pName");
             Tools.ContractLoadCheck(node, ref crewCount, 1, crewCount, "crewcount");      

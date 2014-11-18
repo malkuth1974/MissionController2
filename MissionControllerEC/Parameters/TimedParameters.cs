@@ -69,7 +69,7 @@ namespace MissionControllerEC
         }
         protected override void OnLoad(ConfigNode node)
         {
-            Tools.ContractLoadCheck(node, ref targetBody, Planetarium.fetch.Home, targetBody, "targetbody");
+            Tools.ContractLoadCheck(node, ref targetBody, Planetarium.fetch.Home, targetBody, "targetBody");
             Tools.ContractLoadCheck(node, ref savedTime, 0, savedTime, "savedtime");
             Tools.ContractLoadCheck(node, ref missionTime, 1000, missionTime, "missiontime");
             Tools.ContractLoadCheck(node, ref diff, 0, diff, "diff");
@@ -192,7 +192,7 @@ namespace MissionControllerEC
         }
         protected override void OnLoad(ConfigNode node)
         {          
-            Tools.ContractLoadCheck(node, ref targetBody, Planetarium.fetch.Home, targetBody, "targetbody");
+            Tools.ContractLoadCheck(node, ref targetBody, Planetarium.fetch.Home, targetBody, "targetBody");
             Tools.ContractLoadCheck(node, ref savedTime, 0, savedTime, "savedtime");
             Tools.ContractLoadCheck(node, ref missionTime, 1000, missionTime, "missiontime");
             Tools.ContractLoadCheck(node, ref diff, 0, diff, "diff");
@@ -304,7 +304,7 @@ namespace MissionControllerEC
         }
         protected override void OnLoad(ConfigNode node)
         {           
-            Tools.ContractLoadCheck(node, ref targetBody, Planetarium.fetch.Home, targetBody, "targetbody");
+            Tools.ContractLoadCheck(node, ref targetBody, Planetarium.fetch.Home, targetBody, "targetBody");
             Tools.ContractLoadCheck(node, ref savedTime, 0, savedTime, "savedtime");
             Tools.ContractLoadCheck(node, ref missionTime, 1000, missionTime, "missiontime");
             Tools.ContractLoadCheck(node, ref diff, 0, diff, "diff");

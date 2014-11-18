@@ -72,7 +72,7 @@ namespace MissionControllerEC
             base.SetScience(30f, targetBody);
             base.SetDeadlineYears(3f, targetBody);
             base.SetReputation(5f, 3f, targetBody);
-            base.SetFunds(34000f * st.Contract_Payment_Multiplier, 53000f * st.Contract_Payment_Multiplier, 34000f * st.Contract_Payment_Multiplier, targetBody);
+            base.SetFunds(34000f * st.Contract_Payment_Multiplier, 53000f * st.Contract_Payment_Multiplier, 130000f * st.Contract_Payment_Multiplier, targetBody);
 
             return true;
         }
@@ -112,7 +112,7 @@ namespace MissionControllerEC
 
         protected override void OnLoad(ConfigNode node)
         {           
-            Tools.ContractLoadCheck(node, ref targetBody,Planetarium.fetch.Home, targetBody, "targetbody");
+            Tools.ContractLoadCheck(node, ref targetBody,Planetarium.fetch.Home, targetBody, "targetBody");
             Tools.ContractLoadCheck(node, ref crewCount, 1, crewCount, "crewcount");
             Tools.ContractLoadCheck(node, ref partName, "Orbital Research Scanner", partName, "partname");
             Tools.ContractLoadCheck(node, ref partNumber, 1, partNumber, "maxcount");
@@ -221,7 +221,7 @@ namespace MissionControllerEC
             base.SetScience(55f, targetBody);
             base.SetDeadlineYears(3f, targetBody);
             base.SetReputation(35f, 11f, targetBody);
-            base.SetFunds(37000f * st.Contract_Payment_Multiplier, 66000f * st.Contract_Payment_Multiplier, 77000f * st.Contract_Payment_Multiplier, targetBody);
+            base.SetFunds(37000f * st.Contract_Payment_Multiplier, 66000f * st.Contract_Payment_Multiplier, 150000f * st.Contract_Payment_Multiplier, targetBody);
 
             return true;
         }
@@ -262,7 +262,7 @@ namespace MissionControllerEC
 
         protected override void OnLoad(ConfigNode node)
         {           
-            Tools.ContractLoadCheck(node, ref targetBody, Planetarium.fetch.Home, targetBody, "targetbody");
+            Tools.ContractLoadCheck(node, ref targetBody, Planetarium.fetch.Home, targetBody, "targetBody");
             Tools.ContractLoadCheck(node, ref crewCount, 1, crewCount, "crewcount");
             Tools.ContractLoadCheck(node, ref partName, "Orbital Research Scanner", partName, "partname");
             Tools.ContractLoadCheck(node, ref partNumber, 1, partNumber, "maxcount");

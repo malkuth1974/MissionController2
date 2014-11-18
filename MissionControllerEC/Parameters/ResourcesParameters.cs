@@ -163,7 +163,7 @@ namespace MissionControllerEC
 
         protected override void OnLoad(ConfigNode node)
         {          
-            Tools.ContractLoadCheck(node, ref targetBody, Planetarium.fetch.Home, targetBody, "targetbody");
+            Tools.ContractLoadCheck(node, ref targetBody, Planetarium.fetch.Home, targetBody, "targetBody");
             Tools.ContractLoadCheck(node, ref maxweight, 2.0f, maxweight, "maxtons");
 
         }
