@@ -7,7 +7,9 @@ namespace MissionControllerEC
         public Settings(String FilePath) : base(FilePath) { }
        
         [Persistent]internal double HireCost = 4000;
-        [Persistent]internal double Death_Insurance = 20000;        
+        [Persistent]internal double Death_Insurance = 20000;
+        [Persistent]internal double Revert_Cost = 1000;
+
         [Persistent]internal bool No_Rescue_Kerbal_Contracts = false;  //thanks flowerchild :)
         [Persistent]internal bool No_Part_Test_Contracts = false;       
         [Persistent]internal bool RevertOn = false;
