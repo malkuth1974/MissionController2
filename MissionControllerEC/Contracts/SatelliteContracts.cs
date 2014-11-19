@@ -99,7 +99,7 @@ namespace MissionControllerEC
             MaxApA = Tools.RandomNumber(71000, 2500000);
             MinApA = MaxApA - 1000;
             MaxPeA = MaxApA - 1000;
-            MinPeA = MinPeA - 1000;           
+            MinPeA = MaxPeA - 1000;           
 
             bool parttechUnlock = ResearchAndDevelopment.GetTechnologyState("advConstruction") == RDTech.State.Available;
             int bodyrandom = Tools.RandomNumber(1, 3);
@@ -139,7 +139,9 @@ namespace MissionControllerEC
             }
 
             else if (SaveInfo.SatelliteTypeChoice == 2)
-            {              
+            {
+                MinInc = Tools.RandomNumber(0, 180);
+                MaxInc = MinInc + 5;
                 this.satellite4 = this.AddParameter(new ApAOrbitGoal(targetBody,MaxApA,MinApA),null);
                 satellite4.SetFunds(5000, 5000, targetBody);
                 this.satellite5 = this.AddParameter(new PeAOrbitGoal(targetBody,MaxPeA,MinPeA),null);
@@ -202,7 +204,14 @@ namespace MissionControllerEC
             }
             else if (SaveInfo.SatelliteTypeChoice == 2)
             {
-                return "Send our satellite to Inclined orbit with specific parts and for amount of time we require";
+                if (MinInc > 90)
+                {
+                    return ("Send out satellite on a Retrograde Inclined Orbit of " + MinInc + " and " + MaxInc + ". With desired Apogee and Perogee");
+                }
+                else
+                {
+                    return ("Send out satellite on a Prograde Inclined Orbit of " + MinInc + " and " + MaxInc + ". With desired Apogee and Perogee");
+                }
             }
             else if (SaveInfo.SatelliteTypeChoice == 3)
             {

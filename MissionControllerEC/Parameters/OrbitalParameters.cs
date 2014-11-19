@@ -373,11 +373,11 @@ namespace MissionControllerEC
 
         protected override string GetHashString()
         {
-            return "Launch to Inclination" + maxInclination + minInclination;
+            return "Launch to Inclination" + minInclination + maxInclination;
         }
         protected override string GetTitle()
         {
-            return "Reach Max Inclination Between: " + maxInclination + " and: " + minInclination;
+            return "Reach Max Inclination Between: " + minInclination + " and: " + maxInclination;
         }
 
         protected override void OnRegister()
@@ -601,7 +601,7 @@ namespace MissionControllerEC
         }
         protected override string GetTitle()
         {
-            return "Reach Orbital Period Between: " + Tools.ConvertMinsHours(maxOrbitalPeriod) + " and: " + Tools.ConvertMinsHours(minOrbitalPeriod);
+            return "Reach Orbital Period Between: " + Tools.ConvertMinsHours(minOrbitalPeriod) + " and: " + Tools.ConvertMinsHours(maxOrbitalPeriod);
         }
 
         protected override void OnRegister()

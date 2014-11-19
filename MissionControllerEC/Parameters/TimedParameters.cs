@@ -100,7 +100,7 @@ namespace MissionControllerEC
         private void CheckIfOrbit(Vessel vessel)
         {
 
-            if (vessel.launchTime > this.Root.DateAccepted && setTime)
+            if (vessel.launchTime > this.Root.DateAccepted && setTime && !vessel.isEVA)
             {
                 contractSetTime();
                 vesselID = vessel.id.ToString();
