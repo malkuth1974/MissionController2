@@ -58,7 +58,6 @@ namespace MissionControllerEC
             }
             this.AddParameter(new GetCrewCount(crewCount), null);
             base.SetExpiry(3f, 15f);
-            base.SetScience(5f, targetBody);
             base.SetDeadlineYears(1f, targetBody);
             base.SetReputation(25f, 40f, targetBody);
             base.SetFunds(39000f * settings.Contract_Payment_Multiplier, 52000f * settings.Contract_Payment_Multiplier, 100000f * settings.Contract_Payment_Multiplier, targetBody);
@@ -190,7 +189,6 @@ namespace MissionControllerEC
             suppy2.SetFunds(1000, 2000, targetBody);
             suppy2.SetReputation(5, 10, targetBody);
             base.SetExpiry(1f, 10f);
-            base.SetScience(1f, targetBody);
             base.SetDeadlineYears(.3f, targetBody);
             base.SetReputation(20f, 40f, targetBody);
             base.SetFunds(20000, 90000, 150000, targetBody);
@@ -327,7 +325,6 @@ namespace MissionControllerEC
             ctrans3.SetReputation(3, targetBody);
             this.AddParameter(new GetCrewCount(crewAmount), null);
             base.SetExpiry(15f, 40f);
-            base.SetScience(1f, targetBody);
             base.SetDeadlineYears(700, targetBody);
             base.SetReputation(25f, 50f, targetBody);
             base.SetFunds(15000, 100000, 130000, targetBody);

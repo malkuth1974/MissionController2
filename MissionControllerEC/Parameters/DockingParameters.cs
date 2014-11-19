@@ -129,12 +129,10 @@ namespace MissionControllerEC
 
         protected override void OnRegister()
         {
-            this.disableOnStateChange = false;
+
             updated = false;
             if (Root.ContractState == Contract.State.Active)
-            {
-                GameEvents.onFlightReady.Add(flightReady);
-                GameEvents.onVesselChange.Add(vesselChange);
+            {              
                 GameEvents.onPartCouple.Add(onPartCouple);
                 updated = true;
             }
@@ -143,9 +141,7 @@ namespace MissionControllerEC
         protected override void OnUnregister()
         {
             if (updated)
-            {
-                GameEvents.onFlightReady.Remove(flightReady);
-                GameEvents.onVesselChange.Remove(vesselChange);
+            {              
                 GameEvents.onPartCouple.Remove(onPartCouple);
             }
 
@@ -186,15 +182,7 @@ namespace MissionControllerEC
                 else
                     ScreenMessages.PostScreenMessage("Did not connect to the correct target ID vessel, Try Again");
             }
-        }
-        public void flightReady()
-        {
-            base.SetIncomplete();
-        }
-        public void vesselChange(Vessel v)
-        {
-            base.SetIncomplete();
-        }
+        }        
     }
     #endregion
     

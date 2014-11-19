@@ -268,6 +268,7 @@ namespace MissionControllerEC
 
         private bool setTime = true;
         private bool timebool = false;
+        private bool updated = false;
 
         public TimeCountdownDocking()
         {
@@ -290,11 +291,31 @@ namespace MissionControllerEC
 
         protected override string GetHashString()
         {
-            return "Orbit " + targetBody.theName + " and conduct research.";
+            return "Dock To Target Vessel To Start Countdown";
         }
         protected override string GetTitle()
         {
             return contractTimeTitle + Tools.formatTime(missionTime);
+        }
+
+        protected override void OnRegister()
+        {
+
+            updated = false;
+            if (Root.ContractState == Contract.State.Active)
+            {
+                GameEvents.onPartCouple.Add(onPartCouple);
+                updated = true;
+            }
+
+        }
+        protected override void OnUnregister()
+        {
+            if (updated)
+            {
+                GameEvents.onPartCouple.Remove(onPartCouple);
+            }
+
         }
 
         protected override void OnUpdate()

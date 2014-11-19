@@ -133,19 +133,16 @@ namespace MissionControllerEC
             {
                 base.SetFunds(45000f * st.Contract_Payment_Multiplier, 71000f * st.Contract_Payment_Multiplier, 150000f * st.Contract_Payment_Multiplier, targetBody);
                 base.SetReputation(20f, 25f, targetBody);
-                base.SetScience(3.0f, targetBody);
             }
             if (maxApA > 120000 && maxApA <= 1000000)
             {
                 base.SetFunds(70000f * st.Contract_Payment_Multiplier, 95000f * st.Contract_Payment_Multiplier, 210000f * st.Contract_Payment_Multiplier, targetBody);
                 base.SetReputation(20f, 25f, targetBody);
-                base.SetScience(10.0f, targetBody);
             }
             if (maxApA > 1000001)
             {
                 base.SetFunds(120000f * st.Contract_Payment_Multiplier, 130000f * st.Contract_Payment_Multiplier, 300000f * st.Contract_Payment_Multiplier, targetBody);
                 base.SetReputation(20f, 25f, targetBody);
-                base.SetScience(20.0f, targetBody);
             }
 
             this.repairgoal2 = this.AddParameter(new RepairPanelPartCheck(titleName, vesselID, vesselName), null);
@@ -348,7 +345,6 @@ namespace MissionControllerEC
             base.SetDeadlineYears(1f, targetBody);
             base.SetFunds(5000f * st.Contract_Payment_Multiplier, 30000f * st.Contract_Payment_Multiplier, 85000f * st.Contract_Payment_Multiplier, targetBody);
             base.SetReputation(75f, 125f, targetBody);
-            base.SetScience(1.0f, targetBody);
 
             return true;
         }

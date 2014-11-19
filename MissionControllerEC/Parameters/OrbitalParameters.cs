@@ -157,7 +157,6 @@ namespace MissionControllerEC
             updated = false;
             if (Root.ContractState == Contract.State.Active)
             {
-                GameEvents.onFlightReady.Add(flightReady);
                 GameEvents.onVesselChange.Add(vesselChange);
                 updated = true;
             }
@@ -167,7 +166,6 @@ namespace MissionControllerEC
         {
             if (updated)
             {
-                GameEvents.onFlightReady.Remove(flightReady);
                 GameEvents.onVesselChange.Remove(vesselChange);
             }
         }
@@ -205,12 +203,7 @@ namespace MissionControllerEC
                     ScreenMessages.PostScreenMessage("You Have achieved Orbit of Target Body: " + targetBody.theName);
                 }
             }
-        }
-
-        public void flightReady()
-        {
-            base.SetIncomplete();
-        }
+        }      
         public void vesselChange(Vessel v)
         {
             base.SetIncomplete();
