@@ -37,6 +37,7 @@ namespace MissionControllerEC
         ContractParameter civ4;
         ContractParameter civ5;
         ContractParameter civ6;
+        ContractParameter OnDestroy;
 
         protected override bool Generate()
         {
@@ -66,7 +67,7 @@ namespace MissionControllerEC
             civiliansAmount = UnityEngine.Random.Range(2, 4);
             eccmin = UnityEngine.Random.Range(0f, .4f);
             eccmax = eccmin + .10f;
-            altitudeGoal = UnityEngine.Random.Range(70000, 225000);
+            altitudeGoal = UnityEngine.Random.Range((int)st.contract_Satellite_MIn_Height, (int)st.contract_Satellite_Max_Height);
             TripTime = UnityEngine.Random.Range(14000, 150000);
 
             MissionControllerEC.CivName.Clear();
@@ -111,7 +112,7 @@ namespace MissionControllerEC
             civ4.SetFunds(10000, 10000, targetBody);
             civ4.SetReputation(5, 10, targetBody);
 
-            this.civ5 = this.AddParameter(new LandOnBody(targetBody), null);
+            this.civ5 = this.AddParameter(new LandingParameters(targetBody,true), null);
             civ5.SetFunds(20000, 20000, targetBody);
             civ5.SetReputation(20, 40, targetBody);
 
@@ -120,6 +121,11 @@ namespace MissionControllerEC
             civ6.SetReputation(15, 30, targetBody);
 
             this.AddParameter(new GetSeatCount(civiliansAmount, crewSeatTitle), null);
+            if (SaveInfo.Hardcore_Vessel_Must_Survive == true)
+            {
+                this.OnDestroy = this.AddParameter(new VesselMustSurvive(), null);
+                this.OnDestroy.DisableOnStateChange = false;
+            }
 
             base.SetExpiry(3f, 10f);
             base.SetDeadlineYears(3f, targetBody);
@@ -147,12 +153,7 @@ namespace MissionControllerEC
         {
             return true;
         }
-
-        protected override string GetNotes()
-        {
-            return "Civilian Low Orbit Tour";
-        }
-
+      
         protected override string GetHashString()
         {
             return "Bring Civilians on a Low Kerbib Orbit Tour of Kerbin";
@@ -170,6 +171,10 @@ namespace MissionControllerEC
                 "Please take note civilians are not allowed to take part in operations of KSC Personal duties, they are on the vessel as passengers only.  For this reason you as player cannot use them as an in game asset.  \n" +
                 "But do not take up their seats or you will lose the contract!"
 ;
+        }
+        protected override string GetNotes()
+        {
+            return "Vessel must be a new vessel launched after accepting this contract!";
         }
         protected override string GetSynopsys()
         {
@@ -250,6 +255,7 @@ namespace MissionControllerEC
         ContractParameter civ4;
         ContractParameter civ5;
         ContractParameter civ6;
+        ContractParameter OnDestroy;
 
         protected override bool Generate()
         {
@@ -320,7 +326,7 @@ namespace MissionControllerEC
             civ3.SetFunds(10000, 10000, targetBody);
             civ3.SetReputation(5, 10, targetBody);
 
-            this.civ4 = this.AddParameter(new LandOnBody(targetBody), null);
+            this.civ4 = this.AddParameter(new LandingParameters(targetBody,true), null);
             civ4.SetFunds(35000, 35000, targetBody);
             civ4.SetReputation(5, 10, targetBody);
 
@@ -328,11 +334,16 @@ namespace MissionControllerEC
             civ6.SetFunds(50000, 50000, targetBody);
             civ6.SetReputation(15, 30, targetBody);
 
-            this.civ5 = this.AddParameter(new LandOnBody(Planetarium.fetch.Home), null);
+            this.civ5 = this.AddParameter(new LandingParameters(Planetarium.fetch.Home,true), null);
             civ5.SetFunds(25000, 25000, targetBody);
             civ5.SetReputation(20, 40, targetBody);
 
             this.AddParameter(new GetSeatCount(civiliansAmount, crewSeatTitle), null);
+            if (SaveInfo.Hardcore_Vessel_Must_Survive == true)
+            {
+                this.OnDestroy = this.AddParameter(new VesselMustSurvive(), null);
+                this.OnDestroy.DisableOnStateChange = false;
+            }
 
             base.SetExpiry(3f, 10f);
             base.SetDeadlineYears(3f, targetBody);
@@ -360,12 +371,7 @@ namespace MissionControllerEC
         {
             return true;
         }
-
-        protected override string GetNotes()
-        {
-            return "Civilian Landng Expedition";
-        }
-
+       
         protected override string GetHashString()
         {
             return "Bring Civilians on a Landing Expedition of " + targetBody.theName;
@@ -384,6 +390,10 @@ namespace MissionControllerEC
                 "Please take note civilians are not allowed to take part in operations of KSC Personal duties, they are on the vessel as passengers only.  For this reason you as player cannot use them as an in game asset.  \n" +
                 "But do not take up their seats or you will lose the contract!"
 ;
+        }
+        protected override string GetNotes()
+        {
+            return "Vessel must be a new vessel launched after accepting this contract!";
         }
         protected override string GetSynopsys()
         {
@@ -461,6 +471,7 @@ namespace MissionControllerEC
         ContractParameter civ3;
         ContractParameter civ5;
         ContractParameter civ6;
+        ContractParameter OnDestroy;
 
         protected override bool Generate()
         {
@@ -547,11 +558,16 @@ namespace MissionControllerEC
                 civ2.DisableOnStateChange = false;
             }
 
-            this.civ5 = this.AddParameter(new LandOnBody(targetBody), null);
+            this.civ5 = this.AddParameter(new LandingParameters(targetBody,true), null);
             civ5.SetFunds(20000, 20000, targetBody);
             civ5.SetReputation(20, 40, targetBody);
 
             this.AddParameter(new GetSeatCount(civiliansAmount, crewSeatTitle), null);
+            if (SaveInfo.Hardcore_Vessel_Must_Survive == true)
+            {
+                this.OnDestroy = this.AddParameter(new VesselMustSurvive(), null);
+                this.OnDestroy.DisableOnStateChange = false;
+            }
 
             base.SetExpiry(3f, 10f);
             base.SetDeadlineYears(3f, targetBody);
@@ -579,12 +595,7 @@ namespace MissionControllerEC
         {
             return true;
         }
-
-        protected override string GetNotes()
-        {
-            return "Civilian Station Expedition";
-        }
-
+      
         protected override string GetHashString()
         {
             return "Bring Civilians on an Expedition of your station named " + vesselName;
@@ -602,6 +613,10 @@ namespace MissionControllerEC
                 "Please take note civilians are not allowed to take part in operations of KSC Personal duties, they are on the vessel as passengers only.  For this reason you as player cannot use them as an in game asset.  \n" +
                 "But do not take up their seats or you will lose the contract!"
 ;
+        }
+        protected override string GetNotes()
+        {
+            return "Vessel must be a new vessel launched after accepting this contract!";
         }
         protected override string GetSynopsys()
         {

@@ -62,10 +62,12 @@
     <Compile Include="Contracts\ResearchContracts.cs" />
     <Compile Include="Parameters\CrewTypeParameters.cs" />
     <Compile Include="Parameters\DockingParameters.cs" />
+    <Compile Include="Parameters\LandingParameters.cs" />
     <Compile Include="Parameters\OrbitalParameters.cs" />
     <Compile Include="Parameters\PartParameters.cs" />
     <Compile Include="Parameters\ResourcesParameters.cs" />
     <Compile Include="Parameters\TimedParameters.cs" />
+    <Compile Include="Parameters\VesselMustSurvive.cs" />
     <Compile Include="PartModules\MCELanderResearch.cs" />
     <Compile Include="PartModules\MCEOrbitalScanning.cs" />
     <Compile Include="MissionControllerEC.cs" />

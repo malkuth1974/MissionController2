@@ -99,6 +99,10 @@ namespace MissionControllerEC
             //those 3 strings appear to do nothing
             return TextGen.GenerateBackStories(Agent.Name, Agent.GetMindsetString(), "Sat", "Light", "Oh pretty", MissionSeed);
         }
+        protected override string GetNotes()
+        {
+            return "Vessel must be a new vessel launched after accepting this contract!";
+        }
         protected override string GetSynopsys()
         {
             return "Scientific orbital research mission of  " + targetBody.theName + " with " + partName;
@@ -206,7 +210,7 @@ namespace MissionControllerEC
             landerscan1.SetFunds(8000, targetBody);
             landerscan1.SetReputation(4, targetBody);
             landerscan1.SetScience(2, targetBody);
-            this.landerscan2 = this.AddParameter(new LandOnBody(targetBody), null);
+            this.landerscan2 = this.AddParameter(new LandingParameters(targetBody, true), null);
             landerscan2.SetFunds(8500, targetBody);
             landerscan2.SetReputation(5, targetBody);
             landerscan2.SetScience(3, targetBody);
@@ -247,6 +251,10 @@ namespace MissionControllerEC
         {
             //those 3 strings appear to do nothing
             return TextGen.GenerateBackStories(Agent.Name, Agent.GetMindsetString(), "Sat", "Light", "Oh pretty", MissionSeed);
+        }
+        protected override string GetNotes()
+        {
+            return "Vessel must be a new vessel launched after accepting this contract!";
         }
         protected override string GetSynopsys()
         {

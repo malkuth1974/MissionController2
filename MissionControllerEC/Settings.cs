@@ -17,19 +17,9 @@ namespace MissionControllerEC
         [Persistent]internal bool Civilian_Contracts_Off = false;
         [Persistent]internal bool all_Historical_Contracts_Off = false; 
 
-        [Persistent]internal double contrac_Satellite_Max_ApA_Trivial = 75000;
-        [Persistent]internal double contrac_Satellite_Max_Total_Height_Trivial = 325000;
-        [Persistent]internal double contrac_Satellite_Max_ApA_Significant = 85000;
-        [Persistent]internal double contrac_Satellite_Max_Total_Height_Significant = 320000;
-        [Persistent]internal double contrac_Satellite_Max_ApA_Except = 200000;
-        [Persistent]internal double contrac_Satellite_Max_Total_Height_Except = 300000;
-        [Persistent]internal double contrac_Satellite_Between_Difference = 5000;
-        [Persistent]internal float contrac_Satellite_Max_Mass_Trivial = 3.7f;
-        [Persistent]internal float contrac_Satellite_Max_Mass_Significant = 5.8f;
-        [Persistent]internal float contrac_Satellite_Max_Mass_Except = 6.5f;
-        [Persistent]internal float contrac_Satellite_Min_Mass_Trivial = 2f;
-        [Persistent]internal float contrac_Satellite_Min_Mass_Significant = 2.3f;
-        [Persistent]internal float contrac_Satellite_Min_Mass_Except = 2.7f;
+        [Persistent]internal double contract_Satellite_Max_Height = 75000;
+        [Persistent]internal double contract_Satellite_MIn_Height = 325000;        
+        [Persistent]internal double contract_Satellite_Between_Difference = 2000;        
         [Persistent]internal double contract_Orbital_Period_Max_InSeconds = 21698;
         [Persistent]internal double contract_Orbital_Period_Min_InSeconds = 21598;
         [Persistent]internal int Contract_Payment_Multiplier = 1;
@@ -47,10 +37,6 @@ namespace MissionControllerEC
         [Persistent]internal double voshodheight = 82000;
         [Persistent]internal double skyLabheight = 90000;
         [Persistent]internal double skyLab4MaxApA = 120000;
-        [Persistent]internal double skyLab4MaxPeA = 120000;
-
-        [Persistent]internal static bool ForcedUpdatePatch = false;
-        
-      
+        [Persistent]internal double skyLab4MaxPeA = 120000;              
     }
 }

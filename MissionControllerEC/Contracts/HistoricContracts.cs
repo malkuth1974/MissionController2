@@ -33,7 +33,7 @@ namespace MissionControllerEC
             vostok2 = this.AddParameter(new InOrbitGoal(targetBody),null);
             vostok2.SetFunds(2000f, targetBody);
             vostok2.SetReputation(3f, targetBody);
-            vostok3 = this.AddParameter(new LandOnBody(targetBody), null);
+            vostok3 = this.AddParameter(new LandingParameters(targetBody,true), null);
             vostok3.SetFunds(2500f, targetBody);
             vostok3.SetReputation(4f, targetBody);
             this.AddParameter(new GetCrewCount(crew), null);
@@ -169,7 +169,7 @@ namespace MissionControllerEC
             vostok4.SetFunds(3000f, targetBody);
             vostok4.SetReputation(6f, targetBody);
             vostok4.SetScience(10f, targetBody);
-            vostok3 = this.AddParameter(new LandOnBody(targetBody), null);
+            vostok3 = this.AddParameter(new LandingParameters(targetBody,true), null);
             vostok3.SetFunds(3500f, targetBody);
             vostok3.SetReputation(7f, targetBody);
             this.AddParameter(new GetCrewCount(crew), null);
@@ -295,7 +295,7 @@ namespace MissionControllerEC
             vostok4.SetFunds(4200f, targetBody);
             vostok4.SetReputation(6f, targetBody);
             vostok4.SetScience(6f, targetBody);
-            vostok3 = this.AddParameter(new LandOnBody(targetBody), null);
+            vostok3 = this.AddParameter(new LandingParameters(targetBody, true), null);
             vostok3.SetFunds(4800f, targetBody);
             vostok3.SetReputation(7f, targetBody);
             this.AddParameter(new GetCrewCount(crew), null);
@@ -542,8 +542,8 @@ namespace MissionControllerEC
             luna1 = this.AddParameter(new InOrbitGoal(targetBody), null);
             luna1.SetFunds(8000f, targetBody);
             luna1.SetReputation(8f, targetBody);
-           
-            luna3 = this.AddParameter(new LandOnBody(targetBody), null);
+
+            luna3 = this.AddParameter(new LandingParameters(targetBody, true), null);
             luna3.SetFunds(8000f, targetBody);
             luna3.SetReputation(3f, targetBody);
             luna3.SetScience(25f, targetBody);
@@ -552,7 +552,7 @@ namespace MissionControllerEC
             luna2.SetFunds(5000f, targetBody);
             luna2.SetReputation(5f, targetBody);
 
-            this.AddParameter(new LandOnBody(Planetarium.fetch.Home), null);
+            this.AddParameter(new LandingParameters(Planetarium.fetch.Home,true), null);
 
             this.AddParameter(new GetCrewCount(crew), null);
 
@@ -692,8 +692,8 @@ namespace MissionControllerEC
                 return false;
             }
             targetBody = Planetarium.fetch.Home;
-            GMaxApA = UnityEngine.Random.Range((int)st.contrac_Satellite_Max_ApA_Trivial, (int)st.contrac_Satellite_Max_Total_Height_Trivial + (int)st.contrac_Satellite_Max_ApA_Trivial);
-            GMinApA = GMaxApA - st.contrac_Satellite_Between_Difference;
+            GMaxApA = UnityEngine.Random.Range((int)st.contract_Satellite_MIn_Height, (int)st.contract_Satellite_Max_Height);
+            GMinApA = GMaxApA - st.contract_Satellite_Between_Difference;
             GMaxPeA = GMaxApA;
             GMinPeA = GMinApA;
 
@@ -879,8 +879,8 @@ namespace MissionControllerEC
                 return false;
             }
             targetBody = Planetarium.fetch.Home;
-            GMaxApA = UnityEngine.Random.Range((int)st.contrac_Satellite_Max_ApA_Except, (int)st.contrac_Satellite_Max_ApA_Except + (int)st.contrac_Satellite_Max_Total_Height_Except);
-            GMinApA = GMaxApA - st.contrac_Satellite_Between_Difference;
+            GMaxApA = UnityEngine.Random.Range((int)st.contract_Satellite_MIn_Height, (int)st.contract_Satellite_Max_Height);
+            GMinApA = GMaxApA - st.contract_Satellite_Between_Difference;
             GMaxPeA = GMaxApA;
             GMinPeA = GMinApA;
 
@@ -892,7 +892,7 @@ namespace MissionControllerEC
 
             this.AddParameter(new ApAOrbitGoal(targetBody, (double)GMaxApA, (double)GMinApA), null);
             this.AddParameter(new PeAOrbitGoal(targetBody, (double)GMaxPeA, (double)GMinPeA), null);
-
+            this.AddParameter(new LandingParameters(targetBody, true), null);
             this.AddParameter(new PartGoal(partName, partAmount), null);
             this.AddParameter(new GetCrewCount(crewCount), null);
 
@@ -1217,7 +1217,7 @@ namespace MissionControllerEC
             skylab4.SetReputation(25, targetBody);
             skylab4.SetScience(25, targetBody);
 
-            this.skylab5 = this.AddParameter(new LandOnBody(targetBody), null);
+            this.skylab5 = this.AddParameter(new LandingParameters(targetBody, true), null);
             skylab5.SetFunds(5000,75000,targetBody);
             skylab5.SetReputation(20, targetBody);
             skylab5.SetScience(3, targetBody);
@@ -1377,7 +1377,7 @@ namespace MissionControllerEC
             skylab4.SetReputation(15, targetBody);
             skylab4.SetScience(15, targetBody);
 
-            this.skylab5 = this.AddParameter(new LandOnBody(targetBody), null);
+            this.skylab5 = this.AddParameter(new LandingParameters(targetBody, true), null);
             skylab5.SetFunds(5000, 75000, targetBody);
             skylab5.SetReputation(15, targetBody);
             skylab5.SetScience(5, targetBody);
@@ -1539,7 +1539,7 @@ namespace MissionControllerEC
             skylab4.SetReputation(15, targetBody);
             skylab4.SetScience(15, targetBody);
 
-            this.skylab5 = this.AddParameter(new LandOnBody(targetBody), null);
+            this.skylab5 = this.AddParameter(new LandingParameters(targetBody, true), null);
             skylab5.SetFunds(5000, 75000, targetBody);
             skylab5.SetReputation(15, targetBody);
             skylab5.SetScience(5, targetBody);

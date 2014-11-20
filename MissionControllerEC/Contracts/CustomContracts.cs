@@ -89,6 +89,10 @@ namespace MissionControllerEC
                 "Corner Of screen while in SpaceCenter View.  Please note that settings will not take effect until at least 1 cycle of contracts has passed.  If you don't see your settings cancel out the Offered contract! \n\n" +
                 "All ComSat Information is stored inside the Mission Controller Config File and will pass on to other save files";
         }
+        protected override string GetNotes()
+        {
+            return "Vessel must be a new vessel launched after accepting this contract!";
+        }
         protected override string GetSynopsys()
         {
             return "Launch Your ComSat Network " + targetBody.theName;
@@ -220,6 +224,10 @@ namespace MissionControllerEC
                 "You can edit this contract by going to SpaceCenter screen and selecting Mission Controller Icon.  In the GUI choose the Custom Contract Button to start editing this contract. \n\n" +
                 "All supply contract information is stored in you Persistent Save File. The location of the Station or Base you will resupply is " + targetBody.theName + " Payments are adjusted for Travel Time To Body";
         }
+        protected override string GetNotes()
+        {
+            return "Vessel must be a new vessel launched after accepting this contract!";
+        }
         protected override string GetSynopsys()
         {
             return "Launch Your ComSat Network " + targetBody.theName;
@@ -320,7 +328,7 @@ namespace MissionControllerEC
             this.ctrans2 = this.AddParameter(new TimeCountdownDocking(targetBody, crewTime, "Crew will Stay For This Amount Of Time ", vesselId), null);
             ctrans2.SetFunds(2000, 2000, targetBody);
             ctrans2.SetReputation(3, targetBody);
-            this.ctrans3 = this.AddParameter(new LandOnBody(Planetarium.fetch.Home), null);
+            this.ctrans3 = this.AddParameter(new LandingParameters(Planetarium.fetch.Home,true), null);
             ctrans3.SetFunds(2000, 2000, targetBody);
             ctrans3.SetReputation(3, targetBody);
             this.AddParameter(new GetCrewCount(crewAmount), null);
@@ -355,6 +363,10 @@ namespace MissionControllerEC
             return "This is a custom Crew Transfer mission.  Use these contracts to supply your land bases and Orbital stations with crews and select the Time Spent in station or base. You must dock with the Vessel you selected to finish contract! " +
                 "You can edit this contract by going to SpaceCenter screen and selecting Mission Controller Icon.  In the GUI choose the Custom Contract Button to start editing this contract. \n\n" +
                 "All Crew Transfer contract information is stored in you Persistent Save File. The location of the Station or Base you will Transfer crew is " + targetBody.theName + "." + " Payments are adjusted for Travel Time To Body";
+        }
+        protected override string GetNotes()
+        {
+            return "Vessel must be a new vessel launched after accepting this contract!";
         }
         protected override string GetSynopsys()
         {

@@ -61,7 +61,8 @@ namespace MissionControllerEC
         ContractParameter satellite6;
         ContractParameter satellite7;
         ContractParameter satellite8;
-        ContractParameter satellite9;       
+        ContractParameter satellite9;
+        ContractParameter OnDestroy;
 
         protected override bool Generate()
         {
@@ -92,14 +93,14 @@ namespace MissionControllerEC
             GMinecc = UnityEngine.Random.Range(0f, .9f);
             GMaxecc = GMinecc + .09f;
 
-            MaxAltitude = Tools.RandomNumber(70000, 400000);
+            MaxAltitude = Tools.RandomNumber((int)st.contract_Satellite_MIn_Height, (int)st.contract_Satellite_Max_Height);
 
             timeOnStation = Tools.RandomNumber(102400, 900000);
 
-            MaxApA = Tools.RandomNumber(71000, 2500000);
-            MinApA = MaxApA - 1000;
-            MaxPeA = MaxApA - 1000;
-            MinPeA = MaxPeA - 1000;           
+            MaxApA = Tools.RandomNumber((int)st.contract_Satellite_MIn_Height, (int)st.contract_Satellite_Max_Height);
+            MinApA = MaxApA - st.contract_Satellite_Between_Difference;
+            MaxPeA = MaxApA - st.contract_Satellite_Between_Difference;
+            MinPeA = MaxPeA - st.contract_Satellite_Between_Difference;           
 
             bool parttechUnlock = ResearchAndDevelopment.GetTechnologyState("advConstruction") == RDTech.State.Available;
             int bodyrandom = Tools.RandomNumber(1, 3);
@@ -175,6 +176,11 @@ namespace MissionControllerEC
                 this.AddParameter(new PartGoal(partName, "Small Repair Panel", partAmount, true), null);
             }
             this.AddParameter(new GetCrewCount(crewCount), null);
+            if (SaveInfo.Hardcore_Vessel_Must_Survive == true)
+            {
+                this.OnDestroy = this.AddParameter(new VesselMustSurvive(), null);
+                this.OnDestroy.DisableOnStateChange = false;
+            }
 
             base.SetExpiry(3f, 10f);
             base.SetDeadlineYears(3f, targetBody);
@@ -196,29 +202,29 @@ namespace MissionControllerEC
         {
             if (SaveInfo.SatelliteTypeChoice == 0)
             {
-                return "Send our satellite to Eccentric orbit with specific parts and for amount of time we require";
+                return "Send our satellite to Eccentric orbit with specific parts and for amount of time we require.\n\nVessel must be a new vessel launched after contract Acceptance.";
             }
             else if (SaveInfo.SatelliteTypeChoice == 1)
             {
-                return "Send our satellite to Specified Orbital Period with specific parts and for amount of time we require";
+                return "Send our satellite to Specified Orbital Period with specific parts and for amount of time we require.\n\nVessel must be a new vessel launched after contract Acceptance.";
             }
             else if (SaveInfo.SatelliteTypeChoice == 2)
             {
                 if (MinInc > 90)
                 {
-                    return ("Send out satellite on a Retrograde Inclined Orbit of " + MinInc + " and " + MaxInc + ". With desired Apogee and Perogee");
+                    return ("Send out satellite on a Retrograde Inclined Orbit of " + MinInc + " and " + MaxInc + ". With desired Apogee and Perogee.\n\nVessel must be a new vessel launched after contract Acceptance.");
                 }
                 else
                 {
-                    return ("Send out satellite on a Prograde Inclined Orbit of " + MinInc + " and " + MaxInc + ". With desired Apogee and Perogee");
+                    return ("Send out satellite on a Prograde Inclined Orbit of " + MinInc + " and " + MaxInc + ". With desired Apogee and Perogee.\n\nVessel must be a new vessel launched after contract Acceptance.");
                 }
             }
             else if (SaveInfo.SatelliteTypeChoice == 3)
             {
-                return "Send our satellite to KeoSync orbit with specific parts and for amount of time we require";
+                return "Send our satellite to KeoSync orbit with specific parts and for amount of time we require.\n\nVessel must be a new vessel launched after contract Acceptance.";
             }
             else
-                return "Send satellite to orbit";
+                return "Send satellite to orbit.\n\nVessel must be a new vessel launched after contract Acceptance.";
         }
 
         protected override string GetHashString()

@@ -21,6 +21,7 @@ namespace MissionControllerEC
         public static bool skylab3done = false;
         public static bool skylab4done = false;
         public static bool MessageHelpers = false;
+        public static bool Hardcore_Vessel_Must_Survive = true;
 
         public static bool ComSateContractOn = false;
         public static double comSatmaxOrbital = 0;

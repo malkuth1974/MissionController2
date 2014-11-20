@@ -399,9 +399,11 @@ namespace MissionControllerEC
         [Persistent]internal double com_Sat_minOrbP = 10680;
         [Persistent]internal string com_Sat_contractName = "Deliever COMSAT Satellite";
         [Persistent]internal int com_Sat_bodyNumber = 1;
+        [Persistent]internal bool hardcoreOn = true;
 
         public override void OnDecodeFromConfigNode()
         {
+            SaveInfo.Hardcore_Vessel_Must_Survive = hardcoreOn;
             SaveInfo.TotalSpentKerbals = TotalSpentKerbals;
             SaveInfo.TotalSpentOnRocketTest = TotalSpentRockets;
             SaveInfo.SatContractReady = ComSatOn;
@@ -458,6 +460,7 @@ namespace MissionControllerEC
 
         public override void OnEncodeToConfigNode()
         {
+            hardcoreOn = SaveInfo.Hardcore_Vessel_Must_Survive;
             TotalSpentKerbals = SaveInfo.TotalSpentKerbals;
             TotalSpentRockets = SaveInfo.TotalSpentOnRocketTest;
             ComSatOn = SaveInfo.SatContractReady;

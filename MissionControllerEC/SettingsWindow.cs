@@ -43,6 +43,13 @@ namespace MissionControllerEC
 
             GUILayout.Space(10);
             GUILayout.BeginHorizontal();
+            GUILayout.Box("Hard Core Vessel Must Survive On", MCE_ScenarioStartup.StyleBold, GUILayout.Width(300));
+            GUILayout.Box("" + SaveInfo.Hardcore_Vessel_Must_Survive, MCE_ScenarioStartup.styleBlueBold, GUILayout.Width(75));
+            SaveInfo.Hardcore_Vessel_Must_Survive = GUILayout.Toggle(SaveInfo.Hardcore_Vessel_Must_Survive, "Set", GUILayout.Width(25));
+            GUILayout.EndHorizontal();
+
+            GUILayout.Space(10);
+            GUILayout.BeginHorizontal();
             GUILayout.Box("Flight Help On (Apa,PeA,Orbital Period)",MCE_ScenarioStartup.StyleBold, GUILayout.Width(300));
             GUILayout.Box("" + SaveInfo.MessageHelpers, MCE_ScenarioStartup.styleBlueBold, GUILayout.Width(75));
             SaveInfo.MessageHelpers = GUILayout.Toggle(SaveInfo.MessageHelpers, "Set", GUILayout.Width(25));
