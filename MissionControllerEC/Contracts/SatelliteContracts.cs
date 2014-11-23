@@ -202,11 +202,11 @@ namespace MissionControllerEC
         {
             if (SaveInfo.SatelliteTypeChoice == 0)
             {
-                return "Send our satellite to Eccentric orbit with specific parts and for amount of time we require.\n\nVessel must be a new vessel launched after contract Acceptance.";
+                return "Launch our satellite into an eccentric orbit with the specific parts and for the amount of time we require.\n\nVessel must be a new vessel launched after accepting the contract.";
             }
             else if (SaveInfo.SatelliteTypeChoice == 1)
             {
-                return "Send our satellite to Specified Orbital Period with specific parts and for amount of time we require.\n\nVessel must be a new vessel launched after contract Acceptance.";
+                return "Launch our satellite into the specified orbital period with the specific parts and for the amount of time we require.\n\nVessel must be a new vessel launched after accepting the contract.";
             }
             else if (SaveInfo.SatelliteTypeChoice == 2)
             {
