@@ -1409,7 +1409,7 @@ namespace MissionControllerEC
 
         protected override string GetHashString()
         {
-            return "Launch of SL-3 Conduct Science while on station";
+            return "Launch of SL-3 & conduct science while on station";
         }
         protected override string GetTitle()
         {
@@ -1571,7 +1571,7 @@ namespace MissionControllerEC
 
         protected override string GetHashString()
         {
-            return "Launch of SL-4 Conduct Science while on station";
+            return "Launch of SL-4 & conduct science while on station";
         }
         protected override string GetTitle()
         {
@@ -1602,7 +1602,7 @@ namespace MissionControllerEC
             "of the mission, this culminated in a radio conference to air frustrations. Following this, the workload schedule was modified, and by the end of their mission the crew had completed even more work than had been"+
             "planned before launch. The experiences of the crew and ground controllers provided important lessons in planning subsequent manned spaceflight work schedules."+
 
-            "On Thanksgiving Day, Gibson and Pogue accomplished a 61⁄2 hour spacewalk. The first part of their spacewalk was spent replacing film in the solar observatory. The remainder of the time was used to repair"+
+            "On Thanksgiving Day, Gibson and Pogue accomplished a 6 1⁄2 hour spacewalk. The first part of their spacewalk was spent replacing film in the solar observatory. The remainder of the time was used to repair"+
             "a malfunctioning antenna."+
 
             "The crew reported that the food was good, but slightly bland. The crew would have preferred to use more condiments to enhance the taste of the food. The amount of salt they could use was restricted for medical"+
@@ -1614,8 +1614,8 @@ namespace MissionControllerEC
             "problems occurred." +
 
             "SL-4 Goals\n\n"+
-            "1. Important Aspect of SL-4 Mission is to bring the station to a higher orbital level, so once you get into the station prepare to bring the station higher into orbit\n"+
-            "2. Conduct an EVA at some point during mission.\n3. Conduct science inside the station to further kerbal understanding of Space and technology.\n\n"+
+            "1. An important aspect of the SL-4 Mission is to bring the station to a higher orbital level, so once you get into the station prepare to perform orbital maneuvers.\n"+
+            "2. Conduct an EVA at some point during mission.\n3. Conduct science inside the station to further Kerbal understanding of space and technology.\n\n"+
 
                 "Information of the SkyLab 2 Mission was gathered from Wikipedia";
         }
