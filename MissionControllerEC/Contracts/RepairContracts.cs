@@ -192,24 +192,24 @@ namespace MissionControllerEC
         protected override string GetDescription()
         {
             //those 3 strings appear to do nothing
-            return "An issue has arised from one of our satellites in orbit, we would like to contract your agency to launch and fix this issue\n\n" +
-                "How To Conduct Repairs\n\n" +
-                "1. You need Spare Parts To conduct Repairs.\n 2. Launch and intercept the target satellite (no need to dock unless you want to). \n" +
-                "3. When you go EVA Grab some SpareParts while EVA using KERT, right click part that has Spare Parts and use the KERT GUI to transfer the Spare Parts to your EVA Kerbal\n" +
-                "4. Go to the nearest Repair Panel and Transfer the Spare Parts to The Repair Panel using KERT GUI Again.\n5. Open the Repair Panel and Select Test System.\n6. Once system is tested and passes select Repair. All Done!";
+            return "An issue has arisen with one of our satellites in orbit, we would like to contract your agency to launch and fix this issue.\n\n" +
+                "How To conduct repairs:\n\n" +
+                "1. You need Spare Parts to conduct the repairs.\n 2. Launch and intercept the target satellite (no need to dock unless you want to). \n" +
+                "3. Conduct an EVA with a Kerbal, then grab some Spare Parts using KERT.  Right click the part that contains the Spare Parts and use the KERT GUI to transfer the Spare Parts to your Kerbal.\n" +
+                "4. Go to the nearest Repair Panel and transfer the Spare Parts to the Repair Panel using the KERT GUI again.\n5. Open the Repair Panel and select Test System.\n6. Once system is tested and passes, select Repair.  All done!";
         }
         protected override string GetNotes()
         {
-            return "How To Conduct Repairs\n\n" +
-                "1. You need Spare Parts To conduct Repairs.\n2. Launch and intercept the target satellite (no need to dock unless you want to). \n" +
-                "3. When you go EVA Grab some SpareParts while EVA using KERT, right click part that has Spare Parts and use the KERT GUI to transfer the Spare Parts to your EVA Kerbal\n" +
-                "4. Go to the nearest Repair Panel and Transfer the Spare Parts to The Repair Panel using KERT GUI Again.\n5. Open the Repair Panel and Select Test System.\n6. Once system is tested and passes select Repair. All Done!";
+            return "How To conduct repairs:\n\n" +
+                "1. You need Spare Parts to conduct the repairs.\n 2. Launch and intercept the target satellite (no need to dock unless you want to). \n" +
+                "3. Conduct an EVA with a Kerbal, then grab some Spare Parts using KERT.  Right click the part that contains the Spare Parts and use the KERT GUI to transfer the Spare Parts to your Kerbal.\n" +
+                "4. Go to the nearest Repair Panel and transfer the Spare Parts to the Repair Panel using the KERT GUI again.\n5. Open the Repair Panel and select Test System.\n6. Once system is tested and passes, select Repair.  All done!";
         }
         protected override string GetSynopsys()
         {
             if (randomString == 0)
             {
-                return "A section of the satellite has started to leak a small amount of fuel, you are to EVA to the Satellites repair panel and conduct repairs.";
+                return "A section of the satellite has started to leak a small amount of fuel.  You are to EVA to the satellites repair panel and conduct repairs.";
             }
             else if (randomString == 1)
             {
@@ -217,19 +217,19 @@ namespace MissionControllerEC
             }
             else if (randomString == 2)
             {
-                return "After launch of the satellite ground control operators noticed a software glitch in the satellites operating system.  EVA to the Repair Panel to Update the software.";
+                return "After launch of the satellite, ground control operators noticed a software glitch in the satellites operating system.  EVA to the Repair Panel to update the software.";
             }
             else if (randomString == 3)
             {
-                return " A small fragment dislodged one of the solar panel housing units, the solar panel is considered lost and needs to be disengaged from the satellite systems.  Eva to the repair panel to start repairs.";
+                return " A small fragment dislodged one of the solar panel housing units.  The solar panel is considered lost and needs to be disengaged from the satellite systems.  EVA to the Repair Panel to start repairs.";
             }
             else if (randomString == 4)
             {
-                return "The port side ABS unit has malfunctioned on this satellite, EVA to the repair panel and conduct repairs to replace the bad part.";
+                return "The port side ABS unit has malfunctioned on this satellite.  EVA to the Repair Panel and conduct repairs to replace the defective component.";
             }
             else if (randomString == 5)
             {
-                return "Ground control operators noticed that the pitch control of the satellite sometimes fires off for no reason.  Satellite TV users are getting upset that they are loosing Satellite connections.  EVA to the repair Panel to correct the issue. ";
+                return "Ground control operators noticed that the pitch control of the satellite sometimes fires off for no reason.  Satellite TV users are getting upset that they are losing satellite reception.  EVA to the Repair Panel to correct the issue.";
             }
             else if (randomString == 6)
             {
@@ -237,14 +237,14 @@ namespace MissionControllerEC
             }
             else
             {
-                return "EVA to the Repair Panel and start Genearal Maintance on the Station.";
+                return "EVA to the Repair Panel and perform general maintenance on the satellite.";
             }
         }
         protected override string MessageCompleted()
         {
             NoVessel = false;
             RepairPanel.repair = false;
-            return "You have successfully repair our Satellite " + vesselName + " thank you very much!";
+            return "You have successfully repaired our satellite " + vesselName + ".  Thank you very much!";
         }
 
         protected override void OnLoad(ConfigNode node)
@@ -403,68 +403,67 @@ namespace MissionControllerEC
 
         protected override string GetHashString()
         {
-            return "Eva And Repair Space Station ";
+            return "EVA and repair Space Station ";
         }
         protected override string GetTitle()
         {
-            return "EVA and Repair Contract for Space Station: " + " " + vesselName;
+            return "Repair Contract for Space Station: " + " " + vesselName;
         }
         protected override string GetDescription()
         {
             //those 3 strings appear to do nothing
-            return "Space Station " + vesselName + " has some issue and needs attention.  You are to EVA and head for the Repair panel and start repairs on the issues.\n\n" +
-                "How To Conduct Repairs\n\n" +
-                "1. You need Spare Parts To conduct Repairs.\n2. When you go EVA Grab some SpareParts while EVA using KERT, right click part that has Spare Parts and use the KERT GUI to transfer the Spare Parts to your EVA Kerbal\n" +
-                "3. Go to the nearest Repair Panel and Transfer the Spare Parts to The Repair Panel using KERT GUI Again.\n4. Open the Repair Panel and Select Test System.\n5. Once system is tested and passes select Repair. All Done!";
+            return "Space Station " + vesselName + " is experiencing issues and needs attention.  You are to conduct an EVA, locate the Repair Panel, and perform repairs to resolve the issues.\n\n" +
+                "How To Conduct Repairs:\n\n" +
+                "1. You need Spare Parts to conduct repairs.\n2. Conduct an EVA and grab some Spare Parts using KERT.  Right click the part that contains Spare Parts and use the KERT GUI to transfer the Spare Parts to your Kerbal\n" +
+                "3. Go to the nearest Repair Panel and transfer the Spare Parts to The Repair Panel using KERT GUI Again.\n4. Open the Repair Panel and Select Test System.\n5. Once system is tested and passes, select Repair. All done!";
         }
         protected override string GetNotes()
         {
-            return "How To Conduct Repairs\n\n" +
-                "1. You need Spare Parts To conduct Repairs.\n 2. Launch and intercept the target satellite (no need to dock unless you want to). \n" +
-                "3. When you go EVA Grab some SpareParts while EVA using KERT, right click part that has Spare Parts and use the KERT GUI to transfer the Spare Parts to your EVA Kerbal\n" +
-                "4. Go to the nearest Repair Panel and Transfer the Spare Parts to The Repair Panel using KERT GUI Again.\n5. Open the Repair Panel and Select Test System.\n6. Once system is tested and passes select Repair. All Done!";
+            return "How To Conduct Repairs:\n\n" +
+                "1. You need Spare Parts to conduct repairs.\n2. Conduct an EVA and grab some Spare Parts using KERT.  Right click the part that contains Spare Parts and use the KERT GUI to transfer the Spare Parts to your Kerbal\n" +
+                "3. Go to the nearest Repair Panel and transfer the Spare Parts to The Repair Panel using KERT GUI Again.\n4. Open the Repair Panel and Select Test System.\n5. Once system is tested and passes, select Repair. All done!";
         }
         protected override string GetSynopsys()
         {
             if (randomString == 0)
             {
-                return "A solar panel section overloaded last night, we shut a small part of the panel down, but you need to reprogram the system to compensate for the new energy output.";
+                return "A solar panel section overloaded last night.  We shut down a small area of the panel, but you need to reprogram the system to compensate for the new energy output.";
             }
             else if (randomString == 1)
             {
-                return "The four Main Bus Switching Units (MBSUs), control the routing of power from the the solar array wings to the rest of the Station " + vesselName + "." +
+                return "The four Main Bus Switching Units (MBSUs), control the routing of power from the the solar array wings to the rest of Station " + vesselName + "." +
                 " Yesterday MBSU-1, while still routing power correctly, ceased responding.  We need you to reset the system from the Repair Panel.";
             }
             else if (randomString == 2)
             {
-                return "An incorrect command sequence caused the Current altitude maintenance rocket control system to misfire during an altitude re-boost manoeuvre, fix the issue by using the Repair Panel Outside.";
+                return "An incorrect command sequence caused the current altitude maintenance rocket control system to misfire during an altitude re-boost maneuver.  Fix the issue by using the Repair Panel outside.";
             }
             else if (randomString == 3)
             {
-                return " A failure in cooling Loop A (starboard side), one of two external cooling loops failed, leaving the station with only half of its normal cooling capacity and zero redundancy in some systems. The repair panel can be used to adjust for this issue and get the system back online.";
+                return "There is a failure in Cooling Loop A (starboard side).  One of two external cooling loops failed, leaving the station with only half of its normal cooling capacity and zero redundancy in some systems.  The repair panel can be used to adjust for this issue and get the system back online.";
             }
             else if (randomString == 4)
             {
-                return " A Replaced failed sequential shunt unit (SSU) for 3A power system needs to be powered up for it can start to help out the stations power situation, EVA to Repair Panel and conduct the Operations.";
+                return "A replacement sequential shunt unit (SSU) for a 3A power system needs to be powered up so it can start to help the station's power situation.  Conduct an EVA, locate the Repair Panel, and perform the operations.";
             }
             else if (randomString == 5)
             {
-                return " You need to Replace a failed Space-to-Ground Transmitter Receiver Controller and the Mobile Base Camera Light Pan-Tilt Assembly near the Repair panel, EVA to Repair Panel to Start The Repairs.";
+                return " You need to Replace a failed Space-to-Ground Transmitter Receiver Controller and the Mobile Base Camera Light Pan-Tilt Assembly near the Repair panel.  Conduct an EVA, locate the Repair Panel, and perform the repairs.";
             }
             else if (randomString == 6)
             {
-                return "A Fuel leak has been detected, we closed off the system form Mission Control but the system needs a reset.  Go to the Repair Panel and fix the issue.";
+                return "A fuel leak has been detected!  We have isolated the leak from Mission Control but the system needs recalibrated to return to normal operation.  Conduct an EVA, locate the Repair Panel, and fix the issue.";
             }
             else
             {
-                return "EVA to the Repair Panel and start Genearal Maintance on the Station.";
+                return "EVA to the Repair Panel and perform general maintenance on the Station.";
             }
         }
         protected override string MessageCompleted()
         {
             NoVessel = false;
             RepairPanel.repair = false;
-            return "You have successfully repair the Space Station " + vesselName + " hopefully that will be the last of these issue's!";
+            return "You have successfully repaired the Space Station " + vesselName + ".  Hopefully that will be the last of these issues!";
         }
 
         protected override void OnLoad(ConfigNode node)
