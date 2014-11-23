@@ -591,7 +591,7 @@ namespace MissionControllerEC
             //those 3 strings appear to do nothing
             return "Luna 16 was an unmanned space mission, part of the Soviet Luna program."+
 
-            "Luna 16 was the first robotic probe to land on the Moon and return a sample of lunar soil to Earth.[1] The sample was returned from Mare Fecunditatis. It represented "+
+            "Luna 16 was the first robotic probe to land on the Moon and return a sample of lunar soil to Earth. The sample was returned from Mare Fecunditatis. It represented "+
             "the first lunar sample return mission by the Soviet Union and was the third lunar sample return mission overall, following the Apollo 11 and Apollo 12 missions.\n\n"+
 
             "The spacecraft consisted of two attached stages, an ascent stage mounted on top of a descent stage. The descent stage was a cylindrical body with four protruding landing legs, fuel tanks, "+
@@ -605,7 +605,7 @@ namespace MissionControllerEC
             "The spacecraft descent stage was equipped with a television camera, radiation and temperature monitors, telecommunications equipment, and an extendable arm with a drilling rig for "+
             "the collection of a lunar soil sample.\n\n" +
 
-                "Information on Luna 2 was gathered from wikipedia.org\n\n" +
+                "Information on Luna 2 was gathered from Wikipedia.org\n\n" +
 
                 "Objectives are \n\n1. Launch Luna 16 \n2. Orbit the Mun \n3. Land Mun (Samples are automated) \n 4. Return to Kerbin with samples.";
         }
@@ -616,13 +616,13 @@ namespace MissionControllerEC
         protected override string MessageCompleted()
         {
             SaveInfo.Luna16Done = true;
-            return "Three tiny samples (0.2 grams) of the Luna 16 soil were sold at Sotheby auction for $442,500 in 1993.[2] The samples are the only lunar return material in private ownership during the "+
-                "20th century.[2] Another source of privately possessed moon rock is lunar meteorites of varying quality and authenticity, and another is lost Apollo moon rocks, possible legal issues aside."+
+            return "Three tiny samples (0.2 grams) of the Luna 16 soil were sold at Sotheby auction for $442,500 in 1993. The samples are the only lunar return material in private ownership during the "+
+                "20th century. Another source of privately possessed moon rock is lunar meteorites of varying quality and authenticity, and another is lost Apollo moon rocks, possible legal issues aside."+
 
-                "A series of 10-kopeck stamps was issued in 1970 to commemorate the flight of Luna 16 lunar probe and depicted the main stages of the programme: soft landing on Moon, launch of the lunar soil "+
+                "A series of 10-kopeck stamps was issued in 1970 to commemorate the flight of Luna 16 lunar probe and depicted the main stages of the program: soft landing on Moon, launch of the lunar soil "+
                 "sample return capsule, and parachute assisted landing back on Earth.\n\n"+
 
-                "Information on Luna 2 was gathered from wikipedia.org";
+                "Information on Luna 2 was gathered from Wikipedia.org";
         }
 
         protected override void OnLoad(ConfigNode node)
@@ -716,8 +716,8 @@ namespace MissionControllerEC
 
         protected override void OnAccepted()
         {
-            string AgenaMessage = "Please Take Note when you finish the Agena Contract that vessel will be recorded as the Agena Vessel for next mission!\n\n" +
-                "if the wrong vessel is recorded you can change the vessel by using the Debug Tools in settings for Agena Contract";
+            string AgenaMessage = "Please take note that when you finish the Agena contract, that vessel will be recorded as the Agena Vessel for the next mission!\n\n" +
+                "If the wrong vessel is recorded, you can change the vessel by using the Debug Tools in settings for Agena Contract.";
             MessageSystem.Message m = new MessageSystem.Message("Important Agena Target Contract Information", AgenaMessage.ToString(), MessageSystemButton.MessageButtonColor.YELLOW, MessageSystemButton.ButtonIcons.MESSAGE);
             MessageSystem.Instance.AddMessage(m);
         }
@@ -743,9 +743,9 @@ namespace MissionControllerEC
         {
 
             return "The Agena Target Vehicle (ATV) was an unmanned spacecraft used by NASA during its Gemini program to develop and practice orbital space rendezvous and docking techniques and\n" +
-                "to perform large orbital changes, in preparation for the Apollo program lunar missions.\n\n" +
-                "Your first task is to launch an Agena Type vehicle into orbit\n\n" +
-                "Please Take Note when you finish the Agena Contract that vessel will be recorded as the Agena Vessel for next mission!";
+                "to perform large orbital changes, in preparation for the Apollo Program's lunar missions.\n\n" +
+                "Your first task is to launch an Agena Type vehicle into orbit.\n\n" +
+                "Please take note that when you finish the Agena Contract, that vessel will be recorded as the Agena Vessel for the next mission!";
         }
         protected override string GetSynopsys()
         {
@@ -759,7 +759,7 @@ namespace MissionControllerEC
             return FlightGlobals.ActiveVessel.name + " Vessel ID is " + FlightGlobals.ActiveVessel.id + "\n\n" +
                 "If this is not correct you can change this is Debug menu using select Agena vessel Debug Tool\n\n" +
                 "Congradulations you have succesfully launched your Agena Target Vehicle, now you must get you Manned Orbital vehicle to Dock with the ATV\n\n" +
-                "The Gemini-Agena Target Vehicle design was an adaptation of the basic Agena-D vehicle using the alternate Model 8247 rocket engine and additional program-peculiar equipment required for the Gemini mission.\n" +
+                "The Gemini-Agena Target Vehicle design was an adaptation of the basic Agena-D vehicle using the alternate Model 8247 rocket engine and additional program-peculiar equipment required for the Gemini mission.\n\n" +
                 "This GATV was divided into:\n\n" +
 
 "The program-peculiar forward auxiliary section. This section consisted of the auxiliary equipment rack, the McDonnell Aircraft Company-furnished docking-adapter module, and the clamshell nose shroud.\n" +
@@ -941,11 +941,11 @@ namespace MissionControllerEC
         protected override string MessageCompleted()
         {
             SaveInfo.Agena2Done = true;
-            return "You have been succesful with Launching an Agena Type Craft, Docking with it, and changing your Orbital Altitude.  Congradulations!\n\n" +
+            return "You have been succesful with Launching an Agena Type craft, docking with it, and changing your Orbital Altitude.  Congradulations!\n\n" +
                 "The first GATV was launched on October 25, 1965 while the Gemini 6 astronauts were waiting on the pad. While the Atlas performed normally,\n" +
                 "the Agena's engine exploded during orbital injection. Since the rendezvous and docking was the primary objective, the Gemini 6 mission was scrubbed,\n" +
                 "and replaced with the alternate mission Gemini 6A, which rendezvoused (but could not dock) with Gemini 7 in December.\n\n" +
-                "Was not until Gemini 10 That all objectives of Launching, Docking, and boosting Gemini 10 to 412-nautical-mile change succeded.";
+                "It was not until Gemini 10 that all objectives of Launching, Docking, and boosting Gemini 10 to 412-nautical-mile change succeded.";
         }
 
         protected override void OnLoad(ConfigNode node)
@@ -1097,12 +1097,12 @@ namespace MissionControllerEC
         {
             //those 3 strings appear to do nothing
             return "Skylab was a space station launched and operated by NASA and was the United States' first space station. Skylab orbited the Earth from 1973 to 1979, and included a workshop, " +
-                "a solar observatory, and other systems. It was launched unmanned by a modified Saturn V rocket, with a weight of 169,950 pounds (77 t).[1] Three manned missions to the station, " +
+                "a solar observatory, and other systems. It was launched unmanned by a modified Saturn V rocket, with a weight of 169,950 pounds (77 t).  Three manned missions to the station, " +
                 "conducted between 1973 and 1974 using the Apollo Command/Service Module (CSM) atop the smaller Saturn IB, each delivered a three-astronaut crew. On the last two manned missions, " +
                 "an additional Apollo / Saturn IB stood by ready to rescue the crew in orbit if it was needed.\n\n" +
                 "Our Goals \n\n 1. Launch skylab to space with specified equipment \n2. deploy skylab in desired orbit and await the next mission crew launch \n\n" +
-                "Please note at the end of contract your active vessel will be recored as the SkyLab Station for all the next SkyLab Contracts!\n\n" +
-                "Information on SkyLab was obtained from WikipidiA.";
+                "Please note that at the end of contract your active vessel will be recorded as the SkyLab Station for all the next SkyLab Contracts!\n\n" +
+                "Information on SkyLab was obtained from Wikipidia.";
         }
         protected override string GetSynopsys()
         {
@@ -1265,9 +1265,9 @@ namespace MissionControllerEC
                 "Our first crew we will send to the (SkyLab) " + SaveInfo.skyLabName + " will have to repair the Station before they can conduct any Science and stay on the station! So our objectives are:\n\n" +
                 "1. Launch 3 Man Vessel to the station and Dock with it.\n 2. Repair the station using the Repair Panel placed on the vessel during Mission 1.\n 3. After repairs stay on station and conduct " +
                 "scientific studies in orbit around Kerbin.\n 4. Keep crew in station and orbit for " + Tools.formatTime(contractTime) + "\n\n" +
-                "Mission Controller will save the TimeCountdown to you persistent file, no need to actually stay in flight once countdown starts, you are free to do other task while contract countsdown\n\n"+
+                "Mission Controller will save the TimeCountdown to you persistent file. There's no need to actually stay in flight once countdown starts, so you are free to do other task while the contract counts down\n\n"+
                 "How To Repair SkyLab\n\n 1. Dock with skylab\n2.Transfer RepairParts from your orbitor to the Repair Panel on SkyLab.\n3.While still in vessel right click Repair Panel and Select Check If System is Ready "+
-                "to repair.\n4. Go EVA and approach the Repair Panel on sky Lab.\n5. Open the repair panel door and select repair!  All done.";
+                "to repair.\n4. Go EVA and approach the Repair Panel on SkyLab.\n5. Open the Repair Panel door and select Repair.  All done!";
         }
         protected override string GetSynopsys()
         {
