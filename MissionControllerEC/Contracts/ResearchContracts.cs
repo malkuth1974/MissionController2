@@ -105,7 +105,7 @@ namespace MissionControllerEC
         }
         protected override string GetSynopsys()
         {
-            return "Scientific orbital research mission of  " + targetBody.theName + " with " + partName;
+            return "Scientific orbital research mission of  " + targetBody.theName + " with " + partName ".";
         }
         protected override string MessageCompleted()
         {
@@ -258,14 +258,14 @@ namespace MissionControllerEC
         }
         protected override string GetSynopsys()
         {
-            return "Land a Unmanned Vessel on " + targetBody.theName + " and conduct research for our company";
+            return "Land an unmanned vessel on " + targetBody.theName + " and conduct research for our company.";
         }
         protected override string MessageCompleted()
         {
             MCELanderResearch.doLanderResearch = false;
-            return "You have successfully landed and researched on " + targetBody.theName + " After landing we have found out many fascinating secrets about what makes up the composition of the landing site.\n\n" +
+            return "You have successfully landed on and conducted researched on " + targetBody.theName + ".  After landing we have discovered many fascinating secrets about what makes up the composition of the landing site.\n\n" +
 
-            "Further research missions manned and robotic will be needed in the future to unlock the secrets of " + targetBody.theName;
+            "Further research missions, both manned and robotic, will be needed in the future to unlock the secrets of " + targetBody.theName ".";
         }
 
         protected override void OnLoad(ConfigNode node)

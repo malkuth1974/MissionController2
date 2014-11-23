@@ -208,29 +208,29 @@ namespace MissionControllerEC
         {
             if (SaveInfo.SatelliteTypeChoice == 0)
             {
-                return "Send our satellite to Eccentric orbit with specific parts and for amount of time we require.\n\nVessel must be a new vessel launched after contract Acceptance.";
+                return "Launch our satellite into an eccentric orbit with the specific parts and for the amount of time we require.\n\nVessel must be a new vessel launched after accepting the contract.";
             }
             else if (SaveInfo.SatelliteTypeChoice == 1)
             {
-                return "Send our satellite to Specified Orbital Period with specific parts and for amount of time we require.\n\nVessel must be a new vessel launched after contract Acceptance.";
+                return "Launch our satellite into the specified orbital period with the specific parts and for the amount of time we require.\n\nVessel must be a new vessel launched after accepting the contract.";
             }
             else if (SaveInfo.SatelliteTypeChoice == 2)
             {
                 if (MinInc > 90)
                 {
-                    return ("Send out satellite on a Retrograde Inclined Orbit of " + MinInc + " and " + MaxInc + ". With desired Apogee and Perogee.\n\nVessel must be a new vessel launched after contract Acceptance.");
+                    return ("Launch our satellite into a retrograde inclined orbit of " + MinInc + " and " + MaxInc + " with the desired apogee and perigee.\n\nVessel must be a new vessel launched after accepting the contract.");
                 }
                 else
                 {
-                    return ("Send out satellite on a Prograde Inclined Orbit of " + MinInc + " and " + MaxInc + ". With desired Apogee and Perogee.\n\nVessel must be a new vessel launched after contract Acceptance.");
+                    return ("Launch our satellite on a prograde inclined orbit of " + MinInc + " and " + MaxInc + " with desired apogee and perigee.\n\nVessel must be a new vessel launched after accepting the contract.");
                 }
             }
             else if (SaveInfo.SatelliteTypeChoice == 3)
             {
-                return "Send our satellite to KeoSync orbit with specific parts and for amount of time we require.\n\nVessel must be a new vessel launched after contract Acceptance.";
+                return "Launch our satellite into a Keosynchronous orbit with the specified parts and for the amount of time we require.\n\nVessel must be a new vessel launched after accepting the contract.";
             }
             else
-                return "Send satellite to orbit.\n\nVessel must be a new vessel launched after contract Acceptance.";
+                return "Launch our satellite into orbit.\n\nVessel must be a new vessel launched after accepting the contract.";
         }
 
         protected override string GetHashString()
@@ -241,56 +241,56 @@ namespace MissionControllerEC
         {
             if (SaveInfo.SatelliteTypeChoice == 0)
             {
-                return "Launch New Satellite to Eccentric Orbit For Specified Amount Of Time over " + targetBody.theName;
+                return "Launch new satellite to eccentric orbit for specified amount of time over " + targetBody.theName;
             }
             else if (SaveInfo.SatelliteTypeChoice == 1)
             {
-                return "Launch New Satellite to Specified Orbital Period for Amount Of Time Indicated.";
+                return "Launch new satellite to specified orbital period for amount of time indicated.";
             }
             else if (SaveInfo.SatelliteTypeChoice == 2)
             {
-                return "Launch New Satellite to an Inclined Orbit for Amount Of Time Indicated.";
+                return "Launch new satellite into an Inclined orbit for amount of time indicated.";
             }
             else if (SaveInfo.SatelliteTypeChoice == 3)
             {
-                return "Launch New satellite to Keosynchronous orbit with specific parts and for amount of time we require";
+                return "Launch new satellite into Keosynchronous orbit with specified parts and for amount of time we require";
             }
             else
-                return "Launch A New satellite to orbit";
+                return "Launch a new satellite into orbit";
         }
         protected override string GetDescription()
         {
             //those 3 strings appear to do nothing
-            return "We would like you to deliver our Satellite to orbit, We have specific scientific parts we want added to this satellite. Please include a " + sciPartname +
-                "\n\n" + "Contract Goals\n\n " + "1. Build a satellite (suggest placing docking port for future Repair contracts)\n 2. Include a " + sciPartname + " In the construction." +
-                "\n 3. launch satellite to Contract Orbit Specified";
+            return "We would like you to deliver our satellite to orbit, We have specific scientific parts we want added to this satellite. Please include a " + sciPartname + "."
+                "\n\n" + "Contract Goals\n\n " + "1. Build a satellite (we recommend you place a docking port for future Repair contracts)\n 2. Include a " + sciPartname + " on the satellite." +
+                "\n 3. Launch satellite into the orbit specified ";
         }
         protected override string GetSynopsys()
         {
             if (SaveInfo.SatelliteTypeChoice == 0)
             {
-                return "You must bring the satellite to the Indicated Orbital Height and then adjust to the Eccentricity that we have specified.";
+                return "You must bring the satellite to the indicated orbital altitude and then adjust to the eccentricity that we have specified.";
             }
             else if (SaveInfo.SatelliteTypeChoice == 1)
             {
-                return "For this contract bring satellite to the Indicated Maximum and Minumum orbital periods specified in the contract.";
+                return "For this contract bring the satellite to the indicated maximum and minimum orbital periods specified in the contract.";
             }
             else if (SaveInfo.SatelliteTypeChoice == 2)
             {
-                return "For this contract launch the satellite into the correct Inclination specified and also Bring the satellite to the Max And Min Apoapsis and Periapsis";
+                return "For this contract, launch the satellite into the correct inclination specified, and also bring the satellite to the specified apoapsis and periapsis";
             }
             else if (SaveInfo.SatelliteTypeChoice == 3)
             {
-                return "A Keosynchronous Orbit is an orbit around Kerbin with an orbital period of one sidereal day, intentionally matching Kerbin's " +
-                    "sidereal rotation period (approximately 6).";
+                return "A Keosynchronous orbit is an orbit around Kerbin with an orbital period of one sidereal day, intentionally matching Kerbin's " +
+                    "sidereal rotation period (approximately 6 hours).";
             }
             else
                 return "Send satellite to orbit";
         }
         protected override string MessageCompleted()
         {
-            return "You have successfully delivered our satellite to orbit around " + targetBody.theName + " with the specialized part " + sciPartname +
-                ".  We gained many scientific achievments with this mission and would like to thank you for your help";
+            return "You have successfully delivered our satellite to orbit around " + targetBody.theName + " with the required " + sciPartname +
+                ".  We've accomplished many scientific achievements with this mission and would like to thank you for your help.";
         }
 
         protected override void OnLoad(ConfigNode node)
