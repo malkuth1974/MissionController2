@@ -78,9 +78,9 @@ namespace MissionControllerEC
                 "minutes from launch to landing. As planned, Gagarin parachuted to the ground separately from his spacecraft after ejecting at 7 km (23,000 ft) altitude. Due to the secrecy " +
                 "surrounding the Soviet space program at the time, many details of the spaceflight only came to light years later, and several details in the original press releases turned out to be false.\n\n"+
                 
-                "Information on Vostok 1 was gathered from wikipedia\n\n" +
+                "Information on Vostok 1 was gathered from Wikipedia\n\n" +
                 
-                "Objectives are too \n\n1. Enter Space \n2. Conduct at least one orbit of Kebin \n3. Return safely to Kerbin";
+                "Objectives are to: \n\n1. Enter Space \n2. Conduct at least one orbit of Kebin \n3. Return safely to Kerbin";
         }
         protected override string GetSynopsys()
         {
@@ -93,11 +93,11 @@ namespace MissionControllerEC
                 "but also the history of the human race itself. The fact that this accomplishment was successfully carried out by the Soviet Union, a country completely devastated by war just " +
                 "sixteen years prior, makes the achievement even more impressive. Unlike the United States, the USSR had to begin from a position of tremendous disadvantage. Its industrial " +
                 "infrastructure had been ruined, and its technological capabilities were outdated at best. A good portion of its land had been devastated by war, and it had lost about 25 million "+ 
-                "citizens ... but it was the totalitarian state that overwhelmingly took the lead.\n\n"+
+                "citizens... but it was the totalitarian state that overwhelmingly took the lead.\n\n"+
 
                 "Commemorative monument, Vostok-1 landing site near Engels, Russia.\n\n"+
 
-                "The landing site is now a monument park. The central feature in the park is a 25 meter tall monument that consists of a silver metallic rocketship rising on a curved metallic "+
+                "The landing site is now a monument park. The central feature in the park is a 25 meter tall monument that consists of a silver metallic rocket rising on a curved metallic "+
                 "column of flame, from a wedge shaped, white stone base. In front of this is a 3 meter tall, white stone statue of Yuri Gagarin, wearing a spacesuit, with one arm raised in greeting "+
                 "and the other holding a space helmet.\n\n"+
 
@@ -208,13 +208,13 @@ namespace MissionControllerEC
         {
             //those 3 strings appear to do nothing
             return "Vostok 2 was a Soviet space mission which carried cosmonaut Gherman Titov into orbit for a full day on August 6, 1961 "+
-                "to study the effects of a more prolonged period of weightlessness on the human body.[1] Titov orbited the Earth over 17 times, exceeding the single orbit of Yuri Gagarin on Vostok 1 "+
+                "to study the effects of a more prolonged period of weightlessness on the human body.  Titov orbited the Earth over 17 times, exceeding the single orbit of Yuri Gagarin on Vostok 1 "+
                 "− as well as the suborbital spaceflights of American astronauts Alan Shepard and Gus Grissom aboard their respective Mercury-Redstone 3 and 4 missions. Indeed, Titov's number of orbits "+
                 "and flight time would not be surpassed by an American astronaut until Gordon Cooper's Mercury-Atlas 9 spaceflight in May 1963.\n\n"+
 
-                "Information on Vostok 1 was gathered from wikipedia\n\n" +
+                "Information on Vostok 2 was gathered from Wikipedia\n\n" +
 
-                "Objectives are too \n\n1. Enter Space \n\n2. Stay in orbit for a total of 1 day (12 Kerbal Hours) \n3. Return Home.";
+                "Objectives are to: \n\n1. Enter Space \n\n2. Stay in orbit for a total of 1 day (12 Kerbal Hours) \n3. Return Home.";
         }
         protected override string GetSynopsys()
         {
@@ -337,7 +337,7 @@ namespace MissionControllerEC
                 "was equipped with an inflatable airlock. It established another milestone in space exploration when Alexey Leonov became the first person to leave the spacecraft in a specialized "+
                 "spacesuit to conduct a 12 minute spacewalk." +
 
-                "Information on Voskhod 2 was gathered from wikipedia\n\n" +
+                "Information on Voskhod 2 was gathered from Wikipedia\n\n" +
 
                 "Objectives are too \n\n1. Enter Space \n\n2. Bring vessel to Orbit Height at least 82000m (2 Kerbals Total) \n3. EVA 1 Kerbal \n 4. Return to Kerbin safely.";
         }
@@ -356,7 +356,7 @@ namespace MissionControllerEC
             "A rescue party arrived on skis the next day with food and hot water, and chopped wood for a fire and a log cabin. After a more comfortable second night in the forest, the cosmonauts skied to a " +
             "waiting helicopter several kilometers away and flew to Perm, then Baikonur.\n\n" +
 
-            "Information on Voskhod 2 was gathered from wikipedia";
+            "Information on Voskhod 2 was gathered from Wikipedia";
         }
 
         protected override void OnLoad(ConfigNode node)
@@ -475,7 +475,7 @@ namespace MissionControllerEC
 
                 "Information on Luna 2 was gathered from HistoryToday.com\n\n" +
 
-                "Objectives are \n\n1. Launch Luna 2 \n2. Orbit the Mun \n3. Conduct Science at Mun \n 4. When finished crash vessel into surface mun.";
+                "Objectives are \n\n1. Launch Luna 2 \n2. Orbit the Mun \n3. Conduct Science at Mun \n 4. When finished crash vessel into the surface of Mun.";
         }
         protected override string GetSynopsys()
         {
