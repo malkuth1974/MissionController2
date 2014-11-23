@@ -140,7 +140,7 @@ namespace MissionControllerEC
             string AgenaMessage = "The civilians that are assigned to your vessel for the Contract Tour are represented in game by seats.  They do not show up as Individual Kerbals in " +
                 "the game! Make no mistake though they are on your vessel.  If you fill the seats they need, then you cannot finish the contract.\n" +
 
-                "Even if the objective is Green Check marked,  If you try to cheat and Fill the seat later on the objective will GO BACK to Not Finished!";
+                "Even if the objective is Green Check marked,  If you try to cheat and fill the seat later on the objective will GO BACK to Not Finished!";
 
             MessageSystem.Message m = new MessageSystem.Message("About the Passengers", AgenaMessage.ToString(), MessageSystemButton.MessageButtonColor.YELLOW, MessageSystemButton.ButtonIcons.MESSAGE);
             MessageSystem.Instance.AddMessage(m);
@@ -156,7 +156,7 @@ namespace MissionControllerEC
       
         protected override string GetHashString()
         {
-            return "Bring Civilians on a Low Kerbib Orbit Tour of Kerbin";
+            return "Bring Civilians on a Low Kerbin Orbit Tour of Kerbin";
         }
         protected override string GetTitle()
         {
@@ -165,10 +165,10 @@ namespace MissionControllerEC
         protected override string GetDescription()
         {
             //those 3 strings appear to do nothing
-            return civiliansAmount + " Civilian kerbals have signed a contracted with us to bring them to Low Kerbin Orbit for a set amount of time.\n The vessel must have room for the amount of civilians specified in the contract. " +
+            return civiliansAmount + " Civilian Kerbals have signed a contracted with us to bring them to Low Kerbin Orbit for a set amount of time.\n The vessel must have room for the amount of civilians specified in the contract. " +
                 "Failure to have the space available will cause the contract to be null and void.\n\n" +
-                "It’s also very important that nothing bad happens to our guest while in our care.  If anything tragic happens the financial burdens on the Space Agency could be the end of us!\n\n" +
-                "Please take note civilians are not allowed to take part in operations of KSC Personal duties, they are on the vessel as passengers only.  For this reason you as player cannot use them as an in game asset.  \n" +
+                "It’s also very important that nothing bad happens to our guests while in our care.  If anything tragic happens, the financial burdens on the Space Agency could be the end of us!\n\n" +
+                "Please take note civilians are not allowed to take part in operations of KSC Personal duties, they are on the vessel as passengers only.  For this reason you as the player cannot use them as an in game asset.  \n" +
                 "But do not take up their seats or you will lose the contract!"
 ;
         }
@@ -182,7 +182,7 @@ namespace MissionControllerEC
         }
         protected override string MessageCompleted()
         {
-            return "The civilians thank you for bringing them home alive and showing them the wonders of space, and whats its like to be a true Kerbal Space Astronaught!";
+            return "The civilians thank you for bringing them home alive and showing them the wonders of space, and whats its like to be a true Kerbal Space Astronaut!";
         }
 
         protected override void OnLoad(ConfigNode node)
@@ -355,10 +355,10 @@ namespace MissionControllerEC
         protected override void OnAccepted()
         {
 
-            string civLandingText = "The civilians that are assigned to your vessel for the Contract Tour are represented in game by seats.  They do not show up as Individual Kerbals in " +
+            string civLandingText = "The civilians that are assigned to your vessel for the Contract Tour are represented in game by seats.  They do not show up as individual Kerbals in " +
                 "the game! Make no mistake though they are on your vessel.  If you fill the seats they need, then you cannot finish the contract.\n" +
 
-                "Even if the objective is Green Check marked,  If you try to cheat and Fill the seat later on the objective will GO BACK to Not Finished!";
+                "Even if the objective is Green Check marked,  If you try to cheat and fill the seat later on the objective will GO BACK to Not Finished!";
 
             MessageSystem.Message m = new MessageSystem.Message("About the Passengers", civLandingText.ToString(), MessageSystemButton.MessageButtonColor.YELLOW, MessageSystemButton.ButtonIcons.MESSAGE);
             MessageSystem.Instance.AddMessage(m);
@@ -386,8 +386,8 @@ namespace MissionControllerEC
             return civiliansAmount + " Civilian kerbals have signed a contracted with us to bring them on a landing expedition of the " + targetBody.theName + ".\n\n" +
                 "The vessel must have room for the amount of civilians specified in the contract. " +
                 "Failure to have the space available will cause the contract to be null and void.\n\n" +
-                "It’s also very important that nothing bad happens to our guest while in our care.  If anything tragic happens the financial burdens on the Space Agency could be the end of us!\n\n" +
-                "Please take note civilians are not allowed to take part in operations of KSC Personal duties, they are on the vessel as passengers only.  For this reason you as player cannot use them as an in game asset.  \n" +
+                "It’s also very important that nothing bad happens to our guests while in our care.  If anything tragic happens, the financial burdens on the Space Agency could be the end of us!\n\n" +
+                "Please take note civilians are not allowed to take part in operations of KSC personal duties, they are on the vessel as passengers only.  For this reason you as the player cannot use them as an in game asset.  \n" +
                 "But do not take up their seats or you will lose the contract!"
 ;
         }
@@ -401,8 +401,8 @@ namespace MissionControllerEC
         }
         protected override string MessageCompleted()
         {
-            return "The civilians thank you for bringing them home alive and showing them the wonders of space, and whats its like to be a true Kerbal Space Astronaught! This expedition to " + targetBody.theName +
-                "Has brought many discovies for us while we stayed on " + targetBody.theName + ".  We thank you very much for bringing us home safely.";
+            return "The civilians thank you for bringing them home alive and showing them the wonders of space, and whats its like to be a true Kerbal Space Astronaut! This expedition to " + targetBody.theName +
+                " has brought many discoveries for us while we stayed on " + targetBody.theName + ".  We thank you very much for bringing us home safely.";
         }
 
         protected override void OnLoad(ConfigNode node)
@@ -458,7 +458,7 @@ namespace MissionControllerEC
         public string name3 = "Civilian Roberts";
         public string name4 = "Civilian Johnsons";
         public double TripTime;
-        public string TripText = "The civilians have contracted to spend this amount of time in The station\n";
+        public string TripText = "The civilians have contracted to spend this amount of time in the station\n";
         public int totalContracts;
         public int TotalFinished;
         private int choice1;
@@ -579,10 +579,10 @@ namespace MissionControllerEC
         protected override void OnAccepted()
         {
 
-            string AgenaMessage = "The civilians that are assigned to your vessel for the Contract Tour are represented in game by seats.  They do not show up as Individual Kerbals in " +
+            string AgenaMessage = "The civilians that are assigned to your vessel for the Contract Tour are represented in game by seats.  They do not show up as individual Kerbals in " +
                 "the game! Make no mistake though they are on your vessel.  If you fill the seats they need, then you cannot finish the contract.\n" +
 
-                "Even if the objective is Green Check marked,  If you try to cheat and Fill the seat later on the objective will GO BACK to Not Finished!";
+                "Even if the objective is Green Check marked,  If you try to cheat and fill the seat later on the objective will GO BACK to Not Finished!";
 
             MessageSystem.Message m = new MessageSystem.Message("About the Passengers", AgenaMessage.ToString(), MessageSystemButton.MessageButtonColor.YELLOW, MessageSystemButton.ButtonIcons.MESSAGE);
             MessageSystem.Instance.AddMessage(m);
@@ -607,10 +607,10 @@ namespace MissionControllerEC
         protected override string GetDescription()
         {
             //those 3 strings appear to do nothing
-            return civiliansAmount + " Civilian kerbals have signed a contracted with us to bring them to your orbital station named " + vesselName + " for a set amount of time.\n The vessel must have room for the amount of civilians specified in the contract. " +
+            return civiliansAmount + " Civilian Kerbals have signed a contracted with us to bring them to your orbital station named " + vesselName + " for a set amount of time.\n The vessel must have room for the amount of civilians specified in the contract. " +
                 "Failure to have the space available will cause the contract to be null and void.\n\n" +
-                "It’s also very important that nothing bad happens to our guest while in our care.  If anything tragic happens the financial burdens on the Space Agency could be the end of us!\n\n" +
-                "Please take note civilians are not allowed to take part in operations of KSC Personal duties, they are on the vessel as passengers only.  For this reason you as player cannot use them as an in game asset.  \n" +
+                "It’s also very important that nothing bad happens to our guests while in our care.  If anything tragic happens, the financial burdens on the Space Agency could be the end of us!\n\n" +
+                "Please take note civilians are not allowed to take part in operations of KSC personal duties, they are on the vessel as passengers only.  For this reason you as player cannot use them as an in game asset.  \n" +
                 "But do not take up their seats or you will lose the contract!"
 ;
         }
@@ -624,7 +624,7 @@ namespace MissionControllerEC
         }
         protected override string MessageCompleted()
         {
-            return "The civilians thank you for bringing them home alive and showing them the wonders of your Space Station, they have learned a lot of iformation while staying at " + vesselName;
+            return "The civilians thank you for bringing them home alive and showing them the wonders of your Space Station.  They have learned a lot of information while staying at " + vesselName;
         }
 
         protected override void OnLoad(ConfigNode node)
