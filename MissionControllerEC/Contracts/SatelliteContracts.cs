@@ -118,6 +118,7 @@ namespace MissionControllerEC
             {
                 this.satellite1 = this.AddParameter(new AltitudeGoal(targetBody, MaxAltitude), null);
                 satellite1.SetFunds(5000, 5000, targetBody);
+                this.satellite1.DisableOnStateChange = false;
                 this.satellite2 = this.AddParameter(new EccentricGoal(targetBody,GMinecc, GMaxecc), null);
                 satellite2.SetFunds(8000, 8000, targetBody);
                 satellite2.DisableOnStateChange = false;
@@ -136,6 +137,7 @@ namespace MissionControllerEC
                 {
                     satellite3.SetFunds(18000, 18000, targetBody);
                 }
+                this.satellite3.DisableOnStateChange = false;
                 Debug.Log("Loaded random orbital period satellite contract");
             }
 
@@ -145,10 +147,13 @@ namespace MissionControllerEC
                 MaxInc = MinInc + 5;
                 this.satellite4 = this.AddParameter(new ApAOrbitGoal(targetBody,MaxApA,MinApA),null);
                 satellite4.SetFunds(5000, 5000, targetBody);
+                this.satellite4.DisableOnStateChange = false;
                 this.satellite5 = this.AddParameter(new PeAOrbitGoal(targetBody,MaxPeA,MinPeA),null);
                 satellite5.SetFunds(8000, 8000, targetBody);
+                this.satellite5.DisableOnStateChange = false;
                 this.satellite6= this.AddParameter(new Inclination(targetBody,MinInc, MaxInc), null);
                 satellite6.SetFunds(10000, 5000, targetBody);
+                this.satellite6.DisableOnStateChange = false;
                 Debug.Log("Loaded Inclination ApA and PeA Satellite contract");
             }
 
@@ -158,6 +163,7 @@ namespace MissionControllerEC
                 minorbital = st.contract_Orbital_Period_Min_InSeconds;
                 this.satellite7 = this.AddParameter(new OrbitalPeriod(targetBody,minorbital, maxorbital), null);
                 satellite7.SetFunds(37000, 37000, targetBody);
+                this.satellite7.DisableOnStateChange = false;
                 Debug.Log("Loaded KeoSync Orbit Satellite Contract");
             }
 

@@ -329,8 +329,8 @@ namespace MissionControllerEC
             ctrans2.SetFunds(2000, 2000, targetBody);
             ctrans2.SetReputation(3, targetBody);
             this.ctrans3 = this.AddParameter(new LandingParameters(Planetarium.fetch.Home,true), null);
-            ctrans3.SetFunds(2000, 2000, targetBody);
-            ctrans3.SetReputation(3, targetBody);
+            ctrans3.SetFunds(2000, 2000, Planetarium.fetch.Home);
+            ctrans3.SetReputation(3, Planetarium.fetch.Home);
             this.AddParameter(new GetCrewCount(crewAmount), null);
             base.SetExpiry(15f, 40f);
             base.SetDeadlineYears(700, targetBody);

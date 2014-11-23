@@ -301,7 +301,7 @@ namespace MissionControllerEC
 
         public void GetPartsCost()
         {            
-            if (HighLogic.LoadedSceneIsEditor)
+            if (HighLogic.LoadedSceneIsEditor && HighLogic.CurrentGame.Mode == Game.Modes.CAREER)
             {
                 try               
                 {
@@ -421,7 +421,7 @@ namespace MissionControllerEC
                
         public void hireKerbals(ProtoCrewMember pc, ProtoCrewMember.KerbalType pc1, ProtoCrewMember.KerbalType pc2)
         {
-            if (pc1 == ProtoCrewMember.KerbalType.Applicant && pc2 == ProtoCrewMember.KerbalType.Crew)
+            if (pc1 == ProtoCrewMember.KerbalType.Applicant && pc2 == ProtoCrewMember.KerbalType.Crew && HighLogic.CurrentGame.Mode == Game.Modes.CAREER)
             {
                 Debug.LogWarning("Kerbal Was Hired name is " + pc.name);
                 StringBuilder Hiremessage = new StringBuilder();
@@ -433,25 +433,30 @@ namespace MissionControllerEC
                 Hiremessage.AppendLine();              
                 MessageSystem.Message m = new MessageSystem.Message("Hired Recruit", Hiremessage.ToString(), MessageSystemButton.MessageButtonColor.GREEN, MessageSystemButton.ButtonIcons.MESSAGE);
                 MessageSystem.Instance.AddMessage(m);
-                Funding.Instance.AddFunds(- settings.HireCost,TransactionReasons.Any);                
+                Funding.Instance.AddFunds(- settings.HireCost,TransactionReasons.Any);
+                SaveInfo.TotalSpentKerbals += settings.HireCost;
             }
             
-        }      
+        }
 
         public void chargeKerbalDeath(EventReport value)
         {
-            Funding.Instance.AddFunds( - settings.Death_Insurance, TransactionReasons.Any);
-            StringBuilder deathmessage = new StringBuilder();
-            deathmessage.AppendLine("A Kerbal named " + value.sender + " has died in the line of duty");
-            deathmessage.AppendLine();
-            deathmessage.AppendLine("This is a tragic loss and will cost you " + settings.Death_Insurance + " Funds.");
-            deathmessage.AppendLine();
-            deathmessage.AppendLine(value.sender + " will be remembered by the Kerbal People as a hero who though of Kerbal kind before his own safety");
-            deathmessage.AppendLine();
-            deathmessage.AppendLine("We send him to the Darkness in which we all are born, to rejoin the spark of life");
-            MessageSystem.Message m = new MessageSystem.Message("Death Of Hero", deathmessage.ToString(), MessageSystemButton.MessageButtonColor.RED, MessageSystemButton.ButtonIcons.ALERT);
-            MessageSystem.Instance.AddMessage(m);
-            //Debug.Log("Death Event " + value.msg);
+            if (HighLogic.CurrentGame.Mode == Game.Modes.CAREER)
+            {
+                Funding.Instance.AddFunds(-settings.Death_Insurance, TransactionReasons.Any);
+                SaveInfo.TotalSpentKerbalDeaths += settings.Death_Insurance;
+                StringBuilder deathmessage = new StringBuilder();
+                deathmessage.AppendLine("A Kerbal named " + value.sender + " has died in the line of duty");
+                deathmessage.AppendLine();
+                deathmessage.AppendLine("This is a tragic loss and will cost you " + settings.Death_Insurance + " Funds.");
+                deathmessage.AppendLine();
+                deathmessage.AppendLine(value.sender + " will be remembered by the Kerbal People as a hero who though of Kerbal kind before his own safety");
+                deathmessage.AppendLine();
+                deathmessage.AppendLine("We send him to the Darkness in which we all are born, to rejoin the spark of life");
+                MessageSystem.Message m = new MessageSystem.Message("Death Of Hero", deathmessage.ToString(), MessageSystemButton.MessageButtonColor.RED, MessageSystemButton.ButtonIcons.ALERT);
+                MessageSystem.Instance.AddMessage(m);
+                //Debug.Log("Death Event " + value.msg);
+            }
         }
 
         public void getSupplyList(bool stationOnly)

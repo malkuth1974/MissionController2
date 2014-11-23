@@ -42,21 +42,26 @@ namespace MissionControllerEC
             int m = (int)(seconds / (60.0));
             seconds = seconds % (60.0);
 
-            List<String> parts = new List<String>();                     
+            List<String> count = new List<String>();                     
 
             if (h > 0)
             {
-                parts.Add(String.Format("{0}:hours ", h));
+                count.Add(String.Format("{0}:hours ", h));
             }
 
             if (m > 0)
             {
-                parts.Add(String.Format("{0}:mins ", m));
-            }            
+                count.Add(String.Format("{0}:mins ", m));
+            }
 
-            if (parts.Count > 0)
+            if (seconds > 0)
             {
-                return String.Join(" ", parts.ToArray());
+                count.Add(String.Format("{0:00}:secs ", seconds));
+            }
+
+            if (count.Count > 0)
+            {
+                return String.Join(" ", count.ToArray());
             }
             else
             {
@@ -81,36 +86,36 @@ namespace MissionControllerEC
             int m = (int)(seconds / (60.0));
             seconds = seconds % (60.0);
 
-            List<String> parts = new List<String>();
+            List<String> count = new List<String>();
 
             if (y > 0)
             {
-                parts.Add(String.Format("{0}:year ", y));
+                count.Add(String.Format("{0}:year ", y));
             }
 
             if (d > 0)
             {
-                parts.Add(String.Format("{0}:days ", d));
+                count.Add(String.Format("{0}:days ", d));
             }
 
             if (h > 0)
             {
-                parts.Add(String.Format("{0}:hours ", h));
+                count.Add(String.Format("{0}:hours ", h));
             }
 
             if (m > 0)
             {
-                parts.Add(String.Format("{0}:mins ", m));
+                count.Add(String.Format("{0}:mins ", m));
             }
 
             if (seconds > 0)
             {
-                parts.Add(String.Format("{0:00}:secs ", seconds));
+                count.Add(String.Format("{0:00}:secs ", seconds));
             }
 
-            if (parts.Count > 0)
+            if (count.Count > 0)
             {
-                return String.Join(" ", parts.ToArray());
+                return String.Join(" ", count.ToArray());
             }
             else
             {

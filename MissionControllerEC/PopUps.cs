@@ -40,8 +40,11 @@ namespace MissionControllerEC
                 if (GUILayout.Button("Exit Window And Charge Funds"))
                 {
                     MCE_ScenarioStartup.ShowPopUpWindow3 = false;
-                    Funding.Instance.AddFunds(-revertcost,TransactionReasons.Any );
-                    SaveInfo.TotalSpentOnRocketTest += revertcost;
+                    if (HighLogic.CurrentGame.Mode == Game.Modes.CAREER)
+                    {
+                        Funding.Instance.AddFunds(-revertcost, TransactionReasons.Any);
+                        SaveInfo.TotalSpentOnRocketTest += revertcost;
+                    }
                     MCE_ScenarioStartup.RevertHalt = false;
                 }
             }

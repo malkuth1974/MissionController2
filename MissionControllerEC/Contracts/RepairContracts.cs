@@ -149,9 +149,9 @@ namespace MissionControllerEC
 
             this.repairgoal2 = this.AddParameter(new RepairPanelPartCheck(titleName, vesselID, vesselName), null);
             repairgoal2.SetFunds(8000, targetBody);
-            repairgoal2.SetReputation(10, targetBody);
-            AddParameter(new LandingParameters(targetBody, true), null);
+            repairgoal2.SetReputation(10, targetBody);          
             this.AddParameter(new ResourceSupplyGoal(repairParts, RPamount, Ctitle), null);
+            AddParameter(new LandingParameters(Planetarium.fetch.Home, true), null);
             base.SetExpiry(1f, 3f);
             base.SetDeadlineYears(1f, targetBody);
 

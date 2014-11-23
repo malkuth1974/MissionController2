@@ -14,6 +14,7 @@ namespace MissionControllerEC
         private double maxApA = 0.0;
         private double minApA = 0.0;
         private bool updated = false;
+        private bool LockOut = false;
 
         public ApAOrbitGoal()
         {
@@ -24,6 +25,15 @@ namespace MissionControllerEC
             this.targetBody = target;
             this.maxApA = maxapA;
             this.minApA = minapA;
+            this.LockOut = false;
+        }
+
+        public ApAOrbitGoal(CelestialBody target, double maxapA, double minapA, bool lockout)
+        {
+            this.targetBody = target;
+            this.maxApA = maxapA;
+            this.minApA = minapA;
+            this.LockOut = lockout;
         }
         protected override string GetHashString()
         {
@@ -64,9 +74,9 @@ namespace MissionControllerEC
                     {
                         Orbits(FlightGlobals.ActiveVessel);
                     }
-                if (this.state == ParameterState.Complete)
+                if (this.state == ParameterState.Complete && !LockOut)
                     {
-                    OffOrbits(FlightGlobals.ActiveVessel);
+                        OffOrbits(FlightGlobals.ActiveVessel);
                     }
             }
         }
@@ -76,6 +86,7 @@ namespace MissionControllerEC
             Tools.ContractLoadCheck(node, ref targetBody, Planetarium.fetch.Home, targetBody, "targetBody");          
             Tools.ContractLoadCheck(node, ref maxApA, 71000, maxApA , "aPa");           
             Tools.ContractLoadCheck(node, ref minApA, 70500, minApA, "pEa");
+            Tools.ContractLoadCheck(node, ref LockOut, true, LockOut, "lockout");
 
         }
         protected override void OnSave(ConfigNode node)
@@ -86,6 +97,7 @@ namespace MissionControllerEC
             node.AddValue("aPa", ApAID);
             double PeAID = minApA;
             node.AddValue("pEa", PeAID);
+            node.AddValue("lockout", LockOut);
         }
 
         public void Orbits(Vessel vessel)
@@ -98,9 +110,7 @@ namespace MissionControllerEC
                     {
                         base.SetComplete();
                     }
-                }
-                else
-                    base.SetIncomplete();
+                }             
             }
         }
         public void OffOrbits(Vessel vessel)
@@ -113,9 +123,7 @@ namespace MissionControllerEC
                     {
                         base.SetIncomplete();
                     }
-                }
-                else
-                    base.SetComplete();
+                }              
             }
         }
         public void flightReady()
@@ -200,7 +208,7 @@ namespace MissionControllerEC
                 if (FlightGlobals.ActiveVessel)
                 {
                     base.SetComplete();
-                    ScreenMessages.PostScreenMessage("You Have achieved Orbit of Target Body: " + targetBody.theName);
+                    //ScreenMessages.PostScreenMessage("You Have achieved Orbit of Target Body: " + targetBody.theName);
                 }
             }
         }      
@@ -217,6 +225,7 @@ namespace MissionControllerEC
         private double maxPeA = 0.0;
         private double minPeA = 0.0;
         private bool updated = false;
+        private bool lockOut = false;
 
         public PeAOrbitGoal()
         {
@@ -227,7 +236,17 @@ namespace MissionControllerEC
             this.targetBody = target;
             this.maxPeA = maxpeA;
             this.minPeA = minpeA;
+            this.lockOut = false;
         }
+
+        public PeAOrbitGoal(CelestialBody target, double maxpeA, double minpeA, bool lockout)
+        {
+            this.targetBody = target;
+            this.maxPeA = maxpeA;
+            this.minPeA = minpeA;
+            this.lockOut = lockout;
+        }
+
         protected override string GetHashString()
         {
             return targetBody.bodyName;
@@ -270,7 +289,7 @@ namespace MissionControllerEC
                         {
                             Orbits(FlightGlobals.ActiveVessel);
                         }
-                        if (this.state == ParameterState.Complete)
+                        if (this.state == ParameterState.Complete && !lockOut)
                         {
                             OffOrbits(FlightGlobals.ActiveVessel);
                         }
@@ -289,6 +308,7 @@ namespace MissionControllerEC
             Tools.ContractLoadCheck(node, ref targetBody, Planetarium.fetch.Home, targetBody, "targetBody");
             Tools.ContractLoadCheck(node, ref maxPeA, 71000, maxPeA, "maxpEa");
             Tools.ContractLoadCheck(node, ref minPeA, 70500, minPeA, "minpEa");
+            Tools.ContractLoadCheck(node, ref lockOut, true, lockOut, "lockout");
 
         }
         protected override void OnSave(ConfigNode node)
@@ -299,6 +319,7 @@ namespace MissionControllerEC
             node.AddValue("maxpEa", maxPpAID);
             double MinPeAID = minPeA;
             node.AddValue("minpEa", MinPeAID);
+            node.AddValue("lockout", lockOut);
         }
 
         public void Orbits(Vessel vessel)
@@ -313,8 +334,6 @@ namespace MissionControllerEC
                         base.SetComplete();
                     }
                 }
-                else
-                    base.SetIncomplete();
             }
         }
         public void OffOrbits(Vessel vessel)
@@ -328,9 +347,7 @@ namespace MissionControllerEC
                     {
                         base.SetIncomplete();
                     }
-                }
-                else
-                    base.SetComplete();
+                }              
             }
         }
         public void flightReady()
@@ -352,6 +369,7 @@ namespace MissionControllerEC
         private double minInclination = 0.0;
         private double maxInclination = 0.0;
         private bool updated = false;
+        private bool lockOut = false;
 
         public Inclination()
         {
@@ -362,6 +380,15 @@ namespace MissionControllerEC
             this.minInclination = minInc;
             this.maxInclination = maxInc;
             this.targetBody = body;
+            this.lockOut = false;
+        }
+
+        public Inclination(CelestialBody body, double minInc, double maxInc, bool lockout)
+        {
+            this.minInclination = minInc;
+            this.maxInclination = maxInc;
+            this.targetBody = body;
+            this.lockOut = lockout;
         }
 
         protected override string GetHashString()
@@ -404,7 +431,7 @@ namespace MissionControllerEC
                     {
                         CheckInclination(FlightGlobals.ActiveVessel);
                     }
-                    if (this.state == ParameterState.Complete)
+                    if (this.state == ParameterState.Complete && !lockOut)
                     {
                         OffCheckInclination(FlightGlobals.ActiveVessel);
                     }
@@ -417,6 +444,7 @@ namespace MissionControllerEC
             Tools.ContractLoadCheck(node, ref targetBody, Planetarium.fetch.Home, targetBody, "targetBody");
             Tools.ContractLoadCheck(node, ref maxInclination, 10, maxInclination, "maxincID");
             Tools.ContractLoadCheck(node, ref minInclination, 70500, minInclination, "minincID");
+            Tools.ContractLoadCheck(node, ref lockOut, true, lockOut, "lockout");
         }
         protected override void OnSave(ConfigNode node)
         {
@@ -426,6 +454,7 @@ namespace MissionControllerEC
             node.AddValue("maxincID", maxInclination);
             double minincID = minInclination;
             node.AddValue("minincID", minInclination);
+            node.AddValue("lockout", lockOut);
         }
 
         public void CheckInclination(Vessel vessel)
@@ -468,6 +497,7 @@ namespace MissionControllerEC
         private double mineccn = 0.0;
         private double maxeccn = 0.0;
         private bool updated = false;
+        private bool lockOut = false;
 
         public EccentricGoal()
         {
@@ -478,6 +508,15 @@ namespace MissionControllerEC
             this.mineccn = minEcc;
             this.maxeccn = maxEcc;
             this.targetBody = body;
+            this.lockOut = false;
+        }
+
+        public EccentricGoal(CelestialBody body, double minEcc, double maxEcc, bool lockout)
+        {
+            this.mineccn = minEcc;
+            this.maxeccn = maxEcc;
+            this.targetBody = body;
+            this.lockOut = lockout;
         }
 
         protected override string GetHashString()
@@ -520,7 +559,7 @@ namespace MissionControllerEC
                     {
                         CheckEccentricity(FlightGlobals.ActiveVessel);
                     }
-                    if (this.state == ParameterState.Complete)
+                    if (this.state == ParameterState.Complete && !lockOut)
                     {
                         ReCheckEccentricity(FlightGlobals.ActiveVessel);
                     }
@@ -533,6 +572,7 @@ namespace MissionControllerEC
             Tools.ContractLoadCheck(node, ref targetBody, Planetarium.fetch.Home, targetBody, "targetBody");
             Tools.ContractLoadCheck(node,ref mineccn,0,mineccn,"mineccn");
             Tools.ContractLoadCheck(node,ref maxeccn,.2,mineccn,"maxeccn");
+            Tools.ContractLoadCheck(node, ref lockOut, true, lockOut, "lockout");
 
         }
         protected override void OnSave(ConfigNode node)
@@ -541,6 +581,7 @@ namespace MissionControllerEC
             node.AddValue("targetBody", bodyID);
             node.AddValue("mineccn", mineccn);
             node.AddValue("maxeccn", maxeccn);
+            node.AddValue("lockout", lockOut);
         }
 
         public void CheckEccentricity(Vessel vessel)
@@ -576,6 +617,7 @@ namespace MissionControllerEC
         private double minOrbitalPeriod = 0.0;
         private double maxOrbitalPeriod = 0.0;
         private bool updated = false;
+        private bool lockOut = false;
 
         public OrbitalPeriod()
         {
@@ -586,6 +628,15 @@ namespace MissionControllerEC
             this.minOrbitalPeriod = minOrb;
             this.maxOrbitalPeriod = maxOrb;
             this.targetBody = body;
+            this.lockOut = false;
+        }
+
+        public OrbitalPeriod(CelestialBody body, double minOrb, double maxOrb, bool lockout)
+        {
+            this.minOrbitalPeriod = minOrb;
+            this.maxOrbitalPeriod = maxOrb;
+            this.targetBody = body;
+            this.lockOut = lockout;
         }
 
         protected override string GetHashString()
@@ -629,7 +680,7 @@ namespace MissionControllerEC
                         {
                             CheckOrbitalPeriod(FlightGlobals.ActiveVessel);
                         }
-                        if (this.state == ParameterState.Complete)
+                        if (this.state == ParameterState.Complete && !lockOut)
                         {
                             OffCheckOrbitalPeriod(FlightGlobals.ActiveVessel);
                         }
@@ -646,6 +697,7 @@ namespace MissionControllerEC
             Tools.ContractLoadCheck(node, ref targetBody, Planetarium.fetch.Home, targetBody, "targetBody");
             Tools.ContractLoadCheck(node, ref maxOrbitalPeriod, 10000, maxOrbitalPeriod, "maxOrbID");
             Tools.ContractLoadCheck(node, ref minOrbitalPeriod, 95000, minOrbitalPeriod, "minOrbID");
+            Tools.ContractLoadCheck(node, ref lockOut, true, lockOut, "lockout");
         }
         protected override void OnSave(ConfigNode node)
         {
@@ -655,6 +707,7 @@ namespace MissionControllerEC
             node.AddValue("maxOrbID", maxOrbitalPeriod);
             double minOrbID = minOrbitalPeriod;
             node.AddValue("minOrbID", minOrbitalPeriod);
+            node.AddValue("lockout", lockOut);
         }
 
         public void CheckOrbitalPeriod(Vessel vessel)
@@ -675,7 +728,7 @@ namespace MissionControllerEC
                 if (vessel.isActiveVessel)
                 {
                     if (vessel.orbit.period >= maxOrbitalPeriod && vessel.orbit.period <= minOrbitalPeriod)
-                        base.SetComplete();
+                        base.SetIncomplete();
                 }
             }
         }
@@ -695,6 +748,7 @@ namespace MissionControllerEC
         private CelestialBody targetBody;
         private double minAlt = 0.0;
         private bool updated = false;
+        private bool lockOut = false;
 
         public AltitudeGoal()
         {
@@ -704,6 +758,14 @@ namespace MissionControllerEC
         {
             this.targetBody = target;
             this.minAlt = minapA;
+            this.lockOut = false;
+        }
+
+        public AltitudeGoal(CelestialBody target, double minapA, bool lockout)
+        {
+            this.targetBody = target;
+            this.minAlt = minapA;
+            this.lockOut = lockout;
         }
         protected override string GetHashString()
         {
@@ -745,7 +807,7 @@ namespace MissionControllerEC
                     {
                         Orbits(FlightGlobals.ActiveVessel);
                     }
-                    if (this.state == ParameterState.Complete)
+                    if (this.state == ParameterState.Complete && !lockOut)
                     {
                         OffOrbits(FlightGlobals.ActiveVessel);
                     }
@@ -757,6 +819,7 @@ namespace MissionControllerEC
         {           
             Tools.ContractLoadCheck(node, ref targetBody, Planetarium.fetch.Home, targetBody, "targetBody");
             Tools.ContractLoadCheck(node, ref minAlt, 71000, minAlt, "alt");
+            Tools.ContractLoadCheck(node, ref lockOut, true, lockOut, "lockout");
         }
         protected override void OnSave(ConfigNode node)
         {
@@ -764,6 +827,7 @@ namespace MissionControllerEC
             node.AddValue("targetBody", bodyID);
 
             node.AddValue("alt", minAlt);
+            node.AddValue("lockout", lockOut);
         }
 
         public void Orbits(Vessel vessel)
@@ -776,9 +840,7 @@ namespace MissionControllerEC
                     {
                         base.SetComplete();
                     }
-                }
-                else
-                    base.SetIncomplete();
+                }              
             }
         }
         public void OffOrbits(Vessel vessel)
@@ -789,11 +851,9 @@ namespace MissionControllerEC
                 {
                     if (vessel.orbit.altitude <= minAlt)
                     {
-                        base.SetComplete();
+                        base.SetIncomplete();
                     }
-                }
-                else
-                    base.SetIncomplete();
+                }             
             }
         }
         public void flightReady()

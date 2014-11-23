@@ -349,6 +349,7 @@ namespace MissionControllerEC
     {
         [Persistent]public double TotalSpentKerbals = 0;
         [Persistent]public double TotalSpentRockets = 0;
+        [Persistent]public double TotalSpentDeaths = 0;
         [Persistent]public bool ComSatOn = false;
         [Persistent]public string agenaTargetVesselID = "none";
         [Persistent]public string agenaTargetVesselName = "none";
@@ -405,6 +406,7 @@ namespace MissionControllerEC
         {
             SaveInfo.Hardcore_Vessel_Must_Survive = hardcoreOn;
             SaveInfo.TotalSpentKerbals = TotalSpentKerbals;
+            SaveInfo.TotalSpentKerbalDeaths = TotalSpentDeaths;
             SaveInfo.TotalSpentOnRocketTest = TotalSpentRockets;
             SaveInfo.SatContractReady = ComSatOn;
             SaveInfo.AgenaTargetVesselID = agenaTargetVesselID;
@@ -463,6 +465,7 @@ namespace MissionControllerEC
             hardcoreOn = SaveInfo.Hardcore_Vessel_Must_Survive;
             TotalSpentKerbals = SaveInfo.TotalSpentKerbals;
             TotalSpentRockets = SaveInfo.TotalSpentOnRocketTest;
+            TotalSpentDeaths = SaveInfo.TotalSpentKerbalDeaths;
             ComSatOn = SaveInfo.SatContractReady;
             agenaTargetVesselID = SaveInfo.AgenaTargetVesselID;
             agenaTargetVesselName = SaveInfo.AgenaTargetVesselName;

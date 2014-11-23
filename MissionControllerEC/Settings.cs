@@ -24,8 +24,8 @@ namespace MissionControllerEC
         [Persistent]internal double contract_Orbital_Period_Min_InSeconds = 21598;
         [Persistent]internal int Contract_Payment_Multiplier = 1;
         [Persistent]internal double contract_Random_Orbital_Period_Difference = 600;
-        [Persistent]internal double contract_Random_Orbital_Period_MinInSeconds = 76000;
-        [Persistent]internal double contract_Random_Orbital_Period_MaxInSeconds = 2700;
+        [Persistent]internal double contract_Random_Orbital_Period_MinInSeconds = 2000;
+        [Persistent]internal double contract_Random_Orbital_Period_MaxInSeconds = 120000;
 
         [Persistent]internal int contract_repair_Random_percent = 20;
         [Persistent]internal int contract_repair_Station_Random_percent = 20;

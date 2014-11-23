@@ -6,6 +6,7 @@ namespace MissionControllerEC
     {       
         public static double TotalSpentKerbals = 0;
         public static double TotalSpentOnRocketTest = 0;
+        public static double TotalSpentKerbalDeaths = 0;
         public static bool SatContractReady = false;
         public static string AgenaTargetVesselID = "none";
         public static string AgenaTargetVesselName = "none";

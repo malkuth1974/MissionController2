@@ -27,7 +27,7 @@ namespace MissionControllerEC
         {           
             if (HighLogic.LoadedSceneIsFlight) { return false; }
             minHeight = settings.vostok12height;  
-            vostok1 = this.AddParameter(new AltitudeGoal(targetBody,minHeight),null);
+            vostok1 = this.AddParameter(new AltitudeGoal(targetBody,minHeight,true),null);
             vostok1.SetFunds(1000f, targetBody);
             vostok1.SetReputation(2f, targetBody);
             vostok2 = this.AddParameter(new InOrbitGoal(targetBody),null);
@@ -159,7 +159,7 @@ namespace MissionControllerEC
             
             if (HighLogic.LoadedSceneIsFlight) { return false; }
             minHeight = settings.vostok12height;
-            vostok1 = this.AddParameter(new AltitudeGoal(targetBody, minHeight), null);
+            vostok1 = this.AddParameter(new AltitudeGoal(targetBody, minHeight,true), null);
             vostok1.SetFunds(1000f, targetBody);
             vostok1.SetReputation(2f, targetBody);
             vostok2 = this.AddParameter(new InOrbitGoal(targetBody), null);
@@ -285,7 +285,7 @@ namespace MissionControllerEC
             }
             if (HighLogic.LoadedSceneIsFlight) { return false; }
             minHeight = settings.voshodheight;
-            vostok1 = this.AddParameter(new AltitudeGoal(targetBody, minHeight), null);
+            vostok1 = this.AddParameter(new AltitudeGoal(targetBody, minHeight,true), null);
             vostok1.SetFunds(2000f, targetBody);
             vostok1.SetReputation(2f, targetBody);
             vostok2 = this.AddParameter(new InOrbitGoal(targetBody), null);
@@ -890,8 +890,8 @@ namespace MissionControllerEC
             AgenaDockParameter.SetFunds(3000.0f, targetBody);
             AgenaDockParameter.SetReputation(30f, targetBody);
 
-            this.AddParameter(new ApAOrbitGoal(targetBody, (double)GMaxApA, (double)GMinApA), null);
-            this.AddParameter(new PeAOrbitGoal(targetBody, (double)GMaxPeA, (double)GMinPeA), null);
+            this.AddParameter(new ApAOrbitGoal(targetBody, (double)GMaxApA, (double)GMinApA,true), null);
+            this.AddParameter(new PeAOrbitGoal(targetBody, (double)GMaxPeA, (double)GMinPeA,true), null);
             this.AddParameter(new LandingParameters(targetBody, true), null);
             this.AddParameter(new PartGoal(partName, partAmount), null);
             this.AddParameter(new GetCrewCount(crewCount), null);
@@ -1528,10 +1528,10 @@ namespace MissionControllerEC
             skylab2.SetReputation(3, targetBody);
             skylab2.SetScience(5, targetBody);
 
-            skylab6 = this.AddParameter(new ApAOrbitGoal(targetBody, (double)GMaxApA, (double)GMinApA), null);
+            skylab6 = this.AddParameter(new ApAOrbitGoal(targetBody, (double)GMaxApA, (double)GMinApA,true), null);
             skylab6.SetFunds(1000, targetBody);
 
-            skylab7 = this.AddParameter(new PeAOrbitGoal(targetBody, (double)GMaxPeA, (double)GMinPeA), null);
+            skylab7 = this.AddParameter(new PeAOrbitGoal(targetBody, (double)GMaxPeA, (double)GMinPeA,true), null);
             skylab7.SetFunds(1000, targetBody);
 
             this.skylab4 = this.AddParameter(new TimeCountdownDocking(targetBody, contractTime, contTimeTitle, SaveInfo.skyLabVesID), null);

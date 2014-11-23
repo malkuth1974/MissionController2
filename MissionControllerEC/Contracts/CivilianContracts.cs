@@ -48,17 +48,13 @@ namespace MissionControllerEC
             if (HighLogic.LoadedSceneIsFlight) { return false; }
             totalContracts = ContractSystem.Instance.GetCurrentContracts<CivilianLowOrbit>().Count();
             TotalFinished = ContractSystem.Instance.GetCompletedContracts<CivilianLowOrbit>().Count();
-            if (prestige != ContractPrestige.Significant || prestige != ContractPrestige.Exceptional)
-            {
-                return false;
-            }
-
+            
             if (totalContracts >= 1)
             {
                 return false;
             }
 
-            if (!SaveInfo.CivilianLowOrbit)
+            if (SaveInfo.CivilianLowOrbit == false)
             {
                 return false;
             }
@@ -104,13 +100,15 @@ namespace MissionControllerEC
                 civ2.DisableOnStateChange = false;
             }
 
-            this.civ3 = this.AddParameter(new AltitudeGoal(targetBody, altitudeGoal), null);
+            this.civ3 = this.AddParameter(new AltitudeGoal(targetBody, altitudeGoal,true), null);
             civ3.SetFunds(10000, 10000, targetBody);
             civ3.SetReputation(5, 10, targetBody);
+            this.civ3.DisableOnStateChange = false;
 
-            this.civ4 = this.AddParameter(new EccentricGoal(targetBody, eccmin, eccmax), null);
+            this.civ4 = this.AddParameter(new EccentricGoal(targetBody, eccmin, eccmax,true), null);
             civ4.SetFunds(10000, 10000, targetBody);
             civ4.SetReputation(5, 10, targetBody);
+            this.civ4.DisableOnStateChange = false;
 
             this.civ5 = this.AddParameter(new LandingParameters(targetBody,true), null);
             civ5.SetFunds(20000, 20000, targetBody);
@@ -222,7 +220,7 @@ namespace MissionControllerEC
         {
             bool techUnlock = ResearchAndDevelopment.GetTechnologyState("advFlightControl") == RDTech.State.Available;
             bool techUnlock2 = ResearchAndDevelopment.GetTechnologyState("specializedConstruction") == RDTech.State.Available;
-            if (!techUnlock || !techUnlock2 || st.Civilian_Contracts_Off == true)
+            if (!techUnlock && !techUnlock2 || st.Civilian_Contracts_Off == true)
                 return false;
             else
                 return true;
@@ -335,8 +333,8 @@ namespace MissionControllerEC
             civ6.SetReputation(15, 30, targetBody);
 
             this.civ5 = this.AddParameter(new LandingParameters(Planetarium.fetch.Home,true), null);
-            civ5.SetFunds(25000, 25000, targetBody);
-            civ5.SetReputation(20, 40, targetBody);
+            civ5.SetFunds(25000, 25000, Planetarium.fetch.Home);
+            civ5.SetReputation(20, 40, Planetarium.fetch.Home);
 
             this.AddParameter(new GetSeatCount(civiliansAmount, crewSeatTitle), null);
             if (SaveInfo.Hardcore_Vessel_Must_Survive == true)
@@ -558,9 +556,9 @@ namespace MissionControllerEC
                 civ2.DisableOnStateChange = false;
             }
 
-            this.civ5 = this.AddParameter(new LandingParameters(targetBody,true), null);
-            civ5.SetFunds(20000, 20000, targetBody);
-            civ5.SetReputation(20, 40, targetBody);
+            this.civ5 = this.AddParameter(new LandingParameters(Planetarium.fetch.Home, true), null);
+            civ5.SetFunds(20000, 20000, Planetarium.fetch.Home);
+            civ5.SetReputation(20, 40, Planetarium.fetch.Home);
 
             this.AddParameter(new GetSeatCount(civiliansAmount, crewSeatTitle), null);
             if (SaveInfo.Hardcore_Vessel_Must_Survive == true)
@@ -661,7 +659,7 @@ namespace MissionControllerEC
         {
             bool techUnlock = ResearchAndDevelopment.GetTechnologyState("advFlightControl") == RDTech.State.Available;
             bool techUnlock2 = ResearchAndDevelopment.GetTechnologyState("specializedConstruction") == RDTech.State.Available;
-            if (!techUnlock || !techUnlock2 || st.Civilian_Contracts_Off == true)
+            if (!techUnlock && !techUnlock2 || st.Civilian_Contracts_Off == true)
                 return false;
             else
                 return true;

@@ -22,7 +22,7 @@ namespace MissionControllerEC
         }
         protected override string GetHashString()
         {
-            return "Land on " + targetBody.bodyName;
+            return "Land Vessel";
         }
         protected override string GetTitle()
         {
@@ -42,6 +42,7 @@ namespace MissionControllerEC
                         if (this.state == ParameterState.Incomplete)
                         {
                             Landing(FlightGlobals.ActiveVessel);
+                            Debug.Log("Wet and dry landing accepted for contract");
                         }
                 }
                 else
@@ -50,6 +51,7 @@ namespace MissionControllerEC
                         if (this.state == ParameterState.Incomplete)
                         {
                             Landing(FlightGlobals.ActiveVessel);
+                            Debug.Log("only dry landing accepted for this contract");
                         }
                 }
             }
@@ -69,13 +71,25 @@ namespace MissionControllerEC
 
         public void Landing(Vessel vessel)
         {
-            if (vessel.mainBody.referenceBody.Equals(targetBody))
+            if (FlightGlobals.ActiveVessel.orbit.referenceBody.Equals(targetBody))
             {
-                if (vessel.situation != Vessel.Situations.PRELAUNCH)
+                if (FlightGlobals.ActiveVessel.situation == Vessel.Situations.PRELAUNCH)
+                {
+                    Debug.Log("Vessel is in prelaunch not accepting landing attempt");
+                }
+                else
                 {
                     if (vessel.launchTime > this.Root.DateAccepted)
+                    {
                         base.SetComplete();
+                        Debug.Log("landing set to complete");
+                    }
                 }
+                    
+            }
+            else
+            {
+                Debug.Log("Not clearing for landing checks within landing method for targetbody " + targetBody);
             }
         }       
     }

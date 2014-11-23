@@ -180,14 +180,17 @@ namespace MissionControllerEC
       
         protected override void OnUpdate()
         {
-            if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel.orbit.referenceBody.Equals(targetBody) && 
-                (FlightGlobals.ActiveVessel.situation == Vessel.Situations.LANDED || FlightGlobals.ActiveVessel.situation == Vessel.Situations.SPLASHED))
+            if (Root.ContractState == Contract.State.Active)
             {
-                timebool = true;
-            }
-            if (timebool)
-            {
-                CheckIfLanded(FlightGlobals.ActiveVessel);
+                if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel.orbit.referenceBody.Equals(targetBody) &&
+                    (FlightGlobals.ActiveVessel.situation == Vessel.Situations.LANDED || FlightGlobals.ActiveVessel.situation == Vessel.Situations.SPLASHED))
+                {
+                    timebool = true;
+                }
+                if (timebool)
+                {
+                    CheckIfLanded(FlightGlobals.ActiveVessel);
+                }
             }
         }
         protected override void OnLoad(ConfigNode node)
@@ -320,7 +323,7 @@ namespace MissionControllerEC
 
         protected override void OnUpdate()
         {
-            if (Root.ContractState == Contract.State.Active && HighLogic.LoadedSceneIsFlight)
+            if (Root.ContractState == Contract.State.Active)
                 timeCountDown();
         }
         protected override void OnLoad(ConfigNode node)

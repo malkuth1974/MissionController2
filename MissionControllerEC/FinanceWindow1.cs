@@ -84,6 +84,12 @@ namespace MissionControllerEC
 
             GUILayout.Space(10);
             GUILayout.BeginHorizontal();
+            GUILayout.Box("Total Spent Kerbal Deaths", GUILayout.Width(200));
+            GUILayout.Box("" + (int)SaveInfo.TotalSpentKerbalDeaths, GUILayout.Width(200));
+            GUILayout.EndHorizontal();
+
+            GUILayout.Space(10);
+            GUILayout.BeginHorizontal();
             GUILayout.Box("Total Spent RocketTest (Reverts)", GUILayout.Width(200));
             GUILayout.Box("" + (int)SaveInfo.TotalSpentOnRocketTest, GUILayout.Width(200));
             GUILayout.EndHorizontal();
