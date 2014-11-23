@@ -85,8 +85,8 @@ namespace MissionControllerEC
         protected override string GetDescription()
         {
 
-            return "This is a ComSat Network Contract, you have control over when these missions are available and what their Orbital Periods are, you can set this up in the MCE Infomation Icon Tab located top Right \n" +
-                "Corner Of screen while in SpaceCenter View.  Please note that settings will not take effect until at least 1 cycle of contracts has passed.  If you don't see your settings cancel out the Offered contract! \n\n" +
+            return "This is a ComSat Network contract, you have control over when these missions are available and what their orbital periods are, you can set this up in the MCE Infomation icon tab located top right \n" +
+                "corner of the screen while in Space Center View.  Please note that settings will not take effect until at least 1 cycle of contracts has passed.  If you don't see your settings cancel out the offered contract! \n\n" +
                 "All ComSat Information is stored inside the Mission Controller Config File and will pass on to other save files";
         }
         protected override string GetNotes()
@@ -95,11 +95,11 @@ namespace MissionControllerEC
         }
         protected override string GetSynopsys()
         {
-            return "Launch Your ComSat Network " + targetBody.theName;
+            return "Launch your ComSat Network " + targetBody.theName;
         }
         protected override string MessageCompleted()
         {
-            return "You have Delivered your ComSat to its assigned height around " + targetBody.theName + " Continue to build you network.  When your done you can turn off ComSat Contracts in the MCE Information Window.  Please note it will take a few Contract cycles for them to Disapear! ";
+            return "You have delivered your ComSat to its assigned height around " + targetBody.theName + " Continue to build you network.  When you're done you can turn off ComSat Contracts in the MCE Information Window.  Please note it will take a few Contract cycles for them to Disapear! ";
         }
 
         protected override void OnLoad(ConfigNode node)
@@ -220,9 +220,9 @@ namespace MissionControllerEC
         protected override string GetDescription()
         {
 
-            return "This is a custom supply mission.  Use these contracts to supply your land bases and Orbital stations with whatever supplies you choose. You must dock with the Vessel you selected to finish contract! \n" +
-                "You can edit this contract by going to SpaceCenter screen and selecting Mission Controller Icon.  In the GUI choose the Custom Contract Button to start editing this contract. \n\n" +
-                "All supply contract information is stored in you Persistent Save File. The location of the Station or Base you will resupply is " + targetBody.theName + " Payments are adjusted for Travel Time To Body";
+            return "This is a custom supply mission.  Use these contracts to supply your land bases and orbital stations with whatever supplies you choose. You must dock with the vessel you selected in order to finish the contract! \n" +
+                "You can edit this contract by going to the Space Center screen and selecting Mission Controller Icon.  In the GUI choose the Custom Contract Button to start editing this contract. \n\n" +
+                "All supply contract information is stored in your Persistent Save File. The location of the Station or Base you will resupply is " + targetBody.theName + " Payments are adjusted for Travel Time To Body";
         }
         protected override string GetNotes()
         {
@@ -234,7 +234,7 @@ namespace MissionControllerEC
         }
         protected override string MessageCompleted()
         {
-            return "You have Delivered your supplies to " + vesselName + " If your done, you can turn off Supply Contracts in the MCE Information Window.  Please note it will take a few Contract cycles for them to Disapear! ";
+            return "You have delivered your supplies to " + vesselName + " If you're done, you can turn off Supply Contracts in the MCE Information Window.  Please note it will take a few contract cycles for them to dissapear! ";
         }
 
         protected override void OnLoad(ConfigNode node)
@@ -360,9 +360,9 @@ namespace MissionControllerEC
         protected override string GetDescription()
         {
 
-            return "This is a custom Crew Transfer mission.  Use these contracts to supply your land bases and Orbital stations with crews and select the Time Spent in station or base. You must dock with the Vessel you selected to finish contract! " +
-                "You can edit this contract by going to SpaceCenter screen and selecting Mission Controller Icon.  In the GUI choose the Custom Contract Button to start editing this contract. \n\n" +
-                "All Crew Transfer contract information is stored in you Persistent Save File. The location of the Station or Base you will Transfer crew is " + targetBody.theName + "." + " Payments are adjusted for Travel Time To Body";
+            return "This is a custom Crew Transfer mission.  Use these contracts to supply your land bases and orbital stations with crew and select the Time Spent in station or base. You must dock with the Vessel you selected to finish contract! " +
+                "You can edit this contract by going to the Space Center screen and selecting the Mission Controller Icon.  In the GUI choose the Custom Contract Button to start editing this contract. \n\n" +
+                "All Crew Transfer contract information is stored in your Persistent Save File. The location of the Station or Base you will Transfer crew is " + targetBody.theName + "." + " Payments are adjusted for Travel Time to Body";
         }
         protected override string GetNotes()
         {
@@ -375,7 +375,7 @@ namespace MissionControllerEC
         protected override string MessageCompleted()
         {
             return "You have Delivered your Crew to " + vesselName + "And spent " + Tools.formatTime(crewTime) + " at your Station/Base\n\n" +
-                " If your done, you can turn off Crew Contracts in the MCE Information Window.  Please note it will take a few Contract cycles for them to Disapear! ";
+                " If you're done, you can turn off Crew Contracts in the MCE Information Window.  Please note it will take a few Contract cycles for them to Disapear! ";
         }
 
         protected override void OnLoad(ConfigNode node)
