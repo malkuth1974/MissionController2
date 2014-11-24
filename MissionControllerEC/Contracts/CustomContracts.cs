@@ -99,7 +99,7 @@ namespace MissionControllerEC
         }
         protected override string MessageCompleted()
         {
-            return "You have delivered your ComSat to its assigned height around " + targetBody.theName + " Continue to build you network.  When you're done you can turn off ComSat Contracts in the MCE Information Window.  Please note it will take a few Contract cycles for them to Disapear! ";
+            return "You have delivered your ComSat to its assigned height around " + targetBody.theName + " Continue to build you network.  When you're done you can turn off ComSat Contracts in the MCE Information Window.  Please note it will take a few contract cycles for them to disappear! ";
         }
 
         protected override void OnLoad(ConfigNode node)
@@ -234,7 +234,7 @@ namespace MissionControllerEC
         }
         protected override string MessageCompleted()
         {
-            return "You have delivered your supplies to " + vesselName + " If you're done, you can turn off Supply Contracts in the MCE Information Window.  Please note it will take a few contract cycles for them to dissapear! ";
+            return "You have delivered your supplies to " + vesselName + " If you're done, you can turn off Supply Contracts in the MCE Information Window.  Please note it will take a few contract cycles for them to disappear! ";
         }
 
         protected override void OnLoad(ConfigNode node)
@@ -375,7 +375,7 @@ namespace MissionControllerEC
         protected override string MessageCompleted()
         {
             return "You have Delivered your Crew to " + vesselName + "And spent " + Tools.formatTime(crewTime) + " at your Station/Base\n\n" +
-                " If you're done, you can turn off Crew Contracts in the MCE Information Window.  Please note it will take a few Contract cycles for them to Disapear! ";
+                " If you're done, you can turn off Crew Contracts in the MCE Information Window.  Please note it will take a few contract cycles for them to disappear! ";
         }
 
         protected override void OnLoad(ConfigNode node)
