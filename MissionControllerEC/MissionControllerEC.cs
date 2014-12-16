@@ -56,7 +56,7 @@ namespace MissionControllerEC
             {
                 try
                 {
-                    HighLogic.CurrentGame.AddProtoScenarioModule(typeof(MissionControllerData), new GameScenes[] { GameScenes.FLIGHT, GameScenes.SPACECENTER, GameScenes.EDITOR, GameScenes.SPH, GameScenes.TRACKSTATION });
+                    HighLogic.CurrentGame.AddProtoScenarioModule(typeof(MissionControllerData), new GameScenes[] { GameScenes.FLIGHT, GameScenes.SPACECENTER, GameScenes.EDITOR, GameScenes.TRACKSTATION });
                     Debug.LogWarning("[MCE] Adding InternalModule scenario to game '" + HighLogic.CurrentGame.Title + "'");
                     // the game will add this scenario to the appropriate persistent file on save from now on
                 }
@@ -77,9 +77,7 @@ namespace MissionControllerEC
                 if (!scenario.targetScenes.Contains(GameScenes.FLIGHT))
                     scenario.targetScenes.Add(GameScenes.FLIGHT);
                 if (!scenario.targetScenes.Contains(GameScenes.EDITOR))
-                    scenario.targetScenes.Add(GameScenes.EDITOR);
-                if (!scenario.targetScenes.Contains(GameScenes.SPH))
-                    scenario.targetScenes.Add(GameScenes.SPH);
+                    scenario.targetScenes.Add(GameScenes.EDITOR);               
                 if (!scenario.targetScenes.Contains(GameScenes.TRACKSTATION))
                     scenario.targetScenes.Add(GameScenes.TRACKSTATION);
 
@@ -142,7 +140,7 @@ namespace MissionControllerEC
             //Debug.Log("OnAwake in " + HighLogic.LoadedScene);
 
 
-            if (HighLogic.LoadedScene == GameScenes.SPACECENTER || HighLogic.LoadedScene == GameScenes.FLIGHT || HighLogic.LoadedScene == GameScenes.EDITOR || HighLogic.LoadedScene == GameScenes.SPH)
+            if (HighLogic.LoadedScene == GameScenes.SPACECENTER || HighLogic.LoadedScene == GameScenes.FLIGHT || HighLogic.LoadedScene == GameScenes.EDITOR)
             {
                 //Debug.Log("Adding MissionController Child");
                 var c = gameObject.AddComponent<MissionControllerEC>();
@@ -394,6 +392,8 @@ namespace MissionControllerEC
         [Persistent]public bool noSatelliteContract = false;
         [Persistent]public bool noRepairContract = false;
         [Persistent]public bool noOrbitalPeriodContract = false;
+        [Persistent]public bool noHistoricContracts = false;
+        [Persistent]public bool noCivilianContracts = false;
 
         [Persistent]internal bool com_Sat_Start_Building = false;
         [Persistent]internal double com_Sat_maxOrbP = 10860;
@@ -457,6 +457,8 @@ namespace MissionControllerEC
             SaveInfo.NoSatelliteContracts = noSatelliteContract;
             SaveInfo.NoRepairContracts = noRepairContract;
             SaveInfo.NoOrbitalPeriodcontracts = noOrbitalPeriodContract;
+            SaveInfo.all_Historical_Contracts_Off = noHistoricContracts;
+            SaveInfo.Civilian_Contracts_Off = noCivilianContracts;
 
         }
 
@@ -515,7 +517,8 @@ namespace MissionControllerEC
             noSatelliteContract = SaveInfo.NoSatelliteContracts;
             noRepairContract = SaveInfo.NoRepairContracts;
             noOrbitalPeriodContract = SaveInfo.NoOrbitalPeriodcontracts;
-
+            noHistoricContracts = SaveInfo.all_Historical_Contracts_Off;
+            noCivilianContracts = SaveInfo.Civilian_Contracts_Off;
         }
     
 

@@ -26,6 +26,7 @@ namespace MissionControllerEC
         protected override bool Generate()
         {           
             if (HighLogic.LoadedSceneIsFlight) { return false; }
+            if (SaveInfo.all_Historical_Contracts_Off == true) { return false; }
             minHeight = settings.vostok12height;  
             vostok1 = this.AddParameter(new AltitudeGoal(targetBody,minHeight,true),null);
             vostok1.SetFunds(1000f, targetBody);
@@ -133,7 +134,7 @@ namespace MissionControllerEC
 
         public override bool MeetRequirements()
         {
-            if (SaveInfo.Vostok1Done == true || settings.all_Historical_Contracts_Off == true) { return false; }
+            if (SaveInfo.Vostok1Done == true) { return false; }
             else { return true; }
         }
     }
@@ -158,6 +159,7 @@ namespace MissionControllerEC
         {
             
             if (HighLogic.LoadedSceneIsFlight) { return false; }
+            if (SaveInfo.all_Historical_Contracts_Off == true) { return false; }
             minHeight = settings.vostok12height;
             vostok1 = this.AddParameter(new AltitudeGoal(targetBody, minHeight,true), null);
             vostok1.SetFunds(1000f, targetBody);
@@ -256,7 +258,7 @@ namespace MissionControllerEC
 
         public override bool MeetRequirements()
         {
-            if (SaveInfo.Vostok2Done == true || settings.all_Historical_Contracts_Off == true) { return false; }
+            if (SaveInfo.Vostok2Done == true) { return false; }
             if (SaveInfo.Vostok1Done == false) { return false; }
             else { return true; }
         }
@@ -284,6 +286,7 @@ namespace MissionControllerEC
                 return false;
             }
             if (HighLogic.LoadedSceneIsFlight) { return false; }
+            if (SaveInfo.all_Historical_Contracts_Off == true) { return false; }
             minHeight = settings.voshodheight;
             vostok1 = this.AddParameter(new AltitudeGoal(targetBody, minHeight,true), null);
             vostok1.SetFunds(2000f, targetBody);
@@ -382,7 +385,7 @@ namespace MissionControllerEC
 
         public override bool MeetRequirements()
         {
-            if (SaveInfo.Voskhod2Done == true || settings.all_Historical_Contracts_Off == true) { return false; }
+            if (SaveInfo.Voskhod2Done == true) { return false; }
             if (SaveInfo.Vostok2Done == false) { return false; }
             else { return true; }
         }
@@ -406,6 +409,7 @@ namespace MissionControllerEC
                 return false;
             }
             if (HighLogic.LoadedSceneIsFlight) { return false; }
+            if (SaveInfo.all_Historical_Contracts_Off == true) { return false; }
             luna1 = this.AddParameter(new InOrbitGoal(targetBody), null);
             luna1.SetFunds(4000f, targetBody);
             luna1.SetReputation(8f, targetBody);
@@ -516,7 +520,7 @@ namespace MissionControllerEC
 
         public override bool MeetRequirements()
         {
-            if (SaveInfo.Luna2Done == true || settings.all_Historical_Contracts_Off == true) { return false; }
+            if (SaveInfo.Luna2Done == true) { return false; }
             if (SaveInfo.Voskhod2Done == false) { return false; }
             else { return true; }
         }
@@ -539,6 +543,7 @@ namespace MissionControllerEC
                 return false;
             }
             if (HighLogic.LoadedSceneIsFlight) { return false; }
+            if (SaveInfo.all_Historical_Contracts_Off == true) { return false; }
             luna1 = this.AddParameter(new InOrbitGoal(targetBody), null);
             luna1.SetFunds(8000f, targetBody);
             luna1.SetReputation(8f, targetBody);
@@ -646,7 +651,7 @@ namespace MissionControllerEC
 
         public override bool MeetRequirements()
         {
-            if (SaveInfo.Luna16Done == true || settings.all_Historical_Contracts_Off == true) { return false; }
+            if (SaveInfo.Luna16Done == true) { return false; }
             if (SaveInfo.Luna2Done == false) { return false; }
             else { return true; }
         }
@@ -691,6 +696,7 @@ namespace MissionControllerEC
                 //Debug.Log("count is " + totalContracts);
                 return false;
             }
+            if (SaveInfo.all_Historical_Contracts_Off == true) { return false; }
             targetBody = Planetarium.fetch.Home;
             GMaxApA = UnityEngine.Random.Range((int)st.contract_Satellite_MIn_Height, (int)st.contract_Satellite_Max_Height);
             GMinApA = GMaxApA - st.contract_Satellite_Between_Difference;
@@ -828,7 +834,7 @@ namespace MissionControllerEC
         public override bool MeetRequirements()
         {
             bool techUnlock = ResearchAndDevelopment.GetTechnologyState("specializedConstruction") == RDTech.State.Available;
-            if (!techUnlock || st.all_Historical_Contracts_Off == true)
+            if (!techUnlock)
                 return false;
             else
                 return true;
@@ -844,7 +850,8 @@ namespace MissionControllerEC
         CelestialBody targetBody = null;
         public int crewCount = 1;
         public int partAmount = 1;
-        public string partName = "Clamp-O-Tron Docking Port";
+        public string partName = "ModuleDockingNode";
+        public string ModuleTitle = "Any Docking Port";
         public double GMaxApA = 0;
         public double GMinApA = 0;
         public double GMaxPeA = 0;
@@ -878,6 +885,7 @@ namespace MissionControllerEC
                 //Debug.Log("Agena 2 is already loaded.");
                 return false;
             }
+            if (SaveInfo.all_Historical_Contracts_Off == true) { return false; }
             targetBody = Planetarium.fetch.Home;
             GMaxApA = UnityEngine.Random.Range((int)st.contract_Satellite_MIn_Height, (int)st.contract_Satellite_Max_Height);
             GMinApA = GMaxApA - st.contract_Satellite_Between_Difference;
@@ -893,7 +901,7 @@ namespace MissionControllerEC
             this.AddParameter(new ApAOrbitGoal(targetBody, (double)GMaxApA, (double)GMinApA,true), null);
             this.AddParameter(new PeAOrbitGoal(targetBody, (double)GMaxPeA, (double)GMinPeA,true), null);
             this.AddParameter(new LandingParameters(targetBody, true), null);
-            this.AddParameter(new PartGoal(partName, partAmount), null);
+            this.AddParameter(new ModuleGoal(partName, ModuleTitle), null);
             this.AddParameter(new GetCrewCount(crewCount), null);
 
             base.SetExpiry(15f, 35f);
@@ -969,6 +977,7 @@ namespace MissionControllerEC
             int pcount = int.Parse(node.GetValue("pCount"));
             partAmount = pcount;
             partName = (node.GetValue("pName"));
+            ModuleTitle = node.GetValue("mtitle");
             crewCount = int.Parse(node.GetValue("crewcount"));
 
             vesselTestID = node.GetValue("vesselid");
@@ -995,6 +1004,7 @@ namespace MissionControllerEC
             node.AddValue("pCount", partAmount);
             string pname = partName;
             node.AddValue("pName", partName);
+            node.AddValue("mtitle", ModuleTitle);
 
             node.AddValue("crewcount", crewCount);
 
@@ -1006,7 +1016,7 @@ namespace MissionControllerEC
         public override bool MeetRequirements()
         {
             bool techUnlock = ResearchAndDevelopment.GetTechnologyState("specializedConstruction") == RDTech.State.Available;
-            if (!techUnlock || st.all_Historical_Contracts_Off == true)
+            if (!techUnlock)
                 return false;
             else
                 return true;
@@ -1056,10 +1066,11 @@ namespace MissionControllerEC
             totalContracts = ContractSystem.Instance.GetCurrentContracts<SkyLab1>().Count();
             if (totalContracts >= 1) { return false; }
             if (HighLogic.LoadedSceneIsFlight) { return false; }
+            if (SaveInfo.all_Historical_Contracts_Off == true) { return false; }
             minHeight = settings.skyLabheight;
             this.AddParameter(new AltitudeGoal(targetBody,minHeight), null);
             this.AddParameter(new InOrbitGoal(targetBody), null);
-            this.AddParameter(new PartGoal(part1goal, part1amount), null);
+            this.AddParameter(new PartGoal(part1goal, "Small Repair Panel", part1amount,true), null);
             this.AddParameter(new PartGoal(part2goal, part2amount), null);
             this.AddParameter(new PartGoal(part3goal, part3amount), null);
             this.AddParameter(new GetCrewCount(crewCount), null);
@@ -1162,7 +1173,7 @@ namespace MissionControllerEC
             bool techUnlock = ResearchAndDevelopment.GetTechnologyState("largeElectrics") == RDTech.State.Available;
             bool techUnlock2 = ResearchAndDevelopment.GetTechnologyState("specializedConstruction") == RDTech.State.Available;
 
-            if (SaveInfo.skylab1done == true || SaveInfo.Agena2Done == false || settings.all_Historical_Contracts_Off == true) { return false; }
+            if (SaveInfo.skylab1done == true || SaveInfo.Agena2Done == false) { return false; }
             if (!techUnlock && !techUnlock2) { return false; }
             else { return true; }
         }
@@ -1176,7 +1187,7 @@ namespace MissionControllerEC
         public int contractTime = 605448;
         public string contractName = "Launch And Repair " + SaveInfo.skyLabName;
         public string contTimeTitle = " Must keep crew in orbit for ";
-        string repairParts = "repairParts";
+        string repairParts = "SpareParts";
         string Ctitle = "To Repair Station You must have at Least ";
         double RPamount = 1;
         CelestialBody targetBody = Planetarium.fetch.Home;
@@ -1197,6 +1208,8 @@ namespace MissionControllerEC
             totalContracts = ContractSystem.Instance.GetCurrentContracts<SkyLab2>().Count();
             if (HighLogic.LoadedSceneIsFlight) { return false; }
             if (totalContracts >= 1) { return false; }
+
+            if (SaveInfo.all_Historical_Contracts_Off == true) { return false; }
             
             this.skylab1 = this.AddParameter(new TargetDockingGoal(SaveInfo.skyLabVesID, SaveInfo.skyLabName), null);
             skylab1.SetFunds(7000, targetBody);
@@ -1319,7 +1332,7 @@ namespace MissionControllerEC
 
         public override bool MeetRequirements()
         {
-            if (SaveInfo.skylab2done == true || settings.all_Historical_Contracts_Off == true) { return false; }
+            if (SaveInfo.skylab2done == true) { return false; }
             if (SaveInfo.skylab1done == false) { return false; }
             if (SaveInfo.Agena2Done == false) { return false; }
             else { return true; }
@@ -1349,14 +1362,12 @@ namespace MissionControllerEC
             if (prestige == ContractPrestige.Trivial)
             {
                 return false;
-            }
-            if (settings.all_Historical_Contracts_Off)
-            {
-                return false;
-            }
+            }            
             totalContracts = ContractSystem.Instance.GetCurrentContracts<SkyLab3>().Count();
             if (HighLogic.LoadedSceneIsFlight) { return false; }
             if (totalContracts >= 1) { return false; }
+
+            if (SaveInfo.all_Historical_Contracts_Off == true) { return false; }
 
             this.skylab1 = this.AddParameter(new TargetDockingGoal(SaveInfo.skyLabVesID, SaveInfo.skyLabName), null);
             skylab1.SetFunds(5000, targetBody);
@@ -1467,7 +1478,7 @@ namespace MissionControllerEC
 
         public override bool MeetRequirements()
         {
-            if (SaveInfo.skylab3done == true || settings.all_Historical_Contracts_Off == true) { return false; }
+            if (SaveInfo.skylab3done == true) { return false; }
             if (SaveInfo.skylab2done == false) { return false; }
             if (SaveInfo.Agena2Done == false) { return false; }
             else { return true; }
@@ -1508,6 +1519,8 @@ namespace MissionControllerEC
             totalContracts = ContractSystem.Instance.GetCurrentContracts<SkyLab4>().Count();
             if (HighLogic.LoadedSceneIsFlight) { return false; }
             if (totalContracts >= 1) { return false; }
+
+            if (SaveInfo.all_Historical_Contracts_Off == true) { return false; }
 
             GMaxApA = settings.skyLab4MaxApA;
             GMaxPeA = settings.skyLab4MaxPeA;
@@ -1665,7 +1678,7 @@ namespace MissionControllerEC
 
         public override bool MeetRequirements()
         {
-            if (SaveInfo.skylab4done == true || settings.all_Historical_Contracts_Off == true) { return false; }
+            if (SaveInfo.skylab4done == true) { return false; }
             if (SaveInfo.skylab3done == false) { return false; }
             if (SaveInfo.Agena2Done == false) { return false; }
             else { return true; }

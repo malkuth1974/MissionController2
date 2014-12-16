@@ -54,7 +54,7 @@ namespace MissionControllerEC
             this.AddParameter(new OrbitalPeriod(targetBody, MinOrb, MaxOrb), null);
             if (parttechUnlock)
             {
-                this.AddParameter(new PartGoal(partName, partAmount), null);
+                this.AddParameter(new PartGoal(partName, "Small Repair Panel",partAmount,true), null);
             }
             this.AddParameter(new GetCrewCount(crewCount), null);
             base.SetExpiry(3f, 15f);

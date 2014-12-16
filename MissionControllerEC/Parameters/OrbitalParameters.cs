@@ -532,7 +532,7 @@ namespace MissionControllerEC
         {
             this.disableOnStateChange = false;
             updated = false;
-            if (Root.ContractState == Contract.State.Active)
+            if (Root.ContractState == Contract.State.Active && !lockOut)
             {
                 GameEvents.onFlightReady.Add(flightReady);
                 GameEvents.onVesselChange.Add(vesselChange);
@@ -542,7 +542,7 @@ namespace MissionControllerEC
 
         protected override void OnUnregister()
         {
-            if (updated)
+            if (updated && !lockOut)
             {
                 GameEvents.onFlightReady.Remove(flightReady);
                 GameEvents.onVesselChange.Remove(vesselChange);
@@ -780,7 +780,7 @@ namespace MissionControllerEC
         {
             this.disableOnStateChange = false;
             updated = false;
-            if (Root.ContractState == Contract.State.Active)
+            if (Root.ContractState == Contract.State.Active && !lockOut)
             {
                 GameEvents.onFlightReady.Add(flightReady);
                 GameEvents.onVesselChange.Add(vesselChange);
@@ -790,7 +790,7 @@ namespace MissionControllerEC
 
         protected override void OnUnregister()
         {
-            if (updated)
+            if (updated && !lockOut)
             {
                 GameEvents.onFlightReady.Remove(flightReady);
                 GameEvents.onVesselChange.Remove(vesselChange);

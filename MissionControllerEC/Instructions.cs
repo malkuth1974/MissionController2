@@ -70,7 +70,7 @@ namespace MissionControllerEC
                     );
                 //Debug.Log("Creating MCEButton Buttons");
             }
-            if ((HighLogic.LoadedScene == GameScenes.EDITOR || HighLogic.LoadedScene == GameScenes.SPH) && this.EDMCEButton == null)
+            if ((HighLogic.LoadedScene == GameScenes.EDITOR) && this.EDMCEButton == null)
             {
                 this.EDMCEButton = ApplicationLauncher.Instance.AddModApplication(
                     this.EDMCEOn,
@@ -321,12 +321,12 @@ namespace MissionControllerEC
                     foreach (Part p in parts)
                     {                       
                         string name = p.partInfo.title;                      
-                        vesselPartCost += p.partInfo.cost + p.GetModuleCosts();
+                        vesselPartCost += p.partInfo.cost + p.GetModuleCosts(10f);
                         vesseltons += p.mass;                                              
                     
                         GUILayout.BeginHorizontal();
                         GUILayout.Box("" + name, MCE_ScenarioStartup.styleBoxWhite, GUILayout.MinWidth(300), GUILayout.MaxWidth(300));
-                        GUILayout.Box("" + (p.partInfo.cost + p.GetModuleCosts()), MCE_ScenarioStartup.styleBoxWhite, GUILayout.MinWidth(100), GUILayout.MaxWidth(100));
+                        GUILayout.Box("" + (p.partInfo.cost + p.GetModuleCosts(10f)), MCE_ScenarioStartup.styleBoxWhite, GUILayout.MinWidth(100), GUILayout.MaxWidth(100));
                         GUILayout.EndHorizontal();
 
                         if (showTons && showMiniTons)

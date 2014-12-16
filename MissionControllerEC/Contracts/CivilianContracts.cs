@@ -220,7 +220,7 @@ namespace MissionControllerEC
         {
             bool techUnlock = ResearchAndDevelopment.GetTechnologyState("advFlightControl") == RDTech.State.Available;
             bool techUnlock2 = ResearchAndDevelopment.GetTechnologyState("specializedConstruction") == RDTech.State.Available;
-            if (!techUnlock && !techUnlock2 || st.Civilian_Contracts_Off == true)
+            if (!techUnlock && !techUnlock2 || SaveInfo.Civilian_Contracts_Off == true)
                 return false;
             else
                 return true;
@@ -434,7 +434,7 @@ namespace MissionControllerEC
         {
             bool techUnlock = ResearchAndDevelopment.GetTechnologyState("advFlightControl") == RDTech.State.Available;
             bool techUnlock2 = ResearchAndDevelopment.GetTechnologyState("advLanding") == RDTech.State.Available;
-            if (!techUnlock && !techUnlock2 || st.Civilian_Contracts_Off == true)
+            if (!techUnlock && !techUnlock2 || SaveInfo.Civilian_Contracts_Off == true)
                 return false;
             else
                 return true;
@@ -659,7 +659,7 @@ namespace MissionControllerEC
         {
             bool techUnlock = ResearchAndDevelopment.GetTechnologyState("advFlightControl") == RDTech.State.Available;
             bool techUnlock2 = ResearchAndDevelopment.GetTechnologyState("specializedConstruction") == RDTech.State.Available;
-            if (!techUnlock && !techUnlock2 || st.Civilian_Contracts_Off == true)
+            if (!techUnlock && !techUnlock2 || SaveInfo.Civilian_Contracts_Off == true)
                 return false;
             else
                 return true;

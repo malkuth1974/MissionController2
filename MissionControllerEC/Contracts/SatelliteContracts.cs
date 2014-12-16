@@ -175,7 +175,7 @@ namespace MissionControllerEC
 
             this.satellite8 = this.AddParameter(new TimeCountdownOrbits(targetBody, timeOnStation, TOSName, false), null);
             satellite8.SetFunds(20000, 20000, targetBody);
-            this.satellite9 = this.AddParameter(new PartGoal(sciPartname, scipartamount), null);
+            this.satellite9 = this.AddParameter(new PartGoal(sciPartname, "Small Repair Panel", scipartamount,true), null);
             satellite9.SetFunds(2000, 2000, targetBody);
             if (parttechUnlock)
             {
@@ -261,7 +261,7 @@ namespace MissionControllerEC
         protected override string GetDescription()
         {
             //those 3 strings appear to do nothing
-            return "We would like you to deliver our satellite to orbit, We have specific scientific parts we want added to this satellite. Please include a " + sciPartname + "."
+            return "We would like you to deliver our satellite to orbit, We have specific scientific parts we want added to this satellite. Please include a " + sciPartname + "." +
                 "\n\n" + "Contract Goals\n\n " + "1. Build a satellite (we recommend you place a docking port for future Repair contracts)\n 2. Include a " + sciPartname + " on the satellite." +
                 "\n 3. Launch satellite into the orbit specified ";
         }

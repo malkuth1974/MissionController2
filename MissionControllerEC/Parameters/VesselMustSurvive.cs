@@ -79,11 +79,15 @@ namespace MissionControllerEC
 
         public void vesselDestroyed(EventReport er)
         {
-            if (FlightGlobals.ActiveVessel)
+            if (er.origin != null && er.origin.vessel == FlightGlobals.ActiveVessel)
             {
                 VesselAlive = false;
-                Debug.LogError("Vessel Recorded as destroyed in contract vessleAlive = " + VesselAlive);
-            }        
+                Debug.LogError("Vessel Recorded as destroyed in contract vessleAlive = " + er.origin.vessel.name);
+            }
+            else
+            {
+                Debug.LogError("Vessel is Not active vessel, VesselMustSurvive Event closed: " + er.origin.vessel.name);
+            }
         }      
         public void flightReady()
         {

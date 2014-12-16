@@ -13,9 +13,7 @@ namespace MissionControllerEC
         [Persistent]internal bool No_Rescue_Kerbal_Contracts = false;  //thanks flowerchild :)
         [Persistent]internal bool No_Part_Test_Contracts = false;       
         [Persistent]internal bool RevertOn = false;
-        [Persistent]internal bool DebugMenu = false;
-        [Persistent]internal bool Civilian_Contracts_Off = false;
-        [Persistent]internal bool all_Historical_Contracts_Off = false; 
+        [Persistent]internal bool DebugMenu = false;       
 
         [Persistent]internal double contract_Satellite_Max_Height = 75000;
         [Persistent]internal double contract_Satellite_MIn_Height = 325000;        

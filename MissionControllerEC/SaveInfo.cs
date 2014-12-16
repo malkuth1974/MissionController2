@@ -54,6 +54,8 @@ namespace MissionControllerEC
         public static bool NoLanderResearchContracts = false;
         public static bool NoOrbitalResearchContracts = false;
         public static bool NoRepairContracts = false;
+        public static bool all_Historical_Contracts_Off = false;
+        public static bool Civilian_Contracts_Off = false; 
 
         public static bool RepairContractOn = false;
         public static bool RepairStationContract = false;
