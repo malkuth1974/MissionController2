@@ -18,26 +18,10 @@ namespace MissionControllerEC
         public bool supplywin = false;
         public bool crewwin = false;
         public int count = 0;
-        public int prCount = 1;
-        private int DictCount = 7;
+        public int prCount = 0;
+        private int DictCount;
         private string resourceAmountString;
-        #endregion
-        #region Resources Dictionary
-        public Dictionary<int, ResourceNames> resourceNamesInfo = new Dictionary<int, ResourceNames>();
-        ResourceRefs rf = new ResourceRefs();
-        public void LoadResourceDictionary()
-        {
-            resourceNamesInfo.Add(rf.ResourceName1.ID, rf.ResourceName1);
-            resourceNamesInfo.Add(rf.ResourceName2.ID, rf.ResourceName2);
-            resourceNamesInfo.Add(rf.ResourceName3.ID, rf.ResourceName3);
-            resourceNamesInfo.Add(rf.ResourceName4.ID, rf.ResourceName4);
-            resourceNamesInfo.Add(rf.ResourceName5.ID, rf.ResourceName5);
-            resourceNamesInfo.Add(rf.ResourceName6.ID, rf.ResourceName6);
-            resourceNamesInfo.Add(rf.ResourceName7.ID, rf.ResourceName7);
-            resourceNamesInfo.Add(rf.ResourceName8.ID, rf.ResourceName8);
-            //Debug.Log("MCE Loaded Resource Dictionary");
-        }
-        #endregion
+        #endregion        
         #region EditorWindow Ship Values
         public void drawEditorwindow(int id)
         {
@@ -103,6 +87,8 @@ namespace MissionControllerEC
             {
                 MCE_ScenarioStartup.ShowCustomWindow = true;
                 getSupplyList(false);
+                DictCount = settings.SupplyResourceList.Count();
+                SaveInfo.ResourceName = settings.SupplyResourceList[prCount];              
             }
             if (GUILayout.Button("Settings Menu"))
             {
@@ -218,7 +204,7 @@ namespace MissionControllerEC
             #endregion
             #region Supply Contract Values
             if (supplywin)
-            {
+            {               
                 comSatwin = false;
                 crewwin = false;
                 GUILayout.Label("Supply Contract Information", MCE_ScenarioStartup.styleGreenBold);
@@ -228,9 +214,8 @@ namespace MissionControllerEC
                     SaveInfo.SupplyVesName = SupVes[count].vesselName; 
                     SaveInfo.SupplyVesId = SupVes[count].vesselId.ToString();
                     SaveInfo.SupplyBodyIDX = SupVes[count].body.flightGlobalsIndex;
-
-                    ResourceNames Rname = resourceNamesInfo[prCount];
-                    SaveInfo.ResourceName = Rname.Name;
+                                      
+                    SaveInfo.ResourceName = settings.SupplyResourceList[prCount];
 
                     GUILayout.BeginHorizontal();
                     GUILayout.Box("Supply Contracts On", MCE_ScenarioStartup.StyleBold, GUILayout.Width(200));
@@ -284,19 +269,21 @@ namespace MissionControllerEC
 
                     if (GUILayout.Button("- Previous"))
                     {
+                        Debug.Log("current list count: " + prCount + " Total Count of List is: " + DictCount);
                         prCount--;
-                        if (prCount < 1 || prCount > DictCount)
+                        if (prCount < 0 || prCount >= DictCount)
                         {
-                            prCount = 1;
+                            prCount = 0;                           
                         }
                     }
 
                     if (GUILayout.Button("+ Next"))
                     {
-                        prCount++;
-                        if (prCount > DictCount || prCount < 1)
+                        Debug.Log("current list count: " + prCount + " Total Count of List is: " + DictCount);
+                        prCount++;                       
+                        if (prCount >= DictCount || prCount < 0)
                         {
-                            prCount = 1;
+                            prCount = 0;                           
                         }
                     }
                     GUILayout.Space(15);
@@ -474,56 +461,5 @@ namespace MissionControllerEC
             }
         }
         #endregion
-    }
-    #region extra Resources Classes
-    public class ResourceNames
-    {
-        public int ID { get; set; }
-        public string Name { get; set; }
-    }
-
-    class ResourceRefs
-    {
-        public ResourceNames ResourceName1 = new ResourceNames()
-        {
-            ID = 1,
-            Name = "LiquidFuel",
-        };
-        public ResourceNames ResourceName2 = new ResourceNames()
-        {
-            ID = 2,
-            Name = "Oxidizer",
-        };
-        public ResourceNames ResourceName3 = new ResourceNames()
-        {
-            ID = 3,
-            Name = "MonoPropellant",
-        };
-        public ResourceNames ResourceName4 = new ResourceNames()
-        {
-            ID = 4,
-            Name = "XenonGas",
-        };
-        public ResourceNames ResourceName5 = new ResourceNames()
-        {
-            ID = 5,
-            Name = "Food",
-        };
-        public ResourceNames ResourceName6 = new ResourceNames()
-        {
-            ID = 6,
-            Name = "Water",
-        };
-        public ResourceNames ResourceName7 = new ResourceNames()
-        {
-            ID = 7,
-            Name = "Oxygen",
-        };
-        public ResourceNames ResourceName8 = new ResourceNames()
-        {
-            ID = 8,
-            Name = "Kibbal",
-        };
-    }
-# endregion
+    }   
 }

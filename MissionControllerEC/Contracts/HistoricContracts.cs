@@ -144,7 +144,7 @@ namespace MissionControllerEC
     {
         Settings settings = new Settings("config.cfg");
         public double minHeight = 70000;
-        public double missionTime = 43200;
+        public double missionTime = 21600;
 
         public int crew = 1;
 
@@ -216,7 +216,7 @@ namespace MissionControllerEC
 
                 "Information on Vostok 2 was gathered from Wikipedia\n\n" +
 
-                "Objectives are to: \n\n1. Enter Space \n\n2. Stay in orbit for a total of 1 day (12 Kerbal Hours) \n3. Return Home.";
+                "Objectives are to: \n\n1. Enter Space \n\n2. Stay in orbit for a total of 1 day (6 Kerbal Hours) \n3. Return Home.";
         }
         protected override string GetSynopsys()
         {
@@ -391,6 +391,567 @@ namespace MissionControllerEC
         }
     }
     #endregion
+    public class Tiros : Contract
+    {
+        Settings settings = new Settings("config.cfg");
+        CelestialBody targetBody = Planetarium.fetch.Home;
+        private double minHeight = 0;
+        private double inclination = 0;
+        private double Eccentricity = 0;
+        private double AmountDaysActive = 0;
+        private int TirosTitleMissionNumber;
+        private float contractMult = 1.0f;
+
+        protected override bool Generate()
+        {
+            if (prestige == ContractPrestige.Trivial)
+            {
+                return false;
+            }
+            if (HighLogic.LoadedSceneIsFlight) { return false; }
+            if (SaveInfo.all_Historical_Contracts_Off == true) { return false; }
+            minHeight = Tools.RandomNumber((int)settings.vostok12height, (int)settings.vostok12height + 15000);
+            Eccentricity = .01;
+            AmountDaysActive = 10800;
+            TirosTitleMissionNumber = SaveInfo.tirosCurrentNumber;
+            if (TirosTitleMissionNumber == 2)
+            {
+                contractMult = 1.3f;
+                AmountDaysActive += 10800;
+            }
+            else if (TirosTitleMissionNumber == 3)
+            {
+                contractMult = 1.5f;
+                AmountDaysActive *= 3;
+            }
+            else
+            {
+                contractMult = 1.0f;
+            }
+
+            this.AddParameter(new AltitudeGoal(targetBody, minHeight), null);
+            this.AddParameter(new InOrbitGoal(targetBody), null);
+            this.AddParameter(new EccentricGoal(targetBody,Eccentricity,(Eccentricity + .1),false),null);
+            if (TirosTitleMissionNumber == 3)
+            {
+                this.AddParameter(new Inclination(targetBody, 170, 180), null);
+            }
+            this.AddParameter(new TimeCountdownOrbits(targetBody, AmountDaysActive, true), null);
+            if (TirosTitleMissionNumber == 2)
+            {
+                this.AddParameter(new PartGoal("2HOT Thermometer", 1), null);
+                this.AddParameter(new PartGoal("Communotron 16", 1), null);
+            }
+            else if (TirosTitleMissionNumber == 3)
+            {
+                this.AddParameter(new PartGoal("Communotron 88-88", 1), null);
+                this.AddParameter(new PartGoal("PresMat Barometer", 1), null);
+                this.AddParameter(new PartGoal("2HOT Thermometer", 1), null);
+            }
+            else
+            {
+                this.AddParameter(new PartGoal("Communotron 16", 1), null);
+            }         
+            if (TirosTitleMissionNumber == 2 || TirosTitleMissionNumber == 3)
+            {
+                this.AddParameter(new ModuleGoal("ModuleDeployableSolarPanel", "Solar Panels"), null);
+                this.AddParameter(new ResourceGoalCap("Electric power", 600), null);
+            }
+            this.AddParameter(new GetCrewCount(0), null);                       
+
+            base.SetFunds(6000f * contractMult, 30000f * contractMult, targetBody);
+            base.SetExpiry(3f, 10f);
+            base.SetDeadlineDays(100f, targetBody);
+            base.SetReputation(15f * contractMult, targetBody);
+            base.SetScience(2f * contractMult, targetBody);
+            return true;
+
+        }       
+        public override bool CanBeCancelled()
+        {
+            return true;
+        }
+        public override bool CanBeDeclined()
+        {
+            return true;
+        }
+
+        protected override string GetNotes()
+        {
+            if (TirosTitleMissionNumber == 2)
+            {
+                return "Launch Tiros with new technology batteries and solar panels to keep satellite in orbit longer";
+            }
+            else if (TirosTitleMissionNumber == 3)
+            {
+                return "Launch Tiros/NOOA with batteries and solar panels to a Kebin Polar Orbit";
+            }
+            else
+            {
+                return "Launch the first weather satellite to a Low Kerbin Orbit and observe weather patterns";
+            }
+        }
+
+        protected override string GetHashString()
+        {
+            if (TirosTitleMissionNumber == 3)
+            {
+                return "Tiros/NOOA - N";
+            }
+            if (TirosTitleMissionNumber == 2)
+            {
+                return "Tiros Number";
+            }
+            else
+            {
+                return "Tiros 1";
+            }
+        }
+        protected override string GetTitle()
+        {
+            if (TirosTitleMissionNumber == 3)
+            {
+                return "Tiros/NOAA - N";
+            }
+            else if (TirosTitleMissionNumber == 2)
+            {
+                return "Tiros 7 (Television Infrared Observation Satellite)";
+            }
+
+            else
+            {
+                return "Tiros 1 (Television Infrared Observation Satellite)";
+            }  
+        }
+        protected override string GetDescription()
+        {
+                        
+            {
+                if (TirosTitleMissionNumber == 3)
+                {
+                    return "The TIROS-N/NOAA Program (Television InfraRed Operational Satellite - Next-generation) was NASA's next step in improving the operational capability of the TIROS system first tried in " +
+                        "the 1960's and the ITOS/NOAA system of the 1970's. Technological improvements integrated into the satellite system provided higher resolution imaging, and more day and night quantitative " +
+                        "environmental data on local and global scales than seen with the two earlier generations of TIROS. Like earlier TIROS systems, NASA took responsibility for the satellite only until proven " +
+                        "operational. Once operational the satellite's name was changed to 'NOAA' with day to day use under the direction of the National Oceanic and Atmospheric Administration.\n\n" +
+
+                    "The TIROS-N/NOAA satellite series carried the Advanced Very High Resolution Radiometer (AVHRR). The AVHRR provided day and night cloud-top and sea surface temperatures, as well as ice and snow " +
+                    "conditions. The satellite also carried an atmospheric sounding system (TOVS - TIROS Operational Vertical Sounder) which provided vertical profiles of temperature and water vapor from the Earth's " +
+                    "surface to the top of the atmosphere; and a solar proton monitor to detect the arrival of energetic particles for use in solar storm prediction. For the first time, this satellite carried a data " +
+                    "collection platform used to receive, process and store information from free floating balloons and buoys worldwide for transmission to one central processing facility.";
+                }
+                else
+                {
+                    return "The TIROS Program (Television Infrared Observation Satellite) was NASA's first experimental step to determine if satellites could be useful in the study of the Earth." +
+                        "At that time, the effectiveness of satellite observations was still unproven. Since satellites were a new technology, the TIROS Program also tested various design issues for " +
+                        "spacecraft: instruments, data and operational parameters. The goal was to improve satellite applications for Earth-bound decisions, such as should we evacuate the coast because of the hurricane?\n\n" +
+
+                        "The TIROS Program's first priority was the development of a meteorological satellite information system. Weather forecasting was deemed the most promising application of space-based observations.\n\n" +
+
+                        "TIROS proved extremely successful, providing the first accurate weather forecasts based on data gathered from space. TIROS began continuous coverage of the Earth's weather in 1962, and was used " +
+                        "by meteorologists worldwide. The program's success with many instrument types and orbital configurations lead to the development of more sophisticated meteorological observation satellites.\n\n " +
+                        "All information for the Tiros Missions were gathered from NASA.com";
+                }
+            }
+        }
+        protected override string GetSynopsys()
+        {
+            if (TirosTitleMissionNumber == 1)
+            {
+                return "Objectives: To test experimental television techniques designed to develop a worldwide meteorological satellite information system. To test Sun angle and horizon sensor systems for spacecraft " +
+                    "orientation.\n\n" +
+
+                "Description: The spacecraft was 42 inches in diameter, 19 inches high and weighed 270 pounds. The craft was made of aluminum alloy and stainless steel which was then covered by 9200 solar cells." +
+                    "The solar cells served to charge the on-board batteries. Three pairs of solid-propellant spin rockets were mounted on the base plate.";
+            }
+            else if (TirosTitleMissionNumber == 2)
+            {
+                return "Objectives: Continue research and development of the meteorological satellite information system; obtain improved data for use in weather forecasting, especially during hurricane season.\n\n" +
+
+                "Description: The spacecraft was 42 inches in diameter, 19 inches high and weighed 270 pounds. The craft was made of aluminum alloy and stainless steel then covered by 9200 solar cells. The solar" +
+                "cells served to charge the nickel-cadmium (nicad) batteries. Three pairs of solid-propellant spin rockets were mounted on the base plate.\n\n" +
+
+                "TIROS-7 was also designed to make infrared measurements of reflected solar and terrestrial radiation over selected spectrum ranges and gather data on electron density and temperature in space." +
+                "To accomplish this new expanded mission, TIROS-7 carried two wide-angle camera systems, a magnetic tape recorder, and infrared experimentation equipment. The electron density and temperature probes" +
+                "were the same as the ones flown on board Explorer 17." +
+
+                "The spacecraft operating system still included the infrared horizon scanner, the north direction indicator, despin weights and spinup rockets, and the magnetic attitude control system. TIROS-7 was" +
+                "deactivated after furnishing over 30,000 cloud photographs; it lasted the longest of the TIROS series thus far, 1809 days.";
+        
+            }
+            else if (TirosTitleMissionNumber == 3)
+            {
+                return "TIROS-N was an experimental satellite which carried an Advanced Very High Resolution Radiometer (AVHRR) to provide day and night cloud top and sea surface temperatures, as well as ice and "+
+                    "snow conditions; an atmospheric sounding system (TOVS - TIROS Operational Vertical Sounder) to provide vertical profiles of temperature and water vapor from the Earth's surface to the top "+
+                    "of the atmosphere; and a solar proton monitor to detect the arrival of energetic particles for use in solar storm prediction. For the first time, this satellite also carried a data collection "+
+                    "platform used to receive, process and store information from free floating balloons and buoys worldwide for transmission to one central processing facility.\n\n"+
+
+                "TIROS-N was placed in a near circular, (470nm) polar orbit. The craft and its systems operated successfully, providing high-resolution scanned images and vertical temperature and moisture profiles "+
+                    "to both operational meteorologists and private interests with APT and HRPT capability.";
+
+            }
+            else
+            {
+                return "Tiros Contract";
+            }
+
+        }
+        protected override string MessageCompleted()
+        {
+            SaveInfo.tirosCurrentNumber++;
+            if (TirosTitleMissionNumber == 2)
+            {
+                return "Good Job you have finsished this contract\n\n" +
+                        "TIROS-7 STATS:\n" +
+                        "Launch Date:  June 19, 1963\n" +
+                        "Operational Period: 1809 days before being deactivated by NASA on June 3, 1968\n" +
+                        "Launch Vehicle:    Three-Stage Delta\n" +
+                        "Launch Site:    Cape Canaveral, FL\n" +
+                        "Type:   Weather Satellite";
+            }
+            else if (TirosTitleMissionNumber == 3)
+            {
+                return "Good Job you have finsished this contract\n\n" +
+                    "TIROS-N Stats:\n" +
+                    "Launch Date:    October 13, 1978\n" +
+                    "Operational Period:    Operational for 868 days until deactivated by NOAA on February 27, 1981\n" +
+                    "Launch Vehicle:   Atlas E/F\n" +
+                    "Launch Site:    Vandenberg Air Force Base, CA\n" +
+                    "Type:   Weather Satellite";
+            }
+            else
+            {
+                return "Good Job you have finsished this contract\n\n"+
+                    "TIROS-1 STATS:\n"+
+                    "Launch Date:    April 1, 1960\n"+
+                    "Operational Period: 78 days\n"+
+                    "Launch Vehicle:    Standard Thor-Able\n"+
+                    "Launch Site:    Cape Canaveral, FL\n"+
+                    "Type:    Weather Satellite";
+            }
+        }
+
+        protected override void OnLoad(ConfigNode node)
+        {
+            Tools.ContractLoadCheck(node, ref targetBody, Planetarium.fetch.Home, targetBody, "targetBody");
+            Tools.ContractLoadCheck(node, ref minHeight, settings.vostok12height, minHeight, "minheight");
+            Tools.ContractLoadCheck(node, ref inclination, 180, inclination, "inclination");
+            Tools.ContractLoadCheck(node, ref Eccentricity, .01, Eccentricity, "eccentricity");
+            Tools.ContractLoadCheck(node, ref AmountDaysActive, 5, AmountDaysActive, "amountdays");
+            Tools.ContractLoadCheck(node, ref contractMult, 1.0f, contractMult, "mult");
+        }
+        protected override void OnSave(ConfigNode node)
+        {
+            int bodyID = targetBody.flightGlobalsIndex;
+            node.AddValue("targetBody", bodyID);
+
+            node.AddValue("minheight", minHeight);
+            node.AddValue("inclination", inclination);
+            node.AddValue("eccentricity", Eccentricity);
+            node.AddValue("amountdays", AmountDaysActive);
+            node.AddValue("mult", contractMult);
+        }
+
+        public override bool MeetRequirements()
+        {
+            bool techUnlock = ResearchAndDevelopment.GetTechnologyState("flightControl") == RDTech.State.Available;
+            bool techUnlock2 = ResearchAndDevelopment.GetTechnologyState("spaceExploration") == RDTech.State.Available;
+            bool techUnlock3 = ResearchAndDevelopment.GetTechnologyState("electrics") == RDTech.State.Available;
+            bool techUnlock4 = ResearchAndDevelopment.GetTechnologyState("advExploration") == RDTech.State.Available;
+            if (TirosTitleMissionNumber == 1 && techUnlock)
+            {
+                return true;
+            }
+            else if (TirosTitleMissionNumber == 2 && techUnlock && techUnlock2 && techUnlock3)
+            {
+                return true;
+            }
+            else if (TirosTitleMissionNumber == 2 && techUnlock && techUnlock2 && techUnlock3 && techUnlock4)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+    }
+    public class Mariner : Contract
+    {
+        Settings settings = new Settings("config.cfg");
+        CelestialBody targetBody;       
+        private double PeA = 0;
+        private int marinerNumber = 1;
+        private float multiplier = 1.0f;
+        private double extraBody2 = 0;
+        private double extraBody3 = 0;
+        private double extraBody4 = 0;
+        private double extraBody5 = 0;
+        private double extraBody6 = 0;
+
+        ContractParameter marinerOrbit;
+        ContractParameter marinerOrbit2;
+        ContractParameter marinerOrbit3;
+        ContractParameter marinerOrbit4;
+        ContractParameter marinerOrbit5;
+        ContractParameter marinerOrbit6;
+        
+        
+        protected override bool Generate()
+        {
+            if (prestige == ContractPrestige.Trivial)
+            {
+                return false;
+            }
+            if (HighLogic.LoadedSceneIsFlight) { return false; }
+            if (SaveInfo.all_Historical_Contracts_Off == true) { return false; }
+            marinerNumber = SaveInfo.marinerCurrentNumber;
+            if (marinerNumber == 1)
+            {
+                targetBody = FlightGlobals.Bodies[5];
+                PeA = Tools.getBodyAltitude(targetBody);
+            }
+            else if (marinerNumber == 2)
+            {
+                targetBody = FlightGlobals.Bodies[6];
+                PeA = Tools.getBodyAltitude(targetBody);
+            }
+            else if (marinerNumber == 3)
+            {
+                targetBody = FlightGlobals.Bodies[4];
+                PeA = Tools.getBodyAltitude(targetBody);
+                extraBody2 = Tools.getBodyAltitude(FlightGlobals.Bodies[5]);
+                multiplier = 1.5f;
+            }
+            else if (marinerNumber == 4)
+            {
+                targetBody = FlightGlobals.Bodies[8];
+                PeA = Tools.getBodyAltitude(targetBody);
+                extraBody2 = Tools.getBodyAltitude(FlightGlobals.Bodies[14]);
+                extraBody3 = Tools.getBodyAltitude(FlightGlobals.Bodies[12]);
+                extraBody4 = Tools.getBodyAltitude(FlightGlobals.Bodies[11]);
+                extraBody5 = Tools.getBodyAltitude(FlightGlobals.Bodies[10]);
+                extraBody6 = Tools.getBodyAltitude(FlightGlobals.Bodies[9]);
+                multiplier = 2.5f;
+            }
+            else
+            {
+                return false;
+            }
+            if (marinerNumber == 3)
+            {
+                this.marinerOrbit2 = this.AddParameter(new FlyByCelestialBodyGoal(FlightGlobals.Bodies[5], extraBody2 + 500000, extraBody2), null);
+                marinerOrbit2.SetFunds(1200 * multiplier, FlightGlobals.Bodies[5]);
+                this.AddParameter(new CollectScience(FlightGlobals.Bodies[5], BodyLocation.Space), null);
+            }
+            if (marinerNumber <= 3)
+            {
+                this.marinerOrbit = this.AddParameter(new FlyByCelestialBodyGoal(targetBody, PeA + 5000, PeA), null);
+                marinerOrbit.SetFunds(1200 * multiplier, targetBody);
+                this.AddParameter(new CollectScience(targetBody, BodyLocation.Space), null);
+            }
+            else
+            {
+                this.marinerOrbit = this.AddParameter(new FlyByCelestialBodyGoal(targetBody, PeA + 201000000, PeA), null);
+                marinerOrbit.SetFunds(1200 * multiplier, targetBody);
+                this.AddParameter(new CollectScience(targetBody, BodyLocation.Space), null);
+            }
+
+            if (marinerNumber == 4)
+            {
+                this.marinerOrbit2 = this.AddParameter(new FlyByCelestialBodyGoal(FlightGlobals.Bodies[14], extraBody2 + 50000, extraBody2), null);
+                marinerOrbit2.SetFunds(1200 * multiplier, FlightGlobals.Bodies[14]);
+                this.AddParameter(new CollectScience(FlightGlobals.Bodies[14], BodyLocation.Space), null);
+
+                this.marinerOrbit3 = this.AddParameter(new FlyByCelestialBodyGoal(FlightGlobals.Bodies[12], extraBody2 + 50000, extraBody2), null);
+                marinerOrbit3.SetFunds(1200 * multiplier, FlightGlobals.Bodies[12]);
+                this.AddParameter(new CollectScience(FlightGlobals.Bodies[12], BodyLocation.Space), null);
+
+                this.marinerOrbit4 = this.AddParameter(new FlyByCelestialBodyGoal(FlightGlobals.Bodies[11], extraBody2 + 50000, extraBody2), null);
+                marinerOrbit4.SetFunds(1200 * multiplier, FlightGlobals.Bodies[11]);
+                this.AddParameter(new CollectScience(FlightGlobals.Bodies[11], BodyLocation.Space), null);
+
+                this.marinerOrbit5 = this.AddParameter(new FlyByCelestialBodyGoal(FlightGlobals.Bodies[10], extraBody2 + 50000, extraBody2), null);
+                marinerOrbit5.SetFunds(1200 * multiplier, FlightGlobals.Bodies[10]);
+                this.AddParameter(new CollectScience(FlightGlobals.Bodies[10], BodyLocation.Space), null);
+
+                this.marinerOrbit6 = this.AddParameter(new FlyByCelestialBodyGoal(FlightGlobals.Bodies[9], extraBody2 + 50000, extraBody2), null);
+                marinerOrbit6.SetFunds(1200 * multiplier, FlightGlobals.Bodies[9]);
+                this.AddParameter(new CollectScience(FlightGlobals.Bodies[9], BodyLocation.Space), null);
+            }
+
+            this.AddParameter(new GetCrewCount(0), null);
+            base.SetExpiry(3f, 10f);
+            base.SetDeadlineYears(3f, targetBody);
+            base.SetFunds(3000 * multiplier, 32000 * multiplier, targetBody);
+            base.SetScience(3 * multiplier, targetBody);
+            base.SetReputation(25 * multiplier, targetBody);
+            return true;
+
+        }
+        public override bool CanBeCancelled()
+        {
+            return true;
+        }
+        public override bool CanBeDeclined()
+        {
+            return true;
+        }
+      
+        protected override string GetHashString()
+        {
+            return "Conduct Flyby of " + targetBody.theName;
+        }
+        protected override string GetTitle()
+        {
+            if (marinerNumber == 4)
+            {
+                return "Voyager 1 Flyby Of Jool";
+            }
+            else if (marinerNumber == 3)
+            {
+                return "Mariner 10 Flyby Of Moho";
+            }
+            else if (marinerNumber == 2)
+            {
+                return "Mariner 4 Flyby Of Duna";
+            }
+            else
+            {
+                return "Mariner 2 flyby of Eve";
+            }
+        }
+        protected override string GetDescription()
+        {
+            if (marinerNumber == 4)
+            {
+                return "Originally, a Mariner 11 and Mariner 12 were planned as part of the Mariner program, however, due to congressional budget cuts, the mission was scaled back to be a flyby of Jupiter and Saturn, " +
+                    "and renamed the Mariner Jupiter-Saturn probes. As the program progressed, the name was later changed to Voyager, as the probe designs began to differ greatly from previous Mariner missions.\n\n" +
+
+                    "The twin spacecraft Voyager 1 and Voyager 2 were launched by NASA in separate months in the summer of 1977 from Cape Canaveral, Florida. As originally designed, the Voyagers were to conduct closeup " +
+                    "studies of Jupiter and Saturn, Saturn's rings, and the larger moons of the two planets.\n\n" +
+
+                    "To accomplish their two-planet mission, the spacecraft were built to last five years. But as the mission went on, and with the successful achievement of all its objectives, the additional flybys " +
+                    "of the two outermost giant planets, Uranus and Neptune, proved possible -- and irresistible to mission scientists and engineers at the Voyagers' home at the Jet Propulsion Laboratory in " +
+                    "Pasadena, California.\n\n" +
+
+                    "As the spacecraft flew across the solar system, remote-control reprogramming was used to endow the Voyagers with greater capabilities than they possessed when they left the Earth. Their two-planet " +
+                    "mission became four. Their five-year lifetimes stretched to 12 and more." +
+
+                    "Eventually, between them, Voyager 1 and 2 would explore all the giant outer planets of our solar system, 48 of their moons, and the unique systems of rings and magnetic fields those planets possess.\n\n" +
+                    "Information on Voyager program gathered from NASA.";
+
+            }
+            if (marinerNumber == 3)
+            {
+                return "Mariner 10 was the seventh successful launch in the Mariner series, the first spacecraft to use the gravitational pull of one planet (Venus) to reach another (Mercury), and the first " +
+                    "spacecraft mission to visit two planets. Mariner 10 was the first (and as of 2003 the only) spacecraft to visit Mercury. The spacecraft flew by Mercury three times in a retrograde heliocentric " +
+                    "orbit and returned images and data on the planet. Mariner 10 returned the first-ever close-up images of Venus and Mercury. The primary scientific objectives of the mission were to measure Mercury's " +
+                    "environment, atmosphere, surface, and body characteristics and to make similar investigations of Venus. Secondary objectives were to perform experiments in the interplanetary medium and to obtain " +
+                    "experience with a dual-planet gravity-assist mission.\n\n" +
+
+                    "All Mariner info gathered from NASA";
+            }
+            else if (marinerNumber == 2)
+            {
+                return "Mariner 4 was the first spacecraft to get a close look at Mars. Flying as close as 9,846 kilometers (6,118 miles), Mariner 4 revealed Mars to have a cratered, rust-colored surface, with signs " +
+                    "on some parts of the planet that liquid water had once etched its way into the soil. In addition to various field and particle sensors and detectors, the spacecraft had a television camera, which " +
+                    "took 22 television pictures covering about 1% of the planet. Initially stored on a 4-track tape recorder, these pictures took four days to transmit to Earth.\n\n" +
+
+                    "All Mariner info gathered from NASA";
+            }
+            else
+            {
+                return "As plans were getting under way to explore the Moon with the Rangers and Surveyors, JPL and NASA also turned their attention to the rest of the solar system. The Mariner series of missions " +
+                    "were designed to be the first U.S. spacecraft to other planets, specifically Venus and Mars. Mariner 1 and 2 were nearly identical spacecraft developed to fly by Venus. The rocket carrying" +
+                    "Mariner 1 went off-course during launch on July 22, 1962, and was blown up by a range safety officer about 5 minutes into flight.\n\n" +
+
+                "A month later, Mariner 2 was launched successfully on August 27, 1962, sending it on a 3-1/2-month flight to Venus. On the way it measured for the first time the solar wind, a constant stream of " +
+                "charged particles flowing outward from the Sun. It also measured interplanetary dust, which turned out to be more scarce than predicted. In addition, Mariner 2 detected high-energy charged particles " +
+                "coming from the Sun, including several brief solar flares, as well as cosmic rays from outside the solar system. As it flew by Venus on December 14, 1962, Mariner 2 scanned the planet with infrared and " +
+                "microwave radiometers, revealing that Venus has cool clouds and an extremely hot surface. (Because the bright, opaque clouds hide the planet’s surface, Mariner 2 was not outfitted with a camera.) " +
+                "Mariner 2's signal was tracked until January 3, 1963. The spacecraft remains in orbit around the Sun.\n\n" +
+
+                "All info for Mariner was collect from Nasa";
+            }
+           
+        }
+        protected override string GetSynopsys()
+        {
+            if (marinerNumber == 4)
+            {
+                return "No real example of Saturn or Jupiter exist in Kerbal Space program, the only Gas Planet in KSP is Jool.  You are to explore Jool and its moon to complete this contract.";
+            }
+            if (marinerNumber == 3)
+            {
+                return "Moho is the Kerbal version of Mecury, in this mission you have to do a flyby of both Eve (venus) and Moho(Mercury) and collect science.";
+            }
+            else if (marinerNumber == 2)
+            {
+                return "Duna is the Kerbal version of Mars, in this mission you have to do a flyby of Duna and collect science.";
+            }
+            else
+            {
+                return "Eve is the kerbal version of Venus, in this mission you have to do a flyby of Eve and collect science.";
+            }
+        }
+        protected override string MessageCompleted()
+        {
+            SaveInfo.marinerCurrentNumber++;
+            if (marinerNumber == 4)
+            {
+                return "You have visited Jool and its moon, and your voyager craft is still going strong.. We hope.";
+            }
+            if (marinerNumber == 3)
+            {
+                return "Moho is the Kerbal version of Mecury, you have finished the contract!";
+            }
+            else if (marinerNumber == 2)
+            {
+                return "Duna is the Kerbal version of Mars, you have finished the contract!";
+            }
+            else
+            {
+                return "Eve is the kerbal version of Venus, you have finished the contract!";
+            }
+        }
+
+        protected override void OnLoad(ConfigNode node)
+        {
+            Tools.ContractLoadCheck(node, ref targetBody, Planetarium.fetch.Home, targetBody, "targetBody");
+            Tools.ContractLoadCheck(node, ref PeA, 100000, PeA, "pea");
+            Tools.ContractLoadCheck(node, ref marinerNumber, 1, marinerNumber, "mn");
+            Tools.ContractLoadCheck(node, ref multiplier, 1f, multiplier, "mult");
+            Tools.ContractLoadCheck(node, ref extraBody2, 100000, extraBody2, "extra2");
+            Tools.ContractLoadCheck(node, ref extraBody3, 100000, extraBody3, "extra3");
+            Tools.ContractLoadCheck(node, ref extraBody4, 100000, extraBody4, "extra4");
+            Tools.ContractLoadCheck(node, ref extraBody5, 100000, extraBody5, "extra5");
+            Tools.ContractLoadCheck(node, ref extraBody6, 100000, extraBody6, "extra6");
+        }
+        protected override void OnSave(ConfigNode node)
+        {
+            int bodyID = targetBody.flightGlobalsIndex;
+            node.AddValue("targetBody", bodyID);
+            node.AddValue("pea", PeA);
+            node.AddValue("mn", marinerNumber);
+            node.AddValue("mult", multiplier);
+            node.AddValue("extra2", extraBody2);
+            node.AddValue("extra3", extraBody3);
+            node.AddValue("extra4", extraBody4);
+            node.AddValue("extra5", extraBody5);
+            node.AddValue("extra6", extraBody6);
+        }
+
+        public override bool MeetRequirements()
+        {
+            bool techUnlock = ResearchAndDevelopment.GetTechnologyState("flightControl") == RDTech.State.Available;
+            bool techUnlock2 = ResearchAndDevelopment.GetTechnologyState("spaceExploration") == RDTech.State.Available;
+            bool techUnlock3 = ResearchAndDevelopment.GetTechnologyState("electrics") == RDTech.State.Available;
+            bool techUnlock4 = ResearchAndDevelopment.GetTechnologyState("advExploration") == RDTech.State.Available;
+            if (SaveInfo.marinerCurrentNumber <= 4) { return true; }
+            else { return false; }
+            
+        }
+    }
     # region Luna 2
     public class Luna2 : Contract
     {
@@ -835,9 +1396,12 @@ namespace MissionControllerEC
         {
             bool techUnlock = ResearchAndDevelopment.GetTechnologyState("specializedConstruction") == RDTech.State.Available;
             if (!techUnlock)
+            {
                 return false;
+            }
+            else if (SaveInfo.Voskhod2Done == true) { return true; }
             else
-                return true;
+                return false;
         }
 
 

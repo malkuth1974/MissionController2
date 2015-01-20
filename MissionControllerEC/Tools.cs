@@ -122,11 +122,31 @@ namespace MissionControllerEC
                 return "0s";
             }
         }
+
+        public static double getBodyAltitude(CelestialBody body)
+        {
+            double atmosphere = 0.0;
+
+            if (!body.atmosphere)
+            {
+                atmosphere = body.Radius + 40000;
+                Debug.Log("Body radius is " + body.Radius);
+            }
+            else
+            {
+                atmosphere = -body.atmosphereScaleHeight * Math.Log(1E-6) * 1000;
+                Debug.Log("Body and Atmoshpere is " + atmosphere);
+            }
+
+            return Math.Round(atmosphere);
+        }
+
         public static void ObitalPeriodHelper(Vessel v)
         {            
             ScreenMessages.PostScreenMessage("Current Orbital Period is: " + Tools.formatTime(FlightGlobals.ActiveVessel.orbit.period) + "\n" +
-                " ApA Is: " + (int)v.orbit.ApA + " PeA Is: "+ (int)v.orbit.PeA + "\n" +
-                "Current eccentricity is: " + FlightGlobals.ActiveVessel.orbit.eccentricity.ToString("F2"), .001f);
+                "ApA Is: " + (int)v.orbit.ApA + " PeA Is: "+ (int)v.orbit.PeA + "\n" +
+                "Current eccentricity is: " + FlightGlobals.ActiveVessel.orbit.eccentricity.ToString("F2") +"\n" +
+            "Current Biome Is: " + FlightGlobals.ActiveVessel.mainBody.BiomeMap.GetAtt(FlightGlobals.ActiveVessel.latitude * Math.PI / 180d, FlightGlobals.ActiveVessel.longitude * Math.PI / 180d), .001f);
         }
 
         public static void ContractLoadCheck<t>(ConfigNode node, ref t value, t backupDefault, string valueName, string savedFile)

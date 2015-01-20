@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Text.RegularExpressions;
 using UnityEngine;
 using System.Linq;
 using MissionControllerEC;
@@ -183,6 +184,8 @@ namespace MissionControllerEC
         private ApplicationLauncherButton MCEButton;
         private ApplicationLauncherButton EDMCEButton;
         private ApplicationLauncherButton MCERevert;
+        private string tirosNumber;
+        private string marinerNumber;
         
         Settings settings = new Settings("Config.cfg");
 
@@ -198,13 +201,12 @@ namespace MissionControllerEC
             GameEvents.onGameSceneLoadRequested.Add(this.CheckRandomContractTypes);
             //Debug.Log("MCE Awake");
             getSupplyList(false);
-            LoadResourceDictionary();
         }    
                 
         public void Start()
         {                 
             FlightglobalsIndexCheck();
-            
+            DictCount = settings.SupplyResourceList.Count();           
             ActivateEVASpareParts();
         }            
                       
@@ -269,7 +271,7 @@ namespace MissionControllerEC
 
             if (GUILayout.Button("Add Money"))
             {
-                Funding.Instance.AddFunds(1000,TransactionReasons.Cheating);
+                Funding.Instance.AddFunds(500000,TransactionReasons.Cheating);
             }
 
             GUILayout.Label("Current Science: " + ResearchAndDevelopment.Instance.Science);
@@ -328,6 +330,19 @@ namespace MissionControllerEC
             {
                 SaveInfo.CivilianLowOrbit = true; SaveInfo.CivilianLanding = true; SaveInfo.CivilianStationExpedition = true;
             }
+            GUILayout.BeginHorizontal();
+            GUILayout.Box("Tiros Number 1-3", MCE_ScenarioStartup.StyleBold, GUILayout.Width(300));
+            tirosNumber = SaveInfo.tirosCurrentNumber.ToString();
+            tirosNumber= Regex.Replace(GUILayout.TextField(tirosNumber), "[^.0-9]", "");
+            SaveInfo.tirosCurrentNumber = int.Parse(tirosNumber);
+            GUILayout.EndHorizontal();
+
+            GUILayout.BeginHorizontal();
+            GUILayout.Box("Mariner Number 1-3", MCE_ScenarioStartup.StyleBold, GUILayout.Width(300));
+            marinerNumber = SaveInfo.marinerCurrentNumber.ToString();
+            marinerNumber = Regex.Replace(GUILayout.TextField(marinerNumber), "[^.0-9]", "");
+            SaveInfo.marinerCurrentNumber = int.Parse(marinerNumber);
+            GUILayout.EndHorizontal();
                           
             GUILayout.EndVertical();
             if (GUILayout.Button("Exit Save Settings"))
@@ -402,8 +417,13 @@ namespace MissionControllerEC
         [Persistent]internal int com_Sat_bodyNumber = 1;
         [Persistent]internal bool hardcoreOn = true;
 
+        [Persistent]internal int tirosNumber = 1;
+        [Persistent]internal int marinerNumber = 1;
+
         public override void OnDecodeFromConfigNode()
         {
+            SaveInfo.tirosCurrentNumber = tirosNumber;
+            SaveInfo.marinerCurrentNumber = marinerNumber;
             SaveInfo.Hardcore_Vessel_Must_Survive = hardcoreOn;
             SaveInfo.TotalSpentKerbals = TotalSpentKerbals;
             SaveInfo.TotalSpentKerbalDeaths = TotalSpentDeaths;
@@ -464,6 +484,8 @@ namespace MissionControllerEC
 
         public override void OnEncodeToConfigNode()
         {
+            tirosNumber = SaveInfo.tirosCurrentNumber;
+            marinerNumber = SaveInfo.marinerCurrentNumber;
             hardcoreOn = SaveInfo.Hardcore_Vessel_Must_Survive;
             TotalSpentKerbals = SaveInfo.TotalSpentKerbals;
             TotalSpentRockets = SaveInfo.TotalSpentOnRocketTest;

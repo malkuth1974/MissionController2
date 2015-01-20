@@ -95,7 +95,7 @@ namespace MissionControllerEC
 
             MaxAltitude = Tools.RandomNumber((int)st.contract_Satellite_MIn_Height, (int)st.contract_Satellite_Max_Height);
 
-            timeOnStation = Tools.RandomNumber(102400, 900000);
+            timeOnStation = Tools.RandomNumber(24678, 110876);
 
             MaxApA = Tools.RandomNumber((int)st.contract_Satellite_MIn_Height, (int)st.contract_Satellite_Max_Height);
             MinApA = MaxApA - st.contract_Satellite_Between_Difference;
@@ -262,7 +262,7 @@ namespace MissionControllerEC
         {
             //those 3 strings appear to do nothing
             return "We would like you to deliver our satellite to orbit, We have specific scientific parts we want added to this satellite. Please include a " + sciPartname + "." +
-                "\n\n" + "Contract Goals\n\n " + "1. Build a satellite (we recommend you place a docking port for future Repair contracts)\n 2. Include a " + sciPartname + " on the satellite." +
+                "\n\n" + "Contract Goals\n\n " + "1. Build a satellite (we recommend you place a docking port for future Repair contracts)\n 2. Include a specified part on the satellite." +
                 "\n 3. Launch satellite into the orbit specified ";
         }
         protected override string GetSynopsys()
@@ -353,5 +353,154 @@ namespace MissionControllerEC
         }
 
 
+    }
+    public class EarlyContracts : Contract
+    {
+        Settings settings = new Settings("config.cfg");
+        public int crew = 1;
+        CelestialBody targetBody; 
+        public string BiomeName;
+        public int BiomeNumber = 0;
+        public float PaymentMultipllier = 1f;
+        public int totalContracts;
+        public int TotalFinished;
+        
+        protected override bool Generate()
+        {
+            if (prestige == ContractPrestige.Trivial)
+            {
+                return false;
+            }
+            totalContracts = ContractSystem.Instance.GetCurrentContracts<EarlyContracts>().Count();
+            TotalFinished = ContractSystem.Instance.GetCompletedContracts<EarlyContracts>().Count();
+
+            if (totalContracts >= 1)
+            {
+                return false;
+            }
+            if (HighLogic.LoadedSceneIsFlight) { return false; }
+            BiomeNumber = Tools.RandomNumber(0, 8);
+            switch (BiomeNumber)
+            {
+                case 0:
+                    BiomeName = "Grasslands";
+                    PaymentMultipllier = 1f;
+                    break;
+                case 1:
+                    BiomeName = "Highlands";
+                    PaymentMultipllier = 1.1f;
+                    break;
+                case 2:
+                    BiomeName = "Mountains";
+                    PaymentMultipllier = 1.1f;
+                    break;
+                case 3:
+                    BiomeName = "Deserts";
+                    PaymentMultipllier = 1.3f;
+                    break;
+                case 4:
+                    BiomeName = "Badlands";
+                    PaymentMultipllier = 1.4f;
+                    break;
+                case 5:
+                    BiomeName = "Tundra";
+                    PaymentMultipllier = 1.4f;
+                    break;
+                case 6:
+                    BiomeName = "Ice Caps";
+                    PaymentMultipllier = 1.8f;
+                    break;
+                case 7:
+                    BiomeName = "Water";
+                    PaymentMultipllier = .6f;
+                    break;
+                case 8:
+                    BiomeName = "Shores";
+                    PaymentMultipllier = .2f;
+                    break;
+                default:
+                    BiomeName = "Shores";
+                    PaymentMultipllier = .2f;
+                    break;
+            }
+            targetBody = Planetarium.fetch.Home;
+
+            this.AddParameter(new BiomLandingParameters(Planetarium.fetch.Home, true, BiomeName), null);
+            this.AddParameter(new CollectScience(targetBody, BodyLocation.Surface), null);
+
+            this.AddParameter(new GetCrewCount(crew), null);
+
+            base.SetFunds(5000f * PaymentMultipllier, 30000f * PaymentMultipllier, targetBody);
+            base.SetExpiry(3f, 10f);
+            base.SetDeadlineDays(100f, targetBody);
+            base.SetReputation(5f * PaymentMultipllier, targetBody);
+            base.SetScience(1f * PaymentMultipllier, targetBody);
+            return true;
+        }
+
+        public override bool CanBeCancelled()
+        {
+            return true;
+        }
+        public override bool CanBeDeclined()
+        {
+            return true;
+        }
+      
+        protected override string GetHashString()
+        {
+            return "Launch and land on Biomes of " + targetBody;
+        }
+        protected override string GetTitle()
+        {
+            return "Land on specific Biome on " + targetBody.theName + ", Then collect science";
+        }
+        protected override string GetDescription()
+        {
+            return "Land a vessel on " + targetBody.theName + " in the biome called " + BiomeName + ". Then collect science to complete the contract. You must have at least " + crew + " crew member on your vessel";
+        }
+        protected override string GetSynopsys()
+        {
+            return "Land at specific Body and Biome we Request " + targetBody.theName + ". " + BiomeName + " Then collect science.";
+        }
+        protected override string MessageCompleted()
+        {
+            SaveInfo.Luna16Done = true;
+            return "Great job landing at the biome we specified.  The science we have gathered will help us in the future to bring kerbals deeper into our solar system!";
+        }
+
+        protected override void OnLoad(ConfigNode node)
+        {
+            Tools.ContractLoadCheck(node, ref targetBody, Planetarium.fetch.Home, targetBody, "targetBody");
+            Tools.ContractLoadCheck(node, ref crew, 1, crew, "crewcount");
+            Tools.ContractLoadCheck(node, ref BiomeName, "Test", BiomeName, "biomename");
+            Tools.ContractLoadCheck(node, ref PaymentMultipllier, 1.0f, PaymentMultipllier, "paymentmult");
+
+        }
+        protected override void OnSave(ConfigNode node)
+        {
+            int bodyID = targetBody.flightGlobalsIndex;
+            node.AddValue("targetBody", bodyID);
+            node.AddValue("crewcount", crew);
+            node.AddValue("biomename", BiomeName);
+            node.AddValue("paymentmult", PaymentMultipllier);
+        }
+
+        public override bool MeetRequirements()
+        {
+            bool techUnlock = ResearchAndDevelopment.GetTechnologyState("flightControl") == RDTech.State.Available;
+            bool techUnlock2 = ResearchAndDevelopment.GetTechnologyState("scienceTech") == RDTech.State.Available;
+            bool techUnlock3 = ResearchAndDevelopment.GetTechnologyState("basicRocketry") == RDTech.State.Available;
+            if (techUnlock && techUnlock2)
+            {
+                return false;
+            }
+            else if (techUnlock3)
+            {
+                return true;
+            }
+            else
+                return false;
+        }
     }
 }

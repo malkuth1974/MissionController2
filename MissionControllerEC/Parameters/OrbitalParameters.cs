@@ -184,11 +184,9 @@ namespace MissionControllerEC
             {
                 if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel.situation == Vessel.Situations.ORBITING && FlightGlobals.ActiveVessel.orbit.referenceBody.Equals(targetBody))
                 {
-
                     InOrbit(FlightGlobals.ActiveVessel);
-                }
-            }
-                
+                }              
+            }              
         }
 
         protected override void OnLoad(ConfigNode node)
@@ -1019,6 +1017,148 @@ namespace MissionControllerEC
                 base.SetComplete();
         }
 
+        public void flightReady()
+        {
+            base.SetIncomplete();
+        }
+        public void vesselChange(Vessel v)
+        {
+            base.SetIncomplete();
+        }
+    }
+    #endregion
+    #region Flyby Goal
+    public class FlyByCelestialBodyGoal : ContractParameter
+    {
+        private CelestialBody targetBody;
+        private double maxPeA = 0.0;
+        private double minPeA = 0.0;
+        private bool updated = false;
+        private bool lockOut = false;
+
+        public FlyByCelestialBodyGoal()
+        {
+        }
+
+        public FlyByCelestialBodyGoal(CelestialBody target, double maxpeA, double minpeA)
+        {
+            this.targetBody = target;
+            this.maxPeA = maxpeA;
+            this.minPeA = minpeA;
+            this.lockOut = false;
+        }
+
+        public FlyByCelestialBodyGoal(CelestialBody target, double maxpeA, double minpeA, bool lockout)
+        {
+            this.targetBody = target;
+            this.maxPeA = maxpeA;
+            this.minPeA = minpeA;
+            this.lockOut = lockout;
+        }
+
+        protected override string GetHashString()
+        {
+            return targetBody.bodyName;
+        }
+        protected override string GetTitle()
+        {
+            return "FlyBy: " + targetBody.theName + "  Between an altitude of: " + maxPeA + "  And: " + minPeA;
+        }
+
+        protected override void OnRegister()
+        {
+            this.disableOnStateChange = false;
+            updated = false;
+            if (Root.ContractState == Contract.State.Active)
+            {
+                GameEvents.onFlightReady.Add(flightReady);
+                GameEvents.onVesselChange.Add(vesselChange);
+                updated = true;
+            }
+        }
+
+        protected override void OnUnregister()
+        {
+            if (updated)
+            {
+                GameEvents.onFlightReady.Remove(flightReady);
+                GameEvents.onVesselChange.Remove(vesselChange);
+            }
+        }
+
+        protected override void OnUpdate()
+        {
+            if (Root.ContractState == Contract.State.Active)
+            {
+                if (HighLogic.LoadedSceneIsFlight)
+                {
+                    if (FlightGlobals.ActiveVessel.orbit.referenceBody.Equals(targetBody))
+                    {
+                        if (this.state == ParameterState.Incomplete)
+                        {
+                            flyby(FlightGlobals.ActiveVessel);
+                        }
+                        if (this.state == ParameterState.Complete && !lockOut)
+                        {
+                            OffFlyBy(FlightGlobals.ActiveVessel);
+                        }
+                    }
+                }
+            }
+
+            if (HighLogic.LoadedSceneIsFlight && SaveInfo.MessageHelpers == true)
+            {
+                Tools.ObitalPeriodHelper(FlightGlobals.ActiveVessel);
+            }
+        }
+
+        protected override void OnLoad(ConfigNode node)
+        {
+            Tools.ContractLoadCheck(node, ref targetBody, Planetarium.fetch.Home, targetBody, "targetBody");
+            Tools.ContractLoadCheck(node, ref maxPeA, 71000, maxPeA, "maxpEa");
+            Tools.ContractLoadCheck(node, ref minPeA, 70500, minPeA, "minpEa");
+            Tools.ContractLoadCheck(node, ref lockOut, true, lockOut, "lockout");
+
+        }
+        protected override void OnSave(ConfigNode node)
+        {
+            int bodyID = targetBody.flightGlobalsIndex;
+            node.AddValue("targetBody", bodyID);
+            double maxPpAID = maxPeA;
+            node.AddValue("maxpEa", maxPpAID);
+            double MinPeAID = minPeA;
+            node.AddValue("minpEa", MinPeAID);
+            node.AddValue("lockout", lockOut);
+        }
+
+        public void flyby(Vessel vessel)
+        {
+            if (vessel.launchTime > this.Root.DateAccepted)
+            {
+                if (vessel.isActiveVessel)
+                {
+
+                    if (vessel.orbit.PeA >= minPeA && vessel.orbit.PeA <= maxPeA)
+                    {
+                        base.SetComplete();
+                    }
+                }
+            }
+        }
+        public void OffFlyBy(Vessel vessel)
+        {
+            if (vessel.launchTime > this.Root.DateAccepted)
+            {
+                if (vessel.isActiveVessel)
+                {
+
+                    if (vessel.orbit.PeA <= minPeA && vessel.orbit.PeA >= maxPeA)
+                    {
+                        base.SetIncomplete();
+                    }
+                }
+            }
+        }
         public void flightReady()
         {
             base.SetIncomplete();

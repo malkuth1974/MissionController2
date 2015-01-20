@@ -1,10 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 namespace MissionControllerEC
 {
     public class Settings : ConfigNodeStorage
     {       
-        public Settings(String FilePath) : base(FilePath) { }
+        public Settings(String FilePath) : base(FilePath) 
+        { 
+        }
        
         [Persistent]internal double HireCost = 4000;
         [Persistent]internal double Death_Insurance = 20000;
@@ -35,6 +40,8 @@ namespace MissionControllerEC
         [Persistent]internal double voshodheight = 82000;
         [Persistent]internal double skyLabheight = 90000;
         [Persistent]internal double skyLab4MaxApA = 120000;
-        [Persistent]internal double skyLab4MaxPeA = 120000;              
+        [Persistent]internal double skyLab4MaxPeA = 120000;
+        [Persistent]
+        internal List<String> SupplyResourceList = new List<string>() { "LiquidFuel", "Oxidizer", "MonoPropellant", "XenonGas", "Food", "Water", "Oxygen", "Kibbal" };    
     }
 }

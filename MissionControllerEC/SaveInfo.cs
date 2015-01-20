@@ -68,5 +68,8 @@ namespace MissionControllerEC
         public static string CivilianApName = "none";
 
         public static bool spResourceSet = false;
+
+        public static int tirosCurrentNumber = 1;
+        public static int marinerCurrentNumber = 1;
     }   
 }
