@@ -15,6 +15,7 @@ namespace MissionControllerEC
         private int maxPartCount = 0;
         private bool twoPartsTrue = false;
         private bool updated = false;
+        private bool disableRecheck = false;
 
         public PartGoal()
         {
@@ -40,10 +41,11 @@ namespace MissionControllerEC
 
         }
 
-        public PartGoal(string name, int maxCount)
+        public PartGoal(string name, int maxCount, bool disableRecheck)
         {
             this.partName = name;
             this.maxPartCount = maxCount;
+            this.disableRecheck = disableRecheck;
 
         }
 
@@ -63,7 +65,7 @@ namespace MissionControllerEC
         {
             this.disableOnStateChange = false;
             updated = false;
-            if (Root.ContractState == Contract.State.Active)
+            if (Root.ContractState == Contract.State.Active && !disableRecheck)
             {
                 GameEvents.onFlightReady.Add(flightReady);
                 GameEvents.onVesselChange.Add(vesselChange);
@@ -515,10 +517,7 @@ namespace MissionControllerEC
     {
         private String moduleName;
         private String ModuleGoalname;
-        private bool updated = false;
-        //public int partCount = 0;
-        //public int maxPartCount = 0;
-
+       
         public ModuleGoal()
         {
         }
@@ -539,27 +538,7 @@ namespace MissionControllerEC
             return "Must Have  " + ModuleGoalname + " On your vessel";
         }
 
-        protected override void OnRegister()
-        {
-            this.disableOnStateChange = false;
-            updated = false;
-            if (Root.ContractState == Contract.State.Active)
-            {
-                GameEvents.onFlightReady.Add(flightReady);
-                GameEvents.onVesselChange.Add(vesselChange);
-                updated = true;
-            }
-        }
-
-        protected override void OnUnregister()
-        {
-            if (updated)
-            {
-                GameEvents.onFlightReady.Remove(flightReady);
-                GameEvents.onVesselChange.Remove(vesselChange);
-            }
-        }
-
+        
         protected override void OnUpdate()
         {
             if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel)

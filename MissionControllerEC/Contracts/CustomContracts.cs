@@ -189,7 +189,7 @@ namespace MissionControllerEC
             this.suppy1 = this.AddParameter(new TargetDockingGoal(vesselId, vesselName), null);
             suppy1.SetFunds(1000, 2000, targetBody);
             suppy1.SetReputation(5, 10, targetBody);
-            this.suppy2 = this.AddParameter(new ResourceSupplyGoal(ResourceName, resourcesAmount, CTitle), null);
+            this.suppy2 = this.AddParameter(new ResourceSupplyGoal(ResourceName, resourcesAmount, CTitle,true), null);
             suppy2.SetFunds(1000, 2000, targetBody);
             suppy2.SetReputation(5, 10, targetBody);
             base.SetExpiry(1f, 10f);
@@ -325,7 +325,7 @@ namespace MissionControllerEC
             this.ctrans1 = this.AddParameter(new TargetDockingGoal(vesselId, vesselName), null);
             ctrans1.SetFunds(2000, 2000, targetBody);
             ctrans1.SetReputation(3, targetBody);
-            this.ctrans2 = this.AddParameter(new TimeCountdownDocking(targetBody, crewTime, "Crew will Stay For This Amount Of Time ", vesselId), null);
+            this.ctrans2 = this.AddParameter(new TimeCountdownDocking(targetBody, crewTime, "Crew will Stay For This Amount Of Time ", vesselId, vesselName), null);
             ctrans2.SetFunds(2000, 2000, targetBody);
             ctrans2.SetReputation(3, targetBody);
             this.ctrans3 = this.AddParameter(new LandingParameters(Planetarium.fetch.Home,true), null);

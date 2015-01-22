@@ -48,7 +48,7 @@ namespace MissionControllerEC
         {
             this.disableOnStateChange = false;
             updated = false;
-            if (Root.ContractState == Contract.State.Active)
+            if (Root.ContractState == Contract.State.Active && !LockOut)
             {
                 GameEvents.onFlightReady.Add(flightReady);
                 GameEvents.onVesselChange.Add(vesselChange);
@@ -258,7 +258,7 @@ namespace MissionControllerEC
         {
             this.disableOnStateChange = false;
             updated = false;
-            if (Root.ContractState == Contract.State.Active)
+            if (Root.ContractState == Contract.State.Active && !lockOut)
             {
                 GameEvents.onFlightReady.Add(flightReady);
                 GameEvents.onVesselChange.Add(vesselChange);
@@ -402,7 +402,7 @@ namespace MissionControllerEC
         {
             this.disableOnStateChange = false;
             updated = false;
-            if (Root.ContractState == Contract.State.Active)
+            if (Root.ContractState == Contract.State.Active && !lockOut)
             {
                 GameEvents.onFlightReady.Add(flightReady);
                 GameEvents.onVesselChange.Add(vesselChange);
@@ -650,7 +650,7 @@ namespace MissionControllerEC
         {
             this.disableOnStateChange = false;
             updated = false;
-            if (Root.ContractState == Contract.State.Active)
+            if (Root.ContractState == Contract.State.Active && !lockOut)
             {
                 GameEvents.onFlightReady.Add(flightReady);
                 GameEvents.onVesselChange.Add(vesselChange);
@@ -1031,8 +1031,8 @@ namespace MissionControllerEC
     public class FlyByCelestialBodyGoal : ContractParameter
     {
         private CelestialBody targetBody;
-        private double maxPeA = 0.0;
-        private double minPeA = 0.0;
+        private double maxheight = 0.0;
+        private double minheight = 0.0;
         private bool updated = false;
         private bool lockOut = false;
 
@@ -1043,17 +1043,16 @@ namespace MissionControllerEC
         public FlyByCelestialBodyGoal(CelestialBody target, double maxpeA, double minpeA)
         {
             this.targetBody = target;
-            this.maxPeA = maxpeA;
-            this.minPeA = minpeA;
+            this.maxheight = maxpeA;
+            this.minheight = minpeA;
             this.lockOut = false;
         }
 
         public FlyByCelestialBodyGoal(CelestialBody target, double maxpeA, double minpeA, bool lockout)
         {
             this.targetBody = target;
-            this.maxPeA = maxpeA;
-            this.minPeA = minpeA;
-            this.lockOut = lockout;
+            this.maxheight = maxpeA;
+            this.minheight = minpeA;           
         }
 
         protected override string GetHashString()
@@ -1062,29 +1061,8 @@ namespace MissionControllerEC
         }
         protected override string GetTitle()
         {
-            return "FlyBy: " + targetBody.theName + "  Between an altitude of: " + maxPeA + "  And: " + minPeA;
-        }
-
-        protected override void OnRegister()
-        {
-            this.disableOnStateChange = false;
-            updated = false;
-            if (Root.ContractState == Contract.State.Active)
-            {
-                GameEvents.onFlightReady.Add(flightReady);
-                GameEvents.onVesselChange.Add(vesselChange);
-                updated = true;
-            }
-        }
-
-        protected override void OnUnregister()
-        {
-            if (updated)
-            {
-                GameEvents.onFlightReady.Remove(flightReady);
-                GameEvents.onVesselChange.Remove(vesselChange);
-            }
-        }
+            return "FlyBy: " + targetBody.theName + "  Between an altitude of: " + maxheight + "  And: " + minheight;
+        }       
 
         protected override void OnUpdate()
         {
@@ -1097,11 +1075,7 @@ namespace MissionControllerEC
                         if (this.state == ParameterState.Incomplete)
                         {
                             flyby(FlightGlobals.ActiveVessel);
-                        }
-                        if (this.state == ParameterState.Complete && !lockOut)
-                        {
-                            OffFlyBy(FlightGlobals.ActiveVessel);
-                        }
+                        }                      
                     }
                 }
             }
@@ -1115,8 +1089,8 @@ namespace MissionControllerEC
         protected override void OnLoad(ConfigNode node)
         {
             Tools.ContractLoadCheck(node, ref targetBody, Planetarium.fetch.Home, targetBody, "targetBody");
-            Tools.ContractLoadCheck(node, ref maxPeA, 71000, maxPeA, "maxpEa");
-            Tools.ContractLoadCheck(node, ref minPeA, 70500, minPeA, "minpEa");
+            Tools.ContractLoadCheck(node, ref maxheight, 71000, maxheight, "maxpEa");
+            Tools.ContractLoadCheck(node, ref minheight, 70500, minheight, "minpEa");
             Tools.ContractLoadCheck(node, ref lockOut, true, lockOut, "lockout");
 
         }
@@ -1124,9 +1098,9 @@ namespace MissionControllerEC
         {
             int bodyID = targetBody.flightGlobalsIndex;
             node.AddValue("targetBody", bodyID);
-            double maxPpAID = maxPeA;
+            double maxPpAID = maxheight;
             node.AddValue("maxpEa", maxPpAID);
-            double MinPeAID = minPeA;
+            double MinPeAID = minheight;
             node.AddValue("minpEa", MinPeAID);
             node.AddValue("lockout", lockOut);
         }
@@ -1138,27 +1112,13 @@ namespace MissionControllerEC
                 if (vessel.isActiveVessel)
                 {
 
-                    if (vessel.orbit.PeA >= minPeA && vessel.orbit.PeA <= maxPeA)
+                    if (vessel.orbit.altitude >= minheight && vessel.orbit.altitude <= maxheight)
                     {
                         base.SetComplete();
                     }
                 }
             }
-        }
-        public void OffFlyBy(Vessel vessel)
-        {
-            if (vessel.launchTime > this.Root.DateAccepted)
-            {
-                if (vessel.isActiveVessel)
-                {
-
-                    if (vessel.orbit.PeA <= minPeA && vessel.orbit.PeA >= maxPeA)
-                    {
-                        base.SetIncomplete();
-                    }
-                }
-            }
-        }
+        }        
         public void flightReady()
         {
             base.SetIncomplete();

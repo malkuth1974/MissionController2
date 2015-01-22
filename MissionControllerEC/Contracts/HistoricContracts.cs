@@ -434,28 +434,28 @@ namespace MissionControllerEC
             this.AddParameter(new EccentricGoal(targetBody,Eccentricity,(Eccentricity + .1),false),null);
             if (TirosTitleMissionNumber == 3)
             {
-                this.AddParameter(new Inclination(targetBody, 170, 180), null);
+                this.AddParameter(new Inclination(targetBody, 80, 90), null);
             }
             this.AddParameter(new TimeCountdownOrbits(targetBody, AmountDaysActive, true), null);
             if (TirosTitleMissionNumber == 2)
             {
-                this.AddParameter(new PartGoal("2HOT Thermometer", 1), null);
-                this.AddParameter(new PartGoal("Communotron 16", 1), null);
+                this.AddParameter(new PartGoal("2HOT Thermometer", 1,false), null);
+                this.AddParameter(new PartGoal("Communotron 16", 1, false), null);
             }
             else if (TirosTitleMissionNumber == 3)
             {
-                this.AddParameter(new PartGoal("Communotron 88-88", 1), null);
-                this.AddParameter(new PartGoal("PresMat Barometer", 1), null);
-                this.AddParameter(new PartGoal("2HOT Thermometer", 1), null);
+                this.AddParameter(new PartGoal("Communotron 88-88", 1, false), null);
+                this.AddParameter(new PartGoal("PresMat Barometer", 1, false), null);
+                this.AddParameter(new PartGoal("2HOT Thermometer", 1, false), null);
             }
             else
             {
-                this.AddParameter(new PartGoal("Communotron 16", 1), null);
+                this.AddParameter(new PartGoal("Communotron 16", 1, false), null);
             }         
             if (TirosTitleMissionNumber == 2 || TirosTitleMissionNumber == 3)
             {
                 this.AddParameter(new ModuleGoal("ModuleDeployableSolarPanel", "Solar Panels"), null);
-                this.AddParameter(new ResourceGoalCap("Electric power", 600), null);
+                this.AddParameter(new ResourceGoalCap("ElectricCharge", 600), null);
             }
             this.AddParameter(new GetCrewCount(0), null);                       
 
@@ -500,7 +500,7 @@ namespace MissionControllerEC
             }
             if (TirosTitleMissionNumber == 2)
             {
-                return "Tiros Number";
+                return "Tiros 7";
             }
             else
             {
@@ -638,6 +638,7 @@ namespace MissionControllerEC
             Tools.ContractLoadCheck(node, ref Eccentricity, .01, Eccentricity, "eccentricity");
             Tools.ContractLoadCheck(node, ref AmountDaysActive, 5, AmountDaysActive, "amountdays");
             Tools.ContractLoadCheck(node, ref contractMult, 1.0f, contractMult, "mult");
+            Tools.ContractLoadCheck(node, ref TirosTitleMissionNumber, SaveInfo.tirosCurrentNumber, TirosTitleMissionNumber, "number");
         }
         protected override void OnSave(ConfigNode node)
         {
@@ -649,6 +650,7 @@ namespace MissionControllerEC
             node.AddValue("eccentricity", Eccentricity);
             node.AddValue("amountdays", AmountDaysActive);
             node.AddValue("mult", contractMult);
+            node.AddValue("number", TirosTitleMissionNumber);
         }
 
         public override bool MeetRequirements()
@@ -657,15 +659,15 @@ namespace MissionControllerEC
             bool techUnlock2 = ResearchAndDevelopment.GetTechnologyState("spaceExploration") == RDTech.State.Available;
             bool techUnlock3 = ResearchAndDevelopment.GetTechnologyState("electrics") == RDTech.State.Available;
             bool techUnlock4 = ResearchAndDevelopment.GetTechnologyState("advExploration") == RDTech.State.Available;
-            if (TirosTitleMissionNumber == 1 && techUnlock)
+            if (SaveInfo.tirosCurrentNumber == 1 && techUnlock)
             {
                 return true;
             }
-            else if (TirosTitleMissionNumber == 2 && techUnlock && techUnlock2 && techUnlock3)
+            else if (SaveInfo.tirosCurrentNumber == 2 && techUnlock && techUnlock2 && techUnlock3)
             {
                 return true;
             }
-            else if (TirosTitleMissionNumber == 2 && techUnlock && techUnlock2 && techUnlock3 && techUnlock4)
+            else if (SaveInfo.tirosCurrentNumber == 3 && techUnlock && techUnlock2 && techUnlock3 && techUnlock4)
             {
                 return true;
             }
@@ -919,7 +921,7 @@ namespace MissionControllerEC
         {
             Tools.ContractLoadCheck(node, ref targetBody, Planetarium.fetch.Home, targetBody, "targetBody");
             Tools.ContractLoadCheck(node, ref PeA, 100000, PeA, "pea");
-            Tools.ContractLoadCheck(node, ref marinerNumber, 1, marinerNumber, "mn");
+            Tools.ContractLoadCheck(node, ref marinerNumber, SaveInfo.marinerCurrentNumber, marinerNumber, "mn");
             Tools.ContractLoadCheck(node, ref multiplier, 1f, multiplier, "mult");
             Tools.ContractLoadCheck(node, ref extraBody2, 100000, extraBody2, "extra2");
             Tools.ContractLoadCheck(node, ref extraBody3, 100000, extraBody3, "extra3");
@@ -943,11 +945,9 @@ namespace MissionControllerEC
 
         public override bool MeetRequirements()
         {
-            bool techUnlock = ResearchAndDevelopment.GetTechnologyState("flightControl") == RDTech.State.Available;
-            bool techUnlock2 = ResearchAndDevelopment.GetTechnologyState("spaceExploration") == RDTech.State.Available;
-            bool techUnlock3 = ResearchAndDevelopment.GetTechnologyState("electrics") == RDTech.State.Available;
+            bool techUnlock = ResearchAndDevelopment.GetTechnologyState("flightControl") == RDTech.State.Available;           
             bool techUnlock4 = ResearchAndDevelopment.GetTechnologyState("advExploration") == RDTech.State.Available;
-            if (SaveInfo.marinerCurrentNumber <= 4) { return true; }
+            if (SaveInfo.marinerCurrentNumber <= 4 && SaveInfo.tirosCurrentNumber != 1 && techUnlock & techUnlock4) { return true; }
             else { return false; }
             
         }
@@ -1218,6 +1218,331 @@ namespace MissionControllerEC
         }
     }
     #endregion
+    public class ApolloProgram : Contract
+    {
+        CelestialBody targetBody = FlightGlobals.Bodies[2];
+        CelestialBody targetBody2 = FlightGlobals.Bodies[1];
+        private string ApolloBiome = "Midland Craters";
+        private string ApolloBiome2 = " East Crater";
+        private string PartDockingModule = "ModuleDockingNode";
+        private string ElectricPowerSource = "ElectricCharge";
+        private string SolarPanelsModule = "ModuleDeployableSolarPanel";
+        private string WheelModule = "ModuleWheel";
+        private int ApolloMissionNumber = 1;
+
+        private double MinHeight = 250000;
+        private string dockingModuleDescription = "Docking Port";
+        private double electricPowerDescription = 1000;
+        private string solarPanelDescription = "Solar Panels";
+        private string wheelModuleDescription = "Rover Wheels On Rover";
+        private int crewCount = 3;
+        
+        protected override bool Generate()
+        {
+            if (prestige == ContractPrestige.Trivial)
+            {
+                return false;
+            }
+            if (HighLogic.LoadedSceneIsFlight) { return false; }
+            if (SaveInfo.all_Historical_Contracts_Off == true) { return false; }
+            ApolloMissionNumber = SaveInfo.apolloCurrentNumber;
+            if (ApolloMissionNumber == 5)
+            {
+                this.AddParameter(new InOrbitGoal(targetBody2), null);
+                this.AddParameter(new InOrbitGoal(targetBody), null);
+                this.AddParameter(new BiomLandingParameters(targetBody, false, ApolloBiome2), null);
+                this.AddParameter(new ModuleGoal(WheelModule, wheelModuleDescription), null);
+                base.SetFunds(10000f, 120000f, targetBody);
+                base.SetExpiry(3f, 10f);
+                base.SetDeadlineDays(100f, targetBody);
+                base.SetReputation(20f, targetBody);
+                base.SetScience(3f, targetBody);
+            }
+            else if (ApolloMissionNumber == 4)
+            {
+                this.AddParameter(new InOrbitGoal(targetBody2), null);
+                this.AddParameter(new InOrbitGoal(targetBody), null);
+                this.AddParameter(new BiomLandingParameters(targetBody, false, ApolloBiome), null);
+                base.SetFunds(10000f, 100000f, targetBody);
+                base.SetExpiry(3f, 10f);
+                base.SetDeadlineDays(100f, targetBody);
+                base.SetReputation(15f, targetBody);
+                base.SetScience(5f, targetBody);
+            }
+            else if (ApolloMissionNumber == 3)
+            {
+                this.AddParameter(new InOrbitGoal(targetBody2), null);
+                this.AddParameter(new InOrbitGoal(targetBody), null);
+                base.SetFunds(8000f, 61000f, targetBody);
+                base.SetExpiry(3f, 10f);
+                base.SetDeadlineDays(100f, targetBody);
+                base.SetReputation(7f, targetBody);
+                base.SetScience(2f, targetBody);
+            }
+            else if (ApolloMissionNumber == 2)
+            {
+                this.AddParameter(new AltitudeGoal(targetBody2, MinHeight, true), null);
+                this.AddParameter(new InOrbitGoal(targetBody2), null);
+                this.AddParameter(new DockingGoal(), null);
+                base.SetFunds(5000f, 26000f, targetBody);
+                base.SetExpiry(3f, 10f);
+                base.SetDeadlineDays(100f, targetBody);
+                base.SetReputation(4f, targetBody);
+                base.SetScience(1f, targetBody);
+            }
+            else
+            {
+                this.AddParameter(new AltitudeGoal(targetBody2, MinHeight, true), null);
+                this.AddParameter(new InOrbitGoal(targetBody2), null);
+                base.SetFunds(4000f, 20000f, targetBody);
+                base.SetExpiry(3f, 10f);
+                base.SetDeadlineDays(100f, targetBody);
+                base.SetReputation(2f, targetBody);
+                base.SetScience(1f, targetBody);
+            }
+            this.AddParameter(new GetCrewCount(crewCount), null);
+            this.AddParameter(new LandingParameters(targetBody2, true), null);
+            this.AddParameter(new ModuleGoal(PartDockingModule, dockingModuleDescription), null);
+            this.AddParameter(new ModuleGoal(SolarPanelsModule, solarPanelDescription), null);
+            this.AddParameter(new ResourceGoalCap(ElectricPowerSource, electricPowerDescription), null);
+            return true;
+
+        }
+
+        protected override void OnAccepted()
+        {
+            
+        }
+
+        public override bool CanBeCancelled()
+        {
+            return true;
+        }
+        public override bool CanBeDeclined()
+        {
+            return true;
+        }
+
+        protected override string GetHashString()
+        {
+            if (ApolloMissionNumber == 5)
+            {
+                return "Apollo 15";
+            }
+            else if (ApolloMissionNumber == 4)
+            {
+                return "Apollo 11";
+            }
+            else if (ApolloMissionNumber == 3)
+            {
+                return "Apollo 10";
+            }
+            else if (ApolloMissionNumber == 2)
+            {
+                return "Apollo 9";
+            }
+            else
+            {
+                return "Apollo 7";
+            }
+           
+        }
+        protected override string GetTitle()
+        {
+            if (ApolloMissionNumber == 5)
+            {
+                return "Apollo 15: Lunar Landing On " + ApolloBiome2 + " With Lunar Rover";
+            }
+            else if (ApolloMissionNumber == 4)
+            {
+                return "Apollo 11: Lunar Landing On " + ApolloBiome;
+            }
+            else if (ApolloMissionNumber == 3)
+            {
+                return "Apollo 10: Lunar Orbit and Return Only.";
+            }
+            else if (ApolloMissionNumber == 2)
+            {
+                return "Apollo 9: CrewPod And Lunar Module Test Flight.";
+            }
+            else 
+            {
+                return "Apollo 7: CrewPod Test Flight.";
+            }
+        }
+        protected override string GetDescription()
+        {
+            if (ApolloMissionNumber == 5)
+            {
+                return "Apollo 15 was the fourth mission in which humans walked on the lunar surface and returned to Earth. On 30 July 1971 two astronauts (Apollo 15 Commander David R. Scott and LM pilot James B. Irwin) landed" +
+                    "in the Hadley Rille/Apennines region of the Moon in the Lunar Module (LM) while the Command and Service Module (CSM) (with CM pilot Alfred M. Worden) continued in lunar orbit. During their stay on the" +
+                    "Moon, the astronauts set up scientific experiments, took photographs, and collected lunar samples. The LM took off from the Moon on 2 August and the astronauts returned to Earth on 7 August.\n\n" +
+                    "Apollo 15 was also the first test of the Lunar Rover\n\n" +
+                    "The Lunar Roving Vehicle (LRV) was an electric vehicle designed to operate in the low-gravity vacuum of the Moon and to be capable of traversing the lunar surface, allowing the Apollo astronauts " +
+                    "to extend the range of their surface extravehicular activities. Three LRVs were driven on the Moon, one on Apollo 15 by astronauts David Scott and Jim Irwin, one on Apollo 16 by John Young and Charles " +
+                    "Duke, and one on Apollo 17 by Gene Cernan and Harrison Schmitt. Each rover was used on three traverses, one per day over the three day course of each mission. On Apollo 15 the LRV was driven a total of " +
+                    "27.8 km in 3 hours, 2 minutes of driving time. The longest single traverse was 12.5 km and the maximum range from the LM was 5.0 km. On Apollo 16 the vehicle traversed 26.7 km in 3 hours 26 minutes of " +
+                    "driving. The longest traverse was 11.6 km and the LRV reached a distance of 4.5 km from the LM. On Apollo 17 the rover went 35.9 km in 4 hours 26 minutes total drive time. The longest traverse was " +
+                    "20.1 km and the greatest range from the LM was 7.6 km. \n\n" +
+                    "All Apollo information gathered from Nasa website.";
+            }
+            else if (ApolloMissionNumber == 4)
+            {
+                return "Apollo 11 was the first mission in which humans walked on the lunar surface and returned to Earth. On 20 July 1969 two astronauts (Apollo 11 Commander Neil A. Armstrong and LM pilot Edwin E. Buzz " +
+                    "Aldrin Jr.) landed in Mare Tranquilitatis (the Sea of Tranquility) on the Moon in the Lunar Module (LM) while the Command and Service Module (CSM) (with CM pilot Michael Collins) continued " +
+                    "in lunar orbit. During their stay on the Moon, the astronauts set up scientific experiments, took photographs, and collected lunar samples. The LM took off from the Moon on 21 July and the astronauts " +
+                    "returned to Earth on 24 July.\n\n" +
+                    "All Apollo information gathered from Nasa website.";
+            }
+            else if (ApolloMissionNumber == 3)
+            {
+                return "This spacecraft was the second Apollo mission to orbit the Moon, and the first to travel to the Moon with the full Apollo spacecraft, consisting of the Command and Service Module " +
+                    "(CSM-106, Charlie Brown) and the Lunar Module (LM-4, Snoopy). The spacecraft mass of 28,834 kg is the mass of the CSM including propellants and expendables. The LM mass including propellants " +
+                    "was 13,941 kg. The primary objectives of the mission were to demonstrate crew, space vehicle, and mission support facilities during a manned lunar mission and to evaluate LM performance in " +
+                    "cislunar and lunar environment. The mission was a full dry run for the Apollo 11 mission, in which all operations except the actual lunar landing were performed. The flight carried a " +
+                    "three man crew: Commander Thomas P. Stafford, Command Module (CM) Pilot John W. Young, and Lunar Module (LM) Pilot Eugene A. Cernan.\n\n" +
+                    "All Apollo information gathered from Nasa Website.";
+            }
+            else if (ApolloMissionNumber == 2)
+            {
+                return "Apollo 9 was the third crewed Apollo flight and the first crewed flight to include the Lunar Module (LM). The crew was Commander James McDivitt, Command Module (CM) pilot David Scott, and LM " +
+                    "pilot Russell Schweickart. The primary objective of the mission was to test all aspects of the Lunar Module in Earth orbit, including operation of the LM as an independent self-sufficient spacecraft " +
+                    "and performance of docking and rendezvous manuevers. The goal was to simulate maneuvers which would be performed in actual lunar missions. Other concurrent objectives included overall checkout of " +
+                    "launch vehicle and spacecraft systems, crew, and procedures. A multispectral photographic experiment was also performed. \n\n" +
+                    "Apollo 9 was composed of a command module, a command service module (CSM), a lunar module, and an instrument unit (IU), and was launched by a Saturn V rocket. The vehicle rocket had three " +
+                    "stages, S-IC, S-II, and S-IVB. The CM, a cone-shaped craft about 390 cm in diameter at the large end, served as a command, control, and communications center. Supplemented by the SM, it provided " +
+                    "all life support elements for the three crewmen. The spacecraft mass of 26,801 kg is the mass of the CSM including propellants and expendables. The CM was capable of attitude control about three " +
+                    "axes and some lateral lift translation. It permitted LM attachment and CM/LM ingress and egress and served as a buoyant vessel at sea. The CSM provided the main propulsion and maneuvering capability. " +
+                    "It was jettisoned just before CM reentry. The CSM was a cylinder 390 cm in diameter. The LM was a two-stage vehicle that accommodated two men and could transport them to the lunar surface. It had " +
+                    "its own propulsion, communication, and life support systems.\n\n" +
+                    "All Apollo information was gathered from Nasa website.";
+            }
+            else
+            {
+                return "Apollo 7 was the first crewed flight of the Apollo spacecraft, with astronauts Walter Schirra, Jr, Donn Eisele, and Walter Cunningham on board. The primary objectives of the Earth orbiting " +
+                    "mission were to demonstrate Command and Service Module (CSM), crew, launch vehicle, and mission support facilities performance and to demonstrate CSM rendezvous capability. Two photographic " +
+                    "experiments and three medical experiments were planned.\n\n" +
+                    "The command module (CM), a cone-shaped craft about 390 cm in diameter at the large end, served as a command, control, and communications center. Supplemented by the service module (SM), it provided " +
+                    "all life support elements for the crew. The CM was capable of attitude control about three axes and some lateral lift translation. It also served as a buoyant vessel at sea. The SM provided the main " +
+                    "propulsion and maneuvering capability. It was jettisoned just before CM reentry. The SM was a cylinder 390 cm in diameter and 670 cm long. The spacecraft mass of 14,781 kg is the mass of the CSM " +
+                    "including propellants and expendables. There was no lunar module or boilerplate unit on this flight.\n\n" +
+                    "All Apollo information was gathered from Nasa website.";
+            }
+           
+        }
+        protected override string GetSynopsys()
+        {
+            if (ApolloMissionNumber == 5)
+            {
+                return "Apollo 15 was the first of the three J missions designed to conduct exploration of the Moon over longer periods, over greater ranges, and with more instruments for scientific data acquisition than "+
+                    "on previous Apollo missions. Major modifications and augmentations to the basic Apollo hardware were made. The most significant change was the installation of a scientific instrument module in one "+
+                    "of the service module bays for scientific investigations from lunar orbit. Other hardware changes consisted of lunar module modifications to accommodate a greater payload and a longer stay on the "+
+                    "lunar surface, and the provision of a lunar roving vehicle. The landing site chosen for the mission was an area near the foot of the Montes Apenniuns and adjacent to Hadley Rille.";
+            }
+            else if (ApolloMissionNumber == 4)
+            {
+                return "The mission plan of Apollo 11 was to land two men on the lunar surface and return them safely to Earth. The launch took place at Kennedy Space Center Launch Complex 39A on July 16, 1969, at 08:32 a.m. " +
+                    "EST. The spaccraft carried a crew of three: Mission Commander Neil Armstrong, Command Module Pilot Michael Collins, and Lunar Module Pilot Edwin E. Aldrin Jr. The mission evaluation concluded " +
+                    "that all mission tasks were completed satisfactorily.";
+            }
+            else if (ApolloMissionNumber == 3)
+            {
+                return "The purpose of the mission was to confirm all aspects of the lunar landing mission exactly as it would be performed, except for the actual landing. Additional objectives included " +
+                    "verification of lunar module systems in the lunar environment, evaluation of mission-support performance for the combined spacecraft at lunar distance, and further refinement of the lunar " +
+                    "gravitational potential.";
+            }
+            else if (ApolloMissionNumber == 2)
+            {
+                return "Apollo 9 main goal is to launch to Kerbin orbit and test the Command Module and Lunar landing docking procedures.  After completion jetison the Lunar Lander and bring the crew back to Kerbin.";
+            }
+            else
+            {
+                return "Apollo 7 objective is to build and test a new command module that can carry a 3 man crew to the mun.\n\n We will test launch and return the crew module to Kerbin Safely.";
+            }
+        }
+        protected override string MessageCompleted()
+        {
+            SaveInfo.apolloCurrentNumber++;
+            if (ApolloMissionNumber == 5)
+            {
+                return "Good Job";
+            }
+            else if (ApolloMissionNumber == 4)
+            {
+                return "Good Job";
+            }
+            else if (ApolloMissionNumber == 3)
+            {
+                return "Good Job";
+            }
+            else if (ApolloMissionNumber == 2)
+            {
+                return "Good Job";
+            }
+            else
+            {
+                return "Good Job";
+            }
+        }
+
+        protected override void OnLoad(ConfigNode node)
+        {
+            Tools.ContractLoadCheck(node, ref targetBody, FlightGlobals.Bodies[2], targetBody, "targetBody");
+            Tools.ContractLoadCheck(node, ref targetBody2, FlightGlobals.Bodies[1], targetBody2, "targetBody2");
+            Tools.ContractLoadCheck(node, ref ApolloBiome, "None", ApolloBiome, "apbiome");
+            Tools.ContractLoadCheck(node, ref ApolloBiome2, "none", ApolloBiome2, "apbiome2");
+            Tools.ContractLoadCheck(node, ref PartDockingModule, "ModuleDockingNode", PartDockingModule, "dock");
+            Tools.ContractLoadCheck(node, ref ElectricPowerSource, "ElectricCharge", ElectricPowerSource, "electric");
+            Tools.ContractLoadCheck(node, ref SolarPanelsModule, "ModuleDeployableSolarPanel", SolarPanelsModule, "solar");
+            Tools.ContractLoadCheck(node, ref ApolloMissionNumber, SaveInfo.apolloCurrentNumber, ApolloMissionNumber, "apnumber");
+            Tools.ContractLoadCheck(node, ref MinHeight, 200000, MinHeight, "minheight");
+            Tools.ContractLoadCheck(node, ref dockingModuleDescription, "Must Have Docking Port", dockingModuleDescription, "dockdesc");
+            Tools.ContractLoadCheck(node, ref electricPowerDescription, 1000, electricPowerDescription, "powernumber");
+            Tools.ContractLoadCheck(node, ref solarPanelDescription, "Must Have Solar Panels", solarPanelDescription, "solardesc");
+            Tools.ContractLoadCheck(node, ref crewCount, 3, crewCount, "crewcount");
+            Tools.ContractLoadCheck(node, ref WheelModule, "ModuleWheel", WheelModule, "wheel");
+            Tools.ContractLoadCheck(node, ref wheelModuleDescription, "Wheels On Rover", wheelModuleDescription, "wheeldesc");
+        }
+        protected override void OnSave(ConfigNode node)
+        {
+            int bodyID = targetBody.flightGlobalsIndex;
+            node.AddValue("targetBody", bodyID);
+
+            int bodyID2 = targetBody2.flightGlobalsIndex;
+            node.AddValue("targetBody2", bodyID2);
+
+            node.AddValue("apbiome", ApolloBiome);
+            node.AddValue("apbiome2", ApolloBiome2);
+            node.AddValue("dock", PartDockingModule);
+            node.AddValue("electric", ElectricPowerSource);
+            node.AddValue("solar", SolarPanelsModule);
+            node.AddValue("apnumber", ApolloMissionNumber);
+            node.AddValue("minheight", MinHeight);
+            node.AddValue("dockdesc", dockingModuleDescription);
+            node.AddValue("powernumber", electricPowerDescription);
+            node.AddValue("solardesc", solarPanelDescription);
+            node.AddValue("crewcount", crewCount);
+            node.AddValue("wheel", WheelModule);
+            node.AddValue("wheeldesc", wheelModuleDescription);
+        }
+
+        public override bool MeetRequirements()
+        {
+            bool techUnlock = ResearchAndDevelopment.GetTechnologyState("fieldScience") == RDTech.State.Available;
+            bool techUnlock2 = ResearchAndDevelopment.GetTechnologyState("advLanding") == RDTech.State.Available;
+            bool techUnlock3 = ResearchAndDevelopment.GetTechnologyState("heavierRocketry") == RDTech.State.Available;
+            //if (SaveInfo.Luna16Done == false)
+            //{
+            //    return false;
+            //}
+            if (techUnlock && techUnlock2 && techUnlock3 && ApolloMissionNumber <= 5)
+            {
+                return true;
+            }
+            else return false;
+
+        }
+    }
     # region Agena Contract 1
     public class AgenaTargetPracticeContract : Contract
     {
@@ -1612,7 +1937,7 @@ namespace MissionControllerEC
         {
             if (FlightGlobals.ActiveVessel && HighLogic.LoadedSceneIsFlight)
             {
-                SaveInfo.skyLabName = vs.name.Replace("(unloaded)", "");
+                SaveInfo.skyLabName = vs.vesselName.Replace("(unloaded)", "");
                 SaveInfo.skyLabVesID = vs.id.ToString();
                 ScreenMessages.PostScreenMessage("" + vs.name.Replace("(unloaded)", "") + " was added to skylab contract vessel.  It's ID is " + vs.id.ToString());
             }
@@ -1635,8 +1960,8 @@ namespace MissionControllerEC
             this.AddParameter(new AltitudeGoal(targetBody,minHeight), null);
             this.AddParameter(new InOrbitGoal(targetBody), null);
             this.AddParameter(new PartGoal(part1goal, "Small Repair Panel", part1amount,true), null);
-            this.AddParameter(new PartGoal(part2goal, part2amount), null);
-            this.AddParameter(new PartGoal(part3goal, part3amount), null);
+            this.AddParameter(new PartGoal(part2goal, part2amount,false), null);
+            this.AddParameter(new PartGoal(part3goal, part3amount, false), null);
             this.AddParameter(new GetCrewCount(crewCount), null);
             base.SetFunds(25000f, 150000f, targetBody);
             base.SetExpiry(3f, 10f);
@@ -1750,10 +2075,12 @@ namespace MissionControllerEC
         public int crew = 3;
         public int contractTime = 605448;
         public string contractName = "Launch And Repair " + SaveInfo.skyLabName;
-        public string contTimeTitle = " Must keep crew in orbit for ";
+        public string contTimeTitle = " Dock and stay in orbit ";
         string repairParts = "SpareParts";
         string Ctitle = "To Repair Station You must have at Least ";
         double RPamount = 1;
+        string vesselId = "none";
+        string vesselName = "none";
         CelestialBody targetBody = Planetarium.fetch.Home;
         ContractParameter skylab1;
         ContractParameter skylab2;
@@ -1774,8 +2101,10 @@ namespace MissionControllerEC
             if (totalContracts >= 1) { return false; }
 
             if (SaveInfo.all_Historical_Contracts_Off == true) { return false; }
-            
-            this.skylab1 = this.AddParameter(new TargetDockingGoal(SaveInfo.skyLabVesID, SaveInfo.skyLabName), null);
+
+            vesselId = SaveInfo.skyLabVesID;
+            vesselName = SaveInfo.skyLabName;
+            this.skylab1 = this.AddParameter(new TargetDockingGoal(vesselId, vesselName), null);
             skylab1.SetFunds(7000, targetBody);
             skylab1.SetReputation(5, targetBody);
 
@@ -1788,8 +2117,8 @@ namespace MissionControllerEC
             skylab3.SetFunds(8500, targetBody);
             skylab3.SetReputation(10, targetBody);
             skylab3.SetScience(10, targetBody);
-            
-            this.skylab4 = this.AddParameter(new TimeCountdownDocking(targetBody, contractTime, contTimeTitle,SaveInfo.skyLabVesID), null);
+
+            this.skylab4 = this.AddParameter(new TimeCountdownDocking(targetBody, contractTime, contTimeTitle, vesselId, vesselName), null);
             skylab4.SetFunds(20000, targetBody);
             skylab4.SetReputation(25, targetBody);
             skylab4.SetScience(25, targetBody);
@@ -1799,7 +2128,7 @@ namespace MissionControllerEC
             skylab5.SetReputation(20, targetBody);
             skylab5.SetScience(3, targetBody);
 
-            this.AddParameter(new ResourceSupplyGoal(repairParts, RPamount, Ctitle), null);
+            this.AddParameter(new ResourceSupplyGoal(repairParts, RPamount, Ctitle,true), null);
 
             this.AddParameter(new GetCrewCount(crew), null);
 
@@ -1879,6 +2208,9 @@ namespace MissionControllerEC
             Ctitle = node.GetValue("ctitle");
             RPamount = double.Parse(node.GetValue("rpamount"));
 
+            Tools.ContractLoadCheck(node, ref vesselId, "none", vesselId, "vesid");
+            Tools.ContractLoadCheck(node, ref vesselName, "none", vesselName, "vname");
+
         }
         protected override void OnSave(ConfigNode node)
         {
@@ -1892,6 +2224,9 @@ namespace MissionControllerEC
             node.AddValue("rparts", repairParts);
             node.AddValue("ctitle", Ctitle);
             node.AddValue("rpamount", RPamount);
+
+            node.AddValue("vesid", vesselId);
+            node.AddValue("vname", vesselName);
         }
 
         public override bool MeetRequirements()
@@ -1909,8 +2244,10 @@ namespace MissionControllerEC
         Settings settings = new Settings("config.cfg");
         public int crew = 3;
         public int contractTime = 1284336;
-        public string contTimeTitle = " Must keep crew in orbit for ";
-      
+        public string contTimeTitle = " Dock and stay in orbit ";
+        string vesselId = "none";
+        string vesselName = "none";
+
         CelestialBody targetBody = Planetarium.fetch.Home;
 
         ContractParameter skylab1;
@@ -1932,11 +2269,12 @@ namespace MissionControllerEC
             if (totalContracts >= 1) { return false; }
 
             if (SaveInfo.all_Historical_Contracts_Off == true) { return false; }
+            vesselId = SaveInfo.skyLabVesID;
+            vesselName = SaveInfo.skyLabName;
 
-            this.skylab1 = this.AddParameter(new TargetDockingGoal(SaveInfo.skyLabVesID, SaveInfo.skyLabName), null);
+            this.skylab1 = this.AddParameter(new TargetDockingGoal(vesselId, vesselName), null);
             skylab1.SetFunds(5000, targetBody);
-            skylab1.SetReputation(10, targetBody);
-          
+            skylab1.SetReputation(10, targetBody);          
             this.skylab3 = this.AddParameter(new CollectScience(targetBody, BodyLocation.Space), null);
             skylab3.SetFunds(5000, targetBody);
             skylab3.SetReputation(10, targetBody);
@@ -1947,7 +2285,7 @@ namespace MissionControllerEC
             skylab2.SetReputation(3, targetBody);
             skylab2.SetScience(5, targetBody);
 
-            this.skylab4 = this.AddParameter(new TimeCountdownDocking(targetBody, contractTime, contTimeTitle, SaveInfo.skyLabVesID), null);
+            this.skylab4 = this.AddParameter(new TimeCountdownDocking(targetBody, contractTime, contTimeTitle, vesselId,vesselName), null);
             skylab4.SetFunds(10000, targetBody);
             skylab4.SetReputation(15, targetBody);
             skylab4.SetScience(15, targetBody);
@@ -2029,7 +2367,9 @@ namespace MissionControllerEC
             }
             crew = int.Parse(node.GetValue("crewcount"));
             contractTime = int.Parse(node.GetValue("ctime"));            
-            contTimeTitle = node.GetValue("ctitle");            
+            contTimeTitle = node.GetValue("ctitle");
+            Tools.ContractLoadCheck(node, ref vesselId, "none", vesselId, "vesid");
+            Tools.ContractLoadCheck(node, ref vesselName, "none", vesselName, "vname");
         }
         protected override void OnSave(ConfigNode node)
         {
@@ -2037,7 +2377,9 @@ namespace MissionControllerEC
             node.AddValue("targetBody", bodyID);
             node.AddValue("ctime", contractTime);
             node.AddValue("crewcount", crew);
-            node.AddValue("ctitle", contTimeTitle);          
+            node.AddValue("ctitle", contTimeTitle);
+            node.AddValue("vesid", vesselId);
+            node.AddValue("vname", vesselName);
         }
 
         public override bool MeetRequirements()
@@ -2055,8 +2397,9 @@ namespace MissionControllerEC
         Settings settings = new Settings("config.cfg");
         public int crew = 3;
         public int contractTime = 1815264;
-        public string contTimeTitle = " Must keep crew in orbit for ";
-
+        public string contTimeTitle = " Dock and stay in orbit ";
+        string vesselId = "none";
+        string vesselName = "none";
         public double GMaxApA = 120000;
         public double GMinApA = 115000;
         public double GMaxPeA = 120000;
@@ -2091,7 +2434,9 @@ namespace MissionControllerEC
             GMinApA = GMaxApA - 5000;
             GMinPeA = GMaxPeA - 5000;
 
-            this.skylab1 = this.AddParameter(new TargetDockingGoal(SaveInfo.skyLabVesID, SaveInfo.skyLabName), null);
+            vesselId = SaveInfo.skyLabVesID;
+            vesselName = SaveInfo.skyLabName;
+            this.skylab1 = this.AddParameter(new TargetDockingGoal(vesselId, vesselName), null);
             skylab1.SetFunds(5000, targetBody);
             skylab1.SetReputation(10, targetBody);
 
@@ -2111,7 +2456,7 @@ namespace MissionControllerEC
             skylab7 = this.AddParameter(new PeAOrbitGoal(targetBody, (double)GMaxPeA, (double)GMinPeA,true), null);
             skylab7.SetFunds(1000, targetBody);
 
-            this.skylab4 = this.AddParameter(new TimeCountdownDocking(targetBody, contractTime, contTimeTitle, SaveInfo.skyLabVesID), null);
+            this.skylab4 = this.AddParameter(new TimeCountdownDocking(targetBody, contractTime, contTimeTitle, vesselId, vesselName), null);
             skylab4.SetFunds(10000, targetBody);
             skylab4.SetReputation(15, targetBody);
             skylab4.SetScience(15, targetBody);
@@ -2218,6 +2563,8 @@ namespace MissionControllerEC
             GMaxPeA = masxPpaID;
             double minPeAID = double.Parse(node.GetValue("minpEa"));
             GMinPeA = minPeAID;
+            Tools.ContractLoadCheck(node, ref vesselId, "none", vesselId, "vesid");
+            Tools.ContractLoadCheck(node, ref vesselName, "none", vesselName, "vname");
           
         }
         protected override void OnSave(ConfigNode node)
@@ -2237,6 +2584,8 @@ namespace MissionControllerEC
             node.AddValue("maxpEa", GMaxPeA);
             double MinPeAID = GMinPeA;
             node.AddValue("minpEa", GMinPeA);
+            node.AddValue("vesid", vesselId);
+            node.AddValue("vname", vesselName);
 
         }
 

@@ -71,5 +71,6 @@ namespace MissionControllerEC
 
         public static int tirosCurrentNumber = 1;
         public static int marinerCurrentNumber = 1;
+        public static int apolloCurrentNumber = 1;
     }   
 }

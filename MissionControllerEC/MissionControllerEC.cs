@@ -186,6 +186,7 @@ namespace MissionControllerEC
         private ApplicationLauncherButton MCERevert;
         private string tirosNumber;
         private string marinerNumber;
+        private string apolloNumber;
         
         Settings settings = new Settings("Config.cfg");
 
@@ -338,10 +339,17 @@ namespace MissionControllerEC
             GUILayout.EndHorizontal();
 
             GUILayout.BeginHorizontal();
-            GUILayout.Box("Mariner Number 1-3", MCE_ScenarioStartup.StyleBold, GUILayout.Width(300));
+            GUILayout.Box("Mariner Number 1-4", MCE_ScenarioStartup.StyleBold, GUILayout.Width(300));
             marinerNumber = SaveInfo.marinerCurrentNumber.ToString();
             marinerNumber = Regex.Replace(GUILayout.TextField(marinerNumber), "[^.0-9]", "");
             SaveInfo.marinerCurrentNumber = int.Parse(marinerNumber);
+            GUILayout.EndHorizontal();
+
+            GUILayout.BeginHorizontal();
+            GUILayout.Box("Apollo Number 1-5", MCE_ScenarioStartup.StyleBold, GUILayout.Width(300));
+            apolloNumber = SaveInfo.apolloCurrentNumber.ToString();
+            apolloNumber = Regex.Replace(GUILayout.TextField(apolloNumber), "[^.0-9]", "");
+            SaveInfo.apolloCurrentNumber = int.Parse(apolloNumber);
             GUILayout.EndHorizontal();
                           
             GUILayout.EndVertical();
@@ -419,11 +427,13 @@ namespace MissionControllerEC
 
         [Persistent]internal int tirosNumber = 1;
         [Persistent]internal int marinerNumber = 1;
+        [Persistent]internal int apolloNumber = 1;
 
         public override void OnDecodeFromConfigNode()
         {
             SaveInfo.tirosCurrentNumber = tirosNumber;
             SaveInfo.marinerCurrentNumber = marinerNumber;
+            SaveInfo.apolloCurrentNumber = apolloNumber;
             SaveInfo.Hardcore_Vessel_Must_Survive = hardcoreOn;
             SaveInfo.TotalSpentKerbals = TotalSpentKerbals;
             SaveInfo.TotalSpentKerbalDeaths = TotalSpentDeaths;
@@ -486,6 +496,7 @@ namespace MissionControllerEC
         {
             tirosNumber = SaveInfo.tirosCurrentNumber;
             marinerNumber = SaveInfo.marinerCurrentNumber;
+            apolloNumber = SaveInfo.apolloCurrentNumber;
             hardcoreOn = SaveInfo.Hardcore_Vessel_Must_Survive;
             TotalSpentKerbals = SaveInfo.TotalSpentKerbals;
             TotalSpentRockets = SaveInfo.TotalSpentOnRocketTest;

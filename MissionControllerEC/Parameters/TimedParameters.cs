@@ -266,6 +266,7 @@ namespace MissionControllerEC
         private double missionTime;
         private string contractTimeTitle = "Reach Orbit and stay for amount of Time Specified: ";
         private string vesselID = "none";
+        private string vesselName = "none";
 
         private bool PreFlightCheck = false;
 
@@ -290,6 +291,14 @@ namespace MissionControllerEC
             this.missionTime = Mtime;
             this.contractTimeTitle = title;
             this.vesselID = vesId;
+        }
+        public TimeCountdownDocking(CelestialBody target, double Mtime, string title, string vesId, string vesName)
+        {
+            this.targetBody = target;
+            this.missionTime = Mtime;
+            this.contractTimeTitle = title;
+            this.vesselID = vesId;
+            this.vesselName = vesName;
         }
 
         protected override string GetHashString()
@@ -335,6 +344,7 @@ namespace MissionControllerEC
             Tools.ContractLoadCheck(node, ref setTime, false, setTime, "settime");
             Tools.ContractLoadCheck(node, ref timebool, false, timebool, "timebool");
             Tools.ContractLoadCheck(node, ref vesselID, "Defaults Loaded", vesselID, "vesid");
+            Tools.ContractLoadCheck(node, ref vesselName, "None", vesselName, "name2");
             Tools.ContractLoadCheck(node, ref PreFlightCheck, false, PreFlightCheck, "preflightcheck");
         }
         protected override void OnSave(ConfigNode node)
@@ -349,6 +359,7 @@ namespace MissionControllerEC
             node.AddValue("settime", setTime);
             node.AddValue("timebool", timebool);
             node.AddValue("vesid", vesselID);
+            node.AddValue("name2", vesselName);
 
             node.AddValue("preflightcheck", PreFlightCheck);
         }
@@ -357,19 +368,19 @@ namespace MissionControllerEC
         {
             if ( FlightGlobals.ActiveVessel.launchTime > this.Root.DateAccepted)
             {
-                if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel)
+                Debug.Log("Time Vessel Id Matches?: " + action.from.vessel.id.ToString() + " " + vesselID);
+                Debug.Log("Time Vessel Id Matches?: " + action.to.vessel.id.ToString() + " " + vesselID);
+                Debug.Log("Time Vessel Name Matches?: " + action.from.vessel.vesselName + " " + vesselName);
+                Debug.Log("Time Vessel Name Matches?: " + action.to.vessel.vesselName + " " + vesselName);
+                if (vesselID == action.from.vessel.id.ToString() || vesselID == action.to.vessel.id.ToString() || vesselName == action.from.vessel.vesselName || vesselName == action.to.vessel.vesselName)
                 {
-
-                    if (vesselID == action.from.vessel.id.ToString() || vesselID == action.to.vessel.id.ToString())
-                    {
-                        ScreenMessages.PostScreenMessage("You have docked to the Target Vessel, time started");
-                        contractSetTime();
-                        action.from.vessel.vesselName = action.from.vessel.vesselName.Replace("(Repair)", "");
-                        action.to.vessel.vesselName = action.to.vessel.vesselName.Replace("(Repair)", "");
-                    }
-                    else
-                        ScreenMessages.PostScreenMessage("Did not connect to the correct target ID vessel, Try Again");
+                    ScreenMessages.PostScreenMessage("Vessel docked, time started");
+                    contractSetTime();
                 }
+                else
+                {
+                    ScreenMessages.PostScreenMessage("Time not started not correct docking vessel, Try Again");                    
+                }              
             }
         }
         public void timeCountDown()
@@ -377,7 +388,7 @@ namespace MissionControllerEC
             if (!setTime)
             {
                 diff = Planetarium.GetUniversalTime() - savedTime;
-                if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel.id.ToString() == vesselID)
+                if (HighLogic.LoadedSceneIsFlight && (FlightGlobals.ActiveVessel.id.ToString() == vesselID || FlightGlobals.ActiveVessel.vesselName == vesselName))
                 {
                     ScreenMessages.PostScreenMessage("Time Left To Complete: " + Tools.formatTime(missionTime - diff), .001f);
                 }

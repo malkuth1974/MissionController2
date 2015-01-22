@@ -14,16 +14,18 @@ namespace MissionControllerEC
         private string contractTitle;
         private double resources = 0.0;
         private bool updated = false;
+        private bool disableRecheck = false;
 
         public ResourceSupplyGoal()
         {
         }
 
-        public ResourceSupplyGoal(string target, double RsAmount, string Ctitle)
+        public ResourceSupplyGoal(string target, double RsAmount, string Ctitle, bool disablecheck)
         {
             this.targetName = target;
             this.ResourceAmount = RsAmount;
             this.contractTitle = Ctitle;
+            this.disableRecheck = disablecheck;
         }
 
         protected override string GetHashString()
@@ -39,7 +41,7 @@ namespace MissionControllerEC
         {
             this.disableOnStateChange = false;
             updated = false;
-            if (Root.ContractState == Contract.State.Active)
+            if (Root.ContractState == Contract.State.Active && !disableRecheck)
             {
                 GameEvents.onFlightReady.Add(flightReady);
                 GameEvents.onVesselChange.Add(vesselChange);

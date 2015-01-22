@@ -164,14 +164,17 @@ namespace MissionControllerEC
             {
 
                 Debug.LogError("Does: " + targetDockingID + " = " + action.from.vessel.id.ToString());
+                Debug.LogError("Or Does: " + targetDockingID + " = " + action.to.vessel.id.ToString());
+                Debug.LogError("Does: " + targetDockingName + " = " + action.from.vessel.vesselName);
+                Debug.LogError("Or Does: " + targetDockingName + " = " + action.to.vessel.vesselName);
+                
                 Debug.LogError("Docked FROM: " + action.from.vessel.vesselName);
                 Debug.LogError("Docked TO: " + action.to.vessel.vesselName);
-
-                Debug.LogError("Docked TO Type Vessel: " + action.to.vessel.vesselType);
-
+                              
                 Debug.LogError("Docked FROM ID: " + action.from.vessel.id.ToString());
                 Debug.LogError("Docked TO ID: " + action.to.vessel.id.ToString());
-                if (targetDockingID == action.from.vessel.id.ToString() || targetDockingID == action.to.vessel.id.ToString())
+
+                if (targetDockingID == action.from.vessel.id.ToString() || targetDockingID == action.to.vessel.id.ToString() || targetDockingName == action.from.vessel.vesselName || targetDockingName == action.to.vessel.vesselName)
                 {
                     ScreenMessages.PostScreenMessage("You have docked to the Target Vessel, Goal Complete");
                     DockedTrue = true;

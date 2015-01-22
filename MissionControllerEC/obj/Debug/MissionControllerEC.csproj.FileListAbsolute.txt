@@ -12,3 +12,8 @@ C:\kerbal\MissionControllerEC\MissionControllerEC\MissionController2\MissionCont
 C:\kerbal\Kerbal Space Program\GameData\MissionControllerEC\MissionControllerEC.dll
 C:\kerbal\Kerbal Space Program\GameData\MissionControllerEC\MissionControllerEC.pdb
 C:\kerbal\MissionControllerEC\MissionControllerEC\MissionController2\MissionControllerEC\obj\Debug\MissionControllerEC.csprojResolveAssemblyReference.cache
+C:\Users\Danny\Documents\GitHub\MissionController2\MissionControllerEC\obj\Debug\MissionControllerEC.dll
+C:\Users\Danny\Documents\GitHub\MissionController2\MissionControllerEC\obj\Debug\MissionControllerEC.pdb
+C:\Users\Danny\(testMods)\GameData\MissionControllerEC\MissionControllerEC.dll
+C:\Users\Danny\(testMods)\GameData\MissionControllerEC\MissionControllerEC.pdb
+C:\Users\Danny\Documents\GitHub\MissionController2\MissionControllerEC\obj\Debug\MissionControllerEC.csprojResolveAssemblyReference.cache

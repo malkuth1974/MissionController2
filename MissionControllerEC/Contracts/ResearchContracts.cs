@@ -65,7 +65,7 @@ namespace MissionControllerEC
             orbitresearch2.SetFunds(9000, targetBody);
             orbitresearch2.SetReputation(5, targetBody);
             orbitresearch2.SetScience(2, targetBody);
-            this.AddParameter(new PartGoal(partName, partNumber), null);
+            this.AddParameter(new PartGoal(partName, partNumber,false), null);
             this.AddParameter(new GetCrewCount(0), null);
             this.prestige = ContractPrestige.Significant;
             base.SetExpiry(3f, 10f);
@@ -218,7 +218,7 @@ namespace MissionControllerEC
             landerscan3.SetFunds(10000, targetBody);
             landerscan3.SetReputation(8, targetBody);
             landerscan3.SetScience(4, targetBody);
-            this.AddParameter(new PartGoal(partName, partNumber), null);
+            this.AddParameter(new PartGoal(partName, partNumber,false), null);
             this.AddParameter(new GetCrewCount(0), null);
             this.prestige = ContractPrestige.Significant;
             base.SetExpiry(3f, 10f);

@@ -434,7 +434,8 @@ namespace MissionControllerEC
         {
             bool techUnlock = ResearchAndDevelopment.GetTechnologyState("advFlightControl") == RDTech.State.Available;
             bool techUnlock2 = ResearchAndDevelopment.GetTechnologyState("advLanding") == RDTech.State.Available;
-            if (!techUnlock && !techUnlock2 || SaveInfo.Civilian_Contracts_Off == true)
+            bool techUnlock3 = ResearchAndDevelopment.GetTechnologyState("advExploration") == RDTech.State.Available;
+            if (!techUnlock && !techUnlock2 && !techUnlock3 || SaveInfo.Civilian_Contracts_Off == true)
                 return false;
             else
                 return true;
@@ -515,7 +516,7 @@ namespace MissionControllerEC
             civiliansAmount = UnityEngine.Random.Range(2, 4);
             TripTime = UnityEngine.Random.Range(210000, 970000);
 
-            this.civ6 = this.AddParameter(new TimeCountdownDocking(targetBody, TripTime, TripText, vesselID), null);
+            this.civ6 = this.AddParameter(new TimeCountdownDocking(targetBody, TripTime, TripText, vesselID,vesselName), null);
             civ6.SetFunds(50000, 50000, targetBody);
             civ6.SetReputation(15, 30, targetBody);
 
@@ -659,7 +660,8 @@ namespace MissionControllerEC
         {
             bool techUnlock = ResearchAndDevelopment.GetTechnologyState("advFlightControl") == RDTech.State.Available;
             bool techUnlock2 = ResearchAndDevelopment.GetTechnologyState("specializedConstruction") == RDTech.State.Available;
-            if (!techUnlock && !techUnlock2 || SaveInfo.Civilian_Contracts_Off == true)
+            bool techUnlock3 = ResearchAndDevelopment.GetTechnologyState("advMetalworks") == RDTech.State.Available;
+            if (!techUnlock && !techUnlock2 && !techUnlock3|| SaveInfo.Civilian_Contracts_Off == true)
                 return false;
             else
                 return true;
