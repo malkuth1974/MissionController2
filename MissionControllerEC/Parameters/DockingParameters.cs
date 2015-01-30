@@ -29,9 +29,7 @@ namespace MissionControllerEC
             this.disableOnStateChange = false;
             updated = false;
             if (Root.ContractState == Contract.State.Active)
-            {
-                GameEvents.onFlightReady.Add(flightReady);
-                GameEvents.onVesselChange.Add(vesselChange);
+            {             
                 GameEvents.onPartCouple.Add(onPartCouple);
                 updated = true;
             }
@@ -40,9 +38,7 @@ namespace MissionControllerEC
         protected override void OnUnregister()
         {
             if (updated)
-            {
-                GameEvents.onFlightReady.Remove(flightReady);
-                GameEvents.onVesselChange.Remove(vesselChange);
+            {                
                 GameEvents.onPartCouple.Remove(onPartCouple);
             }
 

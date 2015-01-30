@@ -1232,7 +1232,7 @@ namespace MissionControllerEC
 
         private double MinHeight = 250000;
         private string dockingModuleDescription = "Docking Port";
-        private double electricPowerDescription = 1000;
+        private double electricPowerDescription = 400;
         private string solarPanelDescription = "Solar Panels";
         private string wheelModuleDescription = "Rover Wheels On Rover";
         private int crewCount = 3;
@@ -1252,7 +1252,7 @@ namespace MissionControllerEC
                 this.AddParameter(new InOrbitGoal(targetBody), null);
                 this.AddParameter(new BiomLandingParameters(targetBody, false, ApolloBiome2), null);
                 this.AddParameter(new ModuleGoal(WheelModule, wheelModuleDescription), null);
-                base.SetFunds(10000f, 120000f, targetBody);
+                base.SetFunds(10000f, 140000f, targetBody);
                 base.SetExpiry(3f, 10f);
                 base.SetDeadlineDays(100f, targetBody);
                 base.SetReputation(20f, targetBody);
@@ -1263,7 +1263,7 @@ namespace MissionControllerEC
                 this.AddParameter(new InOrbitGoal(targetBody2), null);
                 this.AddParameter(new InOrbitGoal(targetBody), null);
                 this.AddParameter(new BiomLandingParameters(targetBody, false, ApolloBiome), null);
-                base.SetFunds(10000f, 100000f, targetBody);
+                base.SetFunds(10000f, 120000f, targetBody);
                 base.SetExpiry(3f, 10f);
                 base.SetDeadlineDays(100f, targetBody);
                 base.SetReputation(15f, targetBody);
@@ -1273,7 +1273,7 @@ namespace MissionControllerEC
             {
                 this.AddParameter(new InOrbitGoal(targetBody2), null);
                 this.AddParameter(new InOrbitGoal(targetBody), null);
-                base.SetFunds(8000f, 61000f, targetBody);
+                base.SetFunds(8000f, 100000f, targetBody);
                 base.SetExpiry(3f, 10f);
                 base.SetDeadlineDays(100f, targetBody);
                 base.SetReputation(7f, targetBody);
@@ -1284,7 +1284,7 @@ namespace MissionControllerEC
                 this.AddParameter(new AltitudeGoal(targetBody2, MinHeight, true), null);
                 this.AddParameter(new InOrbitGoal(targetBody2), null);
                 this.AddParameter(new DockingGoal(), null);
-                base.SetFunds(5000f, 26000f, targetBody);
+                base.SetFunds(5000f, 65000f, targetBody);
                 base.SetExpiry(3f, 10f);
                 base.SetDeadlineDays(100f, targetBody);
                 base.SetReputation(4f, targetBody);
@@ -1294,7 +1294,7 @@ namespace MissionControllerEC
             {
                 this.AddParameter(new AltitudeGoal(targetBody2, MinHeight, true), null);
                 this.AddParameter(new InOrbitGoal(targetBody2), null);
-                base.SetFunds(4000f, 20000f, targetBody);
+                base.SetFunds(4000f, 35000f, targetBody);
                 base.SetExpiry(3f, 10f);
                 base.SetDeadlineDays(100f, targetBody);
                 base.SetReputation(2f, targetBody);

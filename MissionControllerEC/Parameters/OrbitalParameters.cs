@@ -158,26 +158,7 @@ namespace MissionControllerEC
         {
             return "Enter Orbit Around Goal: " + targetBody.theName;
         }
-
-        protected override void OnRegister()
-        {
-            this.disableOnStateChange = false;
-            updated = false;
-            if (Root.ContractState == Contract.State.Active)
-            {
-                GameEvents.onVesselChange.Add(vesselChange);
-                updated = true;
-            }
-        }
-
-        protected override void OnUnregister()
-        {
-            if (updated)
-            {
-                GameEvents.onVesselChange.Remove(vesselChange);
-            }
-        }
-
+       
         protected override void OnUpdate()
         {
             if (Root.ContractState == Contract.State.Active)
@@ -209,11 +190,7 @@ namespace MissionControllerEC
                     //ScreenMessages.PostScreenMessage("You Have achieved Orbit of Target Body: " + targetBody.theName);
                 }
             }
-        }      
-        public void vesselChange(Vessel v)
-        {
-            base.SetIncomplete();
-        }
+        }             
     }
     #endregion
     #region PeA OrbitGoal

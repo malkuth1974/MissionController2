@@ -208,6 +208,7 @@ namespace MissionControllerEC
         public bool updated = false;
         public string targetName;
         public double RsAmount = 0.0f;
+        public bool DisableReset = false;
 
         /// <summary>
         /// Returns the name of the Resource goal for this parameter
@@ -229,6 +230,12 @@ namespace MissionControllerEC
             this.targetName = target;
             this.RsAmount = rsAmount;
         }
+        public ResourceGoalCap(string target, double rsAmount,bool ResetOff)
+        {
+            this.targetName = target;
+            this.RsAmount = rsAmount;
+            this.DisableReset = ResetOff;
+        }
         protected override string GetHashString()
         {
             return targetName;
@@ -242,7 +249,7 @@ namespace MissionControllerEC
         {
             this.disableOnStateChange = false;
             updated = false;
-            if (Root.ContractState == Contract.State.Active)
+            if (Root.ContractState == Contract.State.Active  && !DisableReset)
             {
                 GameEvents.onFlightReady.Add(flightReady);
                 GameEvents.onVesselChange.Add(vesselChange);
