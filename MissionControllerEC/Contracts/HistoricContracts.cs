@@ -14,7 +14,7 @@ namespace MissionControllerEC
     {
         Settings settings = new Settings("config.cfg");
         public double minHeight = 70000;
-        
+
         public int crew = 1;
 
         CelestialBody targetBody = Planetarium.fetch.Home;
@@ -24,17 +24,17 @@ namespace MissionControllerEC
         ContractParameter vostok3;
 
         protected override bool Generate()
-        {           
+        {
             if (HighLogic.LoadedSceneIsFlight) { return false; }
             if (SaveInfo.all_Historical_Contracts_Off == true) { return false; }
-            minHeight = settings.vostok12height;  
-            vostok1 = this.AddParameter(new AltitudeGoal(targetBody,minHeight,true),null);
+            minHeight = settings.vostok12height;
+            vostok1 = this.AddParameter(new AltitudeGoal(targetBody, minHeight, true), null);
             vostok1.SetFunds(1000f, targetBody);
             vostok1.SetReputation(2f, targetBody);
-            vostok2 = this.AddParameter(new InOrbitGoal(targetBody),null);
+            vostok2 = this.AddParameter(new InOrbitGoal(targetBody), null);
             vostok2.SetFunds(2000f, targetBody);
             vostok2.SetReputation(3f, targetBody);
-            vostok3 = this.AddParameter(new LandingParameters(targetBody,true), null);
+            vostok3 = this.AddParameter(new LandingParameters(targetBody, true), null);
             vostok3.SetFunds(2500f, targetBody);
             vostok3.SetReputation(4f, targetBody);
             this.AddParameter(new GetCrewCount(crew), null);
@@ -77,10 +77,10 @@ namespace MissionControllerEC
                 "launched on April 12, 1961 with Soviet cosmonaut Yuri Gagarin, making him the first human to cross into outer space.\n\n" +
                 "The spaceflight consisted of one orbit around Earth, the shortest manned orbital flight to date. According to official records, the spaceflight took 108 " +
                 "minutes from launch to landing. As planned, Gagarin parachuted to the ground separately from his spacecraft after ejecting at 7 km (23,000 ft) altitude. Due to the secrecy " +
-                "surrounding the Soviet space program at the time, many details of the spaceflight only came to light years later, and several details in the original press releases turned out to be false.\n\n"+
-                
+                "surrounding the Soviet space program at the time, many details of the spaceflight only came to light years later, and several details in the original press releases turned out to be false.\n\n" +
+
                 "Information on Vostok 1 was gathered from Wikipedia\n\n" +
-                
+
                 "Objectives are to: \n\n1. Enter Space \n2. Conduct at least one orbit of Kebin \n3. Return safely to Kerbin";
         }
         protected override string GetSynopsys()
@@ -90,24 +90,24 @@ namespace MissionControllerEC
         protected override string MessageCompleted()
         {
             SaveInfo.Vostok1Done = true;
-            return "Four decades after the flight, historian Asif Siddiqi wrote that Vostok 1 will undoubtedly remain one of the major milestones in not only the history of space exploration, "+
+            return "Four decades after the flight, historian Asif Siddiqi wrote that Vostok 1 will undoubtedly remain one of the major milestones in not only the history of space exploration, " +
                 "but also the history of the human race itself. The fact that this accomplishment was successfully carried out by the Soviet Union, a country completely devastated by war just " +
                 "sixteen years prior, makes the achievement even more impressive. Unlike the United States, the USSR had to begin from a position of tremendous disadvantage. Its industrial " +
-                "infrastructure had been ruined, and its technological capabilities were outdated at best. A good portion of its land had been devastated by war, and it had lost about 25 million "+ 
-                "citizens... but it was the totalitarian state that overwhelmingly took the lead.\n\n"+
+                "infrastructure had been ruined, and its technological capabilities were outdated at best. A good portion of its land had been devastated by war, and it had lost about 25 million " +
+                "citizens... but it was the totalitarian state that overwhelmingly took the lead.\n\n" +
 
-                "Commemorative monument, Vostok-1 landing site near Engels, Russia.\n\n"+
+                "Commemorative monument, Vostok-1 landing site near Engels, Russia.\n\n" +
 
-                "The landing site is now a monument park. The central feature in the park is a 25 meter tall monument that consists of a silver metallic rocket rising on a curved metallic "+
-                "column of flame, from a wedge shaped, white stone base. In front of this is a 3 meter tall, white stone statue of Yuri Gagarin, wearing a spacesuit, with one arm raised in greeting "+
-                "and the other holding a space helmet.\n\n"+
+                "The landing site is now a monument park. The central feature in the park is a 25 meter tall monument that consists of a silver metallic rocket rising on a curved metallic " +
+                "column of flame, from a wedge shaped, white stone base. In front of this is a 3 meter tall, white stone statue of Yuri Gagarin, wearing a spacesuit, with one arm raised in greeting " +
+                "and the other holding a space helmet.\n\n" +
 
-                "The Vostok 1 re-entry capsule is now on display at the RKK Energiya museum in Korolyov, near Moscow.\n\n"+
+                "The Vostok 1 re-entry capsule is now on display at the RKK Energiya museum in Korolyov, near Moscow.\n\n" +
 
-                "In 2011, documentary film maker Christopher Riley partnered with European Space Agency astronaut Paolo Nespoli to record a new film of what Gagarin would have seen of the "+
-                "Earth from his spaceship, by matching historical audio recordings to video from the International Space Station following the ground path taken by Vostok 1. The resulting film,"+
-                "First Orbit, was released online to celebrate the 50th anniversary of human spaceflight.\n\n"+
-                
+                "In 2011, documentary film maker Christopher Riley partnered with European Space Agency astronaut Paolo Nespoli to record a new film of what Gagarin would have seen of the " +
+                "Earth from his spaceship, by matching historical audio recordings to video from the International Space Station following the ground path taken by Vostok 1. The resulting film," +
+                "First Orbit, was released online to celebrate the 50th anniversary of human spaceflight.\n\n" +
+
                 "Information of Vostok 1 was gathered from Wikipedia";
         }
 
@@ -157,11 +157,11 @@ namespace MissionControllerEC
 
         protected override bool Generate()
         {
-            
+
             if (HighLogic.LoadedSceneIsFlight) { return false; }
             if (SaveInfo.all_Historical_Contracts_Off == true) { return false; }
             minHeight = settings.vostok12height;
-            vostok1 = this.AddParameter(new AltitudeGoal(targetBody, minHeight,true), null);
+            vostok1 = this.AddParameter(new AltitudeGoal(targetBody, minHeight, true), null);
             vostok1.SetFunds(1000f, targetBody);
             vostok1.SetReputation(2f, targetBody);
             vostok2 = this.AddParameter(new InOrbitGoal(targetBody), null);
@@ -171,7 +171,7 @@ namespace MissionControllerEC
             vostok4.SetFunds(3000f, targetBody);
             vostok4.SetReputation(6f, targetBody);
             vostok4.SetScience(10f, targetBody);
-            vostok3 = this.AddParameter(new LandingParameters(targetBody,true), null);
+            vostok3 = this.AddParameter(new LandingParameters(targetBody, true), null);
             vostok3.SetFunds(3500f, targetBody);
             vostok3.SetReputation(7f, targetBody);
             this.AddParameter(new GetCrewCount(crew), null);
@@ -209,10 +209,10 @@ namespace MissionControllerEC
         protected override string GetDescription()
         {
             //those 3 strings appear to do nothing
-            return "Vostok 2 was a Soviet space mission which carried cosmonaut Gherman Titov into orbit for a full day on August 6, 1961 "+
-                "to study the effects of a more prolonged period of weightlessness on the human body.  Titov orbited the Earth over 17 times, exceeding the single orbit of Yuri Gagarin on Vostok 1 "+
-                "− as well as the suborbital spaceflights of American astronauts Alan Shepard and Gus Grissom aboard their respective Mercury-Redstone 3 and 4 missions. Indeed, Titov's number of orbits "+
-                "and flight time would not be surpassed by an American astronaut until Gordon Cooper's Mercury-Atlas 9 spaceflight in May 1963.\n\n"+
+            return "Vostok 2 was a Soviet space mission which carried cosmonaut Gherman Titov into orbit for a full day on August 6, 1961 " +
+                "to study the effects of a more prolonged period of weightlessness on the human body.  Titov orbited the Earth over 17 times, exceeding the single orbit of Yuri Gagarin on Vostok 1 " +
+                "− as well as the suborbital spaceflights of American astronauts Alan Shepard and Gus Grissom aboard their respective Mercury-Redstone 3 and 4 missions. Indeed, Titov's number of orbits " +
+                "and flight time would not be surpassed by an American astronaut until Gordon Cooper's Mercury-Atlas 9 spaceflight in May 1963.\n\n" +
 
                 "Information on Vostok 2 was gathered from Wikipedia\n\n" +
 
@@ -225,11 +225,11 @@ namespace MissionControllerEC
         protected override string MessageCompleted()
         {
             SaveInfo.Vostok2Done = true;
-            return "The flight was an almost complete success, marred only by a heater that had inadvertently been turned off prior to liftoff and that allowed the inside temperature "+
-                "to drop to 50 °F (10 °C), a bout of space sickness, and a troublesome re-entry when the reentry module failed to separate cleanly from its service module. \n\n"+
-            "Unlike Yuri Gagarin on Vostok 1, Titov took manual control of the spacecraft for a short while. Another change came when the Soviets admitted that Titov did not land with "+
-            "his spacecraft. Titov would claim in an interview that he ejected from his capsule as a test of an alternative landing system; it is now known that all Vostok program landings were performed this way.\n\n"+
-            "The re-entry capsule was destroyed during development of the Voskhod spacecraft.\n\n"+
+            return "The flight was an almost complete success, marred only by a heater that had inadvertently been turned off prior to liftoff and that allowed the inside temperature " +
+                "to drop to 50 °F (10 °C), a bout of space sickness, and a troublesome re-entry when the reentry module failed to separate cleanly from its service module. \n\n" +
+            "Unlike Yuri Gagarin on Vostok 1, Titov took manual control of the spacecraft for a short while. Another change came when the Soviets admitted that Titov did not land with " +
+            "his spacecraft. Titov would claim in an interview that he ejected from his capsule as a test of an alternative landing system; it is now known that all Vostok program landings were performed this way.\n\n" +
+            "The re-entry capsule was destroyed during development of the Voskhod spacecraft.\n\n" +
             "As of 2013, Titov remains the youngest person to reach space. He was a month short of 26 years old at launch.";
         }
 
@@ -253,7 +253,7 @@ namespace MissionControllerEC
 
             node.AddValue("minheight", minHeight);
             node.AddValue("crewcount", crew);
-            node.AddValue("missionTime",missionTime);
+            node.AddValue("missionTime", missionTime);
         }
 
         public override bool MeetRequirements()
@@ -288,7 +288,7 @@ namespace MissionControllerEC
             if (HighLogic.LoadedSceneIsFlight) { return false; }
             if (SaveInfo.all_Historical_Contracts_Off == true) { return false; }
             minHeight = settings.voshodheight;
-            vostok1 = this.AddParameter(new AltitudeGoal(targetBody, minHeight,true), null);
+            vostok1 = this.AddParameter(new AltitudeGoal(targetBody, minHeight, true), null);
             vostok1.SetFunds(2000f, targetBody);
             vostok1.SetReputation(2f, targetBody);
             vostok2 = this.AddParameter(new InOrbitGoal(targetBody), null);
@@ -336,8 +336,8 @@ namespace MissionControllerEC
         protected override string GetDescription()
         {
             //those 3 strings appear to do nothing
-            return "Voskhod 2 was a Soviet manned space mission in March 1965. Vostok-based Voskhod 3KD spacecraft with two crew members on board, Pavel Belyayev and Alexey Leonov,"+
-                "was equipped with an inflatable airlock. It established another milestone in space exploration when Alexey Leonov became the first person to leave the spacecraft in a specialized "+
+            return "Voskhod 2 was a Soviet manned space mission in March 1965. Vostok-based Voskhod 3KD spacecraft with two crew members on board, Pavel Belyayev and Alexey Leonov," +
+                "was equipped with an inflatable airlock. It established another milestone in space exploration when Alexey Leonov became the first person to leave the spacecraft in a specialized " +
                 "spacesuit to conduct a 12 minute spacewalk." +
 
                 "Information on Voskhod 2 was gathered from Wikipedia\n\n" +
@@ -431,7 +431,7 @@ namespace MissionControllerEC
 
             this.AddParameter(new AltitudeGoal(targetBody, minHeight), null);
             this.AddParameter(new InOrbitGoal(targetBody), null);
-            this.AddParameter(new EccentricGoal(targetBody,Eccentricity,(Eccentricity + .1),false),null);
+            this.AddParameter(new EccentricGoal(targetBody, Eccentricity, (Eccentricity + .1), false), null);
             if (TirosTitleMissionNumber == 3)
             {
                 this.AddParameter(new Inclination(targetBody, 80, 90), null);
@@ -439,7 +439,7 @@ namespace MissionControllerEC
             this.AddParameter(new TimeCountdownOrbits(targetBody, AmountDaysActive, true), null);
             if (TirosTitleMissionNumber == 2)
             {
-                this.AddParameter(new PartGoal("2HOT Thermometer", 1,false), null);
+                this.AddParameter(new PartGoal("2HOT Thermometer", 1, false), null);
                 this.AddParameter(new PartGoal("Communotron 16", 1, false), null);
             }
             else if (TirosTitleMissionNumber == 3)
@@ -451,13 +451,13 @@ namespace MissionControllerEC
             else
             {
                 this.AddParameter(new PartGoal("Communotron 16", 1, false), null);
-            }         
+            }
             if (TirosTitleMissionNumber == 2 || TirosTitleMissionNumber == 3)
             {
                 this.AddParameter(new ModuleGoal("ModuleDeployableSolarPanel", "Solar Panels"), null);
                 this.AddParameter(new ResourceGoalCap("ElectricCharge", 600), null);
             }
-            this.AddParameter(new GetCrewCount(0), null);                       
+            this.AddParameter(new GetCrewCount(0), null);
 
             base.SetFunds(6000f * contractMult, 30000f * contractMult, targetBody);
             base.SetExpiry(3f, 10f);
@@ -466,7 +466,7 @@ namespace MissionControllerEC
             base.SetScience(2f * contractMult, targetBody);
             return true;
 
-        }       
+        }
         public override bool CanBeCancelled()
         {
             return true;
@@ -521,11 +521,11 @@ namespace MissionControllerEC
             else
             {
                 return "Tiros 1 (Television Infrared Observation Satellite)";
-            }  
+            }
         }
         protected override string GetDescription()
         {
-                        
+
             {
                 if (TirosTitleMissionNumber == 3)
                 {
@@ -576,16 +576,16 @@ namespace MissionControllerEC
 
                 "The spacecraft operating system still included the infrared horizon scanner, the north direction indicator, despin weights and spinup rockets, and the magnetic attitude control system. TIROS-7 was" +
                 "deactivated after furnishing over 30,000 cloud photographs; it lasted the longest of the TIROS series thus far, 1809 days.";
-        
+
             }
             else if (TirosTitleMissionNumber == 3)
             {
-                return "TIROS-N was an experimental satellite which carried an Advanced Very High Resolution Radiometer (AVHRR) to provide day and night cloud top and sea surface temperatures, as well as ice and "+
-                    "snow conditions; an atmospheric sounding system (TOVS - TIROS Operational Vertical Sounder) to provide vertical profiles of temperature and water vapor from the Earth's surface to the top "+
-                    "of the atmosphere; and a solar proton monitor to detect the arrival of energetic particles for use in solar storm prediction. For the first time, this satellite also carried a data collection "+
-                    "platform used to receive, process and store information from free floating balloons and buoys worldwide for transmission to one central processing facility.\n\n"+
+                return "TIROS-N was an experimental satellite which carried an Advanced Very High Resolution Radiometer (AVHRR) to provide day and night cloud top and sea surface temperatures, as well as ice and " +
+                    "snow conditions; an atmospheric sounding system (TOVS - TIROS Operational Vertical Sounder) to provide vertical profiles of temperature and water vapor from the Earth's surface to the top " +
+                    "of the atmosphere; and a solar proton monitor to detect the arrival of energetic particles for use in solar storm prediction. For the first time, this satellite also carried a data collection " +
+                    "platform used to receive, process and store information from free floating balloons and buoys worldwide for transmission to one central processing facility.\n\n" +
 
-                "TIROS-N was placed in a near circular, (470nm) polar orbit. The craft and its systems operated successfully, providing high-resolution scanned images and vertical temperature and moisture profiles "+
+                "TIROS-N was placed in a near circular, (470nm) polar orbit. The craft and its systems operated successfully, providing high-resolution scanned images and vertical temperature and moisture profiles " +
                     "to both operational meteorologists and private interests with APT and HRPT capability.";
 
             }
@@ -620,12 +620,12 @@ namespace MissionControllerEC
             }
             else
             {
-                return "Good Job you have finsished this contract\n\n"+
-                    "TIROS-1 STATS:\n"+
-                    "Launch Date:    April 1, 1960\n"+
-                    "Operational Period: 78 days\n"+
-                    "Launch Vehicle:    Standard Thor-Able\n"+
-                    "Launch Site:    Cape Canaveral, FL\n"+
+                return "Good Job you have finsished this contract\n\n" +
+                    "TIROS-1 STATS:\n" +
+                    "Launch Date:    April 1, 1960\n" +
+                    "Operational Period: 78 days\n" +
+                    "Launch Vehicle:    Standard Thor-Able\n" +
+                    "Launch Site:    Cape Canaveral, FL\n" +
                     "Type:    Weather Satellite";
             }
         }
@@ -680,7 +680,7 @@ namespace MissionControllerEC
     public class Mariner : Contract
     {
         Settings settings = new Settings("config.cfg");
-        CelestialBody targetBody;       
+        CelestialBody targetBody;
         private double PeA = 0;
         private int marinerNumber = 1;
         private float multiplier = 1.0f;
@@ -696,8 +696,8 @@ namespace MissionControllerEC
         ContractParameter marinerOrbit4;
         ContractParameter marinerOrbit5;
         ContractParameter marinerOrbit6;
-        
-        
+
+
         protected override bool Generate()
         {
             if (prestige == ContractPrestige.Trivial)
@@ -798,7 +798,7 @@ namespace MissionControllerEC
         {
             return true;
         }
-      
+
         protected override string GetHashString()
         {
             return "Conduct Flyby of " + targetBody.theName;
@@ -875,7 +875,7 @@ namespace MissionControllerEC
 
                 "All info for Mariner was collect from Nasa";
             }
-           
+
         }
         protected override string GetSynopsys()
         {
@@ -945,11 +945,11 @@ namespace MissionControllerEC
 
         public override bool MeetRequirements()
         {
-            bool techUnlock = ResearchAndDevelopment.GetTechnologyState("flightControl") == RDTech.State.Available;           
+            bool techUnlock = ResearchAndDevelopment.GetTechnologyState("flightControl") == RDTech.State.Available;
             bool techUnlock4 = ResearchAndDevelopment.GetTechnologyState("advExploration") == RDTech.State.Available;
             if (SaveInfo.marinerCurrentNumber <= 4 && SaveInfo.tirosCurrentNumber != 1 && techUnlock & techUnlock4) { return true; }
             else { return false; }
-            
+
         }
     }
     # region Luna 2
@@ -1029,14 +1029,14 @@ namespace MissionControllerEC
         protected override string GetDescription()
         {
             //those 3 strings appear to do nothing
-            return "on September 12th, 1959 Luna 2 was launched. At just past midnight Moscow time on September 14th it crashed some 240,000 miles away on the Moon not far from "+
-                "the Sea of Tranquillity (perhaps a not entirely appropriate location). Korolev and his people were listening as the signals coming back from the spacecraft suddenly stopped. "+
-                "The total silence meant that Luna had hit its target and there was great jubilation in the control room.\n\n"+
+            return "on September 12th, 1959 Luna 2 was launched. At just past midnight Moscow time on September 14th it crashed some 240,000 miles away on the Moon not far from " +
+                "the Sea of Tranquillity (perhaps a not entirely appropriate location). Korolev and his people were listening as the signals coming back from the spacecraft suddenly stopped. " +
+                "The total silence meant that Luna had hit its target and there was great jubilation in the control room.\n\n" +
 
-                "Luna 2 (Luna is Russian for Moon) weighed 390 kilograms. It was spherical in shape with antennae sticking out of it and carried instruments for measuring radiation, magnetic fields "+
-                "and meteorites. It also carried metal pendants which it scattered on the surface on impact, with the hammer and sickle of the USSR on one side and the launch date on the other. "+
-                "It confirmed that the moon had only a tiny radiation field and, so far as could be observed, no radiation belts. The spacecraft had no propulsion system of its own and the third and "+
-                "final stage of its propelling rocket crashed on the moon about half an hour after Luna 2 itself.\n\n"+
+                "Luna 2 (Luna is Russian for Moon) weighed 390 kilograms. It was spherical in shape with antennae sticking out of it and carried instruments for measuring radiation, magnetic fields " +
+                "and meteorites. It also carried metal pendants which it scattered on the surface on impact, with the hammer and sickle of the USSR on one side and the launch date on the other. " +
+                "It confirmed that the moon had only a tiny radiation field and, so far as could be observed, no radiation belts. The spacecraft had no propulsion system of its own and the third and " +
+                "final stage of its propelling rocket crashed on the moon about half an hour after Luna 2 itself.\n\n" +
 
                 "Information on Luna 2 was gathered from HistoryToday.com\n\n" +
 
@@ -1049,13 +1049,13 @@ namespace MissionControllerEC
         protected override string MessageCompleted()
         {
             SaveInfo.Luna2Done = true;
-            return "The scientific results of Luna 2 were similar to those of Luna 1, but the psychological impact of Luna 2 was profound. The closest any American probe had come to the Moon at "+
-                "that point was 37,000 miles. It seemed clear in the United States that the timing had been heavily influenced by the fact that the Soviet premier, Nikita Khruschev, was due to arrive "+
-            "in the US immediately afterwards, to be welcomed by President Eisenhower. Luna 2’s success enabled him to appear beaming with rumbustious pride. He lectured Americans on the virtues of communism "+
-            "and the immorality of scantily clothed chorus girls. The only way of annoying him seemed to be by refusing to let him into Disneyland.\n\n"+  
+            return "The scientific results of Luna 2 were similar to those of Luna 1, but the psychological impact of Luna 2 was profound. The closest any American probe had come to the Moon at " +
+                "that point was 37,000 miles. It seemed clear in the United States that the timing had been heavily influenced by the fact that the Soviet premier, Nikita Khruschev, was due to arrive " +
+            "in the US immediately afterwards, to be welcomed by President Eisenhower. Luna 2’s success enabled him to appear beaming with rumbustious pride. He lectured Americans on the virtues of communism " +
+            "and the immorality of scantily clothed chorus girls. The only way of annoying him seemed to be by refusing to let him into Disneyland.\n\n" +
 
-            "Korolev had a clincher to come. Only three weeks later, Luna 3 was launched on October 4th, the second anniversary of Sputnik 1, to swing round the far side of the Moon and send back the "+
-            "first fuzzy pictures of its dark side, which no one had seen before. It was an astonishing feat of navigation and it was now possible to draw a tentative map of the Moon’s hidden side.\n\n "+
+            "Korolev had a clincher to come. Only three weeks later, Luna 3 was launched on October 4th, the second anniversary of Sputnik 1, to swing round the far side of the Moon and send back the " +
+            "first fuzzy pictures of its dark side, which no one had seen before. It was an astonishing feat of navigation and it was now possible to draw a tentative map of the Moon’s hidden side.\n\n " +
 
                 "Information on Luna 2 was gathered from HistoryToday.com";
         }
@@ -1118,7 +1118,7 @@ namespace MissionControllerEC
             luna2.SetFunds(5000f, targetBody);
             luna2.SetReputation(5f, targetBody);
 
-            this.AddParameter(new LandingParameters(Planetarium.fetch.Home,true), null);
+            this.AddParameter(new LandingParameters(Planetarium.fetch.Home, true), null);
 
             this.AddParameter(new GetCrewCount(crew), null);
 
@@ -1129,7 +1129,7 @@ namespace MissionControllerEC
             base.SetScience(50f, targetBody);
             return true;
         }
-      
+
         public override bool CanBeCancelled()
         {
             return true;
@@ -1155,20 +1155,20 @@ namespace MissionControllerEC
         protected override string GetDescription()
         {
             //those 3 strings appear to do nothing
-            return "Luna 16 was an unmanned space mission, part of the Soviet Luna program."+
+            return "Luna 16 was an unmanned space mission, part of the Soviet Luna program." +
 
-            "Luna 16 was the first robotic probe to land on the Moon and return a sample of lunar soil to Earth. The sample was returned from Mare Fecunditatis. It represented "+
-            "the first lunar sample return mission by the Soviet Union and was the third lunar sample return mission overall, following the Apollo 11 and Apollo 12 missions.\n\n"+
+            "Luna 16 was the first robotic probe to land on the Moon and return a sample of lunar soil to Earth. The sample was returned from Mare Fecunditatis. It represented " +
+            "the first lunar sample return mission by the Soviet Union and was the third lunar sample return mission overall, following the Apollo 11 and Apollo 12 missions.\n\n" +
 
-            "The spacecraft consisted of two attached stages, an ascent stage mounted on top of a descent stage. The descent stage was a cylindrical body with four protruding landing legs, fuel tanks, "+
-            "a landing radar, and a dual descent engine complex.\n\n"+
+            "The spacecraft consisted of two attached stages, an ascent stage mounted on top of a descent stage. The descent stage was a cylindrical body with four protruding landing legs, fuel tanks, " +
+            "a landing radar, and a dual descent engine complex.\n\n" +
 
-            "A main descent engine was used to slow the craft until it reached a cutoff point which was determined by the on-board computer based on altitude and velocity. After cutoff a bank of lower "+
-            "thrust jets was used for the final landing. The descent stage also acted as a launch pad for the ascent stage.\n\n"+
+            "A main descent engine was used to slow the craft until it reached a cutoff point which was determined by the on-board computer based on altitude and velocity. After cutoff a bank of lower " +
+            "thrust jets was used for the final landing. The descent stage also acted as a launch pad for the ascent stage.\n\n" +
 
-            "The ascent stage was a smaller cylinder with a rounded top. It carried a cylindrical hermetically sealed soil sample container inside a re-entry capsule.\n\n"+
+            "The ascent stage was a smaller cylinder with a rounded top. It carried a cylindrical hermetically sealed soil sample container inside a re-entry capsule.\n\n" +
 
-            "The spacecraft descent stage was equipped with a television camera, radiation and temperature monitors, telecommunications equipment, and an extendable arm with a drilling rig for "+
+            "The spacecraft descent stage was equipped with a television camera, radiation and temperature monitors, telecommunications equipment, and an extendable arm with a drilling rig for " +
             "the collection of a lunar soil sample.\n\n" +
 
                 "Information on Luna 2 was gathered from Wikipedia.org\n\n" +
@@ -1182,11 +1182,11 @@ namespace MissionControllerEC
         protected override string MessageCompleted()
         {
             SaveInfo.Luna16Done = true;
-            return "Three tiny samples (0.2 grams) of the Luna 16 soil were sold at Sotheby auction for $442,500 in 1993. The samples are the only lunar return material in private ownership during the "+
-                "20th century. Another source of privately possessed moon rock is lunar meteorites of varying quality and authenticity, and another is lost Apollo moon rocks, possible legal issues aside."+
+            return "Three tiny samples (0.2 grams) of the Luna 16 soil were sold at Sotheby auction for $442,500 in 1993. The samples are the only lunar return material in private ownership during the " +
+                "20th century. Another source of privately possessed moon rock is lunar meteorites of varying quality and authenticity, and another is lost Apollo moon rocks, possible legal issues aside." +
 
-                "A series of 10-kopeck stamps was issued in 1970 to commemorate the flight of Luna 16 lunar probe and depicted the main stages of the program: soft landing on Moon, launch of the lunar soil "+
-                "sample return capsule, and parachute assisted landing back on Earth.\n\n"+
+                "A series of 10-kopeck stamps was issued in 1970 to commemorate the flight of Luna 16 lunar probe and depicted the main stages of the program: soft landing on Moon, launch of the lunar soil " +
+                "sample return capsule, and parachute assisted landing back on Earth.\n\n" +
 
                 "Information on Luna 2 was gathered from Wikipedia.org";
         }
@@ -1222,8 +1222,10 @@ namespace MissionControllerEC
     {
         CelestialBody targetBody = FlightGlobals.Bodies[2];
         CelestialBody targetBody2 = FlightGlobals.Bodies[1];
+        CelestialBody targetBody3 = FlightGlobals.Bodies[3];
         private string ApolloBiome = "Midland Craters";
         private string ApolloBiome2 = " East Crater";
+        private string ApolloBiome3 = "Great Flats";
         private string PartDockingModule = "ModuleDockingNode";
         private string ElectricPowerSource = "ElectricCharge";
         private string SolarPanelsModule = "ModuleDeployableSolarPanel";
@@ -1234,9 +1236,9 @@ namespace MissionControllerEC
         private string dockingModuleDescription = "Docking Port";
         private double electricPowerDescription = 400;
         private string solarPanelDescription = "Solar Panels";
-        private string wheelModuleDescription = "Rover Wheels On Rover";
+        private string wheelModuleDescription = "Wheels On Rover";
         private int crewCount = 3;
-        
+
         protected override bool Generate()
         {
             if (prestige == ContractPrestige.Trivial)
@@ -1246,6 +1248,18 @@ namespace MissionControllerEC
             if (HighLogic.LoadedSceneIsFlight) { return false; }
             if (SaveInfo.all_Historical_Contracts_Off == true) { return false; }
             ApolloMissionNumber = SaveInfo.apolloCurrentNumber;
+            if (ApolloMissionNumber == 6)
+            {
+                this.AddParameter(new InOrbitGoal(targetBody2), null);
+                this.AddParameter(new InOrbitGoal(targetBody3), null);
+                this.AddParameter(new BiomLandingParameters(targetBody3, false, ApolloBiome3), null);
+                this.AddParameter(new ModuleGoal(WheelModule, wheelModuleDescription), null);
+                base.SetFunds(12000f, 210000f, targetBody3);
+                base.SetExpiry(3f, 10f);
+                base.SetDeadlineDays(100f, targetBody3);
+                base.SetReputation(20f, targetBody3);
+                base.SetScience(3f, targetBody3);
+            }
             if (ApolloMissionNumber == 5)
             {
                 this.AddParameter(new InOrbitGoal(targetBody2), null);
@@ -1258,7 +1272,7 @@ namespace MissionControllerEC
                 base.SetReputation(20f, targetBody);
                 base.SetScience(3f, targetBody);
             }
-            else if (ApolloMissionNumber == 4)
+            if (ApolloMissionNumber == 4)
             {
                 this.AddParameter(new InOrbitGoal(targetBody2), null);
                 this.AddParameter(new InOrbitGoal(targetBody), null);
@@ -1269,7 +1283,7 @@ namespace MissionControllerEC
                 base.SetReputation(15f, targetBody);
                 base.SetScience(5f, targetBody);
             }
-            else if (ApolloMissionNumber == 3)
+            if (ApolloMissionNumber == 3)
             {
                 this.AddParameter(new InOrbitGoal(targetBody2), null);
                 this.AddParameter(new InOrbitGoal(targetBody), null);
@@ -1279,7 +1293,7 @@ namespace MissionControllerEC
                 base.SetReputation(7f, targetBody);
                 base.SetScience(2f, targetBody);
             }
-            else if (ApolloMissionNumber == 2)
+            if (ApolloMissionNumber == 2)
             {
                 this.AddParameter(new AltitudeGoal(targetBody2, MinHeight, true), null);
                 this.AddParameter(new InOrbitGoal(targetBody2), null);
@@ -1290,7 +1304,7 @@ namespace MissionControllerEC
                 base.SetReputation(4f, targetBody);
                 base.SetScience(1f, targetBody);
             }
-            else
+            if (ApolloMissionNumber == 1)
             {
                 this.AddParameter(new AltitudeGoal(targetBody2, MinHeight, true), null);
                 this.AddParameter(new InOrbitGoal(targetBody2), null);
@@ -1311,7 +1325,7 @@ namespace MissionControllerEC
 
         protected override void OnAccepted()
         {
-            
+
         }
 
         public override bool CanBeCancelled()
@@ -1325,6 +1339,10 @@ namespace MissionControllerEC
 
         protected override string GetHashString()
         {
+            if (ApolloMissionNumber == 6)
+            {
+                return "Apollo 17";
+            }
             if (ApolloMissionNumber == 5)
             {
                 return "Apollo 15";
@@ -1345,10 +1363,14 @@ namespace MissionControllerEC
             {
                 return "Apollo 7";
             }
-           
+
         }
         protected override string GetTitle()
         {
+            if (ApolloMissionNumber == 6)
+            {
+                return "Apollo 17: Minmus Landing On " + ApolloBiome2 + " With Minmus Rover";
+            }
             if (ApolloMissionNumber == 5)
             {
                 return "Apollo 15: Lunar Landing On " + ApolloBiome2 + " With Lunar Rover";
@@ -1365,13 +1387,20 @@ namespace MissionControllerEC
             {
                 return "Apollo 9: CrewPod And Lunar Module Test Flight.";
             }
-            else 
+            else
             {
                 return "Apollo 7: CrewPod Test Flight.";
             }
         }
         protected override string GetDescription()
         {
+            if (ApolloMissionNumber == 6)
+            {
+                return "The lunar landing site was the Taurus-Littrow highlands and valley area. This site was picked for Apollo 17 as a location where rocks both older and younger than those previously returned from other" +
+                "Apollo missions, as well as from Luna 16 and 20 missions, might be found.\n\n" +
+                "The mission was the final in a series of three J-type missions planned for the Apollo Program. These J-type missions can be distinguished from previous G- and H-series missions by extended hardware" +
+                "capability, larger scientific payload capacity and by the use of the battery-powered Lunar Roving Vehicle, or LRV.";
+            }
             if (ApolloMissionNumber == 5)
             {
                 return "Apollo 15 was the fourth mission in which humans walked on the lunar surface and returned to Earth. On 30 July 1971 two astronauts (Apollo 15 Commander David R. Scott and LM pilot James B. Irwin) landed" +
@@ -1428,15 +1457,20 @@ namespace MissionControllerEC
                     "including propellants and expendables. There was no lunar module or boilerplate unit on this flight.\n\n" +
                     "All Apollo information was gathered from Nasa website.";
             }
-           
+
         }
         protected override string GetSynopsys()
         {
+            if (ApolloMissionNumber == 6)
+            {
+                return "The mission plan of Apollo 17 is to land on Minmus in the Great Flats, Scientific objectives of the Apollo 17 mission included, geological surveying and sampling of materials and surface features" +
+                "in a preselected area of the Taurus-Littrow region; deploying and activating surface experiments; and conducting in-flight experiments and photographic tasks during lunar orbit and transearth coast";
+            }
             if (ApolloMissionNumber == 5)
             {
-                return "Apollo 15 was the first of the three J missions designed to conduct exploration of the Moon over longer periods, over greater ranges, and with more instruments for scientific data acquisition than "+
-                    "on previous Apollo missions. Major modifications and augmentations to the basic Apollo hardware were made. The most significant change was the installation of a scientific instrument module in one "+
-                    "of the service module bays for scientific investigations from lunar orbit. Other hardware changes consisted of lunar module modifications to accommodate a greater payload and a longer stay on the "+
+                return "Apollo 15 was the first of the three J missions designed to conduct exploration of the Moon over longer periods, over greater ranges, and with more instruments for scientific data acquisition than " +
+                    "on previous Apollo missions. Major modifications and augmentations to the basic Apollo hardware were made. The most significant change was the installation of a scientific instrument module in one " +
+                    "of the service module bays for scientific investigations from lunar orbit. Other hardware changes consisted of lunar module modifications to accommodate a greater payload and a longer stay on the " +
                     "lunar surface, and the provision of a lunar roving vehicle. The landing site chosen for the mission was an area near the foot of the Montes Apenniuns and adjacent to Hadley Rille.";
             }
             else if (ApolloMissionNumber == 4)
@@ -1463,25 +1497,36 @@ namespace MissionControllerEC
         protected override string MessageCompleted()
         {
             SaveInfo.apolloCurrentNumber++;
+            if (ApolloMissionNumber == 6)
+            {
+                return "Great job, its a sad day that the Apollo missions have come to a close, but you have proven that we can achieve anything as a species!\n\n"+
+                        "Alternate reality for kerbals.\n\n"+
+                        "In the human world the American Apollo program was ended after Apollo 17, the kerbals on the other hand had no such limitations.  They have decided to continue the Apollo program and work on "+
+                        "getting to Duna.  This new series of Contracts for Mission Controller runs through about 9 new Contracts that help set up the ability to get to Duna and establish a small colony. \n\n"+
+
+                        "If you wish not to play this new set of contracts you can turn them off in the Mission Controller settings menu. Before these set of missions start, you need to play the Historical missions "+
+                        "SkyLab, this sets up the ability for long duration space Expeditions and will teach the kerbals how to survive the long journey to Duna.";
+            }
             if (ApolloMissionNumber == 5)
             {
-                return "Good Job";
+                return "Good Job on that rover!  But we have a new task ahead for a future mission.  Minmus!\n\n"+
+                    "There is talk in the space center about an extension of the apollo program after Apollo 17.  Many are speculating that the higher ups are considering Duna as a possible target!";
             }
             else if (ApolloMissionNumber == 4)
             {
-                return "Good Job";
+                return "Good Job, we have found that we should invest in some type of rover for our landings can move around a lot more.";
             }
             else if (ApolloMissionNumber == 3)
             {
-                return "Good Job";
+                return "Good Job, next time we will give you permission to actually land! Lets move!";
             }
             else if (ApolloMissionNumber == 2)
             {
-                return "Good Job";
+                return "Good Job putting the lander together and getting everything to work, lets set our eyes to the Mun!";
             }
             else
             {
-                return "Good Job";
+                return "Good Job, now that we have the command pod worked out we can start work on the lander!";
             }
         }
 
@@ -1489,8 +1534,10 @@ namespace MissionControllerEC
         {
             Tools.ContractLoadCheck(node, ref targetBody, FlightGlobals.Bodies[2], targetBody, "targetBody");
             Tools.ContractLoadCheck(node, ref targetBody2, FlightGlobals.Bodies[1], targetBody2, "targetBody2");
+            Tools.ContractLoadCheck(node, ref targetBody3, FlightGlobals.Bodies[3], targetBody3, "targetBody3");
             Tools.ContractLoadCheck(node, ref ApolloBiome, "None", ApolloBiome, "apbiome");
             Tools.ContractLoadCheck(node, ref ApolloBiome2, "none", ApolloBiome2, "apbiome2");
+            Tools.ContractLoadCheck(node, ref ApolloBiome3, "none", ApolloBiome3, "apbiome3");
             Tools.ContractLoadCheck(node, ref PartDockingModule, "ModuleDockingNode", PartDockingModule, "dock");
             Tools.ContractLoadCheck(node, ref ElectricPowerSource, "ElectricCharge", ElectricPowerSource, "electric");
             Tools.ContractLoadCheck(node, ref SolarPanelsModule, "ModuleDeployableSolarPanel", SolarPanelsModule, "solar");
@@ -1511,8 +1558,12 @@ namespace MissionControllerEC
             int bodyID2 = targetBody2.flightGlobalsIndex;
             node.AddValue("targetBody2", bodyID2);
 
+            int bodyID3 = targetBody3.flightGlobalsIndex;
+            node.AddValue("targetBody3", bodyID3);
+
             node.AddValue("apbiome", ApolloBiome);
             node.AddValue("apbiome2", ApolloBiome2);
+            node.AddValue("apbiome3", ApolloBiome3);
             node.AddValue("dock", PartDockingModule);
             node.AddValue("electric", ElectricPowerSource);
             node.AddValue("solar", SolarPanelsModule);
@@ -1535,7 +1586,384 @@ namespace MissionControllerEC
             //{
             //    return false;
             //}
-            if (techUnlock && techUnlock2 && techUnlock3 && ApolloMissionNumber <= 5)
+            if (techUnlock && techUnlock2 && techUnlock3 && ApolloMissionNumber <= 6)
+            {
+                return true;
+            }
+            else return false;
+
+        }
+    }
+    public class ApolloDunaProgram : Contract
+    {
+        CelestialBody targetBody = FlightGlobals.Bodies[2];
+        CelestialBody targetBody2 = FlightGlobals.Bodies[1];
+        CelestialBody targetBody3 = FlightGlobals.Bodies[6];
+        private string ApolloDunaBiome = "Farside Crater";
+        private string ApolloDunaBiome2 = "";
+        private string ApolloDunaBiome3 = "";
+        private string PartDockingModule = "ModuleDockingNode";
+        private string ElectricPowerSource = "ElectricCharge";
+        private string SolarPanelsModule = "ModuleDeployableSolarPanel";
+        private string WheelModule = "ModuleWheel";
+        private int ApolloDunaMissionNumber = 1;
+
+        private double MinHeight = 250000;
+        private string dockingModuleDescription = "Docking Port";
+        private double electricPowerDescription = 600;
+        private string solarPanelDescription = "Solar Panels";
+        private string wheelModuleDescription = "Wheels On Rover";
+        private int crewCount = 3;
+        private int maxSeatCountShip = 4;
+        private string landingTitle = "Land your vessel near you Colony Habitat";
+
+        public void GetLatandLon(Vessel vessel)
+        {
+            double LatValue;
+            LatValue = vessel.latitude;
+            double LonValue;
+            LonValue = vessel.latitude;
+
+            SaveInfo.apolloLandingLat = LatValue;
+
+            SaveInfo.apolloLandingLon = LonValue;
+        }
+        
+        protected override bool Generate()
+        {
+            if (prestige == ContractPrestige.Trivial)
+            {
+                return false;
+            }
+            if (HighLogic.LoadedSceneIsFlight) { return false; }
+            if (SaveInfo.Duna_NonHistorical_Contracts_Off == true) { return false; }
+            ApolloDunaMissionNumber = SaveInfo.apolloDunaCurrentNumber;
+
+            if (ApolloDunaMissionNumber == 9)
+            {
+            }
+            if (ApolloDunaMissionNumber == 8)
+            {
+            }
+            if (ApolloDunaMissionNumber == 7)
+            {
+            }
+            if (ApolloDunaMissionNumber == 6)
+            {
+                this.AddParameter(new InOrbitGoal(targetBody2), null);
+                this.AddParameter(new InOrbitGoal(targetBody3), null);
+                this.AddParameter(new BiomLandingParameters(targetBody3, false, ApolloDunaBiome3), null);
+                this.AddParameter(new ModuleGoal(WheelModule, wheelModuleDescription), null);
+                base.SetFunds(12000f, 210000f, targetBody3);
+                base.SetExpiry(3f, 10f);
+                base.SetDeadlineDays(100f, targetBody3);
+                base.SetReputation(20f, targetBody3);
+                base.SetScience(3f, targetBody3);
+            }
+            if (ApolloDunaMissionNumber == 5)
+            {
+                this.AddParameter(new InOrbitGoal(targetBody2), null);
+                this.AddParameter(new InOrbitGoal(targetBody), null);
+                this.AddParameter(new BiomLandingParameters(targetBody, false, ApolloDunaBiome2), null);
+                this.AddParameter(new ModuleGoal(WheelModule, wheelModuleDescription), null);
+                base.SetFunds(10000f, 140000f, targetBody);
+                base.SetExpiry(3f, 10f);
+                base.SetDeadlineDays(100f, targetBody);
+                base.SetReputation(20f, targetBody);
+                base.SetScience(3f, targetBody);
+            }
+            if (ApolloDunaMissionNumber == 4)
+            {
+                this.AddParameter(new InOrbitGoal(targetBody2), null);
+                this.AddParameter(new InOrbitGoal(targetBody), null);
+                this.AddParameter(new BiomLandingParameters(targetBody, false, ApolloDunaBiome), null);
+                base.SetFunds(10000f, 120000f, targetBody);
+                base.SetExpiry(3f, 10f);
+                base.SetDeadlineDays(100f, targetBody);
+                base.SetReputation(15f, targetBody);
+                base.SetScience(5f, targetBody);
+            }
+            if (ApolloDunaMissionNumber == 3)
+            {
+                this.AddParameter(new InOrbitGoal(targetBody), null);
+                this.AddParameter(new CheckLandingLonAndLat(targetBody, false, SaveInfo.apolloLandingLon, SaveInfo.apolloLandingLat, landingTitle), null);
+                this.AddParameter(new GetCrewCount(crewCount), null);
+                this.AddParameter(new TimeCountdownLanding(targetBody, 648000, "Crew must stay for this amount of time"), null);
+                this.AddParameter(new ModuleGoal(PartDockingModule, dockingModuleDescription), null);
+                this.AddParameter(new ModuleGoal(SolarPanelsModule, solarPanelDescription), null);
+                this.AddParameter(new ResourceGoalCap(ElectricPowerSource, electricPowerDescription), null);
+                base.SetFunds(30000f, 190000f, targetBody);
+                base.SetExpiry(3f, 10f);
+                base.SetDeadlineDays(100f, targetBody);
+                base.SetReputation(4f, targetBody);
+                base.SetScience(1f, targetBody);
+            }
+            if (ApolloDunaMissionNumber == 2)
+            {
+                
+                this.AddParameter(new InOrbitGoal(targetBody), null);
+                this.AddParameter(new CheckLandingLonAndLat(targetBody, false, SaveInfo.apolloLandingLon, SaveInfo.apolloLandingLat, landingTitle), null);
+                this.AddParameter(new GetCrewCount(0), null);
+                this.AddParameter(new ModuleGoal(PartDockingModule, dockingModuleDescription), null);
+                this.AddParameter(new ModuleGoal(SolarPanelsModule, solarPanelDescription), null);
+                this.AddParameter(new ResourceGoalCap(ElectricPowerSource, electricPowerDescription), null);
+                base.SetFunds(30000f, 190000f, targetBody);
+                base.SetExpiry(3f, 10f);
+                base.SetDeadlineDays(100f, targetBody);
+                base.SetReputation(4f, targetBody);
+                base.SetScience(1f, targetBody);
+            }
+            if (ApolloDunaMissionNumber == 1)
+            {
+                this.AddParameter(new InOrbitGoal(targetBody), null);
+                this.AddParameter(new BiomLandingParameters(targetBody, false, ApolloDunaBiome), null);
+                this.AddParameter(new MaxSeatCount(maxSeatCountShip), null);
+                this.AddParameter(new GetCrewCount(0), null);
+                this.AddParameter(new ModuleGoal(PartDockingModule, dockingModuleDescription), null);
+                this.AddParameter(new ModuleGoal(SolarPanelsModule, solarPanelDescription), null);
+                this.AddParameter(new ResourceGoalCap(ElectricPowerSource, electricPowerDescription), null);
+                base.SetFunds(50000f, 350000f, targetBody);
+                base.SetExpiry(3f, 10f);
+                base.SetDeadlineDays(100f, targetBody);
+                base.SetReputation(25f, targetBody);
+                base.SetScience(10f, targetBody);
+            }
+            return true;
+
+        }
+
+        protected override void OnAccepted()
+        {
+        }
+
+        public override bool CanBeCancelled()
+        {
+            return true;
+        }
+        public override bool CanBeDeclined()
+        {
+            return true;
+        }
+
+        protected override string GetHashString()
+        {
+            if (ApolloDunaMissionNumber == 6)
+            {
+                return "Duna 6";
+            }
+            if (ApolloDunaMissionNumber == 5)
+            {
+                return "Duna 5";
+            }
+            else if (ApolloDunaMissionNumber == 4)
+            {
+                return "Duna 4";
+            }
+            else if (ApolloDunaMissionNumber == 3)
+            {
+                return "Duna 3";
+            }
+            else if (ApolloDunaMissionNumber == 2)
+            {
+                return "Duna 2";
+            }
+            else
+            {
+                return "Duna 1";
+            }
+
+        }
+        protected override string GetTitle()
+        {
+            if (ApolloDunaMissionNumber == 6)
+            {
+                return "Apollo-Duna 6: Land Colony Module (without crew) on Duna.";
+            }
+            if (ApolloDunaMissionNumber == 5)
+            {
+                return "Apollo-Duna 5: Duna Apollo Flyby With Crew";
+            }
+            else if (ApolloDunaMissionNumber == 4)
+            {
+                return "Apollo 4: Crew Transfer on Mun Colony Module Replacement Rover Deployment. ";
+            }
+            else if (ApolloDunaMissionNumber == 3)
+            {
+                return "Apollo-Duna 3: Crew Test on Mun Colony Module With Rover.";
+            }
+            else if (ApolloDunaMissionNumber == 2)
+            {
+                return "Apollo-Duna 2: Duna Lander Development and Test Mun.";
+            }
+            else
+            {
+                return "Apollo-Duna 1: Mun Test Colony Module.";
+            }
+        }
+        protected override string GetDescription()
+        {
+            if (ApolloDunaMissionNumber == 6)
+            {
+                return "";
+            }
+            if (ApolloDunaMissionNumber == 5)
+            {
+                return "";
+            }
+            else if (ApolloDunaMissionNumber == 4)
+            {
+                return "";
+            }
+            else if (ApolloDunaMissionNumber == 3)
+            {
+                return "";
+            }
+            else if (ApolloDunaMissionNumber == 2)
+            {
+                return "We need you to construct and design a new Duna Colony Module that can hold 3 kerbals with enough supplies to last at least a year on Duna.  This module must also be able to survive 2 separate "+
+                    "Crew rotations.  The plan is to send 2 Expeditions to Duna.  Expedition 1 will arrive first and stay for a year.  Expedition 2 will launch a year later, while Expedition 1 returns to Kerbin. "+
+                    "After Expedition 2 arrives it also must survive for at least 1 year also!  So you must plan your supplies for these two missions and and support craft that you might need to keep these two "+
+                    "missions going. \n\n"+
+
+                    "Duna 1 is a test bed for your new Colony module.  This test bed will be launched from Kerbin and land on the Farside Crater located on our own Mun.  This will be tested by two separate crews "+
+                    "that will each spend at least 1 month on the mun.  Use this time to plan out how to survive on Duna and work out any bugs that might happen with the new equipment.\n\n"+
+ 
+                    "Your first task is to build the Colony Module and land it on the Mun (Without Crew).";
+            }
+            else
+            {
+                return "After the successful Apollo Moon Missions Kerbal Space Center Officials planed a new Mission that could take Kerbal kind to the Planet Duna.  Dubbed Apollo-Duna Missions these missions would be the " +
+                    "backbone of the new Kerbal Exploration and colonization system that would help spread kerbal kind throughout the kerbin system.\n" +
+
+                    "Duna 1 is the mission where Engineers and scientist built and delivered a experimental Colony Habitat to the surface of the mun.  This engineering test was slated for 4 Missions.  1. The delivery " +
+                    "of colony Module.  2. The construction and landing of the New Duna Lander.  3. The delivery of the Colonies first crew.  And 4. The crew transfer Mission for the Year 2 Test Mission.  These missions helped " +
+                    "develop the procedures and experience needed to bring kerbals to Duna with a Higher success rate.";
+            }
+
+        }
+        protected override string GetSynopsys()
+        {
+            if (ApolloDunaMissionNumber == 6)
+            {
+                return "";
+            }
+            if (ApolloDunaMissionNumber == 5)
+            {
+                return "";
+            }
+            else if (ApolloDunaMissionNumber == 4)
+            {
+                return "";
+            }
+            else if (ApolloDunaMissionNumber == 3)
+            {
+                return "";
+            }
+            else if (ApolloDunaMissionNumber == 2)
+            {
+                return "";
+            }
+            else
+            {
+                return "We need you to construct and design a new Duna Colony Module that can hold 3 kerbals with enough supplies to last at least a year on Duna.  This module must also be able to survive 2 separate " +
+                    "Crew rotations.  The plan is to send 2 Expeditions to Duna.  Expedition 1 will arrive first and stay for a year.  Expedition 2 will launch a year later, while Expedition 1 returns to Kerbin. " +
+                    "After Expedition 2 arrives it also must survive for at least 1 year also!  So you must plan your supplies for these two missions and and support craft that you might need to keep these two " +
+                    "missions going. \n\n" +
+
+                    "Duna 1 is a test bed for your new Colony module.  This test bed will be launched from Kerbin and land on the Farside Crater located on our own Mun.  This will be tested by two separate crews " +
+                    "that will each spend at least 1 month on the mun.  Use this time to plan out how to survive on Duna and work out any bugs that might happen with the new equipment.\n\n" +
+
+                    "Your first task is to build the Colony Module and land it on the Mun (Without Crew).";
+            }
+        }
+        protected override string MessageCompleted()
+        {
+            SaveInfo.apolloDunaCurrentNumber++;
+            if (ApolloDunaMissionNumber == 6)
+            {
+                return "";
+            }
+            if (ApolloDunaMissionNumber == 5)
+            {
+                return "";
+            }
+            else if (ApolloDunaMissionNumber == 4)
+            {
+                return "";
+            }
+            else if (ApolloDunaMissionNumber == 3)
+            {
+                return "";
+            }
+            else if (ApolloDunaMissionNumber == 2)
+            {
+                return "";
+            }
+            else
+            {
+                GetLatandLon(FlightGlobals.ActiveVessel);
+                return "Great job you have successfully landed the colony module on the Mun.  We are now ready to construct a new lander capable of landing on Duna.  "+
+                    "We will first test it on the Mun and make sure everything works as planned. ";
+            }
+        }
+
+        protected override void OnLoad(ConfigNode node)
+        {
+            Tools.ContractLoadCheck(node, ref targetBody, FlightGlobals.Bodies[2], targetBody, "targetBody");
+            Tools.ContractLoadCheck(node, ref targetBody2, FlightGlobals.Bodies[1], targetBody2, "targetBody2");
+            Tools.ContractLoadCheck(node, ref targetBody3, FlightGlobals.Bodies[3], targetBody3, "targetBody3");
+            Tools.ContractLoadCheck(node, ref ApolloDunaBiome, "None", ApolloDunaBiome, "apbiome");
+            Tools.ContractLoadCheck(node, ref ApolloDunaBiome2, "none", ApolloDunaBiome2, "apbiome2");
+            Tools.ContractLoadCheck(node, ref ApolloDunaBiome3, "none", ApolloDunaBiome3, "apbiome3");
+            Tools.ContractLoadCheck(node, ref PartDockingModule, "ModuleDockingNode", PartDockingModule, "dock");
+            Tools.ContractLoadCheck(node, ref ElectricPowerSource, "ElectricCharge", ElectricPowerSource, "electric");
+            Tools.ContractLoadCheck(node, ref SolarPanelsModule, "ModuleDeployableSolarPanel", SolarPanelsModule, "solar");
+            Tools.ContractLoadCheck(node, ref ApolloDunaMissionNumber, SaveInfo.apolloCurrentNumber, ApolloDunaMissionNumber, "apnumber");
+            Tools.ContractLoadCheck(node, ref MinHeight, 200000, MinHeight, "minheight");
+            Tools.ContractLoadCheck(node, ref dockingModuleDescription, "Must Have Docking Port", dockingModuleDescription, "dockdesc");
+            Tools.ContractLoadCheck(node, ref electricPowerDescription, 1000, electricPowerDescription, "powernumber");
+            Tools.ContractLoadCheck(node, ref solarPanelDescription, "Must Have Solar Panels", solarPanelDescription, "solardesc");
+            Tools.ContractLoadCheck(node, ref crewCount, 3, crewCount, "crewcount");
+            Tools.ContractLoadCheck(node, ref maxSeatCountShip, 4, maxSeatCountShip, "maxseats");
+            Tools.ContractLoadCheck(node, ref WheelModule, "ModuleWheel", WheelModule, "wheel");
+            Tools.ContractLoadCheck(node, ref wheelModuleDescription, "Wheels On Rover", wheelModuleDescription, "wheeldesc");
+            Tools.ContractLoadCheck(node, ref landingTitle, "Land your vessel near the Colony Habitat", landingTitle, "landingtitle");
+        }
+        protected override void OnSave(ConfigNode node)
+        {
+            int bodyID = targetBody.flightGlobalsIndex;
+            node.AddValue("targetBody", bodyID);
+
+            int bodyID2 = targetBody2.flightGlobalsIndex;
+            node.AddValue("targetBody2", bodyID2);
+
+            int bodyID3 = targetBody3.flightGlobalsIndex;
+            node.AddValue("targetBody3", bodyID3);
+
+            node.AddValue("apbiome", ApolloDunaBiome);
+            node.AddValue("apbiome2", ApolloDunaBiome2);
+            node.AddValue("apbiome3", ApolloDunaBiome3);
+            node.AddValue("dock", PartDockingModule);
+            node.AddValue("electric", ElectricPowerSource);
+            node.AddValue("solar", SolarPanelsModule);
+            node.AddValue("apnumber", ApolloDunaMissionNumber);
+            node.AddValue("minheight", MinHeight);
+            node.AddValue("dockdesc", dockingModuleDescription);
+            node.AddValue("powernumber", electricPowerDescription);
+            node.AddValue("solardesc", solarPanelDescription);
+            node.AddValue("crewcount", crewCount);
+            node.AddValue("maxseats", maxSeatCountShip);
+            node.AddValue("wheel", WheelModule);
+            node.AddValue("wheeldesc", wheelModuleDescription);
+            node.AddValue("landingtitle", landingTitle);
+        }
+
+        public override bool MeetRequirements()
+        {
+            bool techUnlock = ResearchAndDevelopment.GetTechnologyState("fieldScience") == RDTech.State.Available;
+            bool techUnlock2 = ResearchAndDevelopment.GetTechnologyState("advLanding") == RDTech.State.Available;
+            bool techUnlock3 = ResearchAndDevelopment.GetTechnologyState("heavierRocketry") == RDTech.State.Available;           
+            if (techUnlock && techUnlock2 && techUnlock3 && ApolloDunaMissionNumber <= 6 && SaveInfo.apolloCurrentNumber > 6 && SaveInfo.skylab4done == true)
             {
                 return true;
             }
@@ -1787,8 +2215,8 @@ namespace MissionControllerEC
             AgenaDockParameter.SetFunds(3000.0f, targetBody);
             AgenaDockParameter.SetReputation(30f, targetBody);
 
-            this.AddParameter(new ApAOrbitGoal(targetBody, (double)GMaxApA, (double)GMinApA,true), null);
-            this.AddParameter(new PeAOrbitGoal(targetBody, (double)GMaxPeA, (double)GMinPeA,true), null);
+            this.AddParameter(new ApAOrbitGoal(targetBody, (double)GMaxApA, (double)GMinApA, true), null);
+            this.AddParameter(new PeAOrbitGoal(targetBody, (double)GMaxPeA, (double)GMinPeA, true), null);
             this.AddParameter(new LandingParameters(targetBody, true), null);
             this.AddParameter(new ModuleGoal(partName, ModuleTitle), null);
             this.AddParameter(new GetCrewCount(crewCount), null);
@@ -1917,7 +2345,7 @@ namespace MissionControllerEC
     # region SkyLab 1
     public class SkyLab1 : Contract
     {
-        
+
         Settings settings = new Settings("config.cfg");
         public double minHeight = 90000;
 
@@ -1945,7 +2373,7 @@ namespace MissionControllerEC
                 Debug.Log("error in adding vessel id and name to save file for SkyLab 1 Contract");
         }
         public int totalContracts;
-    
+
         protected override bool Generate()
         {
             if (prestige == ContractPrestige.Trivial)
@@ -1957,10 +2385,10 @@ namespace MissionControllerEC
             if (HighLogic.LoadedSceneIsFlight) { return false; }
             if (SaveInfo.all_Historical_Contracts_Off == true) { return false; }
             minHeight = settings.skyLabheight;
-            this.AddParameter(new AltitudeGoal(targetBody,minHeight), null);
+            this.AddParameter(new AltitudeGoal(targetBody, minHeight), null);
             this.AddParameter(new InOrbitGoal(targetBody), null);
-            this.AddParameter(new PartGoal(part1goal, "Small Repair Panel", part1amount,true), null);
-            this.AddParameter(new PartGoal(part2goal, part2amount,false), null);
+            this.AddParameter(new PartGoal(part1goal, "Small Repair Panel", part1amount, true), null);
+            this.AddParameter(new PartGoal(part2goal, part2amount, false), null);
             this.AddParameter(new PartGoal(part3goal, part3amount, false), null);
             this.AddParameter(new GetCrewCount(crewCount), null);
             base.SetFunds(25000f, 150000f, targetBody);
@@ -2063,7 +2491,8 @@ namespace MissionControllerEC
             bool techUnlock2 = ResearchAndDevelopment.GetTechnologyState("specializedConstruction") == RDTech.State.Available;
 
             if (SaveInfo.skylab1done == true || SaveInfo.Agena2Done == false) { return false; }
-            if (!techUnlock && !techUnlock2) { return false; }
+            if (SaveInfo.apolloCurrentNumber <= 6) { return false;}
+            if (!techUnlock && !techUnlock2) { return false; }   
             else { return true; }
         }
     }
@@ -2108,11 +2537,11 @@ namespace MissionControllerEC
             skylab1.SetFunds(7000, targetBody);
             skylab1.SetReputation(5, targetBody);
 
-            this.skylab2 = this.AddParameter(new RepairPanelPartCheck(contractName,SaveInfo.skyLabVesID,SaveInfo.skyLabName), null);
+            this.skylab2 = this.AddParameter(new RepairPanelPartCheck(contractName, SaveInfo.skyLabVesID, SaveInfo.skyLabName), null);
             skylab2.SetFunds(8000, targetBody);
             skylab2.SetReputation(7, targetBody);
             skylab2.SetScience(10, targetBody);
-            
+
             this.skylab3 = this.AddParameter(new CollectScience(targetBody, BodyLocation.Space), null);
             skylab3.SetFunds(8500, targetBody);
             skylab3.SetReputation(10, targetBody);
@@ -2124,11 +2553,11 @@ namespace MissionControllerEC
             skylab4.SetScience(25, targetBody);
 
             this.skylab5 = this.AddParameter(new LandingParameters(targetBody, true), null);
-            skylab5.SetFunds(5000,75000,targetBody);
+            skylab5.SetFunds(5000, 75000, targetBody);
             skylab5.SetReputation(20, targetBody);
             skylab5.SetScience(3, targetBody);
 
-            this.AddParameter(new ResourceSupplyGoal(repairParts, RPamount, Ctitle,true), null);
+            this.AddParameter(new ResourceSupplyGoal(repairParts, RPamount, Ctitle, true), null);
 
             this.AddParameter(new GetCrewCount(crew), null);
 
@@ -2171,8 +2600,8 @@ namespace MissionControllerEC
                 "Our first crew we will send to the (SkyLab) " + SaveInfo.skyLabName + " will have to repair the Station before they can conduct any Science and stay on the station! So our objectives are:\n\n" +
                 "1. Launch 3 Man Vessel to the station and Dock with it.\n 2. Repair the station using the Repair Panel placed on the vessel during Mission 1.\n 3. After repairs stay on station and conduct " +
                 "scientific studies in orbit around Kerbin.\n 4. Keep crew in station and orbit for " + Tools.formatTime(contractTime) + "\n\n" +
-                "Mission Controller will save the TimeCountdown to you persistent file. There's no need to actually stay in flight once countdown starts, so you are free to do other task while the contract counts down\n\n"+
-                "How To Repair SkyLab\n\n 1. Dock with skylab\n2.Transfer RepairParts from your orbitor to the Repair Panel on SkyLab.\n3.While still in vessel right click Repair Panel and Select Check If System is Ready "+
+                "Mission Controller will save the TimeCountdown to you persistent file. There's no need to actually stay in flight once countdown starts, so you are free to do other task while the contract counts down\n\n" +
+                "How To Repair SkyLab\n\n 1. Dock with skylab\n2.Transfer RepairParts from your orbitor to the Repair Panel on SkyLab.\n3.While still in vessel right click Repair Panel and Select Check If System is Ready " +
                 "to repair.\n4. Go EVA and approach the Repair Panel on SkyLab.\n5. Open the Repair Panel door and select Repair.  All done!";
         }
         protected override string GetSynopsys()
@@ -2182,9 +2611,9 @@ namespace MissionControllerEC
         protected override string MessageCompleted()
         {
             SaveInfo.skylab2done = true;
-            return "Skylab 2 was the first manned mission to Skylab, the first U.S. orbital space station. The mission was launched on a Saturn IB rocket and carried a three-person "+
-                "crew to the station. The name Skylab 2 also refers to the vehicle used for that mission. The Skylab 2 mission established a record for human spaceflight duration. Furthermore, its crew were the "+
-                "first space station occupants ever to return safely to Earth – the only other space station occupants, the crew of the 1971 Soyuz 11 mission that had manned the Salyut 1 station, were killed during reentry.\n\n "+
+            return "Skylab 2 was the first manned mission to Skylab, the first U.S. orbital space station. The mission was launched on a Saturn IB rocket and carried a three-person " +
+                "crew to the station. The name Skylab 2 also refers to the vehicle used for that mission. The Skylab 2 mission established a record for human spaceflight duration. Furthermore, its crew were the " +
+                "first space station occupants ever to return safely to Earth – the only other space station occupants, the crew of the 1971 Soyuz 11 mission that had manned the Salyut 1 station, were killed during reentry.\n\n " +
 
                 "The manned Skylab missions were officially designated Skylab 2, 3, and 4. Miscommunication about the numbering resulted in the mission emblems reading Skylab I, Skylab II, and Skylab 3 respectively.\n\n " +
 
@@ -2263,7 +2692,7 @@ namespace MissionControllerEC
             if (prestige == ContractPrestige.Trivial)
             {
                 return false;
-            }            
+            }
             totalContracts = ContractSystem.Instance.GetCurrentContracts<SkyLab3>().Count();
             if (HighLogic.LoadedSceneIsFlight) { return false; }
             if (totalContracts >= 1) { return false; }
@@ -2274,7 +2703,7 @@ namespace MissionControllerEC
 
             this.skylab1 = this.AddParameter(new TargetDockingGoal(vesselId, vesselName), null);
             skylab1.SetFunds(5000, targetBody);
-            skylab1.SetReputation(10, targetBody);          
+            skylab1.SetReputation(10, targetBody);
             this.skylab3 = this.AddParameter(new CollectScience(targetBody, BodyLocation.Space), null);
             skylab3.SetFunds(5000, targetBody);
             skylab3.SetReputation(10, targetBody);
@@ -2285,7 +2714,7 @@ namespace MissionControllerEC
             skylab2.SetReputation(3, targetBody);
             skylab2.SetScience(5, targetBody);
 
-            this.skylab4 = this.AddParameter(new TimeCountdownDocking(targetBody, contractTime, contTimeTitle, vesselId,vesselName), null);
+            this.skylab4 = this.AddParameter(new TimeCountdownDocking(targetBody, contractTime, contTimeTitle, vesselId, vesselName), null);
             skylab4.SetFunds(10000, targetBody);
             skylab4.SetReputation(15, targetBody);
             skylab4.SetScience(15, targetBody);
@@ -2342,17 +2771,17 @@ namespace MissionControllerEC
         protected override string MessageCompleted()
         {
             SaveInfo.skylab3done = true;
-            return "During the approach phase, a propellant leak developed in one of the Apollo Service Module's reaction control system thruster quads. The crew was able to safely dock with Skylab, but "+
-                "troubleshooting continued with the problem. Six days later, another thruster quad developed a leak, creating concern amongst Mission Control. For the first time, an Apollo spacecraft would be rolled "+
-            "out to Launch Complex 39 for a rescue mission, made possible by the ability for the station to have two Apollo CSMs docked at the same time. It was eventually determined that the CSM could be safely maneuvered "+
-            "using only two working thruster quads, and the rescue mission was never launched.\n\n"+
+            return "During the approach phase, a propellant leak developed in one of the Apollo Service Module's reaction control system thruster quads. The crew was able to safely dock with Skylab, but " +
+                "troubleshooting continued with the problem. Six days later, another thruster quad developed a leak, creating concern amongst Mission Control. For the first time, an Apollo spacecraft would be rolled " +
+            "out to Launch Complex 39 for a rescue mission, made possible by the ability for the station to have two Apollo CSMs docked at the same time. It was eventually determined that the CSM could be safely maneuvered " +
+            "using only two working thruster quads, and the rescue mission was never launched.\n\n" +
 
-            "The crew, during their first EVA, installed the twin-pole sunshade, one of the two solutions for the destruction of the micrometeoroid shield during Skylab's launch to keep the space station cool. "+
-            "It was installed over the parasol, which was originally deployed through a porthole airlock during Skylab 2. Both were brought to the station by Skylab 2.\n\n"+
+            "The crew, during their first EVA, installed the twin-pole sunshade, one of the two solutions for the destruction of the micrometeoroid shield during Skylab's launch to keep the space station cool. " +
+            "It was installed over the parasol, which was originally deployed through a porthole airlock during Skylab 2. Both were brought to the station by Skylab 2.\n\n" +
 
-            "Skylab 3 continued a comprehensive medical research program that extended the data on human physiological adaptation and readaptation to space flight collected on the previous Skylab 2 mission. "+
-            "In addition, Skylab 3 extended the astronauts' stay in space from approximately one month to two months. Therefore, the effects of flight duration on physiological adaptation and "+
-            "readaptation could be examined.\n\n"+
+            "Skylab 3 continued a comprehensive medical research program that extended the data on human physiological adaptation and readaptation to space flight collected on the previous Skylab 2 mission. " +
+            "In addition, Skylab 3 extended the astronauts' stay in space from approximately one month to two months. Therefore, the effects of flight duration on physiological adaptation and " +
+            "readaptation could be examined.\n\n" +
 
                 "Information of the SkyLab 2 Mission was gathered from Wikipedia";
         }
@@ -2366,7 +2795,7 @@ namespace MissionControllerEC
                     targetBody = body;
             }
             crew = int.Parse(node.GetValue("crewcount"));
-            contractTime = int.Parse(node.GetValue("ctime"));            
+            contractTime = int.Parse(node.GetValue("ctime"));
             contTimeTitle = node.GetValue("ctitle");
             Tools.ContractLoadCheck(node, ref vesselId, "none", vesselId, "vesid");
             Tools.ContractLoadCheck(node, ref vesselName, "none", vesselName, "vname");
@@ -2450,10 +2879,10 @@ namespace MissionControllerEC
             skylab2.SetReputation(3, targetBody);
             skylab2.SetScience(5, targetBody);
 
-            skylab6 = this.AddParameter(new ApAOrbitGoal(targetBody, (double)GMaxApA, (double)GMinApA,true), null);
+            skylab6 = this.AddParameter(new ApAOrbitGoal(targetBody, (double)GMaxApA, (double)GMinApA, true), null);
             skylab6.SetFunds(1000, targetBody);
 
-            skylab7 = this.AddParameter(new PeAOrbitGoal(targetBody, (double)GMaxPeA, (double)GMinPeA,true), null);
+            skylab7 = this.AddParameter(new PeAOrbitGoal(targetBody, (double)GMaxPeA, (double)GMinPeA, true), null);
             skylab7.SetFunds(1000, targetBody);
 
             this.skylab4 = this.AddParameter(new TimeCountdownDocking(targetBody, contractTime, contTimeTitle, vesselId, vesselName), null);
@@ -2501,9 +2930,9 @@ namespace MissionControllerEC
         }
         protected override string GetDescription()
         {
-           return "Skylab 4 was the third manned Skylab mission and placed the third and final crew aboard the first American space station. The mission started on November 16, 1973 with the launch of three astronauts "+
-               "on a Saturn IB rocket from the Kennedy Space Center, Florida and lasted 84 days, one hour and 16 minutes. A total of 6,051 astronaut-utilization hours were tallied by Skylab 4 astronauts performing " +
-               "scientific experiments in the areas of medical activities, solar observations, Earth resources, observation of the Comet Kohoutek and other experiments.";
+            return "Skylab 4 was the third manned Skylab mission and placed the third and final crew aboard the first American space station. The mission started on November 16, 1973 with the launch of three astronauts " +
+                "on a Saturn IB rocket from the Kennedy Space Center, Florida and lasted 84 days, one hour and 16 minutes. A total of 6,051 astronaut-utilization hours were tallied by Skylab 4 astronauts performing " +
+                "scientific experiments in the areas of medical activities, solar observations, Earth resources, observation of the Comet Kohoutek and other experiments.";
         }
         protected override string GetSynopsys()
         {
@@ -2512,32 +2941,32 @@ namespace MissionControllerEC
         protected override string MessageCompleted()
         {
             SaveInfo.skylab4done = true;
-            return "Skylab 4 was the last Skylab mission. The crew arrived aboard Skylab to find that they had company – three figures dressed in flight suits. Upon closer inspection, they found their companions were three "+
-                "dummies, complete with Skylab 4 mission emblems and name tags which had been left there by Al Bean, Jack Lousma, and Owen Garriott at the end of Skylab 3.\n\n"+
-                
-            "The all-rookie astronaut crew had problems adjusting to the same workload level as their predecessors when activating the workshop. Things got off to a bad start after the crew attempted to hide Pogue's "+
-            "early space sickness from flight surgeons, a fact discovered by mission controllers after downloading onboard voice recordings. The crew's initial task of unloading and stowing the thousands of items needed "+
-            "for their lengthy mission also proved to be overwhelming. The schedule for the activation sequence dictated lengthy work periods with a large variety of tasks to be performed, and the crew soon found themselves "+
-            "tired and behind schedule."+
+            return "Skylab 4 was the last Skylab mission. The crew arrived aboard Skylab to find that they had company – three figures dressed in flight suits. Upon closer inspection, they found their companions were three " +
+                "dummies, complete with Skylab 4 mission emblems and name tags which had been left there by Al Bean, Jack Lousma, and Owen Garriott at the end of Skylab 3.\n\n" +
 
-            "as the activation of Skylab progressed, the astronauts complained of being pushed too hard. Ground crews disagreed; they felt that the astronauts were not working long enough or hard enough. During the course"+
-            "of the mission, this culminated in a radio conference to air frustrations. Following this, the workload schedule was modified, and by the end of their mission the crew had completed even more work than had been"+
-            "planned before launch. The experiences of the crew and ground controllers provided important lessons in planning subsequent manned spaceflight work schedules."+
+            "The all-rookie astronaut crew had problems adjusting to the same workload level as their predecessors when activating the workshop. Things got off to a bad start after the crew attempted to hide Pogue's " +
+            "early space sickness from flight surgeons, a fact discovered by mission controllers after downloading onboard voice recordings. The crew's initial task of unloading and stowing the thousands of items needed " +
+            "for their lengthy mission also proved to be overwhelming. The schedule for the activation sequence dictated lengthy work periods with a large variety of tasks to be performed, and the crew soon found themselves " +
+            "tired and behind schedule." +
 
-            "On Thanksgiving Day, Gibson and Pogue accomplished a 6 1⁄2 hour spacewalk. The first part of their spacewalk was spent replacing film in the solar observatory. The remainder of the time was used to repair"+
-            "a malfunctioning antenna."+
+            "as the activation of Skylab progressed, the astronauts complained of being pushed too hard. Ground crews disagreed; they felt that the astronauts were not working long enough or hard enough. During the course" +
+            "of the mission, this culminated in a radio conference to air frustrations. Following this, the workload schedule was modified, and by the end of their mission the crew had completed even more work than had been" +
+            "planned before launch. The experiences of the crew and ground controllers provided important lessons in planning subsequent manned spaceflight work schedules." +
 
-            "The crew reported that the food was good, but slightly bland. The crew would have preferred to use more condiments to enhance the taste of the food. The amount of salt they could use was restricted for medical"+
-            "purposes. The quantity and type of food consumed was rigidly controlled because of their strict diet."+
+            "On Thanksgiving Day, Gibson and Pogue accomplished a 6 1⁄2 hour spacewalk. The first part of their spacewalk was spent replacing film in the solar observatory. The remainder of the time was used to repair" +
+            "a malfunctioning antenna." +
 
-            "Seven days into their mission, a problem developed in the Skylab attitude control gyroscope system, which threatened to bring an early end to the mission. Skylab depended upon three large gyroscopes, sized"+
-            "so that any two of them could provide sufficient control and maneuver Skylab as desired. The third acted as a backup in the event of failure of one of the others. The gyroscope failure was attributed "+
-            "to insufficient lubrication. Later in the mission, a second gyroscope showed similar problems, but special temperature control and load reduction procedures kept the second one operating, and no further "+
+            "The crew reported that the food was good, but slightly bland. The crew would have preferred to use more condiments to enhance the taste of the food. The amount of salt they could use was restricted for medical" +
+            "purposes. The quantity and type of food consumed was rigidly controlled because of their strict diet." +
+
+            "Seven days into their mission, a problem developed in the Skylab attitude control gyroscope system, which threatened to bring an early end to the mission. Skylab depended upon three large gyroscopes, sized" +
+            "so that any two of them could provide sufficient control and maneuver Skylab as desired. The third acted as a backup in the event of failure of one of the others. The gyroscope failure was attributed " +
+            "to insufficient lubrication. Later in the mission, a second gyroscope showed similar problems, but special temperature control and load reduction procedures kept the second one operating, and no further " +
             "problems occurred." +
 
-            "SL-4 Goals\n\n"+
-            "1. An important aspect of the SL-4 Mission is to bring the station to a higher orbital level, so once you get into the station prepare to perform orbital maneuvers.\n"+
-            "2. Conduct an EVA at some point during mission.\n3. Conduct science inside the station to further Kerbal understanding of space and technology.\n\n"+
+            "SL-4 Goals\n\n" +
+            "1. An important aspect of the SL-4 Mission is to bring the station to a higher orbital level, so once you get into the station prepare to perform orbital maneuvers.\n" +
+            "2. Conduct an EVA at some point during mission.\n3. Conduct science inside the station to further Kerbal understanding of space and technology.\n\n" +
 
                 "Information of the SkyLab 2 Mission was gathered from Wikipedia";
         }
@@ -2565,7 +2994,7 @@ namespace MissionControllerEC
             GMinPeA = minPeAID;
             Tools.ContractLoadCheck(node, ref vesselId, "none", vesselId, "vesid");
             Tools.ContractLoadCheck(node, ref vesselName, "none", vesselName, "vname");
-          
+
         }
         protected override void OnSave(ConfigNode node)
         {

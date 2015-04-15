@@ -9,22 +9,13 @@ namespace MissionControllerEC
 {
     public partial class MissionControllerEC
     {
-        private string hireme;
         private string insuranceme;
         private string revertme;
         private void drawSettings(int id)
         {
             GUI.skin = HighLogic.Skin;
             GUILayout.BeginVertical();
-                     
-            GUILayout.Space(10);
-            GUILayout.BeginHorizontal();
-            GUILayout.Box("Hire Kerbal Cost",MCE_ScenarioStartup.StyleBold, GUILayout.Width(300));
-            hireme = settings.HireCost.ToString();
-            hireme = Regex.Replace(GUILayout.TextField(hireme), "[^.0-9]", "");                        
-            settings.HireCost = double.Parse(hireme);
-            GUILayout.EndHorizontal();
-
+                                
             GUILayout.Space(10);
             GUILayout.BeginHorizontal();
             GUILayout.Box("Kerbal Insurance Cost",MCE_ScenarioStartup.StyleBold, GUILayout.Width(300));
@@ -116,6 +107,13 @@ namespace MissionControllerEC
             GUILayout.Box("No MCE Historic Contracts", MCE_ScenarioStartup.StyleBold, GUILayout.Width(300));
             GUILayout.Box("" + SaveInfo.all_Historical_Contracts_Off, MCE_ScenarioStartup.styleBlueBold, GUILayout.Width(75));
             SaveInfo.all_Historical_Contracts_Off = GUILayout.Toggle(SaveInfo.all_Historical_Contracts_Off, "Set", GUILayout.Width(25));
+            GUILayout.EndHorizontal();
+
+            GUILayout.Space(10);
+            GUILayout.BeginHorizontal();
+            GUILayout.Box("No MCE Apollo-Duna Non Historic Contracts", MCE_ScenarioStartup.StyleBold, GUILayout.Width(300));
+            GUILayout.Box("" + SaveInfo.Duna_NonHistorical_Contracts_Off, MCE_ScenarioStartup.styleBlueBold, GUILayout.Width(75));
+            SaveInfo.Duna_NonHistorical_Contracts_Off = GUILayout.Toggle(SaveInfo.Duna_NonHistorical_Contracts_Off, "Set", GUILayout.Width(25));
             GUILayout.EndHorizontal();
            
             GUILayout.Space(10);

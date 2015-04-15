@@ -11,7 +11,6 @@ namespace MissionControllerEC
         { 
         }
        
-        [Persistent]internal double HireCost = 4000;
         [Persistent]internal double Death_Insurance = 20000;
         [Persistent]internal double Revert_Cost = 1000;
 

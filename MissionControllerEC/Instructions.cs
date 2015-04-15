@@ -418,27 +418,7 @@ namespace MissionControllerEC
                 catch { Debug.LogError("could not run NoPartTest Returned Null"); }
             } 
         }    
-               
-        public void hireKerbals(ProtoCrewMember pc, ProtoCrewMember.KerbalType pc1, ProtoCrewMember.KerbalType pc2)
-        {
-            if (pc1 == ProtoCrewMember.KerbalType.Applicant && pc2 == ProtoCrewMember.KerbalType.Crew && HighLogic.CurrentGame.Mode == Game.Modes.CAREER)
-            {
-                Debug.LogWarning("Kerbal Was Hired name is " + pc.name);
-                StringBuilder Hiremessage = new StringBuilder();
-                Hiremessage.AppendLine("You Just Hired " + pc.name);
-                Hiremessage.AppendLine();
-                Hiremessage.AppendLine("You hired him for Total of: " + settings.HireCost + " Funds.");
-                Hiremessage.AppendLine();
-                Hiremessage.AppendLine(pc.name + " Says he will serve your space Agency proud!");
-                Hiremessage.AppendLine();              
-                MessageSystem.Message m = new MessageSystem.Message("Hired Recruit", Hiremessage.ToString(), MessageSystemButton.MessageButtonColor.GREEN, MessageSystemButton.ButtonIcons.MESSAGE);
-                MessageSystem.Instance.AddMessage(m);
-                Funding.Instance.AddFunds(- settings.HireCost,TransactionReasons.Any);
-                SaveInfo.TotalSpentKerbals += settings.HireCost;
-            }
-            
-        }
-
+                      
         public void chargeKerbalDeath(EventReport value)
         {
             if (HighLogic.CurrentGame.Mode == Game.Modes.CAREER)
@@ -536,7 +516,7 @@ namespace MissionControllerEC
             {
                 Debug.Log("Body Name: " + body.theName + " Body Number: " + body.flightGlobalsIndex);
             }
-        }        
+        }       
     }
    
     public class RepairVesselsList

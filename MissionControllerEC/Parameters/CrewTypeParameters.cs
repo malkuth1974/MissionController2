@@ -93,6 +93,89 @@ namespace MissionControllerEC
         }
     }
     #endregion
+    #region Max Seat Count
+    public class MaxSeatCount : ContractParameter
+    {
+        private int seatCount = 0;
+        private string title = "none";
+        private bool updated = false;
+
+        public MaxSeatCount()
+        {
+        }
+
+        public MaxSeatCount(int MaxSeatCount)
+        {
+            this.seatCount = MaxSeatCount;
+        }
+        protected override string GetHashString()
+        {
+            return "Amount crew " + seatCount;
+        }
+        protected override string GetTitle()
+        {
+            return title + "Must Have This Many Seats On Vessel " + seatCount;
+        }
+
+        protected override void OnRegister()
+        {
+            this.disableOnStateChange = false;
+            updated = false;
+            if (Root.ContractState == Contract.State.Active)
+            {
+                GameEvents.onFlightReady.Add(flightReady);
+                GameEvents.onVesselChange.Add(vesselChange);
+                updated = true;
+            }
+        }
+
+        protected override void OnUnregister()
+        {
+            if (updated)
+            {
+                GameEvents.onFlightReady.Remove(flightReady);
+                GameEvents.onVesselChange.Remove(vesselChange);
+            }
+        }
+
+        protected override void OnUpdate()
+        {
+
+            if (FlightGlobals.ActiveVessel && HighLogic.LoadedSceneIsFlight)
+                CheckMaxSeatCount(FlightGlobals.ActiveVessel);
+
+        }
+
+        protected override void OnLoad(ConfigNode node)
+        {
+            Tools.ContractLoadCheck(node, ref seatCount, 71000, seatCount, "crewcount");
+            Tools.ContractLoadCheck(node, ref title, "Defualts Loaded Error", title, "title");
+        }
+        protected override void OnSave(ConfigNode node)
+        {
+            node.AddValue("crewcount", seatCount);
+            node.AddValue("title", title);
+        }
+
+        public void CheckMaxSeatCount(Vessel vessel)
+        {
+            int currentseats = FlightGlobals.ActiveVessel.GetCrewCapacity();
+
+            if (currentseats >= seatCount)
+            {
+                base.SetComplete();
+            }
+        }
+        public void flightReady()
+        {
+            base.SetIncomplete();
+        }
+        public void vesselChange(Vessel v)
+        {
+            base.SetIncomplete();
+        }
+    }
+    #endregion
     #region Get Crew Count
     public class GetCrewCount : ContractParameter
     {

@@ -198,7 +198,6 @@ namespace MissionControllerEC
             CreateButtons();          
             GameEvents.Contract.onContractsLoaded.Add(this.onContractLoaded);
             GameEvents.onCrewKilled.Add(this.chargeKerbalDeath);
-            GameEvents.onKerbalTypeChange.Add(this.hireKerbals);
             GameEvents.onGameSceneLoadRequested.Add(this.CheckRandomContractTypes);
             //Debug.Log("MCE Awake");
             getSupplyList(false);
@@ -216,7 +215,6 @@ namespace MissionControllerEC
             DestroyButtons();
             //Debug.Log("MCE OnDestroy");
             GameEvents.onCrewKilled.Remove(this.chargeKerbalDeath);
-            GameEvents.onKerbalTypeChange.Remove(this.hireKerbals);
             GameEvents.Contract.onContractsLoaded.Remove(this.onContractLoaded);
             GameEvents.onGameSceneLoadRequested.Remove(this.CheckRandomContractTypes);
             //Debug.Log("Game All values removed for MCE");
@@ -428,14 +426,20 @@ namespace MissionControllerEC
         [Persistent]internal int tirosNumber = 1;
         [Persistent]internal int marinerNumber = 1;
         [Persistent]internal int apolloNumber = 1;
+        [Persistent]internal int apolloDunaNumber = 1;
+
+        [Persistent]internal double apolldunLat = 1;
+        [Persistent]internal double apolldunLon = 1;
 
         public override void OnDecodeFromConfigNode()
         {
+            SaveInfo.apolloLandingLat = apolldunLat;
+            SaveInfo.apolloLandingLon = apolldunLon;
             SaveInfo.tirosCurrentNumber = tirosNumber;
             SaveInfo.marinerCurrentNumber = marinerNumber;
             SaveInfo.apolloCurrentNumber = apolloNumber;
+            SaveInfo.apolloDunaCurrentNumber = apolloDunaNumber;
             SaveInfo.Hardcore_Vessel_Must_Survive = hardcoreOn;
-            SaveInfo.TotalSpentKerbals = TotalSpentKerbals;
             SaveInfo.TotalSpentKerbalDeaths = TotalSpentDeaths;
             SaveInfo.TotalSpentOnRocketTest = TotalSpentRockets;
             SaveInfo.SatContractReady = ComSatOn;
@@ -494,11 +498,13 @@ namespace MissionControllerEC
 
         public override void OnEncodeToConfigNode()
         {
+            apolldunLat = SaveInfo.apolloLandingLat;
+            apolldunLon = SaveInfo.apolloLandingLon;
             tirosNumber = SaveInfo.tirosCurrentNumber;
             marinerNumber = SaveInfo.marinerCurrentNumber;
             apolloNumber = SaveInfo.apolloCurrentNumber;
+            apolloDunaNumber = SaveInfo.apolloDunaCurrentNumber;
             hardcoreOn = SaveInfo.Hardcore_Vessel_Must_Survive;
-            TotalSpentKerbals = SaveInfo.TotalSpentKerbals;
             TotalSpentRockets = SaveInfo.TotalSpentOnRocketTest;
             TotalSpentDeaths = SaveInfo.TotalSpentKerbalDeaths;
             ComSatOn = SaveInfo.SatContractReady;

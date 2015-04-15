@@ -4,7 +4,6 @@ namespace MissionControllerEC
 {
     public static class SaveInfo 
     {       
-        public static double TotalSpentKerbals = 0;
         public static double TotalSpentOnRocketTest = 0;
         public static double TotalSpentKerbalDeaths = 0;
         public static bool SatContractReady = false;
@@ -49,18 +48,19 @@ namespace MissionControllerEC
         public static double crewTime = 0;
         public static string crewTransferName = "Crew Transfer";
 
-        public static bool NoSatelliteContracts = false;
-        public static bool NoOrbitalPeriodcontracts = false;
+        public static bool NoSatelliteContracts = true;
+        public static bool NoOrbitalPeriodcontracts = true;
         public static bool NoLanderResearchContracts = false;
         public static bool NoOrbitalResearchContracts = false;
         public static bool NoRepairContracts = false;
         public static bool all_Historical_Contracts_Off = false;
+        public static bool Duna_NonHistorical_Contracts_Off = false;
         public static bool Civilian_Contracts_Off = false; 
 
         public static bool RepairContractOn = false;
         public static bool RepairStationContract = false;
-        public static bool CivilianLowOrbit = false;
-        public static bool CivilianLanding = false;
+        public static bool CivilianLowOrbit = true;
+        public static bool CivilianLanding = true;
         public static bool CivilianStationExpedition = false;
         public static int SatelliteTypeChoice = 0;
 
@@ -72,5 +72,9 @@ namespace MissionControllerEC
         public static int tirosCurrentNumber = 1;
         public static int marinerCurrentNumber = 1;
         public static int apolloCurrentNumber = 1;
+        public static int apolloDunaCurrentNumber = 1;
+
+        public static double apolloLandingLat = 0;
+        public static double apolloLandingLon = 0;
     }   
 }
