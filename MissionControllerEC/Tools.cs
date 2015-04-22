@@ -228,7 +228,6 @@ namespace MissionControllerEC
         }
         public static void ContractLoadCheck<t>(ConfigNode node, ref t value,t backupDefault,CelestialBody valueName, string savedFile)
         {
-            int i = 0;
             try
             {
                 CelestialBody cb = null;

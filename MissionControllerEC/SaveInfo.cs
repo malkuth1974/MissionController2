@@ -73,6 +73,7 @@ namespace MissionControllerEC
         public static int marinerCurrentNumber = 1;
         public static int apolloCurrentNumber = 1;
         public static int apolloDunaCurrentNumber = 1;
+        public static bool apolloDunaStation = false;
 
         public static double apolloLandingLat = 0;
         public static double apolloLandingLon = 0;

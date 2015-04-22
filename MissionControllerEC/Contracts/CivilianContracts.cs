@@ -328,7 +328,7 @@ namespace MissionControllerEC
             civ4.SetFunds(35000, 35000, targetBody);
             civ4.SetReputation(5, 10, targetBody);
 
-            this.civ6 = this.AddParameter(new TimeCountdownLanding(targetBody, TripTime, TripText), null);
+            this.civ6 = this.AddParameter(new TimeCountdownLanding(targetBody, TripTime, TripText,true), null);
             civ6.SetFunds(50000, 50000, targetBody);
             civ6.SetReputation(15, 30, targetBody);
 

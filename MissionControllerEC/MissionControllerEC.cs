@@ -182,7 +182,6 @@ namespace MissionControllerEC
         private static Texture2D texture;
         private static Texture2D texture2;
         private ApplicationLauncherButton MCEButton;
-        private ApplicationLauncherButton EDMCEButton;
         private ApplicationLauncherButton MCERevert;
         private string tirosNumber;
         private string marinerNumber;
@@ -207,7 +206,6 @@ namespace MissionControllerEC
         {                 
             FlightglobalsIndexCheck();
             DictCount = settings.SupplyResourceList.Count();           
-            ActivateEVASpareParts();
         }            
                       
         void OnDestroy()
@@ -290,6 +288,17 @@ namespace MissionControllerEC
                 SaveInfo.skyLabName = FlightGlobals.ActiveVessel.vesselName;
                 SaveInfo.skyLabVesID = FlightGlobals.ActiveVessel.id.ToString();
             }
+
+            if (GUILayout.Button("Set Landing Site for Apollo Missions(Flight)"))
+            {
+                GetLatandLonDefault(FlightGlobals.ActiveVessel);
+                Debug.Log("Apollo Landing Lat: " + SaveInfo.apolloLandingLat + " Apollo Landing Lon: " + SaveInfo.apolloLandingLon);
+            }
+
+            if (GUILayout.Button("Debug Landing Site For Apollo(Flight)"))
+            {
+                Debug.Log("Current Lat + Lon: " + FlightGlobals.ActiveVessel.latitude + " " + FlightGlobals.ActiveVessel.longitude + " Current Saved Values Lat + Lon " + SaveInfo.apolloLandingLat + " " + SaveInfo.apolloLandingLon);
+            }
  
             if (GUILayout.Button("Set Agena1 Bool False"))
             {
@@ -329,6 +338,15 @@ namespace MissionControllerEC
             {
                 SaveInfo.CivilianLowOrbit = true; SaveInfo.CivilianLanding = true; SaveInfo.CivilianStationExpedition = true;
             }
+
+            if (GUILayout.Button("Test EVA Type Kerbal"))
+            {
+                GetEvaTypeKerbal();
+            }
+            if (GUILayout.Button("Set Vessel Current Launch Time"))
+            {
+                SetVesselLaunchCurrentTime();
+            }
             GUILayout.BeginHorizontal();
             GUILayout.Box("Tiros Number 1-3", MCE_ScenarioStartup.StyleBold, GUILayout.Width(300));
             tirosNumber = SaveInfo.tirosCurrentNumber.ToString();
@@ -344,10 +362,17 @@ namespace MissionControllerEC
             GUILayout.EndHorizontal();
 
             GUILayout.BeginHorizontal();
-            GUILayout.Box("Apollo Number 1-5", MCE_ScenarioStartup.StyleBold, GUILayout.Width(300));
+            GUILayout.Box("Apollo Number 1-6", MCE_ScenarioStartup.StyleBold, GUILayout.Width(300));
             apolloNumber = SaveInfo.apolloCurrentNumber.ToString();
             apolloNumber = Regex.Replace(GUILayout.TextField(apolloNumber), "[^.0-9]", "");
             SaveInfo.apolloCurrentNumber = int.Parse(apolloNumber);
+            GUILayout.EndHorizontal();
+
+            GUILayout.BeginHorizontal();
+            GUILayout.Box("Apollo-Duna Number 1-9", MCE_ScenarioStartup.StyleBold, GUILayout.Width(300));
+            apolloNumber = SaveInfo.apolloDunaCurrentNumber.ToString();
+            apolloNumber = Regex.Replace(GUILayout.TextField(apolloNumber), "[^.0-9]", "");
+            SaveInfo.apolloDunaCurrentNumber = int.Parse(apolloNumber);
             GUILayout.EndHorizontal();
                           
             GUILayout.EndVertical();
@@ -427,12 +452,14 @@ namespace MissionControllerEC
         [Persistent]internal int marinerNumber = 1;
         [Persistent]internal int apolloNumber = 1;
         [Persistent]internal int apolloDunaNumber = 1;
+        [Persistent]internal bool apolloStationStatus = false;
 
         [Persistent]internal double apolldunLat = 1;
         [Persistent]internal double apolldunLon = 1;
 
         public override void OnDecodeFromConfigNode()
         {
+            SaveInfo.apolloDunaStation = apolloStationStatus;
             SaveInfo.apolloLandingLat = apolldunLat;
             SaveInfo.apolloLandingLon = apolldunLon;
             SaveInfo.tirosCurrentNumber = tirosNumber;
@@ -498,6 +525,7 @@ namespace MissionControllerEC
 
         public override void OnEncodeToConfigNode()
         {
+            apolloStationStatus = SaveInfo.apolloDunaStation;
             apolldunLat = SaveInfo.apolloLandingLat;
             apolldunLon = SaveInfo.apolloLandingLon;
             tirosNumber = SaveInfo.tirosCurrentNumber;

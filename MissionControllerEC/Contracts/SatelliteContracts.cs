@@ -39,6 +39,10 @@ namespace MissionControllerEC
         public int totalContracts;
         public int TotalFinished;
 
+        public string satType = "None";
+        public int satTypeNumber = 0;
+        public string satStoryDef = "none";
+
         public void loadscienceparts()
         {
             foreach (AvailablePart ap in PartLoader.LoadedPartsList)
@@ -52,7 +56,59 @@ namespace MissionControllerEC
                 }
             }
         }
+        public void SatTypeValue()
+        {
+            satTypeNumber = Tools.RandomNumber(0, 3);
+            switch (satTypeNumber)
+            {
+                case 0:
+                    satType = "Communications";
+                    break;
+                case 1:
+                    satType = "Weather";
+                    break;
+                case 2:
+                    satType = "Navigational";
+                    break;
+                case 3:
+                    satType = "Applications";
+                    break;
+            }
+            Debug.Log("MCE satType Mission Is " + satType);
+        }
 
+        public void satDefValue()
+        {
+            switch (satTypeNumber)
+            {
+                case 0:
+                    satStoryDef = "Communications satellites provide a worldwide linkup of radio, telephone, and television. The first (Earth) communications satellite was Echo 1 ; launched in 1960, it was a large metallized " +
+                        "balloon that reflected radio signals striking it. This passive mode of operation quickly gave way to the active or repeater mode, in which complex electronic equipment aboard the satellite " +
+                        "receives a signal from the earth, amplifies it, and transmits it to another point on the earth, in this case Kerbin.\n\n"+
+                        "Information and Text about Types of Satellites were researched at www.infoplease.com/encyclopedia/science/satellite-artificial-types-satellites.html";
+                    break;
+                case 1:
+                    satStoryDef = "Weather satellites, or meteorological satellites, provide kerbin scientist continuous, up-to-date information about large-scale atmospheric conditions such as cloud cover and temperature profiles. " +
+                        "Tiros 1, the first such (Earth) satellite, was launched in 1960; it transmitted infrared television pictures of the earth's cloud cover and was able to detect the development of hurricanes and to chart " +
+                        "their paths.\n\n" +
+                        "Information and Text about Types of Satellites were researched at www.infoplease.com/encyclopedia/science/satellite-artificial-types-satellites.html";
+                    break;
+                case 2:
+                    satStoryDef = "Navigation satellites were developed primarily to satisfy the need for a navigation system that nuclear submarines could use to update their inertial navigation system. This led " +
+                        "the (Earth) U.S. navy to establish the Transit program in 1958; the system was declared operational in 1962 after the launch of Transit 5A. Transit satellites provided a constant signal by which " +
+                        "aircraft and ships could determine their positions with great accuracy.\n\n"+
+                        "In kerbin society these satellites help with the day to day needs of most travel options for kerbin Land, Sea, Air Based navigation.\n\n"+
+                        "Information and Text about Types of Satellites were researched at www.infoplease.com/encyclopedia/science/satellite-artificial-types-satellites.html";
+                    break;
+                case 3:
+                    satStoryDef = "Applications satellites are designed to test ways of improving satellite technology itself. Areas of concern include structure, instrumentation, controls, power supplies, and " +
+                        "telemetry for future communications, meteorological, and navigation satellites.\n\n"+
+                        "Information and Text about Types of Satellites were researched at www.infoplease.com/encyclopedia/science/satellite-artificial-types-satellites.html";
+                    break;
+            }
+            Debug.Log("Story type: " + satType + " Chosen for satellite contract");
+        }
+        
         ContractParameter satellite1;
         ContractParameter satellite2;
         ContractParameter satellite3;
@@ -66,6 +122,9 @@ namespace MissionControllerEC
 
         protected override bool Generate()
         {
+            SatTypeValue();
+            satDefValue();
+            
             //if (prestige == ContractPrestige.Trivial)
             //{
             //    return false;
@@ -241,29 +300,26 @@ namespace MissionControllerEC
         {
             if (SaveInfo.SatelliteTypeChoice == 0)
             {
-                return "Launch new satellite to eccentric orbit for specified amount of time over " + targetBody.theName;
+                return "Launch new " + satType + " Satellite " + targetBody.theName;
             }
             else if (SaveInfo.SatelliteTypeChoice == 1)
             {
-                return "Launch new satellite to specified orbital period for amount of time indicated.";
+                return "Launch new  "+ satType + " Satellite";
             }
             else if (SaveInfo.SatelliteTypeChoice == 2)
             {
-                return "Launch new satellite into an Inclined orbit for amount of time indicated.";
+                return "Launch new "  + satType + " satellite";
             }
             else if (SaveInfo.SatelliteTypeChoice == 3)
             {
-                return "Launch new satellite into Keosynchronous orbit with specified parts and for amount of time we require";
+                return "Launch new " + satType + " satellite";
             }
             else
-                return "Launch a new satellite into orbit";
+                return "Launch a new "  + satType + " satellite into orbit";
         }
         protected override string GetDescription()
         {
-            //those 3 strings appear to do nothing
-            return "We would like you to deliver our satellite to orbit, We have specific scientific parts we want added to this satellite. Please include a " + sciPartname + "." +
-                "\n\n" + "Contract Goals\n\n " + "1. Build a satellite (we recommend you place a docking port for future Repair contracts)\n 2. Include a specified part on the satellite." +
-                "\n 3. Launch satellite into the orbit specified ";
+            return satStoryDef;
         }
         protected override string GetSynopsys()
         {
@@ -289,7 +345,7 @@ namespace MissionControllerEC
         }
         protected override string MessageCompleted()
         {
-            return "You have successfully delivered our satellite to orbit around " + targetBody.theName + " with the required " + sciPartname +
+            return "You have successfully delivered our " + satType + " satellite to orbit around " + targetBody.theName + " with the required " + sciPartname +
                 ".  We've accomplished many scientific achievements with this mission and would like to thank you for your help.";
         }
 
@@ -313,6 +369,9 @@ namespace MissionControllerEC
             Tools.ContractLoadCheck(node, ref MinApA, 75000, MinApA, "minApA");
             Tools.ContractLoadCheck(node, ref MaxPeA, 71000, MaxPeA, "maxPeA");
             Tools.ContractLoadCheck(node, ref MinPeA, 70500, MinPeA, "minPeA");
+            Tools.ContractLoadCheck(node, ref satType, "Communications", satType, "sattype");
+            Tools.ContractLoadCheck(node, ref satStoryDef, "None Loaded", satStoryDef, "satstory");
+            Tools.ContractLoadCheck(node, ref satTypeNumber, 0, satTypeNumber, "sattypenumber");
 
         }
         protected override void OnSave(ConfigNode node)
@@ -339,6 +398,9 @@ namespace MissionControllerEC
             node.AddValue("minApA",MinApA);
             node.AddValue("maxPeA",MaxPeA);
             node.AddValue("minPeA",MinPeA);
+            node.AddValue("sattype", satType);
+            node.AddValue("sattypenumber", satTypeNumber);
+            node.AddValue("satstory", satStoryDef);
         }
 
         //for testing purposes

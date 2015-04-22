@@ -286,11 +286,11 @@ namespace MissionControllerEC
 
         protected override string GetHashString()
         {
-            return "Orbit " + targetBody.theName + " and conduct research.";
+            return "Orbit " + targetBody.theName + " and conduct Ionization Scan.";
         }
         protected override string GetTitle()
         {
-            return "Conduct Orbital Research. Time For Completion: " + Tools.formatTime(missionTime);
+            return "Conduct Ionization Scan. Time For Completion: " + Tools.formatTime(missionTime);
         }
 
         protected override void OnRegister()

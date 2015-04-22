@@ -18,7 +18,7 @@ namespace MissionControllerEC
         CelestialBody targetBody = null;
         int crewCount = 0;
         public double testpos = 0;
-        string partName = "Orbital Research Scanner";
+        string partName = "Ionization Chamber";
         int partNumber = 1;
         double missionTime = 0;
         public int totalContracts = 0;
@@ -92,12 +92,29 @@ namespace MissionControllerEC
         }
         protected override string GetTitle()
         {
-            return "Scientific orbital research mission of  " + targetBody.theName + " with " + partName;
+            return "Ionization Scan of  " + targetBody.theName;
         }
         protected override string GetDescription()
         {
-            //those 3 strings appear to do nothing
-            return TextGen.GenerateBackStories(Agent.Name, Agent.GetMindsetString(), "Sat", "Light", "Oh pretty", MissionSeed);
+            return "An ionization chamber measures the charge from the number of ion pairs created within a gas caused by incident radiation.[2] It consists of a gas-filled chamber with two electrodes; known as anode and "+
+            "cathode. The electrodes may be in the form of parallel plates (Parallel Plate Ionization Chambers: PPIC), or a cylinder arrangement with a coaxially located internal anode wire.\n\n"+
+
+            "A voltage potential is applied between the electrodes to create an electric field in the fill gas. When gas between the electrodes is ionized by incident ionizing radiation, ion-pairs are created and "+
+            "the resultant positive ions and dissociated electrons move to the electrodes of the opposite polarity under the influence of the electric field. This generates an ionization current which is measured "+
+            "by an electrometer circuit. The electrometer must be capable of measuring the very small output current which is in the region of femtoamperes to picoamperes, depending on the chamber design, radiation "+
+            "dose and applied voltage.\n\n"+
+
+            "Each ion pair created deposits or removes a small electric charge to or from an electrode, such that the accumulated charge is proportional to the number of ion pairs created, and hence the radiation dose. "+
+                "This continual generation of charge produces an ionization current, which is a measure of the total ionizing dose entering the chamber. However, the chamber cannot discriminate between radiation types "+
+                "(beta or gamma) and cannot produce an energy spectrum of radiation.\n\n"+
+
+            "The electric field also enables the device to work continuously by mopping up electrons, which prevents the fill gas from becoming saturated, where no more ions could be collected, and by preventing the "+
+            "recombination of ion pairs, which would diminish the ion current. This mode of operation is referred to as current mode, meaning that the output signal is a continuous current, and not a pulse output as "+
+            "in the cases of the Geiger-Müller tube or the proportional counter.\n\n"+
+
+            "Referring to the accompanying ion pair collection graph, it can be seen that in the ion chamber operating region the collection of ion pairs is effectively constant over a range of applied voltage, as due "+
+            "to its relatively low electric field strength the ion chamber does not have any multiplication effect. This is in distinction to the Geiger-Müller tube or the proportional counter whereby secondary "+
+            "electrons, and ultimately multiple avalanches, greatly amplify the original ion-current charge.";
         }
         protected override string GetNotes()
         {
@@ -105,12 +122,12 @@ namespace MissionControllerEC
         }
         protected override string GetSynopsys()
         {
-            return "Scientific orbital research mission of  " + targetBody.theName + " with " + partName + ".";
+            return "Orbit And Conduct Ionization Scan Of " + targetBody.theName;
         }
         protected override string MessageCompleted()
         {
             MCEOrbitalScanning.doOrbitResearch = false;
-            return "You have reached the target body " + targetBody.theName + ", and conducted orbital research.  We have learned a lot of new information about the composition " +
+            return "You have reached the target body " + targetBody.theName + ", and conducted a Ionization Scan.  We have learned a lot of new information about the composition " +
                 "of this planetary body in preparation for a possible landing in the future by our manned program or Robotic Legions.";
         }
 
@@ -161,7 +178,7 @@ namespace MissionControllerEC
         CelestialBody targetBody = null;
         int crewCount = 0;
         public double testpos = 0;
-        string partName = "Ground Based Research Scanner";
+        string partName = "Mass Spectrometry Tube";
         int partNumber = 1;
         double amountTime = Tools.RandomNumber(200, 1500);
         public int totalContracts;
@@ -245,12 +262,23 @@ namespace MissionControllerEC
         }
         protected override string GetTitle()
         {
-            return "Scientific and research landing contract of  " + targetBody.theName + " with " + partName;;
+            return "Land And Conduct Mass Spectrometry Analysis Of " + targetBody.theName;
         }
         protected override string GetDescription()
         {
-            //those 3 strings appear to do nothing
-            return TextGen.GenerateBackStories(Agent.Name, Agent.GetMindsetString(), "Sat", "Light", "Oh pretty", MissionSeed);
+
+            return "Mass spectrometry (MS) is an analytical chemistry technique that helps identify the amount and type of chemicals present in a sample by measuring the mass-to-charge ratio and abundance of gas-phase " +
+                "ions.\n\n" +
+
+                "A mass spectrum (plural spectra) is a plot of the ion signal as a function of the mass-to-charge ratio. The spectra are used to determine the elemental or isotopic signature of a sample, the masses " +
+                "of particles and of molecules, and to elucidate the chemical structures of molecules, such as peptides and other chemical compounds. Mass spectrometry works by ionizing chemical compounds to generate " +
+                "charged molecules or molecule fragments and measuring their mass-to-charge ratios.\n\n" +
+
+                "In a typical MS procedure, a sample, which may be solid, liquid, or gas, is ionized, for example by bombarding it with electrons. This may cause some of the sample's molecules to break into charged " +
+                "fragments. These ions are then separated according to their mass-to-charge ratio, typically by accelerating them and subjecting them to an electric or magnetic field: ions of the same mass-to-charge " +
+                "ratio will undergo the same amount of deflection.[1] The ions are detected by a mechanism capable of detecting charged particles, such as an electron multiplier. Results are displayed as spectra of the " +
+                "relative abundance of detected ions as a function of the mass-to-charge ratio. The atoms or molecules in the sample can be identified by correlating known masses to the identified masses or through a " +
+                "characteristic fragmentation pattern.";
         }
         protected override string GetNotes()
         {
@@ -258,12 +286,12 @@ namespace MissionControllerEC
         }
         protected override string GetSynopsys()
         {
-            return "Land an unmanned vessel on " + targetBody.theName + " and conduct research for our company.";
+            return "Land an unmanned vessel on " + targetBody.theName + " and conduct Mass Spectrometry Analysis for our company.";
         }
         protected override string MessageCompleted()
         {
             MCELanderResearch.doLanderResearch = false;
-            return "You have successfully landed on and conducted researched on " + targetBody.theName + ".  After landing we have discovered many fascinating secrets about what makes up the composition of the landing site.\n\n" +
+            return "You have successfully landed on and conducted research on " + targetBody.theName + ".  After landing we have discovered many fascinating secrets about what makes up the composition of the landing site.\n\n" +
 
             "Further research missions, both manned and robotic, will be needed in the future to unlock the secrets of " + targetBody.theName + ".";
         }
@@ -272,7 +300,7 @@ namespace MissionControllerEC
         {           
             Tools.ContractLoadCheck(node, ref targetBody, Planetarium.fetch.Home, targetBody, "targetBody");
             Tools.ContractLoadCheck(node, ref crewCount, 1, crewCount, "crewcount");
-            Tools.ContractLoadCheck(node, ref partName, "Orbital Research Scanner", partName, "partname");
+            Tools.ContractLoadCheck(node, ref partName, "Mass Spectrometry Tube", partName, "partname");
             Tools.ContractLoadCheck(node, ref partNumber, 1, partNumber, "maxcount");
             Tools.ContractLoadCheck(node, ref amountTime, 10000, amountTime, "amountTime");
         }

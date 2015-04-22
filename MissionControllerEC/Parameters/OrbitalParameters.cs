@@ -140,7 +140,6 @@ namespace MissionControllerEC
     public class InOrbitGoal : ContractParameter
     {
         public CelestialBody targetBody;
-        private bool updated = false;
 
         public InOrbitGoal()
         {
@@ -1010,7 +1009,6 @@ namespace MissionControllerEC
         private CelestialBody targetBody;
         private double maxheight = 0.0;
         private double minheight = 0.0;
-        private bool updated = false;
         private bool lockOut = false;
 
         public FlyByCelestialBodyGoal()

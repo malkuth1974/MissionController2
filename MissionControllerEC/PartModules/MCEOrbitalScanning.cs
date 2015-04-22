@@ -9,13 +9,13 @@ namespace MissionControllerEC
        
         Vessel vs = new Vessel();
 
-        [KSPField(isPersistant = false, guiActive = true, guiName = "Probe Ready To Scan:")]
+        [KSPField(isPersistant = false, guiActive = true, guiName = "Ionization chamber ready to scan:")]
         private bool probeOrbitResearch = false;
 
         [KSPField(isPersistant = false, guiActive = true, guiName = "Starting Scan:")]
-        private bool scanStart = false;      
+        private bool scanStart = false;
 
-        [KSPEvent(guiActive = true, guiName = "Start MCE Orbital Research", active = true)]
+        [KSPEvent(guiActive = true, guiName = "Start Ionization Chamber Scan", active = true)]
         public void StartResearchMCE()
         {           
           checkVesselResearch();           
@@ -32,13 +32,13 @@ namespace MissionControllerEC
             if (probeOrbitResearch == true)
             {
                 doOrbitResearch = true;
-                ScreenMessages.PostScreenMessage("Starting Orbital Research, Please Stand By...");
+                ScreenMessages.PostScreenMessage("Ionization Chamber Filling, Please Stand By...");
             }
             else
             {
                 doOrbitResearch = false;
                 scanStart = false;
-                ScreenMessages.PostScreenMessage("Vessel Needs to be In Orbit to Conduct Scans");
+                ScreenMessages.PostScreenMessage("Vessel Needs to be In Orbit to Conduct Ionization Scan");
             }
         }
 

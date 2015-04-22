@@ -245,25 +245,25 @@ namespace MissionControllerEC
     {
         private CelestialBody targetBody;
         private bool AllowLandedWet = true;
-        private bool updated = false;
-        private bool LaunchTrue = false;
         private double currentLon = 0;
         private double currentLat = 0;
         private double savedLon = 0;
         private double savedLat = 0;
+        private bool hasToBeNewVessel = true;
         private string title = "Land at specific target area";
         
         public CheckLandingLonAndLat()
         {
         }
 
-        public CheckLandingLonAndLat(CelestialBody target, bool WetDryLanding,double saveLon,double saveLat,string title)
+        public CheckLandingLonAndLat(CelestialBody target, bool WetDryLanding,double saveLon,double saveLat,string title,bool vesselHasBeNew)
         {
             this.targetBody = target;
             this.AllowLandedWet = WetDryLanding;
             this.savedLon = saveLon;
             this.savedLat = saveLat;
             this.title = title;
+            this.hasToBeNewVessel = vesselHasBeNew;
         }
         protected override string GetHashString()
         {
@@ -278,30 +278,10 @@ namespace MissionControllerEC
         {
             return "this value is based off a Longitude and Latitude recorded when Vessel Landed originally";
         }
-
-        protected override void OnRegister()
-        {
-
-            updated = false;
-            if (Root.ContractState == Contract.State.Active)
-            {
-                GameEvents.onLaunch.Add(onLaunch);
-                updated = true;
-            }
-
-        }
-        protected override void OnUnregister()
-        {
-            if (updated)
-            {
-                GameEvents.onLaunch.Remove(onLaunch);
-            }
-
-        }
-
+                     
         protected override void OnUpdate()
         {
-            if (Root.ContractState == Contract.State.Active && LaunchTrue)
+            if (Root.ContractState == Contract.State.Active)
             {
                 if (HighLogic.LoadedSceneIsFlight)
                 {
@@ -314,6 +294,8 @@ namespace MissionControllerEC
                     if (HighLogic.LoadedSceneIsFlight && (FlightGlobals.ActiveVessel.situation == Vessel.Situations.LANDED || FlightGlobals.ActiveVessel.situation == Vessel.Situations.SPLASHED))
                         if (this.state == ParameterState.Incomplete)
                         {
+                            currentLat = FlightGlobals.ActiveVessel.latitude;
+                            currentLon = FlightGlobals.ActiveVessel.longitude;
                             Landing(FlightGlobals.ActiveVessel);
                             //Debug.Log("Wet and dry landing accepted for contract");
                         }
@@ -323,6 +305,8 @@ namespace MissionControllerEC
                     if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel.situation == Vessel.Situations.LANDED && FlightGlobals.ActiveVessel.situation != Vessel.Situations.SPLASHED)
                         if (this.state == ParameterState.Incomplete)
                         {
+                            currentLat = FlightGlobals.ActiveVessel.latitude;
+                            currentLon = FlightGlobals.ActiveVessel.longitude;
                             Landing(FlightGlobals.ActiveVessel);
                             //Debug.Log("only dry landing accepted for this contract");
                         }
@@ -330,40 +314,16 @@ namespace MissionControllerEC
             }
         }
 
-        protected override void OnLoad(ConfigNode node)
-        {
-            Tools.ContractLoadCheck(node, ref targetBody, Planetarium.fetch.Home, targetBody, "targetBody");
-            Tools.ContractLoadCheck(node, ref AllowLandedWet, true, AllowLandedWet, "wetland");
-            Tools.ContractLoadCheck(node, ref LaunchTrue, true, LaunchTrue, "onlaunch");
-            Tools.ContractLoadCheck(node, ref currentLat, 0, currentLat, "currentlat");
-            Tools.ContractLoadCheck(node, ref currentLon, 0, currentLon, "currentlon");
-            Tools.ContractLoadCheck(node, ref savedLat, 0, savedLat, "savedlat");
-            Tools.ContractLoadCheck(node, ref savedLon, 0, savedLon, "savedlon");
-            Tools.ContractLoadCheck(node, ref title, "Land at target area", title, "title");
-        }
-        protected override void OnSave(ConfigNode node)
-        {
-            int bodyID = targetBody.flightGlobalsIndex;
-            node.AddValue("targetBody", bodyID);
-            node.AddValue("wetland", AllowLandedWet);
-            node.AddValue("onlaunch", LaunchTrue);
-            node.AddValue("currentlat", currentLat);
-            node.AddValue("currentlon", currentLon);
-            node.AddValue("savedlat", savedLat);
-            node.AddValue("savedlon", savedLon);
-            node.AddValue("title", title);
-        }
-
         public void Landing(Vessel vessel)
         {
-            if (FlightGlobals.ActiveVessel.orbit.referenceBody.Equals(targetBody) && LaunchTrue)
+            if (FlightGlobals.ActiveVessel.orbit.referenceBody.Equals(targetBody) && hasToBeNewVessel)
             {
-                if (FlightGlobals.ActiveVessel.situation != Vessel.Situations.PRELAUNCH)
+                if (FlightGlobals.ActiveVessel.situation != Vessel.Situations.PRELAUNCH && vessel.launchTime > this.Root.DateAccepted)
                 {
-                    double latMin = savedLat - 1;
-                    double latMax = savedLat + 1;
-                    double lonMin = savedLon - 1;
-                    double lonMax = savedLon + 1;
+                    double latMin = savedLat - 3000;
+                    double latMax = savedLat + 3000;
+                    double lonMin = savedLon - 3000;
+                    double lonMax = savedLon + 3000;
 
                     if (currentLat >= latMin && currentLat <= latMax && currentLon >= lonMin && currentLon <= lonMax)
                     {
@@ -371,17 +331,45 @@ namespace MissionControllerEC
                     }
                 }
             }
-        }
-        public void onLaunch(EventReport er)
-        {
-            if (FlightGlobals.ActiveVessel.launchTime > this.Root.DateAccepted)
+            if (FlightGlobals.ActiveVessel.orbit.referenceBody.Equals(targetBody) && !hasToBeNewVessel)
             {
-                LaunchTrue = true;
-                Debug.LogWarning("Onlaunch event fired for landing parameter Landing is now HOT and can be applied.  This message is good, means you launched your vessel");
-                // strange that the eventReport comes up null when launching a vessel, I can't check against this event launch.  Always comes up NUll?
+                if (FlightGlobals.ActiveVessel.situation != Vessel.Situations.PRELAUNCH)
+                {
+                    double latMin = savedLat - 3000;
+                    double latMax = savedLat + 3000;
+                    double lonMin = savedLon - 3000;
+                    double lonMax = savedLon + 3000;
+
+                    if (currentLat >= latMin && currentLat <= latMax && currentLon >= lonMin && currentLon <= lonMax)
+                    {
+                        base.SetComplete();
+                    }
+                }
             }
-            else
-                Debug.LogError("Vessel is not classified as new vessel and was launched before current contract was accepted. " + " Vessel Name: " + FlightGlobals.ActiveVessel.name + " Launch Date: " + FlightGlobals.ActiveVessel.launchTime);
+        }        
+
+        protected override void OnLoad(ConfigNode node)
+        {
+            Tools.ContractLoadCheck(node, ref targetBody, Planetarium.fetch.Home, targetBody, "targetBody");
+            Tools.ContractLoadCheck(node, ref AllowLandedWet, true, AllowLandedWet, "wetland");
+            Tools.ContractLoadCheck(node, ref currentLat, 0, currentLat, "currentlat");
+            Tools.ContractLoadCheck(node, ref currentLon, 0, currentLon, "currentlon");
+            Tools.ContractLoadCheck(node, ref savedLat, 0, savedLat, "savedlat");
+            Tools.ContractLoadCheck(node, ref savedLon, 0, savedLon, "savedlon");
+            Tools.ContractLoadCheck(node, ref title, "Land at target area", title, "title");
+            Tools.ContractLoadCheck(node, ref hasToBeNewVessel, true, hasToBeNewVessel, "newvessel");
         }
+        protected override void OnSave(ConfigNode node)
+        {
+            int bodyID = targetBody.flightGlobalsIndex;
+            node.AddValue("targetBody", bodyID);
+            node.AddValue("wetland", AllowLandedWet);
+            node.AddValue("currentlat", currentLat);
+            node.AddValue("currentlon", currentLon);
+            node.AddValue("savedlat", savedLat);
+            node.AddValue("savedlon", savedLon);
+            node.AddValue("title", title);
+            node.AddValue("newvessel", hasToBeNewVessel);
+        }        
     }
 }

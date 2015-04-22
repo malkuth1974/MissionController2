@@ -28,7 +28,6 @@ namespace MissionControllerEC
             GUI.skin = HighLogic.Skin;
             GUILayout.BeginVertical();
             MCE_ScenarioStartup.scrollPosition = GUILayout.BeginScrollView(MCE_ScenarioStartup.scrollPosition, GUILayout.Width(408));
-            GetPartsCost();
             GUILayout.EndScrollView();
             GUILayout.EndVertical();
 

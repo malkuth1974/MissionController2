@@ -70,20 +70,7 @@ namespace MissionControllerEC
                     );
                 //Debug.Log("Creating MCEButton Buttons");
             }
-            if ((HighLogic.LoadedScene == GameScenes.EDITOR) && this.EDMCEButton == null)
-            {
-                this.EDMCEButton = ApplicationLauncher.Instance.AddModApplication(
-                    this.EDMCEOn,
-                    this.EDMCEOff,
-                    null,
-                    null,
-                    null,
-                    null,
-                    ApplicationLauncher.AppScenes.VAB,
-                    texture
-                    );
-                //Debug.Log("Creating MCEButton Buttons");
-            }
+            
             if (HighLogic.LoadedScene == GameScenes.FLIGHT && this.MCERevert == null && settings.RevertOn)
             {
                 this.MCERevert = ApplicationLauncher.Instance.AddModApplication(
@@ -109,17 +96,7 @@ namespace MissionControllerEC
         {           
             MCE_ScenarioStartup.ShowfinanaceWindow = false;
         }
-
-        private void EDMCEOn()
-        {
-            MCE_ScenarioStartup.ShowEditorWindow = true;
-        }
-
-        private void EDMCEOff()
-        {
-            MCE_ScenarioStartup.ShowEditorWindow = false;
-        }
-
+       
         private void revertOff()
         {
             MCE_ScenarioStartup.ShowPopUpWindow3 = false;
@@ -133,11 +110,7 @@ namespace MissionControllerEC
             if (this.MCEButton != null)
             {
                 ApplicationLauncher.Instance.RemoveModApplication(this.MCEButton);
-            }
-            if (this.EDMCEButton != null)
-            {
-                ApplicationLauncher.Instance.RemoveModApplication(this.EDMCEButton);
-            }
+            }           
             if (this.MCERevert != null)
             {
                 ApplicationLauncher.Instance.RemoveModApplication(this.MCERevert);
@@ -297,103 +270,7 @@ namespace MissionControllerEC
             RandomSatelliteContractsCheck[3] = new Tools.MC2RandomWieghtSystem.Item<int>();
             RandomSatelliteContractsCheck[3].weight = 25;
             RandomSatelliteContractsCheck[3].value = 3;           
-        }
-
-        public void GetPartsCost()
-        {            
-            if (HighLogic.LoadedSceneIsEditor && HighLogic.CurrentGame.Mode == Game.Modes.CAREER)
-            {
-                try               
-                {
-                    List<Part> parts;
-                    parts = EditorLogic.SortedShipList;
-                    resourceCost = 0;
-                    vesselPartCost = 0;
-                    vesseltons = 0;
-                    vesselResourceTons = 0;
-                    GUILayout.BeginHorizontal();
-                    GUILayout.Box("Part Name", MCE_ScenarioStartup.StyleBold,GUILayout.MinWidth(300),GUILayout.MaxWidth(300));
-                    GUILayout.Box("Part Cost", MCE_ScenarioStartup.StyleBold, GUILayout.MinWidth(100), GUILayout.MaxWidth(100));
-                    GUILayout.EndHorizontal();
-
-                    GUILayout.Space(8);
-
-                    foreach (Part p in parts)
-                    {                       
-                        string name = p.partInfo.title;                      
-                        vesselPartCost += p.partInfo.cost + p.GetModuleCosts(10f);
-                        vesseltons += p.mass;                                              
-                    
-                        GUILayout.BeginHorizontal();
-                        GUILayout.Box("" + name, MCE_ScenarioStartup.styleBoxWhite, GUILayout.MinWidth(300), GUILayout.MaxWidth(300));
-                        GUILayout.Box("" + (p.partInfo.cost + p.GetModuleCosts(10f)), MCE_ScenarioStartup.styleBoxWhite, GUILayout.MinWidth(100), GUILayout.MaxWidth(100));
-                        GUILayout.EndHorizontal();
-
-                        if (showTons && showMiniTons)
-                        {
-                            GUILayout.BeginHorizontal();
-                            GUILayout.Label("Part Mass Empty: " + p.mass.ToString("F2"), GUILayout.MinWidth(400));
-                            GUILayout.EndHorizontal();
-                        }
-
-                        foreach (PartResource pr in p.Resources)
-                        {
-                            if (pr.amount > 0 && pr.info.unitCost > 0)
-                            {
-                                resourceCost += pr.info.unitCost  * (float)pr.amount;
-                                vesselResourceTons += pr.info.density * (float)pr.amount;
-                                double totalFuelCost = pr.info.unitCost * pr.amount;
-                                double adjustedCost = pr.info.unitCost;
-                                if (showFuel)
-                                {
-                                    GUILayout.BeginHorizontal();
-                                    GUILayout.Label(pr.resourceName + " Amount: " + "(" + pr.amount.ToString("F2") + ")" + " Cost Per Unit: " + "(" + adjustedCost.ToString("F2") + ")" + " Total Cost: " + "(" + totalFuelCost.ToString("F2") + ")", MCE_ScenarioStartup.styleBlue, GUILayout.MinWidth(400));
-                                    GUILayout.EndHorizontal();
-                                }
-                                if (showTons && showMiniTons)
-                                {
-                                    GUILayout.BeginHorizontal();
-                                    GUILayout.Label("Total Resource (" + pr.resourceName + ") Mass(Tons): " + vesselResourceTons.ToString("F2"), GUILayout.MinWidth(400));
-                                    GUILayout.EndHorizontal();
-                                }
-                            }
-                        }                        
-                    }
-                    float MinTotal = vesselPartCost - resourceCost;
-                    float rMinTotal = vesseltons + vesselResourceTons;
-                    GUILayout.Space(15);
-                    GUILayout.BeginHorizontal();
-                    GUILayout.Box("Total Part Cost Without Fuel", MCE_ScenarioStartup.StyleBold, GUILayout.MinWidth(300), GUILayout.MaxWidth(300));
-                    GUILayout.Box("" + MinTotal.ToString("F2"), MCE_ScenarioStartup.StyleBold, GUILayout.MinWidth(100), GUILayout.MaxWidth(100));
-                    GUILayout.EndHorizontal();
-                    
-                    GUILayout.BeginHorizontal();
-                    GUILayout.Box("Total Fuel Cost", MCE_ScenarioStartup.styleBlueBold, GUILayout.MinWidth(300), GUILayout.MaxWidth(300));
-                    GUILayout.Box("" + resourceCost.ToString("F2"), MCE_ScenarioStartup.styleBlueBold, GUILayout.MinWidth(100), GUILayout.MaxWidth(100));
-                    GUILayout.EndHorizontal();
-
-                    GUILayout.Space(10);
-                    GUILayout.BeginHorizontal();
-                    GUILayout.Box("Total Cost with Fuel", MCE_ScenarioStartup.StyleBold, GUILayout.MinWidth(300), GUILayout.MaxWidth(300));
-                    GUILayout.Box("" + vesselPartCost.ToString("F2"), MCE_ScenarioStartup.StyleBold, GUILayout.MinWidth(100), GUILayout.MaxWidth(100));
-                    GUILayout.EndHorizontal();
-
-                    if (showTons)
-                    {
-                        GUILayout.Space(15);
-                        GUILayout.BeginHorizontal();
-                        GUILayout.Box("Total Vessel Mass (Tons) ", MCE_ScenarioStartup.styleGreenBold, GUILayout.MinWidth(300), GUILayout.MaxWidth(300));
-                        GUILayout.Box("" + rMinTotal.ToString("F2"), MCE_ScenarioStartup.styleGreenBold, GUILayout.MinWidth(100), GUILayout.MaxWidth(100));
-                        GUILayout.EndHorizontal();
-                    }                   
-                }
-                catch { };
-                 
-            }
-            else
-                Debug.Log("Not editor can't list parts");
-        }
-
+        }           
 
         public void onContractLoaded()
         {           
@@ -470,53 +347,48 @@ namespace MissionControllerEC
                 }
             }
         }
-
-        public void ActivateEVASpareParts()
-        {
-            if (!SaveInfo.spResourceSet)
-            {
-                try
-                {
-                    AvailablePart part = PartLoader.LoadedPartsList.Find(p => p.name.Equals("kerbalEVA"));
-                    Part sPPart = part.partPrefab;
-                    EvaAddResource(sPPart, sPResource);
-                    SaveInfo.spResourceSet = true;
-                }
-                catch (Exception ex)
-                {
-                    Debug.LogError("MCE Failed EVA SpareParts On Load! .\n" + ex.Message + "\n" + ex.StackTrace);
-                }
-            }
-            
-        }
         
-
-        public void EvaAddResource(Part part, string name)
-        {
-            try
-            {
-                PartResource resource = part.gameObject.AddComponent<PartResource>();
-                resource.SetInfo(PartResourceLibrary.Instance.resourceDefinitions[name]);
-                resource.maxAmount = 1;
-                resource.part = part;
-                resource.amount = 0;
-                part.Resources.list.Add(resource);
-            }
-            catch (Exception ex)
-            {
-                if (!ex.Message.Contains("Object reference not set"))
-                {
-                    Debug.LogError("MCE Error adding SpareParts to the EVA: " + ex.Message + "\n" + ex.StackTrace);
-                }
-            }
-        }
         public void GetPlanetList()
         {
             foreach (var body in FlightGlobals.Bodies)
             {
                 Debug.Log("Body Name: " + body.theName + " Body Number: " + body.flightGlobalsIndex);
             }
-        }       
+        }
+
+        public void GetLatandLonDefault(Vessel vessel)
+        {
+            double LatValue;
+            LatValue = vessel.latitude;
+            double LonValue;
+            LonValue = vessel.longitude;
+
+            SaveInfo.apolloLandingLat = LatValue;
+
+            SaveInfo.apolloLandingLon = LonValue;
+        }
+        public void GetEvaTypeKerbal()
+        {
+            List<ProtoCrewMember> protoCrewMembers = FlightGlobals.ActiveVessel.GetVesselCrew();
+            foreach (Experience.ExperienceEffect exp in protoCrewMembers[0].experienceTrait.Effects)
+            {
+                if (exp.ToString() == "Experience.Effects.RepairSkill")
+                {
+                    Debug.Log("Current kerbal is a Engineer you have passed");
+                }
+                else
+                {
+                    Debug.Log("Current kerbal is NOT an Engineer you don't pass... Bad boy!");
+                }
+            }
+        }
+        public void SetVesselLaunchCurrentTime()
+        {
+            Debug.Log("Old LaunchTime was: " + Tools.ConvertDays(FlightGlobals.ActiveVessel.launchTime));
+            double currentTime = Planetarium.GetUniversalTime();
+            FlightGlobals.ActiveVessel.launchTime = currentTime;
+            Debug.Log("New LaunchTime Is: " + Tools.ConvertDays(FlightGlobals.ActiveVessel.launchTime));
+        }
     }
    
     public class RepairVesselsList

@@ -1236,11 +1236,18 @@ namespace MissionControllerEC
         private string dockingModuleDescription = "Docking Port";
         private double electricPowerDescription = 400;
         private string solarPanelDescription = "Solar Panels";
-        private string wheelModuleDescription = "Wheels On Rover";
+        private string wheelModuleDescription = "Wheels";
         private int crewCount = 3;
+        public int totalContracts;
 
         protected override bool Generate()
         {
+            totalContracts = ContractSystem.Instance.GetCurrentContracts<ApolloProgram>().Count();
+
+            if (totalContracts >= 1)
+            {
+                return false;
+            }
             if (prestige == ContractPrestige.Trivial)
             {
                 return false;
@@ -1599,30 +1606,19 @@ namespace MissionControllerEC
         CelestialBody targetBody = FlightGlobals.Bodies[2];
         CelestialBody targetBody2 = FlightGlobals.Bodies[1];
         CelestialBody targetBody3 = FlightGlobals.Bodies[6];
-        private string ApolloDunaBiome = "Farside Crater";
-        private string ApolloDunaBiome2 = "";
-        private string ApolloDunaBiome3 = "";
-        private string PartDockingModule = "ModuleDockingNode";
-        private string ElectricPowerSource = "ElectricCharge";
-        private string SolarPanelsModule = "ModuleDeployableSolarPanel";
-        private string WheelModule = "ModuleWheel";
-        private int ApolloDunaMissionNumber = 1;
-
-        private double MinHeight = 250000;
-        private string dockingModuleDescription = "Docking Port";
-        private double electricPowerDescription = 600;
-        private string solarPanelDescription = "Solar Panels";
-        private string wheelModuleDescription = "Wheels On Rover";
+        private string ApolloDunaBiome = "Farside Crater";       
+        private int ApolloDunaMissionNumber = 1;        
         private int crewCount = 3;
         private int maxSeatCountShip = 4;
-        private string landingTitle = "Land your vessel near you Colony Habitat";
+        private string landingTitle = "Land your vessel near your Colony Habitat";
+        public int totalContracts;
 
         public void GetLatandLon(Vessel vessel)
         {
             double LatValue;
             LatValue = vessel.latitude;
             double LonValue;
-            LonValue = vessel.latitude;
+            LonValue = vessel.longitude;
 
             SaveInfo.apolloLandingLat = LatValue;
 
@@ -1631,6 +1627,12 @@ namespace MissionControllerEC
         
         protected override bool Generate()
         {
+            totalContracts = ContractSystem.Instance.GetCurrentContracts<ApolloDunaProgram>().Count();
+
+            if (totalContracts >= 1)
+            {
+                return false;
+            }
             if (prestige == ContractPrestige.Trivial)
             {
                 return false;
@@ -1639,60 +1641,81 @@ namespace MissionControllerEC
             if (SaveInfo.Duna_NonHistorical_Contracts_Off == true) { return false; }
             ApolloDunaMissionNumber = SaveInfo.apolloDunaCurrentNumber;
 
-            if (ApolloDunaMissionNumber == 9)
-            {
-            }
             if (ApolloDunaMissionNumber == 8)
             {
+                this.AddParameter(new InOrbitGoal(targetBody3), null);
+                this.AddParameter(new CheckLandingLonAndLat(targetBody3, false, SaveInfo.apolloLandingLon, SaveInfo.apolloLandingLat, landingTitle,false), null);
+                this.AddParameter(new CollectScience(targetBody3, BodyLocation.Surface), null);
+                this.AddParameter(new GetCrewCount(crewCount), null);
+                this.AddParameter(new TimeCountdownLanding(targetBody3, 648000, "Crew must stay for this amount of time",false), null);               
+                this.AddParameter(new LandingParameters(targetBody2, true), null);
+                base.SetFunds(30000f, 250000f, targetBody3);
+                base.SetExpiry(3f, 10f);
+                base.SetDeadlineDays(100f, targetBody3);
+                base.SetReputation(4f, targetBody3);
+                base.SetScience(1f, targetBody3);
             }
             if (ApolloDunaMissionNumber == 7)
             {
+                this.AddParameter(new InOrbitGoal(targetBody3), null);
+                this.AddParameter(new CheckLandingLonAndLat(targetBody3, false, SaveInfo.apolloLandingLon, SaveInfo.apolloLandingLat, landingTitle,true), null);
+                this.AddParameter(new CollectScience(targetBody3, BodyLocation.Surface), null);
+                this.AddParameter(new GetCrewCount(crewCount), null);
+                this.AddParameter(new TimeCountdownLanding(targetBody3, 648000, "Crew must stay for this amount of time",true), null);               
+                this.AddParameter(new LandingParameters(targetBody2, true), null);
+                base.SetFunds(30000f, 250000f, targetBody3);
+                base.SetExpiry(3f, 10f);
+                base.SetDeadlineDays(100f, targetBody3);
+                base.SetReputation(4f, targetBody3);
+                base.SetScience(1f, targetBody3);
             }
+            
             if (ApolloDunaMissionNumber == 6)
             {
-                this.AddParameter(new InOrbitGoal(targetBody2), null);
                 this.AddParameter(new InOrbitGoal(targetBody3), null);
-                this.AddParameter(new BiomLandingParameters(targetBody3, false, ApolloDunaBiome3), null);
-                this.AddParameter(new ModuleGoal(WheelModule, wheelModuleDescription), null);
-                base.SetFunds(12000f, 210000f, targetBody3);
+                this.AddParameter(new MaxSeatCount(maxSeatCountShip), null);
+                this.AddParameter(new GetCrewCount(0), null);               
+                base.SetFunds(25000f, 275000f, targetBody3);
+                base.SetExpiry(3f, 10f);
+                base.SetDeadlineDays(100f, targetBody3);
+                base.SetReputation(25f, targetBody3);
+                base.SetScience(5f, targetBody3);
+            }
+            if (ApolloDunaMissionNumber == 5)
+            {
+                this.AddParameter(new InOrbitGoal(targetBody3), null);               
+                this.AddParameter(new CollectScience(targetBody3, BodyLocation.Surface), null);
+                this.AddParameter(new GetCrewCount(crewCount), null);
+                this.AddParameter(new LandingParameters(targetBody2, true), null);
+                base.SetFunds(30000f, 175000f, targetBody3);
                 base.SetExpiry(3f, 10f);
                 base.SetDeadlineDays(100f, targetBody3);
                 base.SetReputation(20f, targetBody3);
                 base.SetScience(3f, targetBody3);
             }
-            if (ApolloDunaMissionNumber == 5)
-            {
-                this.AddParameter(new InOrbitGoal(targetBody2), null);
-                this.AddParameter(new InOrbitGoal(targetBody), null);
-                this.AddParameter(new BiomLandingParameters(targetBody, false, ApolloDunaBiome2), null);
-                this.AddParameter(new ModuleGoal(WheelModule, wheelModuleDescription), null);
-                base.SetFunds(10000f, 140000f, targetBody);
-                base.SetExpiry(3f, 10f);
-                base.SetDeadlineDays(100f, targetBody);
-                base.SetReputation(20f, targetBody);
-                base.SetScience(3f, targetBody);
-            }
             if (ApolloDunaMissionNumber == 4)
             {
-                this.AddParameter(new InOrbitGoal(targetBody2), null);
                 this.AddParameter(new InOrbitGoal(targetBody), null);
-                this.AddParameter(new BiomLandingParameters(targetBody, false, ApolloDunaBiome), null);
-                base.SetFunds(10000f, 120000f, targetBody);
+                this.AddParameter(new CheckLandingLonAndLat(targetBody, false, SaveInfo.apolloLandingLon, SaveInfo.apolloLandingLat, landingTitle,false), null);
+                this.AddParameter(new CollectScience(targetBody, BodyLocation.Surface), null);
+                this.AddParameter(new GetCrewCount(crewCount), null);
+                this.AddParameter(new TimeCountdownLanding(targetBody, 648000, "Crew must stay for this amount of time",false), null);               
+                this.AddParameter(new LandingParameters(targetBody2, true), null);
+                base.SetFunds(30000f, 150000f, targetBody);
                 base.SetExpiry(3f, 10f);
                 base.SetDeadlineDays(100f, targetBody);
-                base.SetReputation(15f, targetBody);
-                base.SetScience(5f, targetBody);
+                base.SetReputation(4f, targetBody);
+                base.SetScience(1f, targetBody);
             }
             if (ApolloDunaMissionNumber == 3)
             {
                 this.AddParameter(new InOrbitGoal(targetBody), null);
-                this.AddParameter(new CheckLandingLonAndLat(targetBody, false, SaveInfo.apolloLandingLon, SaveInfo.apolloLandingLat, landingTitle), null);
+                this.AddParameter(new CheckLandingLonAndLat(targetBody, false, SaveInfo.apolloLandingLon, SaveInfo.apolloLandingLat, landingTitle,false), null);
+                this.AddParameter(new CollectScience(targetBody, BodyLocation.Surface), null);
                 this.AddParameter(new GetCrewCount(crewCount), null);
-                this.AddParameter(new TimeCountdownLanding(targetBody, 648000, "Crew must stay for this amount of time"), null);
-                this.AddParameter(new ModuleGoal(PartDockingModule, dockingModuleDescription), null);
-                this.AddParameter(new ModuleGoal(SolarPanelsModule, solarPanelDescription), null);
-                this.AddParameter(new ResourceGoalCap(ElectricPowerSource, electricPowerDescription), null);
-                base.SetFunds(30000f, 190000f, targetBody);
+                this.AddParameter(new TimeCountdownLanding(targetBody, 648000, "Crew must stay for this amount of time",false), null);                
+                this.AddParameter(new LandingParameters(targetBody2, true), null);
+                base.SetFunds(30000f, 150000f, targetBody);
                 base.SetExpiry(3f, 10f);
                 base.SetDeadlineDays(100f, targetBody);
                 base.SetReputation(4f, targetBody);
@@ -1702,11 +1725,8 @@ namespace MissionControllerEC
             {
                 
                 this.AddParameter(new InOrbitGoal(targetBody), null);
-                this.AddParameter(new CheckLandingLonAndLat(targetBody, false, SaveInfo.apolloLandingLon, SaveInfo.apolloLandingLat, landingTitle), null);
-                this.AddParameter(new GetCrewCount(0), null);
-                this.AddParameter(new ModuleGoal(PartDockingModule, dockingModuleDescription), null);
-                this.AddParameter(new ModuleGoal(SolarPanelsModule, solarPanelDescription), null);
-                this.AddParameter(new ResourceGoalCap(ElectricPowerSource, electricPowerDescription), null);
+                this.AddParameter(new CheckLandingLonAndLat(targetBody, false, SaveInfo.apolloLandingLon, SaveInfo.apolloLandingLat, landingTitle,true), null);
+                this.AddParameter(new GetCrewCount(0), null);                
                 base.SetFunds(30000f, 190000f, targetBody);
                 base.SetExpiry(3f, 10f);
                 base.SetDeadlineDays(100f, targetBody);
@@ -1718,15 +1738,12 @@ namespace MissionControllerEC
                 this.AddParameter(new InOrbitGoal(targetBody), null);
                 this.AddParameter(new BiomLandingParameters(targetBody, false, ApolloDunaBiome), null);
                 this.AddParameter(new MaxSeatCount(maxSeatCountShip), null);
-                this.AddParameter(new GetCrewCount(0), null);
-                this.AddParameter(new ModuleGoal(PartDockingModule, dockingModuleDescription), null);
-                this.AddParameter(new ModuleGoal(SolarPanelsModule, solarPanelDescription), null);
-                this.AddParameter(new ResourceGoalCap(ElectricPowerSource, electricPowerDescription), null);
-                base.SetFunds(50000f, 350000f, targetBody);
+                this.AddParameter(new GetCrewCount(0), null);               
+                base.SetFunds(25000f, 200000f, targetBody);
                 base.SetExpiry(3f, 10f);
                 base.SetDeadlineDays(100f, targetBody);
                 base.SetReputation(25f, targetBody);
-                base.SetScience(10f, targetBody);
+                base.SetScience(5f, targetBody);
             }
             return true;
 
@@ -1747,6 +1764,15 @@ namespace MissionControllerEC
 
         protected override string GetHashString()
         {
+            if (ApolloDunaMissionNumber == 8)
+            {
+                return "Duna 9";
+            }
+            if (ApolloDunaMissionNumber == 7)
+            {
+                return "Duna 8";
+            }
+            
             if (ApolloDunaMissionNumber == 6)
             {
                 return "Duna 6";
@@ -1755,26 +1781,39 @@ namespace MissionControllerEC
             {
                 return "Duna 5";
             }
-            else if (ApolloDunaMissionNumber == 4)
+            if (ApolloDunaMissionNumber == 4)
             {
                 return "Duna 4";
             }
-            else if (ApolloDunaMissionNumber == 3)
+            if (ApolloDunaMissionNumber == 3)
             {
                 return "Duna 3";
             }
-            else if (ApolloDunaMissionNumber == 2)
+            if (ApolloDunaMissionNumber == 2)
             {
                 return "Duna 2";
             }
-            else
+            if (ApolloDunaMissionNumber == 1)
             {
                 return "Duna 1";
+            }
+            else
+            {
+                return "";
             }
 
         }
         protected override string GetTitle()
         {
+            if (ApolloDunaMissionNumber == 8)
+            {
+                return "Apollo-Duna 9: Land Duna Expedition 2 On Duna.";
+            }
+            if (ApolloDunaMissionNumber == 7)
+            {
+                return "Apollo-Duna 8: Land Duna Expedition 1 On Duna.";
+            }
+            
             if (ApolloDunaMissionNumber == 6)
             {
                 return "Apollo-Duna 6: Land Colony Module (without crew) on Duna.";
@@ -1783,52 +1822,74 @@ namespace MissionControllerEC
             {
                 return "Apollo-Duna 5: Duna Apollo Flyby With Crew";
             }
-            else if (ApolloDunaMissionNumber == 4)
+            if (ApolloDunaMissionNumber == 4)
             {
-                return "Apollo 4: Crew Transfer on Mun Colony Module Replacement Rover Deployment. ";
+                return "Apollo 4: Crew Transfer on Mun Colony Module. ";
             }
-            else if (ApolloDunaMissionNumber == 3)
+            if (ApolloDunaMissionNumber == 3)
             {
-                return "Apollo-Duna 3: Crew Test on Mun Colony Module With Rover.";
+                return "Apollo-Duna 3: Crew Test on Mun Colony Module.";
             }
-            else if (ApolloDunaMissionNumber == 2)
+            if (ApolloDunaMissionNumber == 2)
             {
                 return "Apollo-Duna 2: Duna Lander Development and Test Mun.";
             }
-            else
+            if (ApolloDunaMissionNumber == 1)
             {
                 return "Apollo-Duna 1: Mun Test Colony Module.";
+            }
+            else
+            {
+                return "";
             }
         }
         protected override string GetDescription()
         {
+            if (ApolloDunaMissionNumber == 8)
+            {
+            }
+            if (ApolloDunaMissionNumber == 7)
+            {
+                return "It’s time to deliver the first crew to the Duna Colony module.  We will launch at the very next available launch window.  Any last minute adjustments that need to be made to lander " +
+                    "should be done now.";
+            }
+            
             if (ApolloDunaMissionNumber == 6)
             {
-                return "";
+                return "It’s time to start the main objective of the Apollo-Duna missions.  Our first priority is to get our new Colony Module on Duna safely.  After delivery of this module we can send the first crew "+
+                    "to Duna. This is a very important mission, without the colony module there is No Apollo-Duna mission.\n\n"+
+  
+                    "You can also use this mission to deliver any other type of module that you may need to keep your kerbals alive on Duna for a year.";
             }
             if (ApolloDunaMissionNumber == 5)
             {
-                return "";
+                return "Duna Flyby:  We have tested a new Colony Module, and new Lander for Duna.  But now we also must have a way to get to Duna.  Design a Vessel that can carry your crew and landers to Duna.  "+
+                    "This is really your choice.  You can split up the vessels into many.  Or you can construct 1 large vessel the choice is yours. \n\n"+ 
+                    "This first mission is only a flyby and Orbit of Duna.  You can use this mission for many purposes.  Testing your ability of launching to Duna should be of top Priority.  Establishing a "+
+                    "network of satellites if need be is also a good idea.  The main point of the mission is to bring your crew of kerbals to Duna and survive.";
             }
-            else if (ApolloDunaMissionNumber == 4)
+            if (ApolloDunaMissionNumber == 4)
             {
-                return "";
+                return "Congratulations on your first Colony test on the Mun.  It is now time to rotate the crew and conduct a 2nd series of test.  A new crew will be delivered to the Mun Colony habital and stay for " +
+                    "another month.  This will conclude the testing phase of the Duna Colony module and should clear the vehicle for delivery to Duna.  Make sure any bugs are worked out in the Colony Habitat and Lander.  Good luck.";                    
             }
-            else if (ApolloDunaMissionNumber == 3)
+            if (ApolloDunaMissionNumber == 3)
             {
-                return "";
+                return "Live Crew Habitat Test:  Its time we conduct a live crew test of our test Lunar Colony module.  You will launch your new Test lander with crew to the Lunar Colony module.  When the crew arrive "+
+                    "they will conduct scientific test and stay in the module for 1 Months’ time.  \n\n"+
+
+                    "When the test in complete they will launch back to Kerbin and the 2nd crew will launch and conduct a 2nd month test in the Lunar Colony module.\n\n"+
+                    "These test are to practice any and all scientific activities you plan to conduct on the Actual Duna Colony module when it arrives at Duna.";
             }
-            else if (ApolloDunaMissionNumber == 2)
+            if (ApolloDunaMissionNumber == 2)
             {
-                return "We need you to construct and design a new Duna Colony Module that can hold 3 kerbals with enough supplies to last at least a year on Duna.  This module must also be able to survive 2 separate "+
-                    "Crew rotations.  The plan is to send 2 Expeditions to Duna.  Expedition 1 will arrive first and stay for a year.  Expedition 2 will launch a year later, while Expedition 1 returns to Kerbin. "+
+                return "We need you to construct and design a new Duna Landing Module that can hold 3 kerbals with enough supplies to last at least a year on Duna. "+
+                    " The plan is to send 2 Expeditions to Duna.  Expedition 1 will arrive first and stay for a year. "+
                     "After Expedition 2 arrives it also must survive for at least 1 year also!  So you must plan your supplies for these two missions and and support craft that you might need to keep these two "+
                     "missions going. \n\n"+
 
-                    "Duna 1 is a test bed for your new Colony module.  This test bed will be launched from Kerbin and land on the Farside Crater located on our own Mun.  This will be tested by two separate crews "+
-                    "that will each spend at least 1 month on the mun.  Use this time to plan out how to survive on Duna and work out any bugs that might happen with the new equipment.\n\n"+
- 
-                    "Your first task is to build the Colony Module and land it on the Mun (Without Crew).";
+                    "Duna 2 is a test bed for your new Landing module.  . You need to land your test lander near the Colony module you landed on the Mun in Apollo-Duna 1.  This will help with your ability to land "+
+                    "at a specific spot without risk of death or injury to any Kerbals.  Good luck.";
             }
             else
             {
@@ -1837,31 +1898,53 @@ namespace MissionControllerEC
 
                     "Duna 1 is the mission where Engineers and scientist built and delivered a experimental Colony Habitat to the surface of the mun.  This engineering test was slated for 4 Missions.  1. The delivery " +
                     "of colony Module.  2. The construction and landing of the New Duna Lander.  3. The delivery of the Colonies first crew.  And 4. The crew transfer Mission for the Year 2 Test Mission.  These missions helped " +
-                    "develop the procedures and experience needed to bring kerbals to Duna with a Higher success rate.";
+                    "develop the procedures and experience needed to bring kerbals to Duna with a Higher success rate. \n\n" +
+                    "This Unmanned test vehicle will be launched from Kerbin and land on the Farside Crater located on our own Mun.  This will be tested by two separate crews " +
+                    "that will each spend at least 1 month on the mun.  Use this time to plan out how to survive on Duna and work out any bugs that might happen with the new equipment.";
             }
+            
 
         }
         protected override string GetSynopsys()
         {
+            if (ApolloDunaMissionNumber == 8)
+            {
+            }
+            if (ApolloDunaMissionNumber == 7)
+            {
+                return "Launch 3 crew members to Duna and land them at your Colony Module.  They will stay for at least 6 months on Planet.";
+            }
+            
             if (ApolloDunaMissionNumber == 6)
             {
-                return "";
+                return "Deliver your colony module to Duna.  Any other type of support mission you have planned can be launched in this window also.";
             }
             if (ApolloDunaMissionNumber == 5)
             {
-                return "";
+                return "Construct a vessel to fly to Duna.  Bring 3 Kerbals with you on this trip and make sure they survive.";
             }
-            else if (ApolloDunaMissionNumber == 4)
+            if (ApolloDunaMissionNumber == 4)
             {
-                return "";
+                return "Launch the 2nd crew to the Lunar Colony Module and conduct scientific test and studies for 1 months’ time.  After completion of these test return you crew safely to Kerbin.\n\n"+
+                    "Objective are to test and fix any issues in the Lunar Colony module and the Lander.";
             }
-            else if (ApolloDunaMissionNumber == 3)
+            if (ApolloDunaMissionNumber == 3)
             {
-                return "";
+                return "Launch you Lander to the mun.  Land near your Colony habitat.  Mission records have recorded where your Colony habitat is located.  Like the last unmanned mission we are checking to make sure "+
+                    "that you land close enough to the Colony habitat.  If you don’t then Mission will be considered failed.  The habitat is important for survival of the crew on Duna.  If you land to far away "+
+                    "they will not survive the yearlong mission on Duna!\n\n"+
+                    "When crew is set up conduct Scientific studies on the Mun.  Your mission will last 1 month for the test.  After a month return to kerbin safely!";
             }
-            else if (ApolloDunaMissionNumber == 2)
+            if (ApolloDunaMissionNumber == 2)
             {
-                return "";
+                return "Construct and design a new lander that has the ability to land on Duna.  The use of parachutes and preliminary test flight in Kerbin atmosphere is highly suggest by Both engineering division, and Management. "+
+                    "The first use of Drag Chutes might come in very handy for slowing down the lander on Decent to the Duna Surface. \n\n"+
+
+                    "The first practice run will be conducted on the Mun.  Get the lander to the Colony module located on the mun.  High precision intercept is very difficult in Duna atmosphere so deep thought and planning will be needed "+
+                    "for this mission.  Use the practice missions to make it happen!\n\n"+
+                    "This mission records your Colony Modules postion and requires you to land within a reasonable distance of the colony module.  This information was recorded on your previous mission Apollo-Duna 1.  If you have moved " +
+                        "your colony module since that mission, this will cause issues completing these missions!";
+
             }
             else
             {
@@ -1879,25 +1962,38 @@ namespace MissionControllerEC
         protected override string MessageCompleted()
         {
             SaveInfo.apolloDunaCurrentNumber++;
+            if (ApolloDunaMissionNumber == 8)
+            {
+            }
+            if (ApolloDunaMissionNumber == 7)
+            {
+                return "Great job, the World is celebrating the Successful return of our Astronaut’s.  These first pioneers on Duna have become Hero’s among the civilian population.  It’s time to concentrate on the " +
+                    "2nd Rotation crew.";  
+
+            }
+            
             if (ApolloDunaMissionNumber == 6)
             {
-                return "";
+                GetLatandLon(FlightGlobals.ActiveVessel);
+                return "Great job on delivery your Colony module to Duna.  We have recorded the landing site in our computers and all crew missions will be required to land in the area the Colony module is located.\n\n"+
+                    "Next mission we will launch our crew to Duna.  We just need to wait for a new launch window to open up.";
             }
             if (ApolloDunaMissionNumber == 5)
             {
-                return "";
+                return "Nice job on bring our kerbals on first orbit of Duna.  These lucky kerbals are the first to see Duna in person.  They are proud of what the accomplished.";
             }
-            else if (ApolloDunaMissionNumber == 4)
+            if (ApolloDunaMissionNumber == 4)
             {
-                return "";
+                return "We are now much closer to our final goal of landing a kerbal on Duna.  It time to work out any final bugs that might of been found during these last two missions.  Once the Duna missions start we "+
+                    "will not be able to fix these issue!  So lets get it right the first time!";
             }
-            else if (ApolloDunaMissionNumber == 3)
+            if (ApolloDunaMissionNumber == 3)
             {
-                return "";
+                return "Great job, the civilian population of kerbin are getting very excited about the prospect of a kerbal landing on Duna.  Lets make this happen.";
             }
-            else if (ApolloDunaMissionNumber == 2)
+            if (ApolloDunaMissionNumber == 2)
             {
-                return "";
+                return "Great job on that lander, work out any bugs or problems that you encourtered during this mission in preperation of the next mission.";
             }
             else
             {
@@ -1912,49 +2008,24 @@ namespace MissionControllerEC
             Tools.ContractLoadCheck(node, ref targetBody, FlightGlobals.Bodies[2], targetBody, "targetBody");
             Tools.ContractLoadCheck(node, ref targetBody2, FlightGlobals.Bodies[1], targetBody2, "targetBody2");
             Tools.ContractLoadCheck(node, ref targetBody3, FlightGlobals.Bodies[3], targetBody3, "targetBody3");
-            Tools.ContractLoadCheck(node, ref ApolloDunaBiome, "None", ApolloDunaBiome, "apbiome");
-            Tools.ContractLoadCheck(node, ref ApolloDunaBiome2, "none", ApolloDunaBiome2, "apbiome2");
-            Tools.ContractLoadCheck(node, ref ApolloDunaBiome3, "none", ApolloDunaBiome3, "apbiome3");
-            Tools.ContractLoadCheck(node, ref PartDockingModule, "ModuleDockingNode", PartDockingModule, "dock");
-            Tools.ContractLoadCheck(node, ref ElectricPowerSource, "ElectricCharge", ElectricPowerSource, "electric");
-            Tools.ContractLoadCheck(node, ref SolarPanelsModule, "ModuleDeployableSolarPanel", SolarPanelsModule, "solar");
-            Tools.ContractLoadCheck(node, ref ApolloDunaMissionNumber, SaveInfo.apolloCurrentNumber, ApolloDunaMissionNumber, "apnumber");
-            Tools.ContractLoadCheck(node, ref MinHeight, 200000, MinHeight, "minheight");
-            Tools.ContractLoadCheck(node, ref dockingModuleDescription, "Must Have Docking Port", dockingModuleDescription, "dockdesc");
-            Tools.ContractLoadCheck(node, ref electricPowerDescription, 1000, electricPowerDescription, "powernumber");
-            Tools.ContractLoadCheck(node, ref solarPanelDescription, "Must Have Solar Panels", solarPanelDescription, "solardesc");
+            Tools.ContractLoadCheck(node, ref ApolloDunaBiome, "None", ApolloDunaBiome, "apbiome");            
+            Tools.ContractLoadCheck(node, ref ApolloDunaMissionNumber, SaveInfo.apolloCurrentNumber, ApolloDunaMissionNumber, "apnumber");           
             Tools.ContractLoadCheck(node, ref crewCount, 3, crewCount, "crewcount");
-            Tools.ContractLoadCheck(node, ref maxSeatCountShip, 4, maxSeatCountShip, "maxseats");
-            Tools.ContractLoadCheck(node, ref WheelModule, "ModuleWheel", WheelModule, "wheel");
-            Tools.ContractLoadCheck(node, ref wheelModuleDescription, "Wheels On Rover", wheelModuleDescription, "wheeldesc");
+            Tools.ContractLoadCheck(node, ref maxSeatCountShip, 4, maxSeatCountShip, "maxseats");           
             Tools.ContractLoadCheck(node, ref landingTitle, "Land your vessel near the Colony Habitat", landingTitle, "landingtitle");
         }
         protected override void OnSave(ConfigNode node)
         {
             int bodyID = targetBody.flightGlobalsIndex;
             node.AddValue("targetBody", bodyID);
-
             int bodyID2 = targetBody2.flightGlobalsIndex;
             node.AddValue("targetBody2", bodyID2);
-
             int bodyID3 = targetBody3.flightGlobalsIndex;
             node.AddValue("targetBody3", bodyID3);
-
-            node.AddValue("apbiome", ApolloDunaBiome);
-            node.AddValue("apbiome2", ApolloDunaBiome2);
-            node.AddValue("apbiome3", ApolloDunaBiome3);
-            node.AddValue("dock", PartDockingModule);
-            node.AddValue("electric", ElectricPowerSource);
-            node.AddValue("solar", SolarPanelsModule);
-            node.AddValue("apnumber", ApolloDunaMissionNumber);
-            node.AddValue("minheight", MinHeight);
-            node.AddValue("dockdesc", dockingModuleDescription);
-            node.AddValue("powernumber", electricPowerDescription);
-            node.AddValue("solardesc", solarPanelDescription);
+            node.AddValue("apbiome", ApolloDunaBiome);          
+            node.AddValue("apnumber", ApolloDunaMissionNumber);          
             node.AddValue("crewcount", crewCount);
-            node.AddValue("maxseats", maxSeatCountShip);
-            node.AddValue("wheel", WheelModule);
-            node.AddValue("wheeldesc", wheelModuleDescription);
+            node.AddValue("maxseats", maxSeatCountShip);            
             node.AddValue("landingtitle", landingTitle);
         }
 
@@ -1963,12 +2034,108 @@ namespace MissionControllerEC
             bool techUnlock = ResearchAndDevelopment.GetTechnologyState("fieldScience") == RDTech.State.Available;
             bool techUnlock2 = ResearchAndDevelopment.GetTechnologyState("advLanding") == RDTech.State.Available;
             bool techUnlock3 = ResearchAndDevelopment.GetTechnologyState("heavierRocketry") == RDTech.State.Available;           
-            if (techUnlock && techUnlock2 && techUnlock3 && ApolloDunaMissionNumber <= 6 && SaveInfo.apolloCurrentNumber > 6 && SaveInfo.skylab4done == true)
+            if (techUnlock && techUnlock2 && techUnlock3 && ApolloDunaMissionNumber <= 5 && SaveInfo.apolloCurrentNumber > 6 && SaveInfo.skylab4done == true)
+            {
+                return true;
+            }
+            else if (techUnlock && techUnlock2 && techUnlock3 && ApolloDunaMissionNumber <= 8 && SaveInfo.apolloCurrentNumber > 6 && SaveInfo.skylab4done == true && SaveInfo.apolloDunaStation)
             {
                 return true;
             }
             else return false;
 
+        }
+    }
+    public class ApolloDunaStation : Contract
+    {       
+        public int crewCount = 0;
+
+        CelestialBody targetBody = FlightGlobals.Bodies[6];
+        
+        public int totalContracts;
+
+        protected override bool Generate()
+        {
+            if (prestige == ContractPrestige.Trivial)
+            {
+                return false;
+            }
+            totalContracts = ContractSystem.Instance.GetCurrentContracts<ApolloDunaStation>().Count();
+            if (totalContracts >= 1) { return false; }
+            if (HighLogic.LoadedSceneIsFlight) { return false; }
+            if (SaveInfo.Duna_NonHistorical_Contracts_Off == true) { return false; }
+
+            this.AddParameter(new InOrbitGoal(targetBody), null);
+            this.AddParameter(new GetCrewCount(0), null);
+            base.SetFunds(30000f, 225000f, targetBody);
+            base.SetExpiry(3f, 10f);
+            base.SetDeadlineDays(100f, targetBody);
+            base.SetReputation(20f, targetBody);
+            base.SetScience(3f, targetBody);
+            return true;
+        }
+
+        public override bool CanBeCancelled()
+        {
+            return true;
+        }
+        public override bool CanBeDeclined()
+        {
+            return true;
+        }
+
+        protected override string GetNotes()
+        {
+            return "Establish a space station over Duna";
+        }
+
+        protected override string GetHashString()
+        {
+            return "Duna 7";
+        }
+        protected override string GetTitle()
+        {
+            return "Apollo-Duna 7: Establish a resupply station above Duna";
+        }
+        protected override string GetDescription()
+        {
+            return "Duna Supply Station:  Mission planners fear complications with the Duna missions.  So they have devised a plan to establish a small space station above Duna that will contain any " +
+                    "emergency supplies the Apollo-Duna mission might need.  This is a great opportunity to build a space station above Duna!";
+        }
+        protected override string GetSynopsys()
+        {
+            return "Construct a small Space Station that can be used as an emergency supply station for the Apollo-Duna Missions.  What you build on this station is up to you.";
+        }
+        protected override string MessageCompleted()
+        {
+            SaveInfo.apolloDunaStation = true;
+            return "Mission planners and Management are a little more confident now about the mission. With this new station over Duna, any emergencies that develop will be dealt with.";
+        }
+
+        protected override void OnLoad(ConfigNode node)
+        {
+            int bodyID = int.Parse(node.GetValue("targetBody"));
+            foreach (var body in FlightGlobals.Bodies)
+            {
+                if (body.flightGlobalsIndex == bodyID)
+                    targetBody = body;
+            }
+            crewCount = int.Parse(node.GetValue("crewcount"));                    
+
+        }
+        protected override void OnSave(ConfigNode node)
+        {
+            int bodyID = targetBody.flightGlobalsIndex;
+            node.AddValue("targetBody", bodyID);
+
+            node.AddValue("crewcount", crewCount);                 
+        }
+
+        public override bool MeetRequirements()
+        {
+            if (SaveInfo.apolloDunaCurrentNumber > 5) { return true; }
+            if (SaveInfo.apolloDunaStation == true || SaveInfo.apolloDunaCurrentNumber == 9) { return false; }
+            else { return false; }
         }
     }
     # region Agena Contract 1

@@ -129,7 +129,7 @@ namespace MissionControllerEC
             GUILayout.Box("" + settings.DebugMenu, MCE_ScenarioStartup.styleBlueBold, GUILayout.Width(75));
             settings.DebugMenu = GUILayout.Toggle(settings.DebugMenu, "Set Debug", GUILayout.Width(25));
             GUILayout.EndHorizontal();
-
+            
             GUILayout.EndVertical();
             if (GUILayout.Button("Exit Save Settings"))
             {

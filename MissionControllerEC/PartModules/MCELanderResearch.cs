@@ -18,16 +18,16 @@ namespace MissionControllerEC
         [KSPField(isPersistant = false, guiActive = true, guiName = "Rover Landed Wet:")]
         public bool roverlandedWet = false;
 
-        [KSPField(isPersistant = false, guiActive = true, guiName = "Starting Scan:")]
+        [KSPField(isPersistant = false, guiActive = true, guiName = "Starting Mass Spectrometry:")]
         public bool scanStart = false;
 
-        [KSPEvent(guiActive = true, guiName = "Start MCE Rover Research", active = true)]
+        [KSPEvent(guiActive = true, guiName = "Start Mass Spectrometry Analysis", active = true)]
         public void StartResearchMCE()
         {
             checkVesselResearch();
         }
 
-        [KSPAction("Start Scanning")]
+        [KSPAction("Start Mass Spectrometry Analysis")]
         public void ToggleAction(KSPActionParam param)
         {            
             StartResearchMCE();            
@@ -38,13 +38,13 @@ namespace MissionControllerEC
             if (roverlanded != false || roverlandedWet != false)
             {
                 doLanderResearch = true;
-                ScreenMessages.PostScreenMessage("Starting Scan of Ground Level, Please Stand By...");
+                ScreenMessages.PostScreenMessage("Starting Mass spectrometry Analysis of Ground Level, Please Stand By...");
             }
             else
             {
                 doLanderResearch = false;
                 scanStart = false;
-                ScreenMessages.PostScreenMessage("Vessel needs to be landed to start scanning at ground level");
+                ScreenMessages.PostScreenMessage("Vessel needs to be landed to start Mass spectrometry Analysis");
             }
         }
 

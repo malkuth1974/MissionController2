@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using System.Collections.Generic;
 
 namespace MissionControllerEC
 {
@@ -12,7 +13,7 @@ namespace MissionControllerEC
         public static bool repair = false;        
 
         [KSPField(isPersistant = true)]
-        public double currentRepair = 0;
+        public double currentRepair = 1;
 
         [KSPField(isPersistant = true)]
         public static string vesselId = "Test";
@@ -49,24 +50,29 @@ namespace MissionControllerEC
         [KSPField(isPersistant = true, guiActive = true, guiName = "Ready To Repair")]
         public bool readyRep = false;
 
-        [KSPEvent(externalToEVAOnly = true, unfocusedRange = 4f, guiActiveUnfocused = true, guiName = "CheckSystems", active = false)]
+        [KSPEvent(externalToEVAOnly = true, unfocusedRange = 4f, guiActiveUnfocused = true, guiName = "Engineer CheckSystems", active = false)]
         public void CheckSystems()
         {
-            currentRepair = this.part.Resources.Get(PartResourceLibrary.Instance.GetDefinition("SpareParts").id).amount; 
-            if (currentRepair == 0)
-            {
-                ScreenMessages.PostScreenMessage("You need to Transfer SpareParts to the Repair Panel To Proceed", 5f);               
-            }
-            else
-            {
-                readyRep = true;
-                vesselId = this.part.vessel.id.ToString();
-                vesselName = this.part.vessel.name;
-                Debug.LogError("Vessel Id For PartModule is " + vesselId + " Name is " + vesselName);
-                ScreenMessages.PostScreenMessage("Vessel Preped for Repair open the Panel.  Then conduct the repair", 5f);                
-            }
 
-            
+            List<ProtoCrewMember> protoCrewMembers = FlightGlobals.ActiveVessel.GetVesselCrew();
+            foreach (Experience.ExperienceEffect exp in protoCrewMembers[0].experienceTrait.Effects)
+            {
+                if (exp.ToString() == "Experience.Effects.RepairSkill")
+                {
+                    Debug.Log("Current kerbal is a Engineer you have passed");
+                    readyRep = true;
+                    vesselId = this.part.vessel.id.ToString();
+                    vesselName = this.part.vessel.name;
+                    Debug.LogError("Vessel Id For PartModule is " + vesselId + " Name is " + vesselName);
+                    ScreenMessages.PostScreenMessage("Your engineer has Prepared the vessel for Repair Open the panel, Then conduct the repair", 5f);  
+                    
+                }
+                else
+                {
+                    Debug.Log("Current kerbal is NOT an Engineer you don't pass... Bad boy!");
+                    ScreenMessages.PostScreenMessage("You need an Engineer to fix this Vessel!", 5f);
+                }
+            }                                    
         }
       
         [KSPEvent(externalToEVAOnly = true, unfocusedRange = 4f, guiActiveUnfocused = true, guiName = "Start Repairs", active = false)]
@@ -74,13 +80,12 @@ namespace MissionControllerEC
         {
             if (readyRep && currentRepair > 0)
             {
-                this.part.RequestResource("SpareParts", repairRate);
                 repair = true;
                 Debug.Log("repairEnabled");
-                ScreenMessages.PostScreenMessage("Repairs Started and Finsished using Spare Parts.  Good Job", 5f);
+                ScreenMessages.PostScreenMessage("Your engineer has repaired this vessel.  Good job!", 5f);
                 readyRep = false;
             }
-            else { ScreenMessages.PostScreenMessage("You must first CheckSystems on the repair panel While on EVA. Right click part and choose Check If Systems Is Ready For Repair", 5f); }
+            else { ScreenMessages.PostScreenMessage("You need an Engineer class kerbal to conduct this repair!", 5f); }
         }
 
         [KSPEvent(externalToEVAOnly = true, unfocusedRange = 4f, guiActiveUnfocused = true, guiName = "Open Door", active = true, guiActiveEditor = true)]

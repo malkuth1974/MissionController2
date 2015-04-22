@@ -148,6 +148,7 @@ namespace MissionControllerEC
         private double missionTime;
         private string contractTimeTitle = "Land Vessel and stay for amount of Time Specified: ";
         private string vesselID = "none";
+        private bool hasToBeNewVessel = true;
 
         private bool setTime = true;
         private bool timebool = false;
@@ -162,11 +163,12 @@ namespace MissionControllerEC
             this.missionTime = Mtime;
         }
 
-        public TimeCountdownLanding(CelestialBody target, double Mtime, string title)
+        public TimeCountdownLanding(CelestialBody target, double Mtime, string title,bool newVessel)
         {
             this.targetBody = target;
             this.missionTime = Mtime;
             this.contractTimeTitle = title;
+            this.hasToBeNewVessel = newVessel;
         }
 
         protected override string GetHashString()
@@ -219,14 +221,6 @@ namespace MissionControllerEC
 
         private void CheckIfLanded(Vessel vessel)
         {
-            if (vessel.launchTime > this.Root.DateAccepted)
-            {
-                if (HighLogic.LoadedSceneIsFlight && setTime)
-                {
-                    contractSetTime();
-                    vesselID = vessel.id.ToString();
-                }             
-            }
             if (!setTime)
             {
                 diff = Planetarium.GetUniversalTime() - savedTime;
@@ -240,6 +234,22 @@ namespace MissionControllerEC
                     base.SetComplete();
                 }
             }
+            else if (hasToBeNewVessel && setTime)
+            {
+                if (HighLogic.LoadedSceneIsFlight && vessel.launchTime > this.Root.DateAccepted)
+                {
+                    contractSetTime();
+                    vesselID = vessel.id.ToString();
+                }             
+            }
+            else if (!hasToBeNewVessel && setTime)
+            {
+                if (HighLogic.LoadedSceneIsFlight)
+                {
+                    contractSetTime();
+                    vesselID = vessel.id.ToString();
+                }
+            }            
         }
         public void contractSetTime()
         {

@@ -97,7 +97,7 @@ namespace MissionControllerEC
     public class MaxSeatCount : ContractParameter
     {
         private int seatCount = 0;
-        private string title = "none";
+        private string title = "";
         private bool updated = false;
 
         public MaxSeatCount()
@@ -114,7 +114,7 @@ namespace MissionControllerEC
         }
         protected override string GetTitle()
         {
-            return title + "Must Have This Many Seats On Vessel " + seatCount;
+            return title + "Must Have This Many Seats: " + seatCount;
         }
 
         protected override void OnRegister()
