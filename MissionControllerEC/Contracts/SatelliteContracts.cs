@@ -42,6 +42,9 @@ namespace MissionControllerEC
         public string satType = "None";
         public int satTypeNumber = 0;
         public string satStoryDef = "none";
+        public string satNotesString = "none";
+        public string satTitlestring = "none";
+        public string satSynopsysString = "none";
 
         public void loadscienceparts()
         {
@@ -63,15 +66,19 @@ namespace MissionControllerEC
             {
                 case 0:
                     satType = "Communications";
+                    TOSName = "Communications link up will need this amount of time to Be established\n ";
                     break;
                 case 1:
                     satType = "Weather";
+                    TOSName = "To study our target weather patterns we need this amount of Obital time\n ";
                     break;
                 case 2:
                     satType = "Navigational";
+                    TOSName = "To establish Naviagational aids we need this amount of time\n ";
                     break;
                 case 3:
                     satType = "Applications";
+                    TOSName = "Our research test will take about this amount of time to complete\n ";
                     break;
             }
             Debug.Log("MCE satType Mission Is " + satType);
@@ -108,6 +115,42 @@ namespace MissionControllerEC
             }
             Debug.Log("Story type: " + satType + " Chosen for satellite contract");
         }
+
+        public void satExpValues()
+        {
+            switch (SaveInfo.SatelliteTypeChoice)
+            {
+                case 0:
+                    satNotesString ="Launch our satellite into an eccentric orbit with the specific parts and for the amount of time we require.\n\nVessel must be a new vessel launched after accepting the contract.";
+                    satSynopsysString="You must bring the satellite to the indicated orbital altitude and then adjust to the eccentricity that we have specified.";
+                    satTitlestring ="Launch new " + satType + " Satellite " + targetBody.theName;
+                    break;
+                case 1:
+                    satNotesString ="Launch our satellite into the specified orbital period with the specific parts and for the amount of time we require.\n\nVessel must be a new vessel launched after accepting the contract.";
+                    satSynopsysString="For this contract bring the satellite to the indicated maximum and minimum orbital periods specified in the contract.";
+                    satTitlestring ="Launch new  "+ satType + " Satellite";
+                    break;
+                case 2:
+                    if (MinInc > 90)
+                        {
+                        satNotesString = "Launch our satellite into a retrograde inclined orbit of " + MinInc + " and " + MaxInc + " with the desired apogee and perigee.\n\nVessel must be a new vessel launched after accepting the contract.";
+                        }
+                    else
+                        {
+                        satNotesString ="Launch our satellite on a prograde inclined orbit of " + MinInc + " and " + MaxInc + " with desired apogee and perigee.\n\nVessel must be a new vessel launched after accepting the contract.";
+                        }
+                    satSynopsysString="For this contract, launch the satellite into the correct inclination specified, and also bring the satellite to the specified apoapsis and periapsis";
+                    satTitlestring ="Launch new "  + satType + " satellite";
+                    break;
+                case 3:
+                    satNotesString ="Launch our satellite into a Keosynchronous orbit with the specified parts and for the amount of time we require.\n\nVessel must be a new vessel launched after accepting the contract.";
+                    satSynopsysString="A Keosynchronous orbit is an orbit around Kerbin with an orbital period of one sidereal day, intentionally matching Kerbin's " +
+                    "sidereal rotation period (approximately 6 hours).";
+                    satTitlestring ="Launch new " + satType + " satellite";
+                    break;
+            }
+            Debug.Log("MCE contract completion text loaded type: " + SaveInfo.SatelliteTypeChoice);
+        }
         
         ContractParameter satellite1;
         ContractParameter satellite2;
@@ -121,10 +164,7 @@ namespace MissionControllerEC
         ContractParameter OnDestroy;
 
         protected override bool Generate()
-        {
-            SatTypeValue();
-            satDefValue();
-            
+        {                      
             //if (prestige == ContractPrestige.Trivial)
             //{
             //    return false;
@@ -172,6 +212,9 @@ namespace MissionControllerEC
             {
                 targetBody = Planetarium.fetch.Home;
             }
+            SatTypeValue();
+            satDefValue();
+            satExpValues();
 
             if (SaveInfo.SatelliteTypeChoice == 0)
             {
@@ -265,31 +308,7 @@ namespace MissionControllerEC
 
         protected override string GetNotes()
         {
-            if (SaveInfo.SatelliteTypeChoice == 0)
-            {
-                return "Launch our satellite into an eccentric orbit with the specific parts and for the amount of time we require.\n\nVessel must be a new vessel launched after accepting the contract.";
-            }
-            else if (SaveInfo.SatelliteTypeChoice == 1)
-            {
-                return "Launch our satellite into the specified orbital period with the specific parts and for the amount of time we require.\n\nVessel must be a new vessel launched after accepting the contract.";
-            }
-            else if (SaveInfo.SatelliteTypeChoice == 2)
-            {
-                if (MinInc > 90)
-                {
-                    return ("Launch our satellite into a retrograde inclined orbit of " + MinInc + " and " + MaxInc + " with the desired apogee and perigee.\n\nVessel must be a new vessel launched after accepting the contract.");
-                }
-                else
-                {
-                    return ("Launch our satellite on a prograde inclined orbit of " + MinInc + " and " + MaxInc + " with desired apogee and perigee.\n\nVessel must be a new vessel launched after accepting the contract.");
-                }
-            }
-            else if (SaveInfo.SatelliteTypeChoice == 3)
-            {
-                return "Launch our satellite into a Keosynchronous orbit with the specified parts and for the amount of time we require.\n\nVessel must be a new vessel launched after accepting the contract.";
-            }
-            else
-                return "Launch our satellite into orbit.\n\nVessel must be a new vessel launched after accepting the contract.";
+            return satNotesString;
         }
 
         protected override string GetHashString()
@@ -298,24 +317,7 @@ namespace MissionControllerEC
         }
         protected override string GetTitle()
         {
-            if (SaveInfo.SatelliteTypeChoice == 0)
-            {
-                return "Launch new " + satType + " Satellite " + targetBody.theName;
-            }
-            else if (SaveInfo.SatelliteTypeChoice == 1)
-            {
-                return "Launch new  "+ satType + " Satellite";
-            }
-            else if (SaveInfo.SatelliteTypeChoice == 2)
-            {
-                return "Launch new "  + satType + " satellite";
-            }
-            else if (SaveInfo.SatelliteTypeChoice == 3)
-            {
-                return "Launch new " + satType + " satellite";
-            }
-            else
-                return "Launch a new "  + satType + " satellite into orbit";
+            return satTitlestring;
         }
         protected override string GetDescription()
         {
@@ -323,25 +325,7 @@ namespace MissionControllerEC
         }
         protected override string GetSynopsys()
         {
-            if (SaveInfo.SatelliteTypeChoice == 0)
-            {
-                return "You must bring the satellite to the indicated orbital altitude and then adjust to the eccentricity that we have specified.";
-            }
-            else if (SaveInfo.SatelliteTypeChoice == 1)
-            {
-                return "For this contract bring the satellite to the indicated maximum and minimum orbital periods specified in the contract.";
-            }
-            else if (SaveInfo.SatelliteTypeChoice == 2)
-            {
-                return "For this contract, launch the satellite into the correct inclination specified, and also bring the satellite to the specified apoapsis and periapsis";
-            }
-            else if (SaveInfo.SatelliteTypeChoice == 3)
-            {
-                return "A Keosynchronous orbit is an orbit around Kerbin with an orbital period of one sidereal day, intentionally matching Kerbin's " +
-                    "sidereal rotation period (approximately 6 hours).";
-            }
-            else
-                return "Send satellite to orbit";
+            return satSynopsysString;
         }
         protected override string MessageCompleted()
         {
@@ -372,6 +356,9 @@ namespace MissionControllerEC
             Tools.ContractLoadCheck(node, ref satType, "Communications", satType, "sattype");
             Tools.ContractLoadCheck(node, ref satStoryDef, "None Loaded", satStoryDef, "satstory");
             Tools.ContractLoadCheck(node, ref satTypeNumber, 0, satTypeNumber, "sattypenumber");
+            Tools.ContractLoadCheck(node, ref satNotesString, "No load", satNotesString, "satnote");
+            Tools.ContractLoadCheck(node, ref satTitlestring, "No Title Loaded", satTitlestring, "sattitle");
+            Tools.ContractLoadCheck(node, ref satSynopsysString, "No Synopsys Loaded", satSynopsysString, "satsynop");
 
         }
         protected override void OnSave(ConfigNode node)
@@ -401,6 +388,9 @@ namespace MissionControllerEC
             node.AddValue("sattype", satType);
             node.AddValue("sattypenumber", satTypeNumber);
             node.AddValue("satstory", satStoryDef);
+            node.AddValue("satnote", satNotesString);
+            node.AddValue("sattitle", satTitlestring);
+            node.AddValue("satsynop", satSynopsysString);
         }
 
         //for testing purposes

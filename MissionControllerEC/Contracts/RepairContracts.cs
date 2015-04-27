@@ -25,6 +25,7 @@ namespace MissionControllerEC
         ContractParameter repairgoal2;
         public string Ctitle = "To Repair Vessel You must have at Least ";
         public int randomString = 0;
+        public string repairSynopsysText = "None Loaded";
         public List<RepairVesselsList> repairvesselList = new List<RepairVesselsList>();
 
         public void findVeselWithRepairPart()
@@ -94,6 +95,34 @@ namespace MissionControllerEC
         public int totalContracts;
         public int TotalFinished;
 
+        public void repairTextSelection()
+        {
+            switch (randomString)
+            {
+                case 0:
+                    repairSynopsysText ="A section of the satellite has started to leak a small amount of fuel.  You are to EVA to the satellites repair panel and conduct repairs.";
+                    break;
+                case 1:
+                    repairSynopsysText ="A small bus switch that controls the Satellites heating unit has malfunctioned.  EVA to the Repair Panel and try to bypass the switch with its backup.";
+                    break;
+                case 2:
+                    repairSynopsysText ="After launch of the satellite, ground control operators noticed a software glitch in the satellites operating system.  EVA to the Repair Panel to update the software.";
+                    break;
+                case 3:
+                    repairSynopsysText =" A small fragment dislodged one of the solar panel housing units.  The solar panel is considered lost and needs to be disengaged from the satellite systems.  EVA to the Repair Panel to start repairs.";
+                    break;
+                case 4:
+                    repairSynopsysText ="The port side ABS unit has malfunctioned on this satellite.  EVA to the Repair Panel and conduct repairs to replace the defective component.";
+                    break;
+                case 5:
+                    repairSynopsysText ="Ground control operators noticed that the pitch control of the satellite sometimes fires off for no reason.  Satellite TV users are getting upset that they are losing satellite reception.  EVA to the Repair Panel to correct the issue.";
+                    break;
+                case 6:
+                    repairSynopsysText = "Ground control operators noticed that the pitch control of the satellite sometimes fires off for no reason.  Satellite TV users are getting upset that they are losing satellite reception.  EVA to the Repair Panel to correct the issue.";
+                    break;
+            }
+        }
+
         protected override bool Generate()
         {
             if (prestige == ContractPrestige.Trivial)
@@ -125,6 +154,7 @@ namespace MissionControllerEC
             {
                 return false;
             }
+            repairTextSelection();
             targetBody = FlightGlobals.Bodies[planetIDX];
             if (targetBody = null)
             {
@@ -207,38 +237,7 @@ namespace MissionControllerEC
         }
         protected override string GetSynopsys()
         {
-            if (randomString == 0)
-            {
-                return "A section of the satellite has started to leak a small amount of fuel.  You are to EVA to the satellites repair panel and conduct repairs.";
-            }
-            else if (randomString == 1)
-            {
-                return "A small bus switch that controls the Satellites heating unit has malfunctioned.  EVA to the Repair Panel and try to bypass the switch with its backup.";
-            }
-            else if (randomString == 2)
-            {
-                return "After launch of the satellite, ground control operators noticed a software glitch in the satellites operating system.  EVA to the Repair Panel to update the software.";
-            }
-            else if (randomString == 3)
-            {
-                return " A small fragment dislodged one of the solar panel housing units.  The solar panel is considered lost and needs to be disengaged from the satellite systems.  EVA to the Repair Panel to start repairs.";
-            }
-            else if (randomString == 4)
-            {
-                return "The port side ABS unit has malfunctioned on this satellite.  EVA to the Repair Panel and conduct repairs to replace the defective component.";
-            }
-            else if (randomString == 5)
-            {
-                return "Ground control operators noticed that the pitch control of the satellite sometimes fires off for no reason.  Satellite TV users are getting upset that they are losing satellite reception.  EVA to the Repair Panel to correct the issue.";
-            }
-            else if (randomString == 6)
-            {
-                return "A service panel was accidentally left loose before launch on this satellite.  The panel vibrated open during launch and now the major systems have shut down because of extreme cold.  EVA to the Repair Panel to conduct repairs and get the satellite back into operation.";
-            }
-            else
-            {
-                return "EVA to the Repair Panel and perform general maintenance on the satellite.";
-            }
+            return repairSynopsysText;
         }
         protected override string MessageCompleted()
         {
@@ -251,14 +250,15 @@ namespace MissionControllerEC
         {
             Tools.ContractLoadCheck(node, ref planetIDX, 1, planetIDX, "planetIDX");
             Tools.ContractLoadCheck(node, ref vesselID, "Default", vesselID, "VesselID");
-            Tools.ContractLoadCheck(node, ref vesselName, "Woops Default Loaded", vesselName, "VesselName");
-            Tools.ContractLoadCheck(node, ref titleName, "Woops Default Loaded", titleName, "titlename");
+            Tools.ContractLoadCheck(node, ref vesselName, "Vessel Name Not Loaded", vesselName, "VesselName");
+            Tools.ContractLoadCheck(node, ref titleName, "Title Name Not Loaded", titleName, "titlename");
             Tools.ContractLoadCheck(node, ref maxApA, 300000, maxApA, "maxapa");
             Tools.ContractLoadCheck(node, ref repairParts, "SpareParts", repairParts, "repairparts");
             Tools.ContractLoadCheck(node, ref RPamount, 1, RPamount, "rpamount");
-            Tools.ContractLoadCheck(node, ref Ctitle, "Woops Default Loaded", Ctitle, "ctitle");
+            Tools.ContractLoadCheck(node, ref Ctitle, "Title Not Loaded", Ctitle, "ctitle");
             Tools.ContractLoadCheck(node, ref randomString, 1, randomString, "randomstring");
             Tools.ContractLoadCheck(node, ref NoVessel, false, NoVessel, "novessel");
+            Tools.ContractLoadCheck(node, ref repairSynopsysText, "Synopsys Not Loaded", repairSynopsysText, "repairsynop");
             targetBody = FlightGlobals.Bodies[planetIDX];
         }
         protected override void OnSave(ConfigNode node)
@@ -273,6 +273,7 @@ namespace MissionControllerEC
             node.AddValue("ctitle", Ctitle);
             node.AddValue("novessel", NoVessel);
             node.AddValue("randomstring", randomString);
+            node.AddValue("repairsynop", repairSynopsysText);
         }
 
         //for testing purposes
@@ -298,6 +299,7 @@ namespace MissionControllerEC
         public string titleName = "Test";
         public string repairParts = "SpareParts";
         public double RPamount = 1;
+        public string stationRepSynopse = "None";
         ContractParameter repairgoal2;
         public string Ctitle = "To Repair Station You must have at Least ";
         public List<RepairVesselsList> repairvesselListStations = new List<RepairVesselsList>();
@@ -344,6 +346,35 @@ namespace MissionControllerEC
         public int totalContracts;
         public int TotalFinished;
 
+        public void repairStationSelect()
+        {
+            switch (randomString)
+            {
+                case 0:
+                    stationRepSynopse ="A solar panel section overloaded last night.  We shut down a small area of the panel, but you need to reprogram the system to compensate for the new energy output.";
+                    break;
+                case 1:
+                    stationRepSynopse ="The four Main Bus Switching Units (MBSUs), control the routing of power from the the solar array wings to the rest of Station " + vesselName + "." +
+                    " Yesterday MBSU-1, while still routing power correctly, ceased responding.  We need you to reset the system from the Repair Panel.";
+                    break;
+                case 2:
+                    stationRepSynopse ="An incorrect command sequence caused the current altitude maintenance rocket control system to misfire during an altitude re-boost maneuver.  Fix the issue by using the Repair Panel outside.";
+                    break;
+                case 3:
+                    stationRepSynopse ="There is a failure in Cooling Loop A (starboard side).  One of two external cooling loops failed, leaving the station with only half of its normal cooling capacity and zero redundancy in some systems.  The repair panel can be used to adjust for this issue and get the system back online.";
+                    break;
+                case 4:
+                    stationRepSynopse ="A replacement sequential shunt unit (SSU) for a 3A power system needs to be powered up so it can start to help the station's power situation.  Conduct an EVA, locate the Repair Panel, and perform the operations.";
+                    break;
+                case 5:
+                    stationRepSynopse =" You need to Replace a failed Space-to-Ground Transmitter Receiver Controller and the Mobile Base Camera Light Pan-Tilt Assembly near the Repair panel.  Conduct an EVA, locate the Repair Panel, and perform the repairs.";
+                    break;
+                case 6:
+                    stationRepSynopse =" fuel leak has been detected!  We have isolated the leak from Mission Control but the system needs recalibrated to return to normal operation.  Conduct an EVA, locate the Repair Panel, and fix the issue.";
+                    break;
+            }
+        }
+
         protected override bool Generate()
         {
             if (prestige == ContractPrestige.Trivial)
@@ -378,6 +409,7 @@ namespace MissionControllerEC
             {
                 return false;
             }
+            repairStationSelect();
 
             this.AddParameter(new EvaGoal(FlightGlobals.Bodies[planetIDX]), null);
             this.repairgoal2 = this.AddParameter(new RepairPanelPartCheck(titleName, vesselID, vesselName), null);
@@ -425,39 +457,7 @@ namespace MissionControllerEC
         }
         protected override string GetSynopsys()
         {
-            if (randomString == 0)
-            {
-                return "A solar panel section overloaded last night.  We shut down a small area of the panel, but you need to reprogram the system to compensate for the new energy output.";
-            }
-            else if (randomString == 1)
-            {
-                return "The four Main Bus Switching Units (MBSUs), control the routing of power from the the solar array wings to the rest of Station " + vesselName + "." +
-                " Yesterday MBSU-1, while still routing power correctly, ceased responding.  We need you to reset the system from the Repair Panel.";
-            }
-            else if (randomString == 2)
-            {
-                return "An incorrect command sequence caused the current altitude maintenance rocket control system to misfire during an altitude re-boost maneuver.  Fix the issue by using the Repair Panel outside.";
-            }
-            else if (randomString == 3)
-            {
-                return "There is a failure in Cooling Loop A (starboard side).  One of two external cooling loops failed, leaving the station with only half of its normal cooling capacity and zero redundancy in some systems.  The repair panel can be used to adjust for this issue and get the system back online.";
-            }
-            else if (randomString == 4)
-            {
-                return "A replacement sequential shunt unit (SSU) for a 3A power system needs to be powered up so it can start to help the station's power situation.  Conduct an EVA, locate the Repair Panel, and perform the operations.";
-            }
-            else if (randomString == 5)
-            {
-                return " You need to Replace a failed Space-to-Ground Transmitter Receiver Controller and the Mobile Base Camera Light Pan-Tilt Assembly near the Repair panel.  Conduct an EVA, locate the Repair Panel, and perform the repairs.";
-            }
-            else if (randomString == 6)
-            {
-                return "A fuel leak has been detected!  We have isolated the leak from Mission Control but the system needs recalibrated to return to normal operation.  Conduct an EVA, locate the Repair Panel, and fix the issue.";
-            }
-            else
-            {
-                return "EVA to the Repair Panel and perform general maintenance on the Station.";
-            }
+            return stationRepSynopse;
         }
         protected override string MessageCompleted()
         {
@@ -477,6 +477,7 @@ namespace MissionControllerEC
             Tools.ContractLoadCheck(node, ref Ctitle, "Woops Default Loaded", Ctitle, "ctitle");
             Tools.ContractLoadCheck(node, ref randomString, 1,randomString,"randomstring");
             Tools.ContractLoadCheck(node, ref NoVessel, false, NoVessel, "novessel");
+            Tools.ContractLoadCheck(node, ref stationRepSynopse, "Synopse Not loaded", stationRepSynopse, "stationsynop");
             targetBody = FlightGlobals.Bodies[planetIDX];
         }
         protected override void OnSave(ConfigNode node)
@@ -490,6 +491,7 @@ namespace MissionControllerEC
             node.AddValue("ctitle", Ctitle);
             node.AddValue("randomstring", randomString);
             node.AddValue("novessel", NoVessel);
+            node.AddValue("stationsynop", stationRepSynopse);
         }
 
         public override bool MeetRequirements()

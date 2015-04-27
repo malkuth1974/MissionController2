@@ -402,6 +402,96 @@ namespace MissionControllerEC
         private int TirosTitleMissionNumber;
         private float contractMult = 1.0f;
 
+        private string tirosNotes = "none";
+        private string tirosHash = "none";
+        private string tirostitle = "none";
+        private string tirosDescription = "none";
+        private string tirosSynops = "none";
+        private string tirosCompleteMessage = "none";
+
+        public void tirosTextSelect()
+        {
+            switch (TirosTitleMissionNumber)
+            {
+                case 1:
+                    tirosNotes ="Launch the first weather satellite to a Low Kerbin Orbit and observe weather patterns";
+                    tirosHash ="Tiros 1";
+                    tirostitle ="Tiros 1 (Television Infrared Observation Satellite)";
+                    tirosDescription ="The TIROS Program (Television Infrared Observation Satellite) was NASA's first experimental step to determine if satellites could be useful in the study of the Earth." +
+                    "At that time, the effectiveness of satellite observations was still unproven. Since satellites were a new technology, the TIROS Program also tested various design issues for " +
+                    "spacecraft: instruments, data and operational parameters. The goal was to improve satellite applications for Earth-bound decisions, such as should we evacuate the coast because of the hurricane?\n\n" +
+                    "The TIROS Program's first priority was the development of a meteorological satellite information system. Weather forecasting was deemed the most promising application of space-based observations.\n\n" +
+                    "TIROS proved extremely successful, providing the first accurate weather forecasts based on data gathered from space. TIROS began continuous coverage of the Earth's weather in 1962, and was used " +
+                    "by meteorologists worldwide. The program's success with many instrument types and orbital configurations lead to the development of more sophisticated meteorological observation satellites.\n\n " +
+                    "All information for the Tiros Missions were gathered from NASA.com";
+                    tirosSynops ="Objectives: To test experimental television techniques designed to develop a worldwide meteorological satellite information system. To test Sun angle and horizon sensor systems for spacecraft " +
+                    "orientation.\n\n" +
+                    "Description: The spacecraft was 42 inches in diameter, 19 inches high and weighed 270 pounds. The craft was made of aluminum alloy and stainless steel which was then covered by 9200 solar cells." +
+                    "The solar cells served to charge the on-board batteries. Three pairs of solid-propellant spin rockets were mounted on the base plate.";
+                    tirosCompleteMessage = "Good Job you have finsished this contract\n\n" +
+                    "TIROS-1 STATS:\n" +
+                    "Launch Date:    April 1, 1960\n" +
+                    "Operational Period: 78 days\n" +
+                    "Launch Vehicle:    Standard Thor-Able\n" +
+                    "Launch Site:    Cape Canaveral, FL\n" +
+                    "Type:    Weather Satellite";
+                    break;
+                case 2:
+                    tirosNotes ="Launch Tiros/NOOA with batteries and solar panels to a Kebin Polar Orbit";
+                    tirosHash ="Tiros 7";
+                    tirostitle ="Tiros 7 (Television Infrared Observation Satellite)";
+                    tirosDescription ="The TIROS Program (Television Infrared Observation Satellite) was NASA's first experimental step to determine if satellites could be useful in the study of the Earth." +
+                    "At that time, the effectiveness of satellite observations was still unproven. Since satellites were a new technology, the TIROS Program also tested various design issues for " +
+                    "spacecraft: instruments, data and operational parameters. The goal was to improve satellite applications for Earth-bound decisions, such as should we evacuate the coast because of the hurricane?\n\n" +
+                    "The TIROS Program's first priority was the development of a meteorological satellite information system. Weather forecasting was deemed the most promising application of space-based observations.\n\n" +
+                    "TIROS proved extremely successful, providing the first accurate weather forecasts based on data gathered from space. TIROS began continuous coverage of the Earth's weather in 1962, and was used " +
+                    "by meteorologists worldwide. The program's success with many instrument types and orbital configurations lead to the development of more sophisticated meteorological observation satellites.\n\n " +
+                    "All information for the Tiros Missions were gathered from NASA.com";
+                    tirosSynops ="Objectives: Continue research and development of the meteorological satellite information system; obtain improved data for use in weather forecasting, especially during hurricane season.\n\n" +
+                    "Description: The spacecraft was 42 inches in diameter, 19 inches high and weighed 270 pounds. The craft was made of aluminum alloy and stainless steel then covered by 9200 solar cells. The solar" +
+                    "cells served to charge the nickel-cadmium (nicad) batteries. Three pairs of solid-propellant spin rockets were mounted on the base plate.\n\n" +
+                    "TIROS-7 was also designed to make infrared measurements of reflected solar and terrestrial radiation over selected spectrum ranges and gather data on electron density and temperature in space." +
+                    "To accomplish this new expanded mission, TIROS-7 carried two wide-angle camera systems, a magnetic tape recorder, and infrared experimentation equipment. The electron density and temperature probes" +
+                    "were the same as the ones flown on board Explorer 17." +
+                    "The spacecraft operating system still included the infrared horizon scanner, the north direction indicator, despin weights and spinup rockets, and the magnetic attitude control system. TIROS-7 was" +
+                    "deactivated after furnishing over 30,000 cloud photographs; it lasted the longest of the TIROS series thus far, 1809 days.";
+                    tirosCompleteMessage ="Good Job you have finsished this contract\n\n" +
+                    "TIROS-7 STATS:\n" +
+                    "Launch Date:  June 19, 1963\n" +
+                    "Operational Period: 1809 days before being deactivated by NASA on June 3, 1968\n" +
+                    "Launch Vehicle:    Three-Stage Delta\n" +
+                    "Launch Site:    Cape Canaveral, FL\n" +
+                    "Type:   Weather Satellite";
+                    break;;
+                case 3:
+                    tirosNotes ="Launch Tiros with new technology batteries and solar panels to keep satellite in orbit longer";
+                    tirosHash ="Tiros/NOOA - N";
+                    tirostitle ="Tiros/NOAA - N";
+                    tirosDescription ="The TIROS-N/NOAA Program (Television InfraRed Operational Satellite - Next-generation) was NASA's next step in improving the operational capability of the TIROS system first tried in " +
+                    "the 1960's and the ITOS/NOAA system of the 1970's. Technological improvements integrated into the satellite system provided higher resolution imaging, and more day and night quantitative " +
+                    "environmental data on local and global scales than seen with the two earlier generations of TIROS. Like earlier TIROS systems, NASA took responsibility for the satellite only until proven " +
+                    "operational. Once operational the satellite's name was changed to 'NOAA' with day to day use under the direction of the National Oceanic and Atmospheric Administration.\n\n" +
+                    "The TIROS-N/NOAA satellite series carried the Advanced Very High Resolution Radiometer (AVHRR). The AVHRR provided day and night cloud-top and sea surface temperatures, as well as ice and snow " +
+                    "conditions. The satellite also carried an atmospheric sounding system (TOVS - TIROS Operational Vertical Sounder) which provided vertical profiles of temperature and water vapor from the Earth's " +
+                    "surface to the top of the atmosphere; and a solar proton monitor to detect the arrival of energetic particles for use in solar storm prediction. For the first time, this satellite carried a data " +
+                    "collection platform used to receive, process and store information from free floating balloons and buoys worldwide for transmission to one central processing facility.";
+                    tirosSynops ="TIROS-N was an experimental satellite which carried an Advanced Very High Resolution Radiometer (AVHRR) to provide day and night cloud top and sea surface temperatures, as well as ice and " +
+                    "snow conditions; an atmospheric sounding system (TOVS - TIROS Operational Vertical Sounder) to provide vertical profiles of temperature and water vapor from the Earth's surface to the top " +
+                    "of the atmosphere; and a solar proton monitor to detect the arrival of energetic particles for use in solar storm prediction. For the first time, this satellite also carried a data collection " +
+                    "platform used to receive, process and store information from free floating balloons and buoys worldwide for transmission to one central processing facility.\n\n" +
+                    "TIROS-N was placed in a near circular, (470nm) polar orbit. The craft and its systems operated successfully, providing high-resolution scanned images and vertical temperature and moisture profiles " +
+                    "to both operational meteorologists and private interests with APT and HRPT capability.";
+                    tirosCompleteMessage ="Good Job you have finsished this contract\n\n" +
+                    "TIROS-N Stats:\n" +
+                    "Launch Date:    October 13, 1978\n" +
+                    "Operational Period:    Operational for 868 days until deactivated by NOAA on February 27, 1981\n" +
+                    "Launch Vehicle:   Atlas E/F\n" +
+                    "Launch Site:    Vandenberg Air Force Base, CA\n" +
+                    "Type:   Weather Satellite";
+                    break;;
+            }
+        }
+
         protected override bool Generate()
         {
             if (prestige == ContractPrestige.Trivial)
@@ -428,7 +518,7 @@ namespace MissionControllerEC
             {
                 contractMult = 1.0f;
             }
-
+            tirosTextSelect();
             this.AddParameter(new AltitudeGoal(targetBody, minHeight), null);
             this.AddParameter(new InOrbitGoal(targetBody), null);
             this.AddParameter(new EccentricGoal(targetBody, Eccentricity, (Eccentricity + .1), false), null);
@@ -478,160 +568,39 @@ namespace MissionControllerEC
 
         protected override string GetNotes()
         {
-            if (TirosTitleMissionNumber == 2)
-            {
-                return "Launch Tiros with new technology batteries and solar panels to keep satellite in orbit longer";
-            }
-            else if (TirosTitleMissionNumber == 3)
-            {
-                return "Launch Tiros/NOOA with batteries and solar panels to a Kebin Polar Orbit";
-            }
-            else
-            {
-                return "Launch the first weather satellite to a Low Kerbin Orbit and observe weather patterns";
-            }
+            return tirosNotes;
         }
 
         protected override string GetHashString()
         {
-            if (TirosTitleMissionNumber == 3)
-            {
-                return "Tiros/NOOA - N";
-            }
-            if (TirosTitleMissionNumber == 2)
-            {
-                return "Tiros 7";
-            }
-            else
-            {
-                return "Tiros 1";
-            }
+            return tirosHash;
         }
         protected override string GetTitle()
         {
-            if (TirosTitleMissionNumber == 3)
-            {
-                return "Tiros/NOAA - N";
-            }
-            else if (TirosTitleMissionNumber == 2)
-            {
-                return "Tiros 7 (Television Infrared Observation Satellite)";
-            }
-
-            else
-            {
-                return "Tiros 1 (Television Infrared Observation Satellite)";
-            }
+            return tirostitle;
         }
         protected override string GetDescription()
         {
-
-            {
-                if (TirosTitleMissionNumber == 3)
-                {
-                    return "The TIROS-N/NOAA Program (Television InfraRed Operational Satellite - Next-generation) was NASA's next step in improving the operational capability of the TIROS system first tried in " +
-                        "the 1960's and the ITOS/NOAA system of the 1970's. Technological improvements integrated into the satellite system provided higher resolution imaging, and more day and night quantitative " +
-                        "environmental data on local and global scales than seen with the two earlier generations of TIROS. Like earlier TIROS systems, NASA took responsibility for the satellite only until proven " +
-                        "operational. Once operational the satellite's name was changed to 'NOAA' with day to day use under the direction of the National Oceanic and Atmospheric Administration.\n\n" +
-
-                    "The TIROS-N/NOAA satellite series carried the Advanced Very High Resolution Radiometer (AVHRR). The AVHRR provided day and night cloud-top and sea surface temperatures, as well as ice and snow " +
-                    "conditions. The satellite also carried an atmospheric sounding system (TOVS - TIROS Operational Vertical Sounder) which provided vertical profiles of temperature and water vapor from the Earth's " +
-                    "surface to the top of the atmosphere; and a solar proton monitor to detect the arrival of energetic particles for use in solar storm prediction. For the first time, this satellite carried a data " +
-                    "collection platform used to receive, process and store information from free floating balloons and buoys worldwide for transmission to one central processing facility.";
-                }
-                else
-                {
-                    return "The TIROS Program (Television Infrared Observation Satellite) was NASA's first experimental step to determine if satellites could be useful in the study of the Earth." +
-                        "At that time, the effectiveness of satellite observations was still unproven. Since satellites were a new technology, the TIROS Program also tested various design issues for " +
-                        "spacecraft: instruments, data and operational parameters. The goal was to improve satellite applications for Earth-bound decisions, such as should we evacuate the coast because of the hurricane?\n\n" +
-
-                        "The TIROS Program's first priority was the development of a meteorological satellite information system. Weather forecasting was deemed the most promising application of space-based observations.\n\n" +
-
-                        "TIROS proved extremely successful, providing the first accurate weather forecasts based on data gathered from space. TIROS began continuous coverage of the Earth's weather in 1962, and was used " +
-                        "by meteorologists worldwide. The program's success with many instrument types and orbital configurations lead to the development of more sophisticated meteorological observation satellites.\n\n " +
-                        "All information for the Tiros Missions were gathered from NASA.com";
-                }
-            }
+            return tirosDescription;
         }
         protected override string GetSynopsys()
         {
-            if (TirosTitleMissionNumber == 1)
-            {
-                return "Objectives: To test experimental television techniques designed to develop a worldwide meteorological satellite information system. To test Sun angle and horizon sensor systems for spacecraft " +
-                    "orientation.\n\n" +
-
-                "Description: The spacecraft was 42 inches in diameter, 19 inches high and weighed 270 pounds. The craft was made of aluminum alloy and stainless steel which was then covered by 9200 solar cells." +
-                    "The solar cells served to charge the on-board batteries. Three pairs of solid-propellant spin rockets were mounted on the base plate.";
-            }
-            else if (TirosTitleMissionNumber == 2)
-            {
-                return "Objectives: Continue research and development of the meteorological satellite information system; obtain improved data for use in weather forecasting, especially during hurricane season.\n\n" +
-
-                "Description: The spacecraft was 42 inches in diameter, 19 inches high and weighed 270 pounds. The craft was made of aluminum alloy and stainless steel then covered by 9200 solar cells. The solar" +
-                "cells served to charge the nickel-cadmium (nicad) batteries. Three pairs of solid-propellant spin rockets were mounted on the base plate.\n\n" +
-
-                "TIROS-7 was also designed to make infrared measurements of reflected solar and terrestrial radiation over selected spectrum ranges and gather data on electron density and temperature in space." +
-                "To accomplish this new expanded mission, TIROS-7 carried two wide-angle camera systems, a magnetic tape recorder, and infrared experimentation equipment. The electron density and temperature probes" +
-                "were the same as the ones flown on board Explorer 17." +
-
-                "The spacecraft operating system still included the infrared horizon scanner, the north direction indicator, despin weights and spinup rockets, and the magnetic attitude control system. TIROS-7 was" +
-                "deactivated after furnishing over 30,000 cloud photographs; it lasted the longest of the TIROS series thus far, 1809 days.";
-
-            }
-            else if (TirosTitleMissionNumber == 3)
-            {
-                return "TIROS-N was an experimental satellite which carried an Advanced Very High Resolution Radiometer (AVHRR) to provide day and night cloud top and sea surface temperatures, as well as ice and " +
-                    "snow conditions; an atmospheric sounding system (TOVS - TIROS Operational Vertical Sounder) to provide vertical profiles of temperature and water vapor from the Earth's surface to the top " +
-                    "of the atmosphere; and a solar proton monitor to detect the arrival of energetic particles for use in solar storm prediction. For the first time, this satellite also carried a data collection " +
-                    "platform used to receive, process and store information from free floating balloons and buoys worldwide for transmission to one central processing facility.\n\n" +
-
-                "TIROS-N was placed in a near circular, (470nm) polar orbit. The craft and its systems operated successfully, providing high-resolution scanned images and vertical temperature and moisture profiles " +
-                    "to both operational meteorologists and private interests with APT and HRPT capability.";
-
-            }
-            else
-            {
-                return "Tiros Contract";
-            }
-
+            return tirosSynops;
         }
         protected override string MessageCompleted()
         {
             SaveInfo.tirosCurrentNumber++;
-            if (TirosTitleMissionNumber == 2)
-            {
-                return "Good Job you have finsished this contract\n\n" +
-                        "TIROS-7 STATS:\n" +
-                        "Launch Date:  June 19, 1963\n" +
-                        "Operational Period: 1809 days before being deactivated by NASA on June 3, 1968\n" +
-                        "Launch Vehicle:    Three-Stage Delta\n" +
-                        "Launch Site:    Cape Canaveral, FL\n" +
-                        "Type:   Weather Satellite";
-            }
-            else if (TirosTitleMissionNumber == 3)
-            {
-                return "Good Job you have finsished this contract\n\n" +
-                    "TIROS-N Stats:\n" +
-                    "Launch Date:    October 13, 1978\n" +
-                    "Operational Period:    Operational for 868 days until deactivated by NOAA on February 27, 1981\n" +
-                    "Launch Vehicle:   Atlas E/F\n" +
-                    "Launch Site:    Vandenberg Air Force Base, CA\n" +
-                    "Type:   Weather Satellite";
-            }
-            else
-            {
-                return "Good Job you have finsished this contract\n\n" +
-                    "TIROS-1 STATS:\n" +
-                    "Launch Date:    April 1, 1960\n" +
-                    "Operational Period: 78 days\n" +
-                    "Launch Vehicle:    Standard Thor-Able\n" +
-                    "Launch Site:    Cape Canaveral, FL\n" +
-                    "Type:    Weather Satellite";
-            }
+            return tirosCompleteMessage;
         }
 
-        protected override void OnLoad(ConfigNode node)
+        protected override void OnLoad(ConfigNode node)       
         {
+            Tools.ContractLoadCheck(node, ref tirosNotes, "Notes Did Not Load", tirosNotes, "tnotes");
+            Tools.ContractLoadCheck(node, ref tirosHash, "Hash Message Did Not Load", tirosHash, "thash");
+            Tools.ContractLoadCheck(node, ref tirostitle, "Title did not load", tirostitle, "ttitle");
+            Tools.ContractLoadCheck(node, ref tirosDescription, "Descripition Did Not Load", tirosDescription, "tdescript");
+            Tools.ContractLoadCheck(node, ref tirosSynops, "synops Did Not Load", tirosSynops, "tsynop");
+            Tools.ContractLoadCheck(node, ref tirosCompleteMessage, "Message Complete Did Not Load", tirosCompleteMessage,"tmessagecomplete");
             Tools.ContractLoadCheck(node, ref targetBody, Planetarium.fetch.Home, targetBody, "targetBody");
             Tools.ContractLoadCheck(node, ref minHeight, settings.vostok12height, minHeight, "minheight");
             Tools.ContractLoadCheck(node, ref inclination, 180, inclination, "inclination");
@@ -644,7 +613,12 @@ namespace MissionControllerEC
         {
             int bodyID = targetBody.flightGlobalsIndex;
             node.AddValue("targetBody", bodyID);
-
+            node.AddValue("tnotes", tirosNotes);
+            node.AddValue("thash", tirosHash);
+            node.AddValue("ttitle", tirostitle);
+            node.AddValue("tdescript", tirosDescription);
+            node.AddValue("tsynop", tirosSynops);
+            node.AddValue("tmessagecompete", tirosCompleteMessage);
             node.AddValue("minheight", minHeight);
             node.AddValue("inclination", inclination);
             node.AddValue("eccentricity", Eccentricity);
@@ -690,6 +664,11 @@ namespace MissionControllerEC
         private double extraBody5 = 0;
         private double extraBody6 = 0;
 
+        private string marinerTitle = "None";
+        private string marinerDescription = "none";
+        private string marinerSynops = "None";
+        private string marinerCompleteMessage = "none";
+
         ContractParameter marinerOrbit;
         ContractParameter marinerOrbit2;
         ContractParameter marinerOrbit3;
@@ -697,6 +676,62 @@ namespace MissionControllerEC
         ContractParameter marinerOrbit5;
         ContractParameter marinerOrbit6;
 
+        private void marinerTextSelection()
+        {
+            switch (marinerNumber)
+            {
+                case 1:
+                    marinerTitle ="Mariner 2 flyby of Eve";
+                    marinerDescription ="As plans were getting under way to explore the Moon with the Rangers and Surveyors, JPL and NASA also turned their attention to the rest of the solar system. The Mariner series of missions " +
+                    "were designed to be the first U.S. spacecraft to other planets, specifically Venus and Mars. Mariner 1 and 2 were nearly identical spacecraft developed to fly by Venus. The rocket carrying" +
+                    "Mariner 1 went off-course during launch on July 22, 1962, and was blown up by a range safety officer about 5 minutes into flight.\n\n" +
+                    "A month later, Mariner 2 was launched successfully on August 27, 1962, sending it on a 3-1/2-month flight to Venus. On the way it measured for the first time the solar wind, a constant stream of " +
+                    "charged particles flowing outward from the Sun. It also measured interplanetary dust, which turned out to be more scarce than predicted. In addition, Mariner 2 detected high-energy charged particles " +
+                    "coming from the Sun, including several brief solar flares, as well as cosmic rays from outside the solar system. As it flew by Venus on December 14, 1962, Mariner 2 scanned the planet with infrared and " +
+                    "microwave radiometers, revealing that Venus has cool clouds and an extremely hot surface. (Because the bright, opaque clouds hide the planet’s surface, Mariner 2 was not outfitted with a camera.) " +
+                    "Mariner 2's signal was tracked until January 3, 1963. The spacecraft remains in orbit around the Sun.\n\n" +
+                    "All info for Mariner was collect from Nasa";
+                    marinerSynops ="Eve is the kerbal version of Venus, in this mission you have to do a flyby of Eve and collect science.";
+                    marinerCompleteMessage = "Eve is the kerbal version of Venus, you have finished the contract!";
+                    break;
+                case 2:
+                    marinerTitle ="Mariner 4 Flyby Of Duna";
+                    marinerDescription ="Mariner 4 was the first spacecraft to get a close look at Mars. Flying as close as 9,846 kilometers (6,118 miles), Mariner 4 revealed Mars to have a cratered, rust-colored surface, with signs " +
+                    "on some parts of the planet that liquid water had once etched its way into the soil. In addition to various field and particle sensors and detectors, the spacecraft had a television camera, which " +
+                    "took 22 television pictures covering about 1% of the planet. Initially stored on a 4-track tape recorder, these pictures took four days to transmit to Earth.\n\n" +
+                    "All Mariner info gathered from NASA";
+                    marinerSynops ="Duna is the Kerbal version of Mars, in this mission you have to do a flyby of Duna and collect science.";
+                    marinerCompleteMessage ="Duna is the Kerbal version of Mars, you have finished the contract!";
+                    break;
+                case 3:
+                    marinerTitle ="Mariner 10 Flyby Of Moho";
+                    marinerDescription ="Mariner 10 was the seventh successful launch in the Mariner series, the first spacecraft to use the gravitational pull of one planet (Venus) to reach another (Mercury), and the first " +
+                    "spacecraft mission to visit two planets. Mariner 10 was the first (and as of 2003 the only) spacecraft to visit Mercury. The spacecraft flew by Mercury three times in a retrograde heliocentric " +
+                    "orbit and returned images and data on the planet. Mariner 10 returned the first-ever close-up images of Venus and Mercury. The primary scientific objectives of the mission were to measure Mercury's " +
+                    "environment, atmosphere, surface, and body characteristics and to make similar investigations of Venus. Secondary objectives were to perform experiments in the interplanetary medium and to obtain " +
+                    "experience with a dual-planet gravity-assist mission.\n\n" +
+                    "All Mariner info gathered from NASA";
+                    marinerSynops ="Moho is the Kerbal version of Mecury, in this mission you have to do a flyby of both Eve (venus) and Moho(Mercury) and collect science.";
+                    marinerCompleteMessage ="Moho is the Kerbal version of Mecury, you have finished the contract!";
+                    break;
+                case 4:
+                    marinerTitle ="Voyager 1 Flyby Of Jool";
+                    marinerDescription ="Originally, a Mariner 11 and Mariner 12 were planned as part of the Mariner program, however, due to congressional budget cuts, the mission was scaled back to be a flyby of Jupiter and Saturn, " +
+                    "and renamed the Mariner Jupiter-Saturn probes. As the program progressed, the name was later changed to Voyager, as the probe designs began to differ greatly from previous Mariner missions.\n\n" +
+                    "The twin spacecraft Voyager 1 and Voyager 2 were launched by NASA in separate months in the summer of 1977 from Cape Canaveral, Florida. As originally designed, the Voyagers were to conduct closeup " +
+                    "studies of Jupiter and Saturn, Saturn's rings, and the larger moons of the two planets.\n\n" +
+                    "To accomplish their two-planet mission, the spacecraft were built to last five years. But as the mission went on, and with the successful achievement of all its objectives, the additional flybys " +
+                    "of the two outermost giant planets, Uranus and Neptune, proved possible -- and irresistible to mission scientists and engineers at the Voyagers' home at the Jet Propulsion Laboratory in " +
+                    "Pasadena, California.\n\n" +
+                    "As the spacecraft flew across the solar system, remote-control reprogramming was used to endow the Voyagers with greater capabilities than they possessed when they left the Earth. Their two-planet " +
+                    "mission became four. Their five-year lifetimes stretched to 12 and more." +
+                    "Eventually, between them, Voyager 1 and 2 would explore all the giant outer planets of our solar system, 48 of their moons, and the unique systems of rings and magnetic fields those planets possess.\n\n" +
+                    "Information on Voyager program gathered from NASA.";
+                    marinerSynops ="No real example of Saturn or Jupiter exist in Kerbal Space program, the only Gas Planet in KSP is Jool.  You are to explore Jool and its moon to complete this contract.";
+                    marinerCompleteMessage ="You have visited Jool and its moon, and your voyager craft is still going strong.. We hope.";
+                    break;
+            }
+        }
 
         protected override bool Generate()
         {
@@ -739,6 +774,7 @@ namespace MissionControllerEC
             {
                 return false;
             }
+            marinerTextSelection();
             if (marinerNumber == 3)
             {
                 this.marinerOrbit2 = this.AddParameter(new FlyByCelestialBodyGoal(FlightGlobals.Bodies[5], extraBody2 + 500000, extraBody2), null);
@@ -805,120 +841,28 @@ namespace MissionControllerEC
         }
         protected override string GetTitle()
         {
-            if (marinerNumber == 4)
-            {
-                return "Voyager 1 Flyby Of Jool";
-            }
-            else if (marinerNumber == 3)
-            {
-                return "Mariner 10 Flyby Of Moho";
-            }
-            else if (marinerNumber == 2)
-            {
-                return "Mariner 4 Flyby Of Duna";
-            }
-            else
-            {
-                return "Mariner 2 flyby of Eve";
-            }
+            return marinerTitle;
         }
         protected override string GetDescription()
         {
-            if (marinerNumber == 4)
-            {
-                return "Originally, a Mariner 11 and Mariner 12 were planned as part of the Mariner program, however, due to congressional budget cuts, the mission was scaled back to be a flyby of Jupiter and Saturn, " +
-                    "and renamed the Mariner Jupiter-Saturn probes. As the program progressed, the name was later changed to Voyager, as the probe designs began to differ greatly from previous Mariner missions.\n\n" +
-
-                    "The twin spacecraft Voyager 1 and Voyager 2 were launched by NASA in separate months in the summer of 1977 from Cape Canaveral, Florida. As originally designed, the Voyagers were to conduct closeup " +
-                    "studies of Jupiter and Saturn, Saturn's rings, and the larger moons of the two planets.\n\n" +
-
-                    "To accomplish their two-planet mission, the spacecraft were built to last five years. But as the mission went on, and with the successful achievement of all its objectives, the additional flybys " +
-                    "of the two outermost giant planets, Uranus and Neptune, proved possible -- and irresistible to mission scientists and engineers at the Voyagers' home at the Jet Propulsion Laboratory in " +
-                    "Pasadena, California.\n\n" +
-
-                    "As the spacecraft flew across the solar system, remote-control reprogramming was used to endow the Voyagers with greater capabilities than they possessed when they left the Earth. Their two-planet " +
-                    "mission became four. Their five-year lifetimes stretched to 12 and more." +
-
-                    "Eventually, between them, Voyager 1 and 2 would explore all the giant outer planets of our solar system, 48 of their moons, and the unique systems of rings and magnetic fields those planets possess.\n\n" +
-                    "Information on Voyager program gathered from NASA.";
-
-            }
-            if (marinerNumber == 3)
-            {
-                return "Mariner 10 was the seventh successful launch in the Mariner series, the first spacecraft to use the gravitational pull of one planet (Venus) to reach another (Mercury), and the first " +
-                    "spacecraft mission to visit two planets. Mariner 10 was the first (and as of 2003 the only) spacecraft to visit Mercury. The spacecraft flew by Mercury three times in a retrograde heliocentric " +
-                    "orbit and returned images and data on the planet. Mariner 10 returned the first-ever close-up images of Venus and Mercury. The primary scientific objectives of the mission were to measure Mercury's " +
-                    "environment, atmosphere, surface, and body characteristics and to make similar investigations of Venus. Secondary objectives were to perform experiments in the interplanetary medium and to obtain " +
-                    "experience with a dual-planet gravity-assist mission.\n\n" +
-
-                    "All Mariner info gathered from NASA";
-            }
-            else if (marinerNumber == 2)
-            {
-                return "Mariner 4 was the first spacecraft to get a close look at Mars. Flying as close as 9,846 kilometers (6,118 miles), Mariner 4 revealed Mars to have a cratered, rust-colored surface, with signs " +
-                    "on some parts of the planet that liquid water had once etched its way into the soil. In addition to various field and particle sensors and detectors, the spacecraft had a television camera, which " +
-                    "took 22 television pictures covering about 1% of the planet. Initially stored on a 4-track tape recorder, these pictures took four days to transmit to Earth.\n\n" +
-
-                    "All Mariner info gathered from NASA";
-            }
-            else
-            {
-                return "As plans were getting under way to explore the Moon with the Rangers and Surveyors, JPL and NASA also turned their attention to the rest of the solar system. The Mariner series of missions " +
-                    "were designed to be the first U.S. spacecraft to other planets, specifically Venus and Mars. Mariner 1 and 2 were nearly identical spacecraft developed to fly by Venus. The rocket carrying" +
-                    "Mariner 1 went off-course during launch on July 22, 1962, and was blown up by a range safety officer about 5 minutes into flight.\n\n" +
-
-                "A month later, Mariner 2 was launched successfully on August 27, 1962, sending it on a 3-1/2-month flight to Venus. On the way it measured for the first time the solar wind, a constant stream of " +
-                "charged particles flowing outward from the Sun. It also measured interplanetary dust, which turned out to be more scarce than predicted. In addition, Mariner 2 detected high-energy charged particles " +
-                "coming from the Sun, including several brief solar flares, as well as cosmic rays from outside the solar system. As it flew by Venus on December 14, 1962, Mariner 2 scanned the planet with infrared and " +
-                "microwave radiometers, revealing that Venus has cool clouds and an extremely hot surface. (Because the bright, opaque clouds hide the planet’s surface, Mariner 2 was not outfitted with a camera.) " +
-                "Mariner 2's signal was tracked until January 3, 1963. The spacecraft remains in orbit around the Sun.\n\n" +
-
-                "All info for Mariner was collect from Nasa";
-            }
-
+            return marinerDescription;
         }
         protected override string GetSynopsys()
         {
-            if (marinerNumber == 4)
-            {
-                return "No real example of Saturn or Jupiter exist in Kerbal Space program, the only Gas Planet in KSP is Jool.  You are to explore Jool and its moon to complete this contract.";
-            }
-            if (marinerNumber == 3)
-            {
-                return "Moho is the Kerbal version of Mecury, in this mission you have to do a flyby of both Eve (venus) and Moho(Mercury) and collect science.";
-            }
-            else if (marinerNumber == 2)
-            {
-                return "Duna is the Kerbal version of Mars, in this mission you have to do a flyby of Duna and collect science.";
-            }
-            else
-            {
-                return "Eve is the kerbal version of Venus, in this mission you have to do a flyby of Eve and collect science.";
-            }
+            return marinerSynops;
         }
         protected override string MessageCompleted()
         {
             SaveInfo.marinerCurrentNumber++;
-            if (marinerNumber == 4)
-            {
-                return "You have visited Jool and its moon, and your voyager craft is still going strong.. We hope.";
-            }
-            if (marinerNumber == 3)
-            {
-                return "Moho is the Kerbal version of Mecury, you have finished the contract!";
-            }
-            else if (marinerNumber == 2)
-            {
-                return "Duna is the Kerbal version of Mars, you have finished the contract!";
-            }
-            else
-            {
-                return "Eve is the kerbal version of Venus, you have finished the contract!";
-            }
+            return marinerCompleteMessage;
         }
 
         protected override void OnLoad(ConfigNode node)
         {
+            Tools.ContractLoadCheck(node, ref marinerTitle, "Title Did Not Load", marinerTitle, "mtitle");
+            Tools.ContractLoadCheck(node, ref marinerDescription, "Description Did Not Load", marinerDescription, "mdescript");
+            Tools.ContractLoadCheck(node, ref marinerSynops, "Synops Did Not Load", marinerSynops, "msynop");
+            Tools.ContractLoadCheck(node, ref marinerCompleteMessage, "Message Complete Did Not Load", marinerCompleteMessage, "mcomplete");
             Tools.ContractLoadCheck(node, ref targetBody, Planetarium.fetch.Home, targetBody, "targetBody");
             Tools.ContractLoadCheck(node, ref PeA, 100000, PeA, "pea");
             Tools.ContractLoadCheck(node, ref marinerNumber, SaveInfo.marinerCurrentNumber, marinerNumber, "mn");
@@ -941,6 +885,10 @@ namespace MissionControllerEC
             node.AddValue("extra4", extraBody4);
             node.AddValue("extra5", extraBody5);
             node.AddValue("extra6", extraBody6);
+            node.AddValue("mtitle", marinerTitle);
+            node.AddValue("mdescript", marinerDescription);
+            node.AddValue("msynop", marinerSynops);
+            node.AddValue("mcomplete", marinerCompleteMessage);
         }
 
         public override bool MeetRequirements()
@@ -1240,6 +1188,114 @@ namespace MissionControllerEC
         private int crewCount = 3;
         public int totalContracts;
 
+        public string ApNoteText = "none";
+        public string apTitleText = "none";
+        public string apSynopsText = "none";
+        public string apDescriptText = "none";
+        public string apCompletionText = "none";
+
+        public void ApolloTextSelection()
+        {
+            switch (ApolloMissionNumber)
+            {
+                case 1:
+                    ApNoteText ="Apollo 7";
+                    apTitleText ="Apollo 7: CrewPod Test Flight.";
+                    apSynopsText ="Apollo 7 objective is to build and test a new command module that can carry a 3 man crew to the mun.\n\n We will test launch and return the crew module to Kerbin Safely.";
+                    apDescriptText="Apollo 7 was the first crewed flight of the Apollo spacecraft, with astronauts Walter Schirra, Jr, Donn Eisele, and Walter Cunningham on board. The primary objectives of the Earth orbiting " +
+                    "mission were to demonstrate Command and Service Module (CSM), crew, launch vehicle, and mission support facilities performance and to demonstrate CSM rendezvous capability. Two photographic " +
+                    "experiments and three medical experiments were planned.\n\n" +
+                    "The command module (CM), a cone-shaped craft about 390 cm in diameter at the large end, served as a command, control, and communications center. Supplemented by the service module (SM), it provided " +
+                    "all life support elements for the crew. The CM was capable of attitude control about three axes and some lateral lift translation. It also served as a buoyant vessel at sea. The SM provided the main " +
+                    "propulsion and maneuvering capability. It was jettisoned just before CM reentry. The SM was a cylinder 390 cm in diameter and 670 cm long. The spacecraft mass of 14,781 kg is the mass of the CSM " +
+                    "including propellants and expendables. There was no lunar module or boilerplate unit on this flight.\n\n" +
+                    "All Apollo information was gathered from Nasa website.";
+                    apCompletionText = "Good Job, now that we have the command pod worked out we can start work on the lander!";
+                    break;
+                case 2:
+                    ApNoteText ="Apollo 9";
+                    apTitleText ="Apollo 9: CrewPod And Lunar Module Test Flight.";
+                    apSynopsText ="Apollo 9 main goal is to launch to Kerbin orbit and test the Command Module and Lunar landing docking procedures.  After completion jetison the Lunar Lander and bring the crew back to Kerbin.";
+                    apDescriptText="Apollo 9 was the third crewed Apollo flight and the first crewed flight to include the Lunar Module (LM). The crew was Commander James McDivitt, Command Module (CM) pilot David Scott, and LM " +
+                    "pilot Russell Schweickart. The primary objective of the mission was to test all aspects of the Lunar Module in Earth orbit, including operation of the LM as an independent self-sufficient spacecraft " +
+                    "and performance of docking and rendezvous manuevers. The goal was to simulate maneuvers which would be performed in actual lunar missions. Other concurrent objectives included overall checkout of " +
+                    "launch vehicle and spacecraft systems, crew, and procedures. A multispectral photographic experiment was also performed. \n\n" +
+                    "Apollo 9 was composed of a command module, a command service module (CSM), a lunar module, and an instrument unit (IU), and was launched by a Saturn V rocket. The vehicle rocket had three " +
+                    "stages, S-IC, S-II, and S-IVB. The CM, a cone-shaped craft about 390 cm in diameter at the large end, served as a command, control, and communications center. Supplemented by the SM, it provided " +
+                    "all life support elements for the three crewmen. The spacecraft mass of 26,801 kg is the mass of the CSM including propellants and expendables. The CM was capable of attitude control about three " +
+                    "axes and some lateral lift translation. It permitted LM attachment and CM/LM ingress and egress and served as a buoyant vessel at sea. The CSM provided the main propulsion and maneuvering capability. " +
+                    "It was jettisoned just before CM reentry. The CSM was a cylinder 390 cm in diameter. The LM was a two-stage vehicle that accommodated two men and could transport them to the lunar surface. It had " +
+                    "its own propulsion, communication, and life support systems.\n\n" +
+                    "All Apollo information was gathered from Nasa website.";
+                    apCompletionText="Good Job putting the lander together and getting everything to work, lets set our eyes to the Mun!";
+                    break;
+                case 3:
+                    ApNoteText ="Apollo 10";
+                    apTitleText ="Apollo 10: Lunar Orbit and Return Only.";
+                    apSynopsText ="The purpose of the mission was to confirm all aspects of the lunar landing mission exactly as it would be performed, except for the actual landing. Additional objectives included " +
+                    "verification of lunar module systems in the lunar environment, evaluation of mission-support performance for the combined spacecraft at lunar distance, and further refinement of the lunar " +
+                    "gravitational potential.";
+                    apDescriptText="This spacecraft was the second Apollo mission to orbit the Moon, and the first to travel to the Moon with the full Apollo spacecraft, consisting of the Command and Service Module " +
+                    "(CSM-106, Charlie Brown) and the Lunar Module (LM-4, Snoopy). The spacecraft mass of 28,834 kg is the mass of the CSM including propellants and expendables. The LM mass including propellants " +
+                    "was 13,941 kg. The primary objectives of the mission were to demonstrate crew, space vehicle, and mission support facilities during a manned lunar mission and to evaluate LM performance in " +
+                    "cislunar and lunar environment. The mission was a full dry run for the Apollo 11 mission, in which all operations except the actual lunar landing were performed. The flight carried a " +
+                    "three man crew: Commander Thomas P. Stafford, Command Module (CM) Pilot John W. Young, and Lunar Module (LM) Pilot Eugene A. Cernan.\n\n" +
+                    "All Apollo information gathered from Nasa Website.";
+                    apCompletionText="Good Job, next time we will give you permission to actually land! Lets move!";
+                    break;
+                case 4:
+                    ApNoteText ="Apollo 11";
+                    apTitleText ="Apollo 11: Lunar Landing On " + ApolloBiome;                  
+                    apSynopsText ="The mission plan of Apollo 11 was to land two men on the lunar surface and return them safely to Earth. The launch took place at Kennedy Space Center Launch Complex 39A on July 16, 1969, at 08:32 a.m. " +
+                    "EST. The spaccraft carried a crew of three: Mission Commander Neil Armstrong, Command Module Pilot Michael Collins, and Lunar Module Pilot Edwin E. Aldrin Jr. The mission evaluation concluded " +
+                    "that all mission tasks were completed satisfactorily.";
+                    apDescriptText="Apollo 11 was the first mission in which humans walked on the lunar surface and returned to Earth. On 20 July 1969 two astronauts (Apollo 11 Commander Neil A. Armstrong and LM pilot Edwin E. Buzz " +
+                    "Aldrin Jr.) landed in Mare Tranquilitatis (the Sea of Tranquility) on the Moon in the Lunar Module (LM) while the Command and Service Module (CSM) (with CM pilot Michael Collins) continued " +
+                    "in lunar orbit. During their stay on the Moon, the astronauts set up scientific experiments, took photographs, and collected lunar samples. The LM took off from the Moon on 21 July and the astronauts " +
+                    "returned to Earth on 24 July.\n\n" +
+                    "All Apollo information gathered from Nasa website.";
+                    apCompletionText="Good Job, we have found that we should invest in some type of rover for our landings can move around a lot more.";
+                    break;
+                case 5:
+                    ApNoteText ="Apollo 15";
+                    apTitleText ="Apollo 15: Lunar Landing On " + ApolloBiome2 + " With Lunar Rover";                   
+                    apSynopsText ="Apollo 15 was the first of the three J missions designed to conduct exploration of the Moon over longer periods, over greater ranges, and with more instruments for scientific data acquisition than " +
+                    "on previous Apollo missions. Major modifications and augmentations to the basic Apollo hardware were made. The most significant change was the installation of a scientific instrument module in one " +
+                    "of the service module bays for scientific investigations from lunar orbit. Other hardware changes consisted of lunar module modifications to accommodate a greater payload and a longer stay on the " +
+                    "lunar surface, and the provision of a lunar roving vehicle. The landing site chosen for the mission was an area near the foot of the Montes Apenniuns and adjacent to Hadley Rille.";
+                    apDescriptText="Apollo 15 was the fourth mission in which humans walked on the lunar surface and returned to Earth. On 30 July 1971 two astronauts (Apollo 15 Commander David R. Scott and LM pilot James B. Irwin) landed" +
+                    "in the Hadley Rille/Apennines region of the Moon in the Lunar Module (LM) while the Command and Service Module (CSM) (with CM pilot Alfred M. Worden) continued in lunar orbit. During their stay on the" +
+                    "Moon, the astronauts set up scientific experiments, took photographs, and collected lunar samples. The LM took off from the Moon on 2 August and the astronauts returned to Earth on 7 August.\n\n" +
+                    "Apollo 15 was also the first test of the Lunar Rover\n\n" +
+                    "The Lunar Roving Vehicle (LRV) was an electric vehicle designed to operate in the low-gravity vacuum of the Moon and to be capable of traversing the lunar surface, allowing the Apollo astronauts " +
+                    "to extend the range of their surface extravehicular activities. Three LRVs were driven on the Moon, one on Apollo 15 by astronauts David Scott and Jim Irwin, one on Apollo 16 by John Young and Charles " +
+                    "Duke, and one on Apollo 17 by Gene Cernan and Harrison Schmitt. Each rover was used on three traverses, one per day over the three day course of each mission. On Apollo 15 the LRV was driven a total of " +
+                    "27.8 km in 3 hours, 2 minutes of driving time. The longest single traverse was 12.5 km and the maximum range from the LM was 5.0 km. On Apollo 16 the vehicle traversed 26.7 km in 3 hours 26 minutes of " +
+                    "driving. The longest traverse was 11.6 km and the LRV reached a distance of 4.5 km from the LM. On Apollo 17 the rover went 35.9 km in 4 hours 26 minutes total drive time. The longest traverse was " +
+                    "20.1 km and the greatest range from the LM was 7.6 km. \n\n" +
+                    "All Apollo information gathered from Nasa website.";
+                    apCompletionText="Good Job on that rover!  But we have a new task ahead for a future mission.  Minmus!\n\n"+
+                    "There is talk in the space center about an extension of the apollo program after Apollo 17.  Many are speculating that the higher ups are considering Duna as a possible target!";
+                    break;
+                case 6:
+                    ApNoteText ="Apollo 17";                    
+                    apTitleText ="Apollo 17: Minmus Landing On " + ApolloBiome2 + " With Minmus Rover";
+                    apSynopsText = "The mission plan of Apollo 17 is to land on Minmus in the Great Flats, Scientific objectives of the Apollo 17 mission included, geological surveying and sampling of materials and surface features" +
+                    "in a preselected area of the Taurus-Littrow region; deploying and activating surface experiments; and conducting in-flight experiments and photographic tasks during lunar orbit and transearth coast";
+                    apDescriptText="The lunar landing site was the Taurus-Littrow highlands and valley area. This site was picked for Apollo 17 as a location where rocks both older and younger than those previously returned from other" +
+                    "Apollo missions, as well as from Luna 16 and 20 missions, might be found.\n\n" +
+                    "The mission was the final in a series of three J-type missions planned for the Apollo Program. These J-type missions can be distinguished from previous G- and H-series missions by extended hardware" +
+                    "capability, larger scientific payload capacity and by the use of the battery-powered Lunar Roving Vehicle, or LRV.";
+                    apCompletionText="Great job, its a sad day that the Apollo missions have come to a close, but you have proven that we can achieve anything as a species!\n\n"+
+                    "Alternate reality for kerbals.\n\n"+
+                    "In the human world the American Apollo program was ended after Apollo 17, the kerbals on the other hand had no such limitations.  They have decided to continue the Apollo program and work on "+
+                    "getting to Duna.  This new series of Contracts for Mission Controller runs through about 9 new Contracts that help set up the ability to get to Duna and establish a small colony. \n\n"+
+                    "If you wish not to play this new set of contracts you can turn them off in the Mission Controller settings menu. Before these set of missions start, you need to play the Historical missions "+
+                    "SkyLab, this sets up the ability for long duration space Expeditions and will teach the kerbals how to survive the long journey to Duna.";
+                    break;
+            }
+        }
+
         protected override bool Generate()
         {
             totalContracts = ContractSystem.Instance.GetCurrentContracts<ApolloProgram>().Count();
@@ -1255,6 +1311,7 @@ namespace MissionControllerEC
             if (HighLogic.LoadedSceneIsFlight) { return false; }
             if (SaveInfo.all_Historical_Contracts_Off == true) { return false; }
             ApolloMissionNumber = SaveInfo.apolloCurrentNumber;
+            ApolloTextSelection();
             if (ApolloMissionNumber == 6)
             {
                 this.AddParameter(new InOrbitGoal(targetBody2), null);
@@ -1346,199 +1403,33 @@ namespace MissionControllerEC
 
         protected override string GetHashString()
         {
-            if (ApolloMissionNumber == 6)
-            {
-                return "Apollo 17";
-            }
-            if (ApolloMissionNumber == 5)
-            {
-                return "Apollo 15";
-            }
-            else if (ApolloMissionNumber == 4)
-            {
-                return "Apollo 11";
-            }
-            else if (ApolloMissionNumber == 3)
-            {
-                return "Apollo 10";
-            }
-            else if (ApolloMissionNumber == 2)
-            {
-                return "Apollo 9";
-            }
-            else
-            {
-                return "Apollo 7";
-            }
-
+            return ApNoteText; 
         }
         protected override string GetTitle()
         {
-            if (ApolloMissionNumber == 6)
-            {
-                return "Apollo 17: Minmus Landing On " + ApolloBiome2 + " With Minmus Rover";
-            }
-            if (ApolloMissionNumber == 5)
-            {
-                return "Apollo 15: Lunar Landing On " + ApolloBiome2 + " With Lunar Rover";
-            }
-            else if (ApolloMissionNumber == 4)
-            {
-                return "Apollo 11: Lunar Landing On " + ApolloBiome;
-            }
-            else if (ApolloMissionNumber == 3)
-            {
-                return "Apollo 10: Lunar Orbit and Return Only.";
-            }
-            else if (ApolloMissionNumber == 2)
-            {
-                return "Apollo 9: CrewPod And Lunar Module Test Flight.";
-            }
-            else
-            {
-                return "Apollo 7: CrewPod Test Flight.";
-            }
+            return apTitleText;
         }
         protected override string GetDescription()
         {
-            if (ApolloMissionNumber == 6)
-            {
-                return "The lunar landing site was the Taurus-Littrow highlands and valley area. This site was picked for Apollo 17 as a location where rocks both older and younger than those previously returned from other" +
-                "Apollo missions, as well as from Luna 16 and 20 missions, might be found.\n\n" +
-                "The mission was the final in a series of three J-type missions planned for the Apollo Program. These J-type missions can be distinguished from previous G- and H-series missions by extended hardware" +
-                "capability, larger scientific payload capacity and by the use of the battery-powered Lunar Roving Vehicle, or LRV.";
-            }
-            if (ApolloMissionNumber == 5)
-            {
-                return "Apollo 15 was the fourth mission in which humans walked on the lunar surface and returned to Earth. On 30 July 1971 two astronauts (Apollo 15 Commander David R. Scott and LM pilot James B. Irwin) landed" +
-                    "in the Hadley Rille/Apennines region of the Moon in the Lunar Module (LM) while the Command and Service Module (CSM) (with CM pilot Alfred M. Worden) continued in lunar orbit. During their stay on the" +
-                    "Moon, the astronauts set up scientific experiments, took photographs, and collected lunar samples. The LM took off from the Moon on 2 August and the astronauts returned to Earth on 7 August.\n\n" +
-                    "Apollo 15 was also the first test of the Lunar Rover\n\n" +
-                    "The Lunar Roving Vehicle (LRV) was an electric vehicle designed to operate in the low-gravity vacuum of the Moon and to be capable of traversing the lunar surface, allowing the Apollo astronauts " +
-                    "to extend the range of their surface extravehicular activities. Three LRVs were driven on the Moon, one on Apollo 15 by astronauts David Scott and Jim Irwin, one on Apollo 16 by John Young and Charles " +
-                    "Duke, and one on Apollo 17 by Gene Cernan and Harrison Schmitt. Each rover was used on three traverses, one per day over the three day course of each mission. On Apollo 15 the LRV was driven a total of " +
-                    "27.8 km in 3 hours, 2 minutes of driving time. The longest single traverse was 12.5 km and the maximum range from the LM was 5.0 km. On Apollo 16 the vehicle traversed 26.7 km in 3 hours 26 minutes of " +
-                    "driving. The longest traverse was 11.6 km and the LRV reached a distance of 4.5 km from the LM. On Apollo 17 the rover went 35.9 km in 4 hours 26 minutes total drive time. The longest traverse was " +
-                    "20.1 km and the greatest range from the LM was 7.6 km. \n\n" +
-                    "All Apollo information gathered from Nasa website.";
-            }
-            else if (ApolloMissionNumber == 4)
-            {
-                return "Apollo 11 was the first mission in which humans walked on the lunar surface and returned to Earth. On 20 July 1969 two astronauts (Apollo 11 Commander Neil A. Armstrong and LM pilot Edwin E. Buzz " +
-                    "Aldrin Jr.) landed in Mare Tranquilitatis (the Sea of Tranquility) on the Moon in the Lunar Module (LM) while the Command and Service Module (CSM) (with CM pilot Michael Collins) continued " +
-                    "in lunar orbit. During their stay on the Moon, the astronauts set up scientific experiments, took photographs, and collected lunar samples. The LM took off from the Moon on 21 July and the astronauts " +
-                    "returned to Earth on 24 July.\n\n" +
-                    "All Apollo information gathered from Nasa website.";
-            }
-            else if (ApolloMissionNumber == 3)
-            {
-                return "This spacecraft was the second Apollo mission to orbit the Moon, and the first to travel to the Moon with the full Apollo spacecraft, consisting of the Command and Service Module " +
-                    "(CSM-106, Charlie Brown) and the Lunar Module (LM-4, Snoopy). The spacecraft mass of 28,834 kg is the mass of the CSM including propellants and expendables. The LM mass including propellants " +
-                    "was 13,941 kg. The primary objectives of the mission were to demonstrate crew, space vehicle, and mission support facilities during a manned lunar mission and to evaluate LM performance in " +
-                    "cislunar and lunar environment. The mission was a full dry run for the Apollo 11 mission, in which all operations except the actual lunar landing were performed. The flight carried a " +
-                    "three man crew: Commander Thomas P. Stafford, Command Module (CM) Pilot John W. Young, and Lunar Module (LM) Pilot Eugene A. Cernan.\n\n" +
-                    "All Apollo information gathered from Nasa Website.";
-            }
-            else if (ApolloMissionNumber == 2)
-            {
-                return "Apollo 9 was the third crewed Apollo flight and the first crewed flight to include the Lunar Module (LM). The crew was Commander James McDivitt, Command Module (CM) pilot David Scott, and LM " +
-                    "pilot Russell Schweickart. The primary objective of the mission was to test all aspects of the Lunar Module in Earth orbit, including operation of the LM as an independent self-sufficient spacecraft " +
-                    "and performance of docking and rendezvous manuevers. The goal was to simulate maneuvers which would be performed in actual lunar missions. Other concurrent objectives included overall checkout of " +
-                    "launch vehicle and spacecraft systems, crew, and procedures. A multispectral photographic experiment was also performed. \n\n" +
-                    "Apollo 9 was composed of a command module, a command service module (CSM), a lunar module, and an instrument unit (IU), and was launched by a Saturn V rocket. The vehicle rocket had three " +
-                    "stages, S-IC, S-II, and S-IVB. The CM, a cone-shaped craft about 390 cm in diameter at the large end, served as a command, control, and communications center. Supplemented by the SM, it provided " +
-                    "all life support elements for the three crewmen. The spacecraft mass of 26,801 kg is the mass of the CSM including propellants and expendables. The CM was capable of attitude control about three " +
-                    "axes and some lateral lift translation. It permitted LM attachment and CM/LM ingress and egress and served as a buoyant vessel at sea. The CSM provided the main propulsion and maneuvering capability. " +
-                    "It was jettisoned just before CM reentry. The CSM was a cylinder 390 cm in diameter. The LM was a two-stage vehicle that accommodated two men and could transport them to the lunar surface. It had " +
-                    "its own propulsion, communication, and life support systems.\n\n" +
-                    "All Apollo information was gathered from Nasa website.";
-            }
-            else
-            {
-                return "Apollo 7 was the first crewed flight of the Apollo spacecraft, with astronauts Walter Schirra, Jr, Donn Eisele, and Walter Cunningham on board. The primary objectives of the Earth orbiting " +
-                    "mission were to demonstrate Command and Service Module (CSM), crew, launch vehicle, and mission support facilities performance and to demonstrate CSM rendezvous capability. Two photographic " +
-                    "experiments and three medical experiments were planned.\n\n" +
-                    "The command module (CM), a cone-shaped craft about 390 cm in diameter at the large end, served as a command, control, and communications center. Supplemented by the service module (SM), it provided " +
-                    "all life support elements for the crew. The CM was capable of attitude control about three axes and some lateral lift translation. It also served as a buoyant vessel at sea. The SM provided the main " +
-                    "propulsion and maneuvering capability. It was jettisoned just before CM reentry. The SM was a cylinder 390 cm in diameter and 670 cm long. The spacecraft mass of 14,781 kg is the mass of the CSM " +
-                    "including propellants and expendables. There was no lunar module or boilerplate unit on this flight.\n\n" +
-                    "All Apollo information was gathered from Nasa website.";
-            }
-
+            return apDescriptText;
         }
         protected override string GetSynopsys()
         {
-            if (ApolloMissionNumber == 6)
-            {
-                return "The mission plan of Apollo 17 is to land on Minmus in the Great Flats, Scientific objectives of the Apollo 17 mission included, geological surveying and sampling of materials and surface features" +
-                "in a preselected area of the Taurus-Littrow region; deploying and activating surface experiments; and conducting in-flight experiments and photographic tasks during lunar orbit and transearth coast";
-            }
-            if (ApolloMissionNumber == 5)
-            {
-                return "Apollo 15 was the first of the three J missions designed to conduct exploration of the Moon over longer periods, over greater ranges, and with more instruments for scientific data acquisition than " +
-                    "on previous Apollo missions. Major modifications and augmentations to the basic Apollo hardware were made. The most significant change was the installation of a scientific instrument module in one " +
-                    "of the service module bays for scientific investigations from lunar orbit. Other hardware changes consisted of lunar module modifications to accommodate a greater payload and a longer stay on the " +
-                    "lunar surface, and the provision of a lunar roving vehicle. The landing site chosen for the mission was an area near the foot of the Montes Apenniuns and adjacent to Hadley Rille.";
-            }
-            else if (ApolloMissionNumber == 4)
-            {
-                return "The mission plan of Apollo 11 was to land two men on the lunar surface and return them safely to Earth. The launch took place at Kennedy Space Center Launch Complex 39A on July 16, 1969, at 08:32 a.m. " +
-                    "EST. The spaccraft carried a crew of three: Mission Commander Neil Armstrong, Command Module Pilot Michael Collins, and Lunar Module Pilot Edwin E. Aldrin Jr. The mission evaluation concluded " +
-                    "that all mission tasks were completed satisfactorily.";
-            }
-            else if (ApolloMissionNumber == 3)
-            {
-                return "The purpose of the mission was to confirm all aspects of the lunar landing mission exactly as it would be performed, except for the actual landing. Additional objectives included " +
-                    "verification of lunar module systems in the lunar environment, evaluation of mission-support performance for the combined spacecraft at lunar distance, and further refinement of the lunar " +
-                    "gravitational potential.";
-            }
-            else if (ApolloMissionNumber == 2)
-            {
-                return "Apollo 9 main goal is to launch to Kerbin orbit and test the Command Module and Lunar landing docking procedures.  After completion jetison the Lunar Lander and bring the crew back to Kerbin.";
-            }
-            else
-            {
-                return "Apollo 7 objective is to build and test a new command module that can carry a 3 man crew to the mun.\n\n We will test launch and return the crew module to Kerbin Safely.";
-            }
+            return apSynopsText;
         }
         protected override string MessageCompleted()
         {
             SaveInfo.apolloCurrentNumber++;
-            if (ApolloMissionNumber == 6)
-            {
-                return "Great job, its a sad day that the Apollo missions have come to a close, but you have proven that we can achieve anything as a species!\n\n"+
-                        "Alternate reality for kerbals.\n\n"+
-                        "In the human world the American Apollo program was ended after Apollo 17, the kerbals on the other hand had no such limitations.  They have decided to continue the Apollo program and work on "+
-                        "getting to Duna.  This new series of Contracts for Mission Controller runs through about 9 new Contracts that help set up the ability to get to Duna and establish a small colony. \n\n"+
-
-                        "If you wish not to play this new set of contracts you can turn them off in the Mission Controller settings menu. Before these set of missions start, you need to play the Historical missions "+
-                        "SkyLab, this sets up the ability for long duration space Expeditions and will teach the kerbals how to survive the long journey to Duna.";
-            }
-            if (ApolloMissionNumber == 5)
-            {
-                return "Good Job on that rover!  But we have a new task ahead for a future mission.  Minmus!\n\n"+
-                    "There is talk in the space center about an extension of the apollo program after Apollo 17.  Many are speculating that the higher ups are considering Duna as a possible target!";
-            }
-            else if (ApolloMissionNumber == 4)
-            {
-                return "Good Job, we have found that we should invest in some type of rover for our landings can move around a lot more.";
-            }
-            else if (ApolloMissionNumber == 3)
-            {
-                return "Good Job, next time we will give you permission to actually land! Lets move!";
-            }
-            else if (ApolloMissionNumber == 2)
-            {
-                return "Good Job putting the lander together and getting everything to work, lets set our eyes to the Mun!";
-            }
-            else
-            {
-                return "Good Job, now that we have the command pod worked out we can start work on the lander!";
-            }
+            return apCompletionText;
         }
 
         protected override void OnLoad(ConfigNode node)
         {
+            Tools.ContractLoadCheck(node, ref ApNoteText, "Hash String Not loaded", ApNoteText, "apnote");
+            Tools.ContractLoadCheck(node, ref apTitleText, "Title Not Loaded", apTitleText, "aptitle");
+            Tools.ContractLoadCheck(node, ref apDescriptText, "Description Not Loaded", apDescriptText, "apdescript");
+            Tools.ContractLoadCheck(node, ref apSynopsText, "Synops Not Loaded", apSynopsText, "apsynop");
+            Tools.ContractLoadCheck(node, ref apCompletionText, "Message Complete Not Loaded", apCompletionText, "apcomplete");
             Tools.ContractLoadCheck(node, ref targetBody, FlightGlobals.Bodies[2], targetBody, "targetBody");
             Tools.ContractLoadCheck(node, ref targetBody2, FlightGlobals.Bodies[1], targetBody2, "targetBody2");
             Tools.ContractLoadCheck(node, ref targetBody3, FlightGlobals.Bodies[3], targetBody3, "targetBody3");
@@ -1568,6 +1459,11 @@ namespace MissionControllerEC
             int bodyID3 = targetBody3.flightGlobalsIndex;
             node.AddValue("targetBody3", bodyID3);
 
+            node.AddValue("apnote", ApNoteText);
+            node.AddValue("aptitle", apTitleText);
+            node.AddValue("apdescript", apDescriptText);
+            node.AddValue("apsynop", apSynopsText);
+            node.AddValue("apcomplete",apCompletionText);
             node.AddValue("apbiome", ApolloBiome);
             node.AddValue("apbiome2", ApolloBiome2);
             node.AddValue("apbiome3", ApolloBiome3);
@@ -1606,12 +1502,19 @@ namespace MissionControllerEC
         CelestialBody targetBody = FlightGlobals.Bodies[2];
         CelestialBody targetBody2 = FlightGlobals.Bodies[1];
         CelestialBody targetBody3 = FlightGlobals.Bodies[6];
+        CelestialBody targetBody4 = FlightGlobals.Bodies[5];
         private string ApolloDunaBiome = "Farside Crater";       
         private int ApolloDunaMissionNumber = 1;        
         private int crewCount = 3;
         private int maxSeatCountShip = 4;
         private string landingTitle = "Land your vessel near your Colony Habitat";
         public int totalContracts;
+
+        public string apdHash = "none";
+        public string apTitle = "none";
+        public string apDescription = "none";
+        public string apsynops = "none";
+        public string apCompletMessage = "none";
 
         public void GetLatandLon(Vessel vessel)
         {
@@ -1623,6 +1526,126 @@ namespace MissionControllerEC
             SaveInfo.apolloLandingLat = LatValue;
 
             SaveInfo.apolloLandingLon = LonValue;
+        }
+
+        public void apdMessageSelection()
+        {
+            switch (ApolloDunaMissionNumber)
+            {
+                case 1:
+                    apdHash ="Duna 1";
+                    apTitle ="Apollo-Duna 1: Mun Test Colony Module.";
+                    apDescription ="After the successful Apollo Moon Missions Kerbal Space Center Officials planed a new Mission that could take Kerbal kind to the Planet Duna.  Dubbed Apollo-Duna Missions these missions would be the " +
+                    "backbone of the new Kerbal Exploration and colonization system that would help spread kerbal kind throughout the kerbin system.\n" +
+                    "Duna 1 is the mission where Engineers and scientist built and delivered a experimental Colony Habitat to the surface of the mun.  This engineering test was slated for 4 Missions.  1. The delivery " +
+                    "of colony Module.  2. The construction and landing of the New Duna Lander.  3. The delivery of the Colonies first crew.  And 4. The crew transfer Mission for the Year 2 Test Mission.  These missions helped " +
+                    "develop the procedures and experience needed to bring kerbals to Duna with a Higher success rate. \n\n" +
+                    "This Unmanned test vehicle will be launched from Kerbin and land on the Farside Crater located on our own Mun.  This will be tested by two separate crews " +
+                    "that will each spend at least 1 month on the mun.  Use this time to plan out how to survive on Duna and work out any bugs that might happen with the new equipment.";
+                    apsynops ="We need you to construct and design a new Duna Colony Module that can hold 3 kerbals with enough supplies to last at least a year on Duna.  This module must also be able to survive 2 separate " +
+                    "Crew rotations.  The plan is to send 2 Expeditions to Duna.  Expedition 1 will arrive first and stay for a year.  Expedition 2 will launch a year later, while Expedition 1 returns to Kerbin. " +
+                    "After Expedition 2 arrives it also must survive for at least 1 year also!  So you must plan your supplies for these two missions and and support craft that you might need to keep these two " +
+                    "missions going. \n\n" +
+                    "Duna 1 is a test bed for your new Colony module.  This test bed will be launched from Kerbin and land on the Farside Crater located on our own Mun.  This will be tested by two separate crews " +
+                    "that will each spend at least 1 month on the mun.  Use this time to plan out how to survive on Duna and work out any bugs that might happen with the new equipment.\n\n" +
+                    "Your first task is to build the Colony Module and land it on the Mun (Without Crew).";
+                    apCompletMessage = "Great job you have successfully landed the colony module on the Mun.  We are now ready to construct a new lander capable of landing on Duna.  " +
+                    "We will first test it on the Mun and make sure everything works as planned. ";
+                    break;
+                case 2:
+                    apdHash ="Duna 2";
+                    apTitle ="Apollo-Duna 2: Duna Lander Development and Test Mun.";
+                    apDescription ="We need you to construct and design a new Duna Landing Module that can hold 3 kerbals with enough supplies to last at least a year on Duna. "+
+                    " The plan is to send 2 Expeditions to Duna.  Expedition 1 will arrive first and stay for a year. "+
+                    "After Expedition 2 arrives it also must survive for at least 1 year also!  So you must plan your supplies for these two missions and and support craft that you might need to keep these two "+
+                    "missions going. \n\n"+
+                    "Duna 2 is a test bed for your new Landing module.  . You need to land your test lander near the Colony module you landed on the Mun in Apollo-Duna 1.  This will help with your ability to land "+
+                    "at a specific spot without risk of death or injury to any Kerbals.  Good luck.";
+                    apsynops ="Construct and design a new lander that has the ability to land on Duna.  The use of parachutes and preliminary test flight in Kerbin atmosphere is highly suggest by Both engineering division, and Management. "+
+                    "The first use of Drag Chutes might come in very handy for slowing down the lander on Decent to the Duna Surface. \n\n"+
+                    "The first practice run will be conducted on the Mun.  Get the lander to the Colony module located on the mun.  High precision intercept is very difficult in Duna atmosphere so deep thought and planning will be needed "+
+                    "for this mission.  Use the practice missions to make it happen!\n\n"+
+                    "This mission records your Colony Modules postion and requires you to land within a reasonable distance of the colony module.  This information was recorded on your previous mission Apollo-Duna 1.  If you have moved " +
+                    "your colony module since that mission, this will cause issues completing these missions!";
+                    apCompletMessage ="Great job on that lander, work out any bugs or problems that you encourtered during this mission in preperation of the next mission.";
+                    break;
+                case 3:
+                    apdHash ="Duna 3";
+                    apTitle ="Apollo-Duna 3: Crew Test on Mun Colony Module.";
+                    apDescription ="Congratulations on your first Colony test on the Mun.  It is now time to rotate the crew and conduct a 2nd series of test.  A new crew will be delivered to the Mun Colony habital and stay for " +
+                    "another month.  This will conclude the testing phase of the Duna Colony module and should clear the vehicle for delivery to Duna.  Make sure any bugs are worked out in the Colony Habitat and Lander.  Good luck.";
+                    apsynops ="Launch you Lander to the mun.  Land near your Colony habitat.  Mission records have recorded where your Colony habitat is located.  Like the last unmanned mission we are checking to make sure "+
+                    "that you land close enough to the Colony habitat.  If you don’t then Mission will be considered failed.  The habitat is important for survival of the crew on Duna.  If you land to far away "+
+                    "they will not survive the yearlong mission on Duna!\n\n"+
+                    "When crew is set up conduct Scientific studies on the Mun.  Your mission will last 1 month for the test.  After a month return to kerbin safely!";
+                    apCompletMessage ="Great job, the civilian population of kerbin are getting very excited about the prospect of a kerbal landing on Duna.  Lets make this happen.";
+                    break;
+                case 4:
+                    apdHash ="Duna 4";
+                    apTitle ="Apollo 4: Crew Transfer on Mun Colony Module. ";
+                    apDescription ="Live Crew Habitat Test:  Its time we conduct a live crew test of our test Lunar Colony module.  You will launch your new Test lander with crew to the Lunar Colony module.  When the crew arrive "+
+                    "they will conduct scientific test and stay in the module for 1 Months’ time.  \n\n"+
+                    "When the test in complete they will launch back to Kerbin and the 2nd crew will launch and conduct a 2nd month test in the Lunar Colony module.\n\n"+
+                    "These test are to practice any and all scientific activities you plan to conduct on the Actual Duna Colony module when it arrives at Duna.";
+                    apsynops ="Launch the 2nd crew to the Lunar Colony Module and conduct scientific test and studies for 1 months’ time.  After completion of these test return you crew safely to Kerbin.\n\n"+
+                    "Objective are to test and fix any issues in the Lunar Colony module and the Lander.";
+                    apCompletMessage ="We are now much closer to our final goal of landing a kerbal on Duna.  It time to work out any final bugs that might of been found during these last two missions.  Once the Duna missions start we "+
+                    "will not be able to fix these issue!  So lets get it right the first time!";
+                    break;
+                case 5:
+                    apdHash ="Duna 5";
+                    apTitle ="Apollo-Duna 5: Duna Apollo Flyby With Crew";
+                    apDescription ="Duna Flyby:  We have tested a new Colony Module, and new Lander for Duna.  But now we also must have a way to get to Duna.  Design a Vessel that can carry your crew and landers to Duna.  "+
+                    "This is really your choice.  You can split up the vessels into many.  Or you can construct 1 large vessel the choice is yours. \n\n"+ 
+                    "This first mission is only a flyby and Orbit of Duna.  You can use this mission for many purposes.  Testing your ability of launching to Duna should be of top Priority.  Establishing a "+
+                    "network of satellites if need be is also a good idea.  The main point of the mission is to bring your crew of kerbals to Duna and survive.";
+                    apsynops ="Construct a vessel to fly to Duna.  Bring 3 Kerbals with you on this trip and make sure they survive.";
+                    apCompletMessage ="Nice job on bring our kerbals on first orbit of Duna.  These lucky kerbals are the first to see Duna in person.  They are proud of what the accomplished.";
+                    break;
+                case 6:
+                    apdHash ="Duna 6";
+                    apTitle ="Apollo-Duna 6: Land Colony Module (without crew) on Duna.";
+                    apDescription ="It’s time to start the main objective of the Apollo-Duna missions.  Our first priority is to get our new Colony Module on Duna safely.  After delivery of this module we can send the first crew "+
+                    "to Duna. This is a very important mission, without the colony module there is No Apollo-Duna mission.\n\n"+ 
+                    "You can also use this mission to deliver any other type of module that you may need to keep your kerbals alive on Duna for a year.";
+                    apsynops ="Deliver your colony module to Duna.  Any other type of support mission you have planned can be launched in this window also.";
+                    apCompletMessage ="Great job on delivery your Colony module to Duna.  We have recorded the landing site in our computers and all crew missions will be required to land in the area the Colony module is located.\n\n"+
+                    "Next mission we will launch our crew to Duna.  We just need to wait for a new launch window to open up.";
+                    break;
+                case 7:
+                    apdHash ="Duna 8";
+                    apTitle ="Apollo-Duna 8: Land Duna Expedition 1 On Duna.";
+                    apDescription ="It’s time to deliver the first crew to the Duna Colony module.  We will launch at the very next available launch window.  Any last minute adjustments that need to be made to lander " +
+                    "should be done now.";
+                    apsynops ="Launch 3 crew members to Duna and land them at your Colony Module.  They will stay for at least 6 months on Planet.";
+                    apCompletMessage ="Great job, the World is celebrating the Successful return of our Astronaut’s.  These first pioneers on Duna have become Hero’s among the civilian population.  It’s time to concentrate on the " +
+                    "2nd Rotation crew."; 
+                    break;
+                case 8:
+                    apdHash ="Duna 9";
+                    apTitle ="Apollo-Duna 9: Land Duna Expedition 2 On Duna.";
+                    apDescription ="Talk of a replacement program for Apollo has spread throughout the Kerbal Space Center.  Apollo has become too expensive! We can do the same thing cheaper.  But for now Apollo-Duna 9 is still " +
+                    "on the table.  This could be the last great mission for the Apollo program!\n\n" +
+                    "We are tasked with bringing the 2nd Rotation crew to duna.  We have done this before, and can do it again.";
+                    apsynops ="Land the 2nd rotation crew for its stay on Duna.  Conduct more science experiments and then return home safely. ";
+                    apCompletMessage ="The official word has come in Apollo is to be retired.  But first Apollo will be used in one more important mission.  Eve.  Eve has a very similar delta V profile as Duna.  We want you to set " +
+                    "up a new mission for an Eve Orbit.  More information will be released in a few days.  For now good job on the last mission to Duna.  Apollo has come a long way!";
+                    break;
+                case 9:
+                    apdHash ="Eve Last Flight Apollo";
+                    apTitle = "Apollo-Eve: The last Flight of Apollo.";
+                    apDescription ="The last flight of Apollo:  Apollo will go down as one of the most successful space craft in Kerbal history.  But it’s time is at an end.  It has served us well, but talk of the new Constellation "+
+                    "program has hit the Center.  But before that day comes we have one more milestone for Apollo.  Eve!"+
+                    "This is a standard Orbit and observe mission.  We are to bring a crew of 3 using the existing Apollo space craft to EVE.  Eve is way too much for a lander.  Takes more Delta-V to get off Eve then "+
+                    "Kerbin!  So for now we will orbit and take scientific measurements.  If you wish you may land on its moon.  But other than that don’t attempt to land of Eve with a Manned Vessel!";
+                    apsynops ="Bring a 3 man capsule and any support craft you need into orbit of Eve.  Conduct scientific research of Eve and it’s moon.  The rest of Apollo Money has been applied to this mission.  "+
+                    "It pays well.  We will leave the science up to you!  After completion bring the crew home safely.";
+                    apCompletMessage ="The day has come, the last flight of Apollo.  You have proven that kerbals can do anything if they work hard and take risk.  The Apollo program was a huge risk.  From the first Mun landing to "+
+                    "Duna, and now EVE.  Apollo has proven itself over and over, and will continue to aspire young kerbals for Generations!  You should be proud of your Astronaut’s, and your ships.  You have done well.\n\n "+
+                    "It’s time to take the gloves off and create your own story.  Your own hero’s… And continue the adventure, where ever that might take you. \n\n"+ 
+                    "Good luck.";
+                    break;
+            }
         }
         
         protected override bool Generate()
@@ -1640,6 +1663,19 @@ namespace MissionControllerEC
             if (HighLogic.LoadedSceneIsFlight) { return false; }
             if (SaveInfo.Duna_NonHistorical_Contracts_Off == true) { return false; }
             ApolloDunaMissionNumber = SaveInfo.apolloDunaCurrentNumber;
+            apdMessageSelection();
+            if (ApolloDunaMissionNumber == 9)
+            {
+                this.AddParameter(new InOrbitGoal(targetBody4), null);
+                this.AddParameter(new CollectScience(targetBody4, BodyLocation.Surface), null);
+                this.AddParameter(new GetCrewCount(crewCount), null);
+                this.AddParameter(new LandingParameters(targetBody2, true), null);
+                base.SetFunds(30000f, 185000f, targetBody4);
+                base.SetExpiry(3f, 10f);
+                base.SetDeadlineDays(100f, targetBody4);
+                base.SetReputation(20f, targetBody4);
+                base.SetScience(3f, targetBody4);
+            }
 
             if (ApolloDunaMissionNumber == 8)
             {
@@ -1649,7 +1685,7 @@ namespace MissionControllerEC
                 this.AddParameter(new GetCrewCount(crewCount), null);
                 this.AddParameter(new TimeCountdownLanding(targetBody3, 648000, "Crew must stay for this amount of time",false), null);               
                 this.AddParameter(new LandingParameters(targetBody2, true), null);
-                base.SetFunds(30000f, 250000f, targetBody3);
+                base.SetFunds(30000f, 200000f, targetBody3);
                 base.SetExpiry(3f, 10f);
                 base.SetDeadlineDays(100f, targetBody3);
                 base.SetReputation(4f, targetBody3);
@@ -1663,7 +1699,7 @@ namespace MissionControllerEC
                 this.AddParameter(new GetCrewCount(crewCount), null);
                 this.AddParameter(new TimeCountdownLanding(targetBody3, 648000, "Crew must stay for this amount of time",true), null);               
                 this.AddParameter(new LandingParameters(targetBody2, true), null);
-                base.SetFunds(30000f, 250000f, targetBody3);
+                base.SetFunds(30000f, 200000f, targetBody3);
                 base.SetExpiry(3f, 10f);
                 base.SetDeadlineDays(100f, targetBody3);
                 base.SetReputation(4f, targetBody3);
@@ -1675,7 +1711,7 @@ namespace MissionControllerEC
                 this.AddParameter(new InOrbitGoal(targetBody3), null);
                 this.AddParameter(new MaxSeatCount(maxSeatCountShip), null);
                 this.AddParameter(new GetCrewCount(0), null);               
-                base.SetFunds(25000f, 275000f, targetBody3);
+                base.SetFunds(25000f, 210000f, targetBody3);
                 base.SetExpiry(3f, 10f);
                 base.SetDeadlineDays(100f, targetBody3);
                 base.SetReputation(25f, targetBody3);
@@ -1764,250 +1800,37 @@ namespace MissionControllerEC
 
         protected override string GetHashString()
         {
-            if (ApolloDunaMissionNumber == 8)
-            {
-                return "Duna 9";
-            }
-            if (ApolloDunaMissionNumber == 7)
-            {
-                return "Duna 8";
-            }
-            
-            if (ApolloDunaMissionNumber == 6)
-            {
-                return "Duna 6";
-            }
-            if (ApolloDunaMissionNumber == 5)
-            {
-                return "Duna 5";
-            }
-            if (ApolloDunaMissionNumber == 4)
-            {
-                return "Duna 4";
-            }
-            if (ApolloDunaMissionNumber == 3)
-            {
-                return "Duna 3";
-            }
-            if (ApolloDunaMissionNumber == 2)
-            {
-                return "Duna 2";
-            }
-            if (ApolloDunaMissionNumber == 1)
-            {
-                return "Duna 1";
-            }
-            else
-            {
-                return "";
-            }
-
+            return apdHash;
         }
         protected override string GetTitle()
         {
-            if (ApolloDunaMissionNumber == 8)
-            {
-                return "Apollo-Duna 9: Land Duna Expedition 2 On Duna.";
-            }
-            if (ApolloDunaMissionNumber == 7)
-            {
-                return "Apollo-Duna 8: Land Duna Expedition 1 On Duna.";
-            }
-            
-            if (ApolloDunaMissionNumber == 6)
-            {
-                return "Apollo-Duna 6: Land Colony Module (without crew) on Duna.";
-            }
-            if (ApolloDunaMissionNumber == 5)
-            {
-                return "Apollo-Duna 5: Duna Apollo Flyby With Crew";
-            }
-            if (ApolloDunaMissionNumber == 4)
-            {
-                return "Apollo 4: Crew Transfer on Mun Colony Module. ";
-            }
-            if (ApolloDunaMissionNumber == 3)
-            {
-                return "Apollo-Duna 3: Crew Test on Mun Colony Module.";
-            }
-            if (ApolloDunaMissionNumber == 2)
-            {
-                return "Apollo-Duna 2: Duna Lander Development and Test Mun.";
-            }
-            if (ApolloDunaMissionNumber == 1)
-            {
-                return "Apollo-Duna 1: Mun Test Colony Module.";
-            }
-            else
-            {
-                return "";
-            }
+            return apTitle;
         }
         protected override string GetDescription()
         {
-            if (ApolloDunaMissionNumber == 8)
-            {
-            }
-            if (ApolloDunaMissionNumber == 7)
-            {
-                return "It’s time to deliver the first crew to the Duna Colony module.  We will launch at the very next available launch window.  Any last minute adjustments that need to be made to lander " +
-                    "should be done now.";
-            }
-            
-            if (ApolloDunaMissionNumber == 6)
-            {
-                return "It’s time to start the main objective of the Apollo-Duna missions.  Our first priority is to get our new Colony Module on Duna safely.  After delivery of this module we can send the first crew "+
-                    "to Duna. This is a very important mission, without the colony module there is No Apollo-Duna mission.\n\n"+
-  
-                    "You can also use this mission to deliver any other type of module that you may need to keep your kerbals alive on Duna for a year.";
-            }
-            if (ApolloDunaMissionNumber == 5)
-            {
-                return "Duna Flyby:  We have tested a new Colony Module, and new Lander for Duna.  But now we also must have a way to get to Duna.  Design a Vessel that can carry your crew and landers to Duna.  "+
-                    "This is really your choice.  You can split up the vessels into many.  Or you can construct 1 large vessel the choice is yours. \n\n"+ 
-                    "This first mission is only a flyby and Orbit of Duna.  You can use this mission for many purposes.  Testing your ability of launching to Duna should be of top Priority.  Establishing a "+
-                    "network of satellites if need be is also a good idea.  The main point of the mission is to bring your crew of kerbals to Duna and survive.";
-            }
-            if (ApolloDunaMissionNumber == 4)
-            {
-                return "Congratulations on your first Colony test on the Mun.  It is now time to rotate the crew and conduct a 2nd series of test.  A new crew will be delivered to the Mun Colony habital and stay for " +
-                    "another month.  This will conclude the testing phase of the Duna Colony module and should clear the vehicle for delivery to Duna.  Make sure any bugs are worked out in the Colony Habitat and Lander.  Good luck.";                    
-            }
-            if (ApolloDunaMissionNumber == 3)
-            {
-                return "Live Crew Habitat Test:  Its time we conduct a live crew test of our test Lunar Colony module.  You will launch your new Test lander with crew to the Lunar Colony module.  When the crew arrive "+
-                    "they will conduct scientific test and stay in the module for 1 Months’ time.  \n\n"+
-
-                    "When the test in complete they will launch back to Kerbin and the 2nd crew will launch and conduct a 2nd month test in the Lunar Colony module.\n\n"+
-                    "These test are to practice any and all scientific activities you plan to conduct on the Actual Duna Colony module when it arrives at Duna.";
-            }
-            if (ApolloDunaMissionNumber == 2)
-            {
-                return "We need you to construct and design a new Duna Landing Module that can hold 3 kerbals with enough supplies to last at least a year on Duna. "+
-                    " The plan is to send 2 Expeditions to Duna.  Expedition 1 will arrive first and stay for a year. "+
-                    "After Expedition 2 arrives it also must survive for at least 1 year also!  So you must plan your supplies for these two missions and and support craft that you might need to keep these two "+
-                    "missions going. \n\n"+
-
-                    "Duna 2 is a test bed for your new Landing module.  . You need to land your test lander near the Colony module you landed on the Mun in Apollo-Duna 1.  This will help with your ability to land "+
-                    "at a specific spot without risk of death or injury to any Kerbals.  Good luck.";
-            }
-            else
-            {
-                return "After the successful Apollo Moon Missions Kerbal Space Center Officials planed a new Mission that could take Kerbal kind to the Planet Duna.  Dubbed Apollo-Duna Missions these missions would be the " +
-                    "backbone of the new Kerbal Exploration and colonization system that would help spread kerbal kind throughout the kerbin system.\n" +
-
-                    "Duna 1 is the mission where Engineers and scientist built and delivered a experimental Colony Habitat to the surface of the mun.  This engineering test was slated for 4 Missions.  1. The delivery " +
-                    "of colony Module.  2. The construction and landing of the New Duna Lander.  3. The delivery of the Colonies first crew.  And 4. The crew transfer Mission for the Year 2 Test Mission.  These missions helped " +
-                    "develop the procedures and experience needed to bring kerbals to Duna with a Higher success rate. \n\n" +
-                    "This Unmanned test vehicle will be launched from Kerbin and land on the Farside Crater located on our own Mun.  This will be tested by two separate crews " +
-                    "that will each spend at least 1 month on the mun.  Use this time to plan out how to survive on Duna and work out any bugs that might happen with the new equipment.";
-            }
-            
-
+            return apDescription;
         }
         protected override string GetSynopsys()
         {
-            if (ApolloDunaMissionNumber == 8)
-            {
-            }
-            if (ApolloDunaMissionNumber == 7)
-            {
-                return "Launch 3 crew members to Duna and land them at your Colony Module.  They will stay for at least 6 months on Planet.";
-            }
-            
-            if (ApolloDunaMissionNumber == 6)
-            {
-                return "Deliver your colony module to Duna.  Any other type of support mission you have planned can be launched in this window also.";
-            }
-            if (ApolloDunaMissionNumber == 5)
-            {
-                return "Construct a vessel to fly to Duna.  Bring 3 Kerbals with you on this trip and make sure they survive.";
-            }
-            if (ApolloDunaMissionNumber == 4)
-            {
-                return "Launch the 2nd crew to the Lunar Colony Module and conduct scientific test and studies for 1 months’ time.  After completion of these test return you crew safely to Kerbin.\n\n"+
-                    "Objective are to test and fix any issues in the Lunar Colony module and the Lander.";
-            }
-            if (ApolloDunaMissionNumber == 3)
-            {
-                return "Launch you Lander to the mun.  Land near your Colony habitat.  Mission records have recorded where your Colony habitat is located.  Like the last unmanned mission we are checking to make sure "+
-                    "that you land close enough to the Colony habitat.  If you don’t then Mission will be considered failed.  The habitat is important for survival of the crew on Duna.  If you land to far away "+
-                    "they will not survive the yearlong mission on Duna!\n\n"+
-                    "When crew is set up conduct Scientific studies on the Mun.  Your mission will last 1 month for the test.  After a month return to kerbin safely!";
-            }
-            if (ApolloDunaMissionNumber == 2)
-            {
-                return "Construct and design a new lander that has the ability to land on Duna.  The use of parachutes and preliminary test flight in Kerbin atmosphere is highly suggest by Both engineering division, and Management. "+
-                    "The first use of Drag Chutes might come in very handy for slowing down the lander on Decent to the Duna Surface. \n\n"+
-
-                    "The first practice run will be conducted on the Mun.  Get the lander to the Colony module located on the mun.  High precision intercept is very difficult in Duna atmosphere so deep thought and planning will be needed "+
-                    "for this mission.  Use the practice missions to make it happen!\n\n"+
-                    "This mission records your Colony Modules postion and requires you to land within a reasonable distance of the colony module.  This information was recorded on your previous mission Apollo-Duna 1.  If you have moved " +
-                        "your colony module since that mission, this will cause issues completing these missions!";
-
-            }
-            else
-            {
-                return "We need you to construct and design a new Duna Colony Module that can hold 3 kerbals with enough supplies to last at least a year on Duna.  This module must also be able to survive 2 separate " +
-                    "Crew rotations.  The plan is to send 2 Expeditions to Duna.  Expedition 1 will arrive first and stay for a year.  Expedition 2 will launch a year later, while Expedition 1 returns to Kerbin. " +
-                    "After Expedition 2 arrives it also must survive for at least 1 year also!  So you must plan your supplies for these two missions and and support craft that you might need to keep these two " +
-                    "missions going. \n\n" +
-
-                    "Duna 1 is a test bed for your new Colony module.  This test bed will be launched from Kerbin and land on the Farside Crater located on our own Mun.  This will be tested by two separate crews " +
-                    "that will each spend at least 1 month on the mun.  Use this time to plan out how to survive on Duna and work out any bugs that might happen with the new equipment.\n\n" +
-
-                    "Your first task is to build the Colony Module and land it on the Mun (Without Crew).";
-            }
+            return apsynops;
         }
         protected override string MessageCompleted()
         {
             SaveInfo.apolloDunaCurrentNumber++;
-            if (ApolloDunaMissionNumber == 8)
-            {
-            }
-            if (ApolloDunaMissionNumber == 7)
-            {
-                return "Great job, the World is celebrating the Successful return of our Astronaut’s.  These first pioneers on Duna have become Hero’s among the civilian population.  It’s time to concentrate on the " +
-                    "2nd Rotation crew.";  
-
-            }
-            
-            if (ApolloDunaMissionNumber == 6)
-            {
-                GetLatandLon(FlightGlobals.ActiveVessel);
-                return "Great job on delivery your Colony module to Duna.  We have recorded the landing site in our computers and all crew missions will be required to land in the area the Colony module is located.\n\n"+
-                    "Next mission we will launch our crew to Duna.  We just need to wait for a new launch window to open up.";
-            }
-            if (ApolloDunaMissionNumber == 5)
-            {
-                return "Nice job on bring our kerbals on first orbit of Duna.  These lucky kerbals are the first to see Duna in person.  They are proud of what the accomplished.";
-            }
-            if (ApolloDunaMissionNumber == 4)
-            {
-                return "We are now much closer to our final goal of landing a kerbal on Duna.  It time to work out any final bugs that might of been found during these last two missions.  Once the Duna missions start we "+
-                    "will not be able to fix these issue!  So lets get it right the first time!";
-            }
-            if (ApolloDunaMissionNumber == 3)
-            {
-                return "Great job, the civilian population of kerbin are getting very excited about the prospect of a kerbal landing on Duna.  Lets make this happen.";
-            }
-            if (ApolloDunaMissionNumber == 2)
-            {
-                return "Great job on that lander, work out any bugs or problems that you encourtered during this mission in preperation of the next mission.";
-            }
-            else
-            {
-                GetLatandLon(FlightGlobals.ActiveVessel);
-                return "Great job you have successfully landed the colony module on the Mun.  We are now ready to construct a new lander capable of landing on Duna.  "+
-                    "We will first test it on the Mun and make sure everything works as planned. ";
-            }
+            return apCompletMessage;
         }
 
         protected override void OnLoad(ConfigNode node)
         {
+            Tools.ContractLoadCheck(node, ref apdHash, "Hash String Not Loaded", apdHash, "apdhash");
+            Tools.ContractLoadCheck(node, ref apTitle, "Title Not Loaded", apTitle, "apdtitle");
+            Tools.ContractLoadCheck(node, ref apDescription, "Description Not Loaded", apDescription, "apddescript");
+            Tools.ContractLoadCheck(node, ref apsynops, "Synops Not Loaded", apsynops, "apdsynop");
+            Tools.ContractLoadCheck(node, ref apCompletMessage, "Message Complete Not Loaded", apCompletMessage, "apdmessagecomplete");
             Tools.ContractLoadCheck(node, ref targetBody, FlightGlobals.Bodies[2], targetBody, "targetBody");
             Tools.ContractLoadCheck(node, ref targetBody2, FlightGlobals.Bodies[1], targetBody2, "targetBody2");
             Tools.ContractLoadCheck(node, ref targetBody3, FlightGlobals.Bodies[3], targetBody3, "targetBody3");
+            Tools.ContractLoadCheck(node, ref targetBody4, FlightGlobals.Bodies[4], targetBody4, "targetbody4");
             Tools.ContractLoadCheck(node, ref ApolloDunaBiome, "None", ApolloDunaBiome, "apbiome");            
             Tools.ContractLoadCheck(node, ref ApolloDunaMissionNumber, SaveInfo.apolloCurrentNumber, ApolloDunaMissionNumber, "apnumber");           
             Tools.ContractLoadCheck(node, ref crewCount, 3, crewCount, "crewcount");
@@ -2027,6 +1850,13 @@ namespace MissionControllerEC
             node.AddValue("crewcount", crewCount);
             node.AddValue("maxseats", maxSeatCountShip);            
             node.AddValue("landingtitle", landingTitle);
+            node.AddValue("targetbody4",targetBody4);
+
+            node.AddValue("apdhash", apdHash);
+            node.AddValue("apdtitle", apTitle);
+            node.AddValue("apddescript", apDescription);
+            node.AddValue("apdsynop", apsynops);
+            node.AddValue("apdmessagecomplete", apCompletMessage);
         }
 
         public override bool MeetRequirements()
@@ -2067,7 +1897,7 @@ namespace MissionControllerEC
 
             this.AddParameter(new InOrbitGoal(targetBody), null);
             this.AddParameter(new GetCrewCount(0), null);
-            base.SetFunds(30000f, 225000f, targetBody);
+            base.SetFunds(30000f, 150000f, targetBody);
             base.SetExpiry(3f, 10f);
             base.SetDeadlineDays(100f, targetBody);
             base.SetReputation(20f, targetBody);
@@ -2133,8 +1963,10 @@ namespace MissionControllerEC
 
         public override bool MeetRequirements()
         {
-            if (SaveInfo.apolloDunaCurrentNumber > 5) { return true; }
-            if (SaveInfo.apolloDunaStation == true || SaveInfo.apolloDunaCurrentNumber == 9) { return false; }
+            if (SaveInfo.apolloCurrentNumber > 6 && SaveInfo.apolloDunaCurrentNumber >= 5 && SaveInfo.apolloDunaStation == false)
+            {
+                return true;
+            }
             else { return false; }
         }
     }
