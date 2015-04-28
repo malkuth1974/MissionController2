@@ -18,16 +18,13 @@ namespace MissionControllerEC
         [Persistent]internal bool No_Part_Test_Contracts = false;       
         [Persistent]internal bool RevertOn = false;
         [Persistent]internal bool DebugMenu = false;       
-
-        [Persistent]internal double contract_Satellite_Max_Height = 75000;
-        [Persistent]internal double contract_Satellite_MIn_Height = 325000;        
-        [Persistent]internal double contract_Satellite_Between_Difference = 2000;        
+               
         [Persistent]internal double contract_Orbital_Period_Max_InSeconds = 21698;
         [Persistent]internal double contract_Orbital_Period_Min_InSeconds = 21598;
         [Persistent]internal int Contract_Payment_Multiplier = 1;
         [Persistent]internal double contract_Random_Orbital_Period_Difference = 600;
         [Persistent]internal double contract_Random_Orbital_Period_MinInSeconds = 2000;
-        [Persistent]internal double contract_Random_Orbital_Period_MaxInSeconds = 120000;
+        [Persistent]internal double contract_Random_Orbital_Period_MaxInSeconds = 21600;
 
         [Persistent]internal int contract_repair_Random_percent = 20;
         [Persistent]internal int contract_repair_Station_Random_percent = 20;

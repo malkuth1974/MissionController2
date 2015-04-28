@@ -134,8 +134,9 @@ namespace MissionControllerEC
             }
             else
             {
-                atmosphere = -body.atmosphereScaleHeight * Math.Log(1E-6) * 1000;
-                Debug.Log("Body and Atmoshpere is " + atmosphere);
+                atmosphere = body.atmosphereDepth;
+
+                Debug.Log("Body and AtmoshpereDepth is " + atmosphere);
             }
 
             return Math.Round(atmosphere);

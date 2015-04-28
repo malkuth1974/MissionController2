@@ -1670,11 +1670,11 @@ namespace MissionControllerEC
                 this.AddParameter(new CollectScience(targetBody4, BodyLocation.Surface), null);
                 this.AddParameter(new GetCrewCount(crewCount), null);
                 this.AddParameter(new LandingParameters(targetBody2, true), null);
-                base.SetFunds(30000f, 185000f, targetBody4);
+                base.SetFunds(30000f, 350000f, targetBody);
                 base.SetExpiry(3f, 10f);
-                base.SetDeadlineDays(100f, targetBody4);
-                base.SetReputation(20f, targetBody4);
-                base.SetScience(3f, targetBody4);
+                base.SetDeadlineDays(100f, targetBody);
+                base.SetReputation(20f, targetBody);
+                base.SetScience(3f, targetBody);
             }
 
             if (ApolloDunaMissionNumber == 8)
@@ -1685,11 +1685,11 @@ namespace MissionControllerEC
                 this.AddParameter(new GetCrewCount(crewCount), null);
                 this.AddParameter(new TimeCountdownLanding(targetBody3, 648000, "Crew must stay for this amount of time",false), null);               
                 this.AddParameter(new LandingParameters(targetBody2, true), null);
-                base.SetFunds(30000f, 200000f, targetBody3);
+                base.SetFunds(30000f, 400000f, targetBody);
                 base.SetExpiry(3f, 10f);
-                base.SetDeadlineDays(100f, targetBody3);
-                base.SetReputation(4f, targetBody3);
-                base.SetScience(1f, targetBody3);
+                base.SetDeadlineDays(100f, targetBody);
+                base.SetReputation(4f, targetBody);
+                base.SetScience(1f, targetBody);
             }
             if (ApolloDunaMissionNumber == 7)
             {
@@ -1699,23 +1699,23 @@ namespace MissionControllerEC
                 this.AddParameter(new GetCrewCount(crewCount), null);
                 this.AddParameter(new TimeCountdownLanding(targetBody3, 648000, "Crew must stay for this amount of time",true), null);               
                 this.AddParameter(new LandingParameters(targetBody2, true), null);
-                base.SetFunds(30000f, 200000f, targetBody3);
+                base.SetFunds(30000f, 400000f, targetBody);
                 base.SetExpiry(3f, 10f);
-                base.SetDeadlineDays(100f, targetBody3);
-                base.SetReputation(4f, targetBody3);
-                base.SetScience(1f, targetBody3);
+                base.SetDeadlineDays(100f, targetBody);
+                base.SetReputation(4f, targetBody);
+                base.SetScience(1f, targetBody);
             }
             
             if (ApolloDunaMissionNumber == 6)
             {
                 this.AddParameter(new InOrbitGoal(targetBody3), null);
                 this.AddParameter(new MaxSeatCount(maxSeatCountShip), null);
-                this.AddParameter(new GetCrewCount(0), null);               
-                base.SetFunds(25000f, 210000f, targetBody3);
+                this.AddParameter(new GetCrewCount(0), null);
+                base.SetFunds(25000f, 300000f, targetBody);
                 base.SetExpiry(3f, 10f);
-                base.SetDeadlineDays(100f, targetBody3);
-                base.SetReputation(25f, targetBody3);
-                base.SetScience(5f, targetBody3);
+                base.SetDeadlineDays(100f, targetBody);
+                base.SetReputation(25f, targetBody);
+                base.SetScience(5f, targetBody);
             }
             if (ApolloDunaMissionNumber == 5)
             {
@@ -1723,11 +1723,11 @@ namespace MissionControllerEC
                 this.AddParameter(new CollectScience(targetBody3, BodyLocation.Surface), null);
                 this.AddParameter(new GetCrewCount(crewCount), null);
                 this.AddParameter(new LandingParameters(targetBody2, true), null);
-                base.SetFunds(30000f, 175000f, targetBody3);
+                base.SetFunds(30000f, 300000f, targetBody3);
                 base.SetExpiry(3f, 10f);
-                base.SetDeadlineDays(100f, targetBody3);
-                base.SetReputation(20f, targetBody3);
-                base.SetScience(3f, targetBody3);
+                base.SetDeadlineDays(100f, targetBody);
+                base.SetReputation(20f, targetBody);
+                base.SetScience(3f, targetBody);
             }
             if (ApolloDunaMissionNumber == 4)
             {
@@ -1897,7 +1897,7 @@ namespace MissionControllerEC
 
             this.AddParameter(new InOrbitGoal(targetBody), null);
             this.AddParameter(new GetCrewCount(0), null);
-            base.SetFunds(30000f, 150000f, targetBody);
+            base.SetFunds(30000f, 75000f, targetBody);
             base.SetExpiry(3f, 10f);
             base.SetDeadlineDays(100f, targetBody);
             base.SetReputation(20f, targetBody);
@@ -2011,10 +2011,10 @@ namespace MissionControllerEC
             }
             if (SaveInfo.all_Historical_Contracts_Off == true) { return false; }
             targetBody = Planetarium.fetch.Home;
-            GMaxApA = UnityEngine.Random.Range((int)st.contract_Satellite_MIn_Height, (int)st.contract_Satellite_Max_Height);
-            GMinApA = GMaxApA - st.contract_Satellite_Between_Difference;
+            GMaxApA = Tools.RandomNumber((int)Tools.getBodyAltitude(targetBody) + 3000, (int)Tools.getBodyAltitude(targetBody) + 300000);
+            GMinApA = GMaxApA - 2000;
             GMaxPeA = GMaxApA;
-            GMinPeA = GMinApA;
+            GMinPeA = GMinApA - 2000;
 
             AgenaParameter = this.AddParameter(new AgenaInOrbit(targetBody), null);
             AgenaParameter.SetFunds(2000.0f, targetBody);
@@ -2203,10 +2203,10 @@ namespace MissionControllerEC
             }
             if (SaveInfo.all_Historical_Contracts_Off == true) { return false; }
             targetBody = Planetarium.fetch.Home;
-            GMaxApA = UnityEngine.Random.Range((int)st.contract_Satellite_MIn_Height, (int)st.contract_Satellite_Max_Height);
-            GMinApA = GMaxApA - st.contract_Satellite_Between_Difference;
+            GMaxApA = Tools.RandomNumber((int)Tools.getBodyAltitude(targetBody) + 3000, (int)Tools.getBodyAltitude(targetBody) + 300000);
+            GMinApA = GMaxApA - 2000;
             GMaxPeA = GMaxApA;
-            GMinPeA = GMinApA;
+            GMinPeA = GMinApA - 2000;
 
             vesselTestID = SaveInfo.AgenaTargetVesselID;
             vesselTestName = SaveInfo.AgenaTargetVesselName;

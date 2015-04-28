@@ -48,7 +48,7 @@ namespace MissionControllerEC
 
             GUILayout.Space(10);
             GUILayout.BeginHorizontal();
-            GUILayout.Box("Rescue Kerbal Contracts Off (Needs Restart)",MCE_ScenarioStartup.StyleBold, GUILayout.Width(300));
+            GUILayout.Box("Recover Assets Contracts Off (Needs Restart)",MCE_ScenarioStartup.StyleBold, GUILayout.Width(300));
             GUILayout.Box("" + settings.No_Rescue_Kerbal_Contracts, MCE_ScenarioStartup.styleBlueBold, GUILayout.Width(75));
             settings.No_Rescue_Kerbal_Contracts = GUILayout.Toggle(settings.No_Rescue_Kerbal_Contracts, "Set", GUILayout.Width(25));
             GUILayout.EndHorizontal();

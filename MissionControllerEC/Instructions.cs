@@ -274,11 +274,11 @@ namespace MissionControllerEC
 
         public void onContractLoaded()
         {           
-            if (settings.No_Rescue_Kerbal_Contracts && ContractSystem.ContractTypes.Contains(typeof(Contracts.Templates.RescueKerbal)))          
+            if (settings.No_Rescue_Kerbal_Contracts && ContractSystem.ContractTypes.Contains(typeof(Contracts.Templates.RecoverAsset)))          
             {
                 try
                 {
-                    ContractSystem.ContractTypes.Remove(typeof(Contracts.Templates.RescueKerbal));
+                    ContractSystem.ContractTypes.Remove(typeof(Contracts.Templates.RecoverAsset));
                     Debug.Log("Removed RescueKerbal Type Contracts from Gererating");
                 }
 
@@ -315,7 +315,7 @@ namespace MissionControllerEC
                 //Debug.Log("Death Event " + value.msg);
             }
         }
-
+      
         public void getSupplyList(bool stationOnly)
         {
             bool boolStation = stationOnly;

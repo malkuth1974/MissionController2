@@ -15,7 +15,7 @@ namespace MissionControllerEC
         [KSPField(isPersistant = false, guiActive = true, guiName = "Starting Scan:")]
         private bool scanStart = false;
 
-        [KSPEvent(guiActive = true, guiName = "Start Ionization Chamber Scan", active = true)]
+        [KSPEvent(guiActive = true, guiName = "Ionization Scan(Contract)", active = true)]
         public void StartResearchMCE()
         {           
           checkVesselResearch();           

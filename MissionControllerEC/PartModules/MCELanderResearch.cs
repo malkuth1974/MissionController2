@@ -21,7 +21,7 @@ namespace MissionControllerEC
         [KSPField(isPersistant = false, guiActive = true, guiName = "Starting Mass Spectrometry:")]
         public bool scanStart = false;
 
-        [KSPEvent(guiActive = true, guiName = "Start Mass Spectrometry Analysis", active = true)]
+        [KSPEvent(guiActive = true, guiName = "Mass Spectrometry(Contract)", active = true)]
         public void StartResearchMCE()
         {
             checkVesselResearch();

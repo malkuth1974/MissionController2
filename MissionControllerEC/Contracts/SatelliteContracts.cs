@@ -91,26 +91,22 @@ namespace MissionControllerEC
                 case 0:
                     satStoryDef = "Communications satellites provide a worldwide linkup of radio, telephone, and television. The first (Earth) communications satellite was Echo 1 ; launched in 1960, it was a large metallized " +
                         "balloon that reflected radio signals striking it. This passive mode of operation quickly gave way to the active or repeater mode, in which complex electronic equipment aboard the satellite " +
-                        "receives a signal from the earth, amplifies it, and transmits it to another point on the earth, in this case Kerbin.\n\n"+
-                        "Information and Text about Types of Satellites were researched at www.infoplease.com/encyclopedia/science/satellite-artificial-types-satellites.html";
+                        "receives a signal from the earth, amplifies it, and transmits it to another point on the earth, in this case Kerbin.";
                     break;
                 case 1:
                     satStoryDef = "Weather satellites, or meteorological satellites, provide kerbin scientist continuous, up-to-date information about large-scale atmospheric conditions such as cloud cover and temperature profiles. " +
                         "Tiros 1, the first such (Earth) satellite, was launched in 1960; it transmitted infrared television pictures of the earth's cloud cover and was able to detect the development of hurricanes and to chart " +
-                        "their paths.\n\n" +
-                        "Information and Text about Types of Satellites were researched at www.infoplease.com/encyclopedia/science/satellite-artificial-types-satellites.html";
+                        "their paths.";
                     break;
                 case 2:
                     satStoryDef = "Navigation satellites were developed primarily to satisfy the need for a navigation system that nuclear submarines could use to update their inertial navigation system. This led " +
                         "the (Earth) U.S. navy to establish the Transit program in 1958; the system was declared operational in 1962 after the launch of Transit 5A. Transit satellites provided a constant signal by which " +
                         "aircraft and ships could determine their positions with great accuracy.\n\n"+
-                        "In kerbin society these satellites help with the day to day needs of most travel options for kerbin Land, Sea, Air Based navigation.\n\n"+
-                        "Information and Text about Types of Satellites were researched at www.infoplease.com/encyclopedia/science/satellite-artificial-types-satellites.html";
+                        "In kerbin society these satellites help with the day to day needs of most travel options for kerbin Land, Sea, Air Based navigation.";
                     break;
                 case 3:
                     satStoryDef = "Applications satellites are designed to test ways of improving satellite technology itself. Areas of concern include structure, instrumentation, controls, power supplies, and " +
-                        "telemetry for future communications, meteorological, and navigation satellites.\n\n"+
-                        "Information and Text about Types of Satellites were researched at www.infoplease.com/encyclopedia/science/satellite-artificial-types-satellites.html";
+                        "telemetry for future communications, meteorological, and navigation satellites.";
                     break;
             }
             Debug.Log("Story type: " + satType + " Chosen for satellite contract");
@@ -192,14 +188,14 @@ namespace MissionControllerEC
             GMinecc = UnityEngine.Random.Range(0f, .9f);
             GMaxecc = GMinecc + .09f;
 
-            MaxAltitude = Tools.RandomNumber((int)st.contract_Satellite_MIn_Height, (int)st.contract_Satellite_Max_Height);
+            MaxAltitude = Tools.RandomNumber((int)Tools.getBodyAltitude(targetBody) + 1000, (int)Tools.getBodyAltitude(targetBody) + 300000);
 
-            timeOnStation = Tools.RandomNumber(24678, 110876);
+            timeOnStation = Tools.RandomNumber(4800, 23700);
 
-            MaxApA = Tools.RandomNumber((int)st.contract_Satellite_MIn_Height, (int)st.contract_Satellite_Max_Height);
-            MinApA = MaxApA - st.contract_Satellite_Between_Difference;
-            MaxPeA = MaxApA - st.contract_Satellite_Between_Difference;
-            MinPeA = MaxPeA - st.contract_Satellite_Between_Difference;           
+            MaxApA = Tools.RandomNumber((int)Tools.getBodyAltitude(targetBody) + 3000, (int)Tools.getBodyAltitude(targetBody) + 300000);
+            MinApA = MaxApA - 2000;
+            MaxPeA = MaxApA;
+            MinPeA = MaxPeA - 2000;         
 
             bool parttechUnlock = ResearchAndDevelopment.GetTechnologyState("advConstruction") == RDTech.State.Available;
             int bodyrandom = Tools.RandomNumber(1, 3);
