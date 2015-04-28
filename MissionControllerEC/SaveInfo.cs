@@ -54,18 +54,11 @@ namespace MissionControllerEC
         public static bool NoOrbitalResearchContracts = false;
         public static bool NoRepairContracts = false;
         public static bool all_Historical_Contracts_Off = false;
-        public static bool Duna_NonHistorical_Contracts_Off = false;
-        public static bool Civilian_Contracts_Off = false; 
+        public static bool Duna_NonHistorical_Contracts_Off = false; 
 
         public static bool RepairContractOn = false;
         public static bool RepairStationContract = false;
-        public static bool CivilianLowOrbit = true;
-        public static bool CivilianLanding = true;
-        public static bool CivilianStationExpedition = true;
         public static int SatelliteTypeChoice = 0;
-
-        public static bool CivilianApPod = false;
-        public static string CivilianApName = "none";
 
         public static bool spResourceSet = false;
 

@@ -334,11 +334,7 @@ namespace MissionControllerEC
             {
                 SaveInfo.RepairContractOn = true; SaveInfo.RepairStationContract = true;
             }
-            if (GUILayout.Button("Turn On All Civilian Contracts At Once"))
-            {
-                SaveInfo.CivilianLowOrbit = true; SaveInfo.CivilianLanding = true; SaveInfo.CivilianStationExpedition = true;
-            }
-
+            
             if (GUILayout.Button("Test EVA Type Kerbal"))
             {
                 GetEvaTypeKerbal();
@@ -509,17 +505,13 @@ namespace MissionControllerEC
             SaveInfo.SupplyBodyIDX = supplybodyIDX;
             SaveInfo.supplyContractOn = supplyContractOn;
             SaveInfo.supplyAmount = supplyResAmount;
-
-            SaveInfo.CivilianApPod = apCivilianPod;
-            SaveInfo.CivilianApName = apCivilianName;
-
+           
             SaveInfo.NoOrbitalResearchContracts = noOrbitalContract;
             SaveInfo.NoLanderResearchContracts = noLandingContract;
             SaveInfo.NoSatelliteContracts = noSatelliteContract;
             SaveInfo.NoRepairContracts = noRepairContract;
             SaveInfo.NoOrbitalPeriodcontracts = noOrbitalPeriodContract;
-            SaveInfo.all_Historical_Contracts_Off = noHistoricContracts;
-            SaveInfo.Civilian_Contracts_Off = noCivilianContracts;
+            SaveInfo.all_Historical_Contracts_Off = noHistoricContracts;           
 
         }
 
@@ -575,17 +567,13 @@ namespace MissionControllerEC
             supplybodyIDX = SaveInfo.SupplyBodyIDX;
             supplyContractOn = SaveInfo.supplyContractOn;
             supplyResAmount = SaveInfo.supplyAmount;
-
-            apCivilianPod = SaveInfo.CivilianApPod;
-            apCivilianName = SaveInfo.CivilianApName;
-
+          
             noOrbitalContract = SaveInfo.NoOrbitalResearchContracts;
             noLandingContract = SaveInfo.NoLanderResearchContracts;
             noSatelliteContract = SaveInfo.NoSatelliteContracts;
             noRepairContract = SaveInfo.NoRepairContracts;
             noOrbitalPeriodContract = SaveInfo.NoOrbitalPeriodcontracts;
-            noHistoricContracts = SaveInfo.all_Historical_Contracts_Off;
-            noCivilianContracts = SaveInfo.Civilian_Contracts_Off;
+            noHistoricContracts = SaveInfo.all_Historical_Contracts_Off;            
         }
     
 

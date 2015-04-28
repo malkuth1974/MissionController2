@@ -26,12 +26,9 @@ namespace MissionControllerEC
         [Persistent]internal double contract_Random_Orbital_Period_MinInSeconds = 2000;
         [Persistent]internal double contract_Random_Orbital_Period_MaxInSeconds = 21600;
 
-        [Persistent]internal int contract_repair_Random_percent = 20;
-        [Persistent]internal int contract_repair_Station_Random_percent = 20;
-        [Persistent]internal int contract_Civilian_Station_Expedition = 20;
-        [Persistent]internal int contract_civilian_Low_Orbit_Percent = 20;
-        [Persistent]internal int contract_civilian_Landing_Percent = 20;
-
+        [Persistent]internal int contract_repair_Random_percent = 35;
+        [Persistent]internal int contract_repair_Station_Random_percent = 35;
+        
         [Persistent]internal double vostok12height = 70000;
         [Persistent]internal double voshodheight = 82000;
         [Persistent]internal double skyLabheight = 90000;

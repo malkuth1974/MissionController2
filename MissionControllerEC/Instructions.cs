@@ -21,7 +21,11 @@ namespace MissionControllerEC
         public bool showMiniTons = false;
         public float vesselResourceTons;
         public int currentContractType = 0;
-        public string sPResource = "SpareParts";       
+
+        public int kerbalNumbers;
+        public float kerbCost;
+        public float KerbalFlatrate;
+        public float kerbalMultiplier;
 
         public static int supplyCount;
 
@@ -159,58 +163,22 @@ namespace MissionControllerEC
             currentContractType = Tools.MC2RandomWieghtSystem.PickOne<int>(RandomContractsCheck);
             if (currentContractType == 0)
             {
-                SaveInfo.RepairContractOn = false;
-                SaveInfo.CivilianLowOrbit = false;
-                SaveInfo.CivilianLanding = false;
-                SaveInfo.CivilianStationExpedition = false;
+                SaveInfo.RepairContractOn = false;               
                 SaveInfo.RepairStationContract = false;
                 Debug.Log("No random contracts at this time");
             }            
             else if (currentContractType == 1)
             {
-                SaveInfo.RepairContractOn = true;
-                SaveInfo.CivilianLowOrbit = false;
-                SaveInfo.CivilianLanding = false;
-                SaveInfo.CivilianStationExpedition = false;
+                SaveInfo.RepairContractOn = true;             
                 SaveInfo.RepairStationContract = false;
                 Debug.Log("Repair Contract Selected");
-            }            
+            }
             else if (currentContractType == 2)
             {
                 SaveInfo.RepairContractOn = false;
-                SaveInfo.CivilianLowOrbit = true;
-                SaveInfo.CivilianLanding = false;
-                SaveInfo.CivilianStationExpedition = false;
-                SaveInfo.RepairStationContract = false;
-                Debug.Log("Civilian Low Orbit Contract Selected");
-            }           
-            else if (currentContractType == 3)
-            {
-                SaveInfo.RepairContractOn = false;
-                SaveInfo.CivilianLowOrbit = false;
-                SaveInfo.CivilianLanding = true;
-                SaveInfo.CivilianStationExpedition = false;
-                SaveInfo.RepairStationContract = false;
-                Debug.Log("Civilian Landing Contract Selected");
-            }
-            else if (currentContractType == 4)
-            {
-                SaveInfo.RepairContractOn = false;
-                SaveInfo.CivilianLowOrbit = false;
-                SaveInfo.CivilianLanding = false;
-                SaveInfo.CivilianStationExpedition = true;
-                SaveInfo.RepairStationContract = false;
-                Debug.Log("Civilian Station Expedition Contract Selected");
-            }
-            else if (currentContractType == 5)
-            {
-                SaveInfo.RepairContractOn = false;
-                SaveInfo.CivilianLowOrbit = false;
-                SaveInfo.CivilianLanding = false;
-                SaveInfo.CivilianStationExpedition = false;
                 SaveInfo.RepairStationContract = true;
-                Debug.Log("Repair Station Contract Selected");
-            }
+                Debug.Log("RepairStation Contract Selected");
+            }           
             else
             {
                 Debug.LogWarning("MCE failed to load random contract Check, defaulting");
@@ -226,9 +194,9 @@ namespace MissionControllerEC
 
         public void randomContractsCheck()
         {
-            RandomContractsCheck = new Tools.MC2RandomWieghtSystem.Item<int>[6];
+            RandomContractsCheck = new Tools.MC2RandomWieghtSystem.Item<int>[3];
             RandomContractsCheck[0] = new Tools.MC2RandomWieghtSystem.Item<int>();
-            RandomContractsCheck[0].weight = 0;
+            RandomContractsCheck[0].weight = 30;
             RandomContractsCheck[0].value = 0;
 
             RandomContractsCheck[1] = new Tools.MC2RandomWieghtSystem.Item<int>();
@@ -236,20 +204,9 @@ namespace MissionControllerEC
             RandomContractsCheck[1].value = 1;
 
             RandomContractsCheck[2] = new Tools.MC2RandomWieghtSystem.Item<int>();
-            RandomContractsCheck[2].weight = settings.contract_civilian_Low_Orbit_Percent;
+            RandomContractsCheck[2].weight = settings.contract_repair_Station_Random_percent;
             RandomContractsCheck[2].value = 2;
-
-            RandomContractsCheck[3] = new Tools.MC2RandomWieghtSystem.Item<int>();
-            RandomContractsCheck[3].weight = settings.contract_civilian_Landing_Percent;
-            RandomContractsCheck[3].value = 3;
-
-            RandomContractsCheck[4] = new Tools.MC2RandomWieghtSystem.Item<int>();
-            RandomContractsCheck[4].weight = settings.contract_Civilian_Station_Expedition;
-            RandomContractsCheck[4].value = 4;
-
-            RandomContractsCheck[5] = new Tools.MC2RandomWieghtSystem.Item<int>();
-            RandomContractsCheck[5].weight = settings.contract_repair_Station_Random_percent;
-            RandomContractsCheck[5].value = 5;
+           
         }
 
         public void randomSatelliteContractsCheck()
@@ -315,7 +272,13 @@ namespace MissionControllerEC
                 //Debug.Log("Death Event " + value.msg);
             }
         }
-      
+
+        public void KerbalHireStats()
+        {           
+            GameVariables.GetRecruitHireCost(kerbalNumbers, kerbCost,KerbalFlatrate, kerbalMultiplier);
+            Debug.Log("Number Of Kerbals Hired: "+ kerbalNumbers + " Kerbal Cost: " + kerbCost + " Kerbal Flat Rate: " + KerbalFlatrate + " Kerbal Multiplier: " + kerbalMultiplier);            
+        }
+       
         public void getSupplyList(bool stationOnly)
         {
             bool boolStation = stationOnly;

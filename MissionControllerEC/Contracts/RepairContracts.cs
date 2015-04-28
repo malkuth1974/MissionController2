@@ -20,8 +20,6 @@ namespace MissionControllerEC
         public bool NoVessel = false;
         public string titleName = "Repair Vessel ";
         public double maxApA;
-        public string repairParts = "SpareParts";
-        public double RPamount = 1;
         ContractParameter repairgoal2;
         public string Ctitle = "To Repair Vessel You must have at Least ";
         public int randomString = 0;
@@ -179,9 +177,7 @@ namespace MissionControllerEC
 
             this.repairgoal2 = this.AddParameter(new RepairPanelPartCheck(titleName, vesselID, vesselName), null);
             repairgoal2.SetFunds(8000, targetBody);
-            repairgoal2.SetReputation(10, targetBody);          
-            this.AddParameter(new ResourceSupplyGoal(repairParts, RPamount, Ctitle,true), null);
-            AddParameter(new LandingParameters(Planetarium.fetch.Home, true), null);
+            repairgoal2.SetReputation(10, targetBody);                    
             base.SetExpiry(1f, 3f);
             base.SetDeadlineYears(1f, targetBody);
 
@@ -224,16 +220,16 @@ namespace MissionControllerEC
             //those 3 strings appear to do nothing
             return "An issue has arisen with one of our satellites in orbit, we would like to contract your agency to launch and fix this issue.\n\n" +
                 "How To conduct repairs:\n\n" +
-                "1. You need Spare Parts to conduct the repairs.\n 2. Launch and intercept the target satellite (no need to dock unless you want to). \n" +
-                "3. Conduct an EVA with a Kerbal, then grab some Spare Parts using KERT.  Right click the part that contains the Spare Parts and use the KERT GUI to transfer the Spare Parts to your Kerbal.\n" +
-                "4. Go to the nearest Repair Panel and transfer the Spare Parts to the Repair Panel using the KERT GUI again.\n5. Open the Repair Panel and select Test System.\n6. Once system is tested and passes, select Repair.  All done!";
+                "1. You need An Engineer Kerbal to conduct the repairs.\n 2. Launch and intercept the target satellite (no need to dock unless you want to). \n" +
+                "3. Conduct an EVA with an enginerr kerbal.\n" +
+                "4. Go to the nearest Repair Panel and Open the Repair Panel and select Test System.\n6. Once system is tested and passes, select Repair.  All done!";
         }
         protected override string GetNotes()
         {
             return "How To conduct repairs:\n\n" +
-                "1. You need Spare Parts to conduct the repairs.\n 2. Launch and intercept the target satellite (no need to dock unless you want to). \n" +
-                "3. Conduct an EVA with a Kerbal, then grab some Spare Parts using KERT.  Right click the part that contains the Spare Parts and use the KERT GUI to transfer the Spare Parts to your Kerbal.\n" +
-                "4. Go to the nearest Repair Panel and transfer the Spare Parts to the Repair Panel using the KERT GUI again.\n5. Open the Repair Panel and select Test System.\n6. Once system is tested and passes, select Repair.  All done!";
+                "1. You need an Engineer kerbal.\n 2. Launch and intercept the target satellite (no need to dock unless you want to). \n" +
+                "3. Conduct an EVA with a Kerbal.\n" +
+                "4. Go to the nearest Repair Panel and Open the Repair Panel and select Test System.\n6. Once system is tested and passes, select Repair.  All done!";
         }
         protected override string GetSynopsys()
         {
@@ -252,9 +248,7 @@ namespace MissionControllerEC
             Tools.ContractLoadCheck(node, ref vesselID, "Default", vesselID, "VesselID");
             Tools.ContractLoadCheck(node, ref vesselName, "Vessel Name Not Loaded", vesselName, "VesselName");
             Tools.ContractLoadCheck(node, ref titleName, "Title Name Not Loaded", titleName, "titlename");
-            Tools.ContractLoadCheck(node, ref maxApA, 300000, maxApA, "maxapa");
-            Tools.ContractLoadCheck(node, ref repairParts, "SpareParts", repairParts, "repairparts");
-            Tools.ContractLoadCheck(node, ref RPamount, 1, RPamount, "rpamount");
+            Tools.ContractLoadCheck(node, ref maxApA, 300000, maxApA, "maxapa");            
             Tools.ContractLoadCheck(node, ref Ctitle, "Title Not Loaded", Ctitle, "ctitle");
             Tools.ContractLoadCheck(node, ref randomString, 1, randomString, "randomstring");
             Tools.ContractLoadCheck(node, ref NoVessel, false, NoVessel, "novessel");
@@ -267,9 +261,7 @@ namespace MissionControllerEC
             node.AddValue("VesselID", vesselID);
             node.AddValue("VesselName", vesselName);
             node.AddValue("titlename", titleName);
-            node.AddValue("maxapa", maxApA);
-            node.AddValue("repairparts", repairParts);
-            node.AddValue("rpamount", RPamount);
+            node.AddValue("maxapa", maxApA);            
             node.AddValue("ctitle", Ctitle);
             node.AddValue("novessel", NoVessel);
             node.AddValue("randomstring", randomString);
@@ -296,9 +288,7 @@ namespace MissionControllerEC
         public string vesselID;
         public string vesselName;
         public bool NoVessel = false;
-        public string titleName = "Test";
-        public string repairParts = "SpareParts";
-        public double RPamount = 1;
+        public string titleName = "Test";        
         public string stationRepSynopse = "None";
         ContractParameter repairgoal2;
         public string Ctitle = "To Repair Station You must have at Least ";
@@ -446,14 +436,14 @@ namespace MissionControllerEC
             //those 3 strings appear to do nothing
             return "Space Station " + vesselName + " is experiencing issues and needs attention.  You are to conduct an EVA, locate the Repair Panel, and perform repairs to resolve the issues.\n\n" +
                 "How To Conduct Repairs:\n\n" +
-                "1. You need Spare Parts to conduct repairs.\n2. Conduct an EVA and grab some Spare Parts using KERT.  Right click the part that contains Spare Parts and use the KERT GUI to transfer the Spare Parts to your Kerbal\n" +
-                "3. Go to the nearest Repair Panel and transfer the Spare Parts to The Repair Panel using KERT GUI Again.\n4. Open the Repair Panel and Select Test System.\n5. Once system is tested and passes, select Repair. All done!";
+                "1. You need an Engineer kerbal to conduct repairs.\n2. Conduct an EVA." +
+                "3. Go to the nearest Repair Panel and Open the Repair Panel and Select Test System.\n5. Once system is tested and passes, select Repair. All done!";
         }
         protected override string GetNotes()
         {
             return "How To Conduct Repairs:\n\n" +
-                "1. You need Spare Parts to conduct repairs.\n2. Conduct an EVA and grab some Spare Parts using KERT.  Right click the part that contains Spare Parts and use the KERT GUI to transfer the Spare Parts to your Kerbal\n" +
-                "3. Go to the nearest Repair Panel and transfer the Spare Parts to The Repair Panel using KERT GUI Again.\n4. Open the Repair Panel and Select Test System.\n5. Once system is tested and passes, select Repair. All done!";
+                "1. You need an Engineer to conduct repairs.\n2. Conduct an EVA.\n" +
+                "3. Go to the nearest Repair Panel and Open the Repair Panel and Select Test System.\n5. Once system is tested and passes, select Repair. All done!";
         }
         protected override string GetSynopsys()
         {
@@ -471,9 +461,7 @@ namespace MissionControllerEC
             Tools.ContractLoadCheck(node, ref planetIDX, 1, planetIDX, "planetIDX");
             Tools.ContractLoadCheck(node, ref vesselID, "Default", vesselID, "VesselID");
             Tools.ContractLoadCheck(node, ref vesselName, "Woops Default Loaded", vesselName, "VesselName");
-            Tools.ContractLoadCheck(node, ref titleName, "Woops Default Loaded", titleName, "titlename");
-            Tools.ContractLoadCheck(node, ref repairParts, "SpareParts", repairParts, "repairparts");
-            Tools.ContractLoadCheck(node, ref RPamount, 1, RPamount, "rpamount");
+            Tools.ContractLoadCheck(node, ref titleName, "Woops Default Loaded", titleName, "titlename");            
             Tools.ContractLoadCheck(node, ref Ctitle, "Woops Default Loaded", Ctitle, "ctitle");
             Tools.ContractLoadCheck(node, ref randomString, 1,randomString,"randomstring");
             Tools.ContractLoadCheck(node, ref NoVessel, false, NoVessel, "novessel");
@@ -485,9 +473,7 @@ namespace MissionControllerEC
             node.AddValue("planetIDX", planetIDX);
             node.AddValue("VesselID", vesselID);
             node.AddValue("VesselName", vesselName);
-            node.AddValue("titlename", titleName);
-            node.AddValue("repairparts", repairParts);
-            node.AddValue("rpamount", RPamount);
+            node.AddValue("titlename", titleName);           
             node.AddValue("ctitle", Ctitle);
             node.AddValue("randomstring", randomString);
             node.AddValue("novessel", NoVessel);
