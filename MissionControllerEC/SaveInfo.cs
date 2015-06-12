@@ -3,9 +3,7 @@
 namespace MissionControllerEC
 {
     public static class SaveInfo 
-    {       
-        public static double TotalSpentOnRocketTest = 0;
-        public static double TotalSpentKerbalDeaths = 0;
+    {             
         public static bool SatContractReady = false;
         public static string AgenaTargetVesselID = "none";
         public static string AgenaTargetVesselName = "none";
@@ -48,8 +46,8 @@ namespace MissionControllerEC
         public static double crewTime = 0;
         public static string crewTransferName = "Crew Transfer";
 
-        public static bool NoSatelliteContracts = true;
-        public static bool NoOrbitalPeriodcontracts = true;
+        public static bool NoSatelliteContracts = false;
+        public static bool NoOrbitalPeriodcontracts = false;
         public static bool NoLanderResearchContracts = false;
         public static bool NoOrbitalResearchContracts = false;
         public static bool NoRepairContracts = false;
@@ -70,5 +68,9 @@ namespace MissionControllerEC
 
         public static double apolloLandingLat = 0;
         public static double apolloLandingLon = 0;
+
+        public static string SatelliteContractType = "none";
+        public static float SatelliteContractFrequency = -1;
+        public static float SatelliteContractModule = 0;
     }   
 }

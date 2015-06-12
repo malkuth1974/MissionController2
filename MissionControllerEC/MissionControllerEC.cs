@@ -19,9 +19,6 @@ namespace MissionControllerEC
         public static String versionCode;
         public static String mainWindowTitle;
 
-        public static bool DifficultyLevelCheck = false;
-        public static float cst;
-
         public static Rect PopUpWindowPosition3;
         public static bool ShowPopUpWindow3;
 
@@ -42,7 +39,6 @@ namespace MissionControllerEC
         public static bool ShowCustomWindow;
 
         public static GUIStyle StyleWhite, StyleBold, styleBoxWhite, styleBlue, styleBlueBold, styleGreenBold;
-
 
         public static bool RevertHalt = false;
 
@@ -187,7 +183,7 @@ namespace MissionControllerEC
         private string marinerNumber;
         private string apolloNumber;
         
-        Settings settings = new Settings("Config.cfg");
+        Settings settings = new Settings("Config.cfg");        
 
         public void Awake()
         {
@@ -196,7 +192,6 @@ namespace MissionControllerEC
             loadFiles();
             CreateButtons();          
             GameEvents.Contract.onContractsLoaded.Add(this.onContractLoaded);
-            GameEvents.onCrewKilled.Add(this.chargeKerbalDeath);
             GameEvents.onGameSceneLoadRequested.Add(this.CheckRandomContractTypes);
             //Debug.Log("MCE Awake");
             getSupplyList(false);
@@ -204,7 +199,6 @@ namespace MissionControllerEC
                 
         public void Start()
         {                 
-            FlightglobalsIndexCheck();
             DictCount = settings.SupplyResourceList.Count();           
         }            
                       
@@ -212,7 +206,6 @@ namespace MissionControllerEC
         {
             DestroyButtons();
             //Debug.Log("MCE OnDestroy");
-            GameEvents.onCrewKilled.Remove(this.chargeKerbalDeath);
             GameEvents.Contract.onContractsLoaded.Remove(this.onContractLoaded);
             GameEvents.onGameSceneLoadRequested.Remove(this.CheckRandomContractTypes);
             //Debug.Log("Game All values removed for MCE");
@@ -230,7 +223,7 @@ namespace MissionControllerEC
             }
             if (MCE_ScenarioStartup.ShowfinanaceWindow)
             {
-                MCE_ScenarioStartup.FinanceWindowPosition = GUILayout.Window(981974, MCE_ScenarioStartup.FinanceWindowPosition, drawFinanceWind, "MCE Finances", GUILayout.MaxHeight(800), GUILayout.MaxWidth(400), GUILayout.MinHeight(250), GUILayout.MinWidth(390));
+                MCE_ScenarioStartup.FinanceWindowPosition = GUILayout.Window(981974, MCE_ScenarioStartup.FinanceWindowPosition, drawFinanceWind, "MCE Finances", GUILayout.MaxHeight(350), GUILayout.MaxWidth(400), GUILayout.MinHeight(250), GUILayout.MinWidth(390));
                 MCE_ScenarioStartup.FinanceWindowPosition.x = Mathf.Clamp(MCE_ScenarioStartup.FinanceWindowPosition.x, 0, Screen.width - MCE_ScenarioStartup.FinanceWindowPosition.width);
                 MCE_ScenarioStartup.FinanceWindowPosition.y = Mathf.Clamp(MCE_ScenarioStartup.FinanceWindowPosition.y, 0, Screen.height - MCE_ScenarioStartup.FinanceWindowPosition.height);
             }
@@ -386,10 +379,7 @@ namespace MissionControllerEC
     }
                
     public class MCE_DataStorage : ConfigNodeStorage
-    {
-        [Persistent]public double TotalSpentKerbals = 0;
-        [Persistent]public double TotalSpentRockets = 0;
-        [Persistent]public double TotalSpentDeaths = 0;
+    {        
         [Persistent]public bool ComSatOn = false;
         [Persistent]public string agenaTargetVesselID = "none";
         [Persistent]public string agenaTargetVesselName = "none";
@@ -452,9 +442,9 @@ namespace MissionControllerEC
 
         [Persistent]internal double apolldunLat = 1;
         [Persistent]internal double apolldunLon = 1;
-
+      
         public override void OnDecodeFromConfigNode()
-        {
+        {           
             SaveInfo.apolloDunaStation = apolloStationStatus;
             SaveInfo.apolloLandingLat = apolldunLat;
             SaveInfo.apolloLandingLon = apolldunLon;
@@ -462,9 +452,7 @@ namespace MissionControllerEC
             SaveInfo.marinerCurrentNumber = marinerNumber;
             SaveInfo.apolloCurrentNumber = apolloNumber;
             SaveInfo.apolloDunaCurrentNumber = apolloDunaNumber;
-            SaveInfo.Hardcore_Vessel_Must_Survive = hardcoreOn;
-            SaveInfo.TotalSpentKerbalDeaths = TotalSpentDeaths;
-            SaveInfo.TotalSpentOnRocketTest = TotalSpentRockets;
+            SaveInfo.Hardcore_Vessel_Must_Survive = hardcoreOn;            
             SaveInfo.SatContractReady = ComSatOn;
             SaveInfo.AgenaTargetVesselID = agenaTargetVesselID;
             SaveInfo.AgenaTargetVesselName = agenaTargetVesselName;
@@ -516,7 +504,7 @@ namespace MissionControllerEC
         }
 
         public override void OnEncodeToConfigNode()
-        {
+        {         
             apolloStationStatus = SaveInfo.apolloDunaStation;
             apolldunLat = SaveInfo.apolloLandingLat;
             apolldunLon = SaveInfo.apolloLandingLon;
@@ -524,9 +512,7 @@ namespace MissionControllerEC
             marinerNumber = SaveInfo.marinerCurrentNumber;
             apolloNumber = SaveInfo.apolloCurrentNumber;
             apolloDunaNumber = SaveInfo.apolloDunaCurrentNumber;
-            hardcoreOn = SaveInfo.Hardcore_Vessel_Must_Survive;
-            TotalSpentRockets = SaveInfo.TotalSpentOnRocketTest;
-            TotalSpentDeaths = SaveInfo.TotalSpentKerbalDeaths;
+            hardcoreOn = SaveInfo.Hardcore_Vessel_Must_Survive;           
             ComSatOn = SaveInfo.SatContractReady;
             agenaTargetVesselID = SaveInfo.AgenaTargetVesselID;
             agenaTargetVesselName = SaveInfo.AgenaTargetVesselName;

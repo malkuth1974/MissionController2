@@ -43,7 +43,6 @@ namespace MissionControllerEC
                     if (HighLogic.CurrentGame.Mode == Game.Modes.CAREER)
                     {
                         Funding.Instance.AddFunds(-revertcost, TransactionReasons.Any);
-                        SaveInfo.TotalSpentOnRocketTest += revertcost;
                     }
                     MCE_ScenarioStartup.RevertHalt = false;
                 }

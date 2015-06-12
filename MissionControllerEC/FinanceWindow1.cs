@@ -58,19 +58,7 @@ namespace MissionControllerEC
             GUILayout.Box(MCE_ScenarioStartup.mainWindowTitle + " " + MCE_ScenarioStartup.versionCode, GUILayout.Width(400));
 
             GUILayout.EndHorizontal();
-               
-            GUILayout.Space(10);
-            GUILayout.BeginHorizontal();
-            GUILayout.Box("Total Spent Kerbal Deaths", GUILayout.Width(200));
-            GUILayout.Box("" + (int)SaveInfo.TotalSpentKerbalDeaths, GUILayout.Width(200));
-            GUILayout.EndHorizontal();
-
-            GUILayout.Space(10);
-            GUILayout.BeginHorizontal();
-            GUILayout.Box("Total Spent RocketTest (Reverts)", GUILayout.Width(200));
-            GUILayout.Box("" + (int)SaveInfo.TotalSpentOnRocketTest, GUILayout.Width(200));
-            GUILayout.EndHorizontal();
-                                            
+                           
             GUILayout.EndVertical();
             if (settings.DebugMenu && GUILayout.Button("Debug Menu"))
             {

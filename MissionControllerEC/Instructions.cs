@@ -7,6 +7,7 @@ using System.IO;
 using System.Reflection;
 using Contracts;
 using Contracts.Parameters;
+using MissionControllerEC.MCEContracts;
 
 
 namespace MissionControllerEC
@@ -120,43 +121,7 @@ namespace MissionControllerEC
                 ApplicationLauncher.Instance.RemoveModApplication(this.MCERevert);
             }
         }
-
-        public static void civNamesListAdd()
-        {
-            CivName.Add("Civilian Jason");
-            CivName.Add("Civilian Carolyne");
-            CivName.Add("Civilian Delila");
-            CivName.Add("Civilian Aleta");
-            CivName.Add("Civilian Jordon");
-            CivName.Add("Civilian Leon");
-            CivName.Add("Civilian Tonie");
-            CivName.Add("Civilian AWen");
-            CivName.Add("Civilian Huey");
-            CivName.Add("Civilian Wilfred");
-            CivName.Add("Civilian Jackson");
-            CivName.Add("Civilian Alex");
-            CivName.Add("Civilian Danny");
-            CivName.Add("Civilian Malkuth");
-            CivName.Add("Civilian Jebidiah");
-            CivName.Add("Civilian Jeni");
-            CivName.Add("Civilian Senyor");
-            CivName.Add("Civilian Batman");
-            CivName.Add("Civilian Timmy");
-            CivName.Add("Civilian Myers");
-            CivName.Add("Civilian Yoda");
-            CivName.Add("Civilian Luke");
-            CivName.Add("Civilian Jenny");
-            CivName.Add("Civilian Sam");
-        }
-
-        public void FlightglobalsIndexCheck()
-        {
-            foreach (CelestialBody cb in FlightGlobals.Bodies)
-            {
-                Debug.Log("Planet name" + cb.theName + " Planet index " + cb.flightGlobalsIndex.ToString());
-            }
-        }       
-
+               
         public void CheckRandomContractTypes(GameScenes gs)
         {
             randomContractsCheck();
@@ -211,22 +176,30 @@ namespace MissionControllerEC
 
         public void randomSatelliteContractsCheck()
         {
-            RandomSatelliteContractsCheck = new Tools.MC2RandomWieghtSystem.Item<int>[4];
+            RandomSatelliteContractsCheck = new Tools.MC2RandomWieghtSystem.Item<int>[6];
             RandomSatelliteContractsCheck[0] = new Tools.MC2RandomWieghtSystem.Item<int>();
-            RandomSatelliteContractsCheck[0].weight = 25;
+            RandomSatelliteContractsCheck[0].weight = 35;
             RandomSatelliteContractsCheck[0].value = 0;
 
             RandomSatelliteContractsCheck[1] = new Tools.MC2RandomWieghtSystem.Item<int>();
-            RandomSatelliteContractsCheck[1].weight = 25;
+            RandomSatelliteContractsCheck[1].weight = 35;
             RandomSatelliteContractsCheck[1].value = 1;
 
             RandomSatelliteContractsCheck[2] = new Tools.MC2RandomWieghtSystem.Item<int>();
-            RandomSatelliteContractsCheck[2].weight = 25;
+            RandomSatelliteContractsCheck[2].weight = 35;
             RandomSatelliteContractsCheck[2].value = 2;
 
             RandomSatelliteContractsCheck[3] = new Tools.MC2RandomWieghtSystem.Item<int>();
-            RandomSatelliteContractsCheck[3].weight = 25;
-            RandomSatelliteContractsCheck[3].value = 3;           
+            RandomSatelliteContractsCheck[3].weight = 35;
+            RandomSatelliteContractsCheck[3].value = 3;
+
+            RandomSatelliteContractsCheck[4] = new Tools.MC2RandomWieghtSystem.Item<int>();
+            RandomSatelliteContractsCheck[4].weight = 5;
+            RandomSatelliteContractsCheck[4].value = 4;
+
+            RandomSatelliteContractsCheck[5] = new Tools.MC2RandomWieghtSystem.Item<int>();
+            RandomSatelliteContractsCheck[5].weight = 5;
+            RandomSatelliteContractsCheck[5].value = 5; 
         }           
 
         public void onContractLoaded()
@@ -241,6 +214,26 @@ namespace MissionControllerEC
 
                 catch { Debug.LogError("could not run NoRescueKerbalContracts Returned Null");}
             }
+            if (settings.No_Finprint_Satellite_Contracts && ContractSystem.ContractTypes.Contains(typeof(FinePrint.Contracts.SatelliteContract)))
+            {
+                try
+                {
+                    ContractSystem.ContractTypes.Remove(typeof(FinePrint.Contracts.SatelliteContract));
+                    Debug.Log("Removed FinePrint Satellite Type Contracts from Gererating");
+                }
+
+                catch { Debug.LogError("could not run FinePrint Satellite Returned Null"); }
+            }
+            if (settings.No_Fineprint_Survey_Contracts && ContractSystem.ContractTypes.Contains(typeof(FinePrint.Contracts.SurveyContract)))
+            {
+                try
+                {
+                    ContractSystem.ContractTypes.Remove(typeof(FinePrint.Contracts.SurveyContract));
+                    Debug.Log("Removed FinePrint Survey Type Contracts from Gererating");
+                }
+
+                catch { Debug.LogError("could not run FinePrint Survey Contracts Returned Null"); }
+            }            
             if (settings.No_Part_Test_Contracts && ContractSystem.ContractTypes.Contains(typeof(Contracts.Templates.PartTest)))
             {
                 try
@@ -252,33 +245,7 @@ namespace MissionControllerEC
                 catch { Debug.LogError("could not run NoPartTest Returned Null"); }
             } 
         }    
-                      
-        public void chargeKerbalDeath(EventReport value)
-        {
-            if (HighLogic.CurrentGame.Mode == Game.Modes.CAREER)
-            {
-                Funding.Instance.AddFunds(-settings.Death_Insurance, TransactionReasons.Any);
-                SaveInfo.TotalSpentKerbalDeaths += settings.Death_Insurance;
-                StringBuilder deathmessage = new StringBuilder();
-                deathmessage.AppendLine("A Kerbal named " + value.sender + " has died in the line of duty");
-                deathmessage.AppendLine();
-                deathmessage.AppendLine("This is a tragic loss and will cost you " + settings.Death_Insurance + " Funds.");
-                deathmessage.AppendLine();
-                deathmessage.AppendLine(value.sender + " will be remembered by the Kerbal People as a hero who though of Kerbal kind before his own safety");
-                deathmessage.AppendLine();
-                deathmessage.AppendLine("We send him to the Darkness in which we all are born, to rejoin the spark of life");
-                MessageSystem.Message m = new MessageSystem.Message("Death Of Hero", deathmessage.ToString(), MessageSystemButton.MessageButtonColor.RED, MessageSystemButton.ButtonIcons.ALERT);
-                MessageSystem.Instance.AddMessage(m);
-                //Debug.Log("Death Event " + value.msg);
-            }
-        }
-
-        public void KerbalHireStats()
-        {           
-            GameVariables.GetRecruitHireCost(kerbalNumbers, kerbCost,KerbalFlatrate, kerbalMultiplier);
-            Debug.Log("Number Of Kerbals Hired: "+ kerbalNumbers + " Kerbal Cost: " + kerbCost + " Kerbal Flat Rate: " + KerbalFlatrate + " Kerbal Multiplier: " + kerbalMultiplier);            
-        }
-       
+                                   
         public void getSupplyList(bool stationOnly)
         {
             bool boolStation = stationOnly;
@@ -310,15 +277,7 @@ namespace MissionControllerEC
                 }
             }
         }
-        
-        public void GetPlanetList()
-        {
-            foreach (var body in FlightGlobals.Bodies)
-            {
-                Debug.Log("Body Name: " + body.theName + " Body Number: " + body.flightGlobalsIndex);
-            }
-        }
-
+              
         public void GetLatandLonDefault(Vessel vessel)
         {
             double LatValue;

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MissionControllerEC
+namespace MissionControllerEC.PartModules
 {
     class MCEOrbitalScanning : PartModule
     {

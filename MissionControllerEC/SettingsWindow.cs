@@ -17,19 +17,20 @@ namespace MissionControllerEC
             GUILayout.BeginVertical();
                                 
             GUILayout.Space(10);
-            GUILayout.BeginHorizontal();
-            GUILayout.Box("Kerbal Insurance Cost",MCE_ScenarioStartup.StyleBold, GUILayout.Width(300));
-            insuranceme = settings.Death_Insurance.ToString();
-            insuranceme = Regex.Replace(GUILayout.TextField(insuranceme), "[^.0-9]", "");           
-            settings.Death_Insurance = double.Parse(insuranceme);
-            GUILayout.EndHorizontal();
-
+            
             GUILayout.Space(10);
             GUILayout.BeginHorizontal();
             GUILayout.Box("Revert Cost",MCE_ScenarioStartup.StyleBold, GUILayout.Width(300));
             revertme = settings.Revert_Cost.ToString();
             revertme = Regex.Replace(GUILayout.TextField(revertme), "[^.0-9]", "");           
             settings.Revert_Cost = double.Parse(revertme);
+            GUILayout.EndHorizontal();
+
+            GUILayout.Space(10);
+            GUILayout.BeginHorizontal();
+            GUILayout.Box("Set MCE Revert On (Needs Restart)", MCE_ScenarioStartup.StyleBold, GUILayout.Width(300));
+            GUILayout.Box("" + settings.RevertOn, MCE_ScenarioStartup.styleBlueBold, GUILayout.Width(75));
+            settings.RevertOn = GUILayout.Toggle(settings.RevertOn, "Set Revert", GUILayout.Width(25));
             GUILayout.EndHorizontal();
 
             GUILayout.Space(10);
@@ -45,21 +46,7 @@ namespace MissionControllerEC
             GUILayout.Box("" + SaveInfo.MessageHelpers, MCE_ScenarioStartup.styleBlueBold, GUILayout.Width(75));
             SaveInfo.MessageHelpers = GUILayout.Toggle(SaveInfo.MessageHelpers, "Set", GUILayout.Width(25));
             GUILayout.EndHorizontal();
-
-            GUILayout.Space(10);
-            GUILayout.BeginHorizontal();
-            GUILayout.Box("Recover Assets Contracts Off (Needs Restart)",MCE_ScenarioStartup.StyleBold, GUILayout.Width(300));
-            GUILayout.Box("" + settings.No_Rescue_Kerbal_Contracts, MCE_ScenarioStartup.styleBlueBold, GUILayout.Width(75));
-            settings.No_Rescue_Kerbal_Contracts = GUILayout.Toggle(settings.No_Rescue_Kerbal_Contracts, "Set", GUILayout.Width(25));
-            GUILayout.EndHorizontal();
-
-            GUILayout.Space(10);
-            GUILayout.BeginHorizontal();
-            GUILayout.Box("Part Test Contracts Off (Needs Restart)", MCE_ScenarioStartup.StyleBold, GUILayout.Width(300));
-            GUILayout.Box("" + settings.No_Part_Test_Contracts, MCE_ScenarioStartup.styleBlueBold, GUILayout.Width(75));
-            settings.No_Part_Test_Contracts = GUILayout.Toggle(settings.No_Part_Test_Contracts, "Set", GUILayout.Width(25));
-            GUILayout.EndHorizontal();
-
+          
             GUILayout.Space(10);
             GUILayout.BeginHorizontal();
             GUILayout.Box("No MCE Satellite Contracts", MCE_ScenarioStartup.StyleBold, GUILayout.Width(300));
@@ -108,14 +95,7 @@ namespace MissionControllerEC
             GUILayout.Box("" + SaveInfo.Duna_NonHistorical_Contracts_Off, MCE_ScenarioStartup.styleBlueBold, GUILayout.Width(75));
             SaveInfo.Duna_NonHistorical_Contracts_Off = GUILayout.Toggle(SaveInfo.Duna_NonHistorical_Contracts_Off, "Set", GUILayout.Width(25));
             GUILayout.EndHorizontal();
-           
-            GUILayout.Space(10);
-            GUILayout.BeginHorizontal();
-            GUILayout.Box("Set MCE Revert On (Needs Restart)", MCE_ScenarioStartup.StyleBold, GUILayout.Width(300));
-            GUILayout.Box("" + settings.RevertOn, MCE_ScenarioStartup.styleBlueBold, GUILayout.Width(75));
-            settings.RevertOn = GUILayout.Toggle(settings.RevertOn, "Set Revert", GUILayout.Width(25));
-            GUILayout.EndHorizontal();
-
+                       
             GUILayout.Space(10);
             GUILayout.BeginHorizontal();
             GUILayout.Box("Set Debug Menu On", MCE_ScenarioStartup.StyleBold, GUILayout.Width(300));

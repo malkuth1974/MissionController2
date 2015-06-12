@@ -2,7 +2,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-namespace MissionControllerEC
+namespace MissionControllerEC.PartModules
 {
     class RepairPanel : PartModule
     {
@@ -25,7 +25,7 @@ namespace MissionControllerEC
         public double repairRate = 1;
 
         public bool startrepair = false;
-       
+        
         public Animation GetDeployDoorAnim
         {
             get
@@ -41,7 +41,7 @@ namespace MissionControllerEC
             GetDeployDoorAnim[DoorAnimation].normalizedTime = time;
             GetDeployDoorAnim.Play(DoorAnimation);
         }
-               
+       
         public override void OnStart(PartModule.StartState state)
         {
             this.part.force_activate();            

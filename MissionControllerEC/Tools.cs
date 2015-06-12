@@ -160,8 +160,8 @@ namespace MissionControllerEC
             }
             catch (Exception ex)
             {
-                Debug.LogWarning("MCE Exeption failed to load contract saved value " + valueName + " " + savedFile + "Backup Loaded");
-                Debug.LogWarning(ex.Message + " " + ex.StackTrace);
+                //Debug.LogWarning("MCE Exeption failed to load contract saved value " + valueName + " " + savedFile + "Backup Loaded: " + backupDefault + " Node Name: " + node);
+                //Debug.LogWarning(ex.Message + " " + ex.StackTrace);
                 value = backupDefault;
 
             }
