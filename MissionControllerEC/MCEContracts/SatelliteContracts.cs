@@ -48,8 +48,8 @@ namespace MissionControllerEC.MCEContracts
                     satStoryDef = "Communications satellites provide a worldwide linkup of radio, telephone, and television. The first (Earth) communications satellite was Echo 1 ; launched in 1960, it was a large metallized " +
                               "balloon that reflected radio signals striking it. This passive mode of operation quickly gave way to the active or repeater mode, in which complex electronic equipment aboard the satellite " +
                               "receives a signal from the earth, amplifies it, and transmits it to another point on the earth, in this case Kerbin.";
-                    contractNotes ="You can set both the frequency " + frequency + " and module type of " + moduletype + " in the editor with Tweak Sliders. Set these values before takeoff, They cannot be changed after the vessel is launched!\n\n";
-                    contractSynops ="You must bring the " + satType + " satellite in the specified orbit with Module type " + moduletype + " And a Frequency of " + frequency + ". Set your satellite values in the Editor before taking Off, "+ 
+                    contractNotes ="You can set both the frequency and module type in the editor with Tweak Sliders. Set these values before takeoff, They cannot be changed after the vessel is launched!\n\n";
+                    contractSynops ="You must bring the satellite to the specified orbit with Module type And Frequency. Set your satellite values in the Editor before taking Off, "+ 
                                "Once you get to your assigned orbital height transmit the Data packet to customers to complete the objectives. Be warned, you only have 1 shot to send the packet. If it's incorrect, you will have to " + 
                                "launch a new vessel";
                     break;
@@ -59,8 +59,8 @@ namespace MissionControllerEC.MCEContracts
                     satStoryDef = "Weather satellites, or meteorological satellites, provide kerbin scientist continuous, up-to-date information about large-scale atmospheric conditions such as cloud cover and temperature profiles. " +
                               "Tiros 1, the first such (Earth) satellite, was launched in 1960; it transmitted infrared television pictures of the earth's cloud cover and was able to detect the development of hurricanes and to chart " +
                               "their paths.";
-                    contractNotes = "You can set both the frequency " + frequency + " and module type of " + moduletype + " in the editor with Tweak Sliders. Set these values before takeoff, They cannot be changed after the vessel is launched!\n\n";
-                    contractSynops = "You must bring the " + satType + " satellite in the specified orbit with Module type " + moduletype + " And a Frequency of " + frequency + ". Set your satellite values in the Editor before taking Off, " +
+                    contractNotes = "You can set both the frequency and module type in the editor with Tweak Sliders. Set these values before takeoff, They cannot be changed after the vessel is launched!\n\n";
+                    contractSynops = "You must bring the  satellite to the specified orbit with Module type And Frequency. Set your satellite values in the Editor before taking Off, " +
                                "Once you get to your assigned orbital height transmit the Data packet to customers to complete the objectives. Be warned, you only have 1 shot to send the packet. If it's incorrect, you will have to " +
                                "launch a new vessel";
                     break;
@@ -71,8 +71,8 @@ namespace MissionControllerEC.MCEContracts
                                 "the (Earth) U.S. navy to establish the Transit program in 1958; the system was declared operational in 1962 after the launch of Transit 5A. Transit satellites provided a constant signal by which " +
                                 "aircraft and ships could determine their positions with great accuracy.\n\n" +
                                 "In kerbin society these satellites help with the day to day needs of most travel options for kerbin Land, Sea, Air Based navigation.";
-                    contractNotes = "You can set both the frequency " + frequency + " and module type of " + moduletype + " in the editor with Tweak Sliders. Set these values before takeoff, They cannot be changed after the vessel is launched!\n\n";
-                    contractSynops = "You must bring the " + satType + " satellite in the specified orbit with Module type " + moduletype + " And a Frequency of " + frequency + ". Set your satellite values in the Editor before taking Off, " +
+                    contractNotes = "You can set both the frequency and module type in the editor with Tweak Sliders. Set these values before takeoff, They cannot be changed after the vessel is launched!\n\n";
+                    contractSynops = "You must bring the satellite to the specified orbit with Module type And Frequency. Set your satellite values in the Editor before taking Off, " +
                                "Once you get to your assigned orbital height transmit the Data packet to customers to complete the objectives. Be warned, you only have 1 shot to send the packet. If it's incorrect, you will have to " +
                                "launch a new vessel";
                     break;
@@ -80,8 +80,8 @@ namespace MissionControllerEC.MCEContracts
                     satType = "Research";
                     TOSName = "Our research, test will take about this amount of time to complete\n ";
                     satStoryDef = "Research satellites are designed to test different scientific studies while in the freedom of space. Away for the problems of Kerbin Ground studies";
-                    contractNotes = "You can set both the frequency " + frequency + " and module type of " + moduletype + " in the editor with Tweak Sliders. Set these values before takeoff, They cannot be changed after the vessel is launched!\n\n";
-                    contractSynops = "You must bring the " + satType + " satellite in the specified orbit with Module type " + moduletype + " And a Frequency of " + frequency + ". Set your satellite values in the Editor before taking Off, " +
+                    contractNotes = "You can set both the frequency and module type in the editor with Tweak Sliders. Set these values before takeoff, They cannot be changed after the vessel is launched!\n\n";
+                    contractSynops = "You must bring the satellite to the specified orbit with Module type And Frequency. Set your satellite values in the Editor before taking Off, " +
                                "Once you get to your assigned orbital height transmit the Data packet to customers to complete the objectives. Be warned, you only have 1 shot to send the packet. If it's incorrect, you will have to " +
                                "launch a new vessel";
                     break;
@@ -89,22 +89,22 @@ namespace MissionControllerEC.MCEContracts
                     satType = "Network Communications";
                     TOSName = "Establish communications network around Kerbin";
                     satStoryDef = "Launch 6 Communication satellites to orbit and build a satellite network that connects all the Ground stations around Kerbin. All 6 satellites have to be pointed at a certain Ground station to be counted " +
-                        "as part of the network.";
+                        "as part of the network.\n\n It's possible to launch multiple satellites with one vessel. If you do this, be sure to not use Symmetry mode when adding the Satellite cores. If you use Symmetry mode the frequencies will all be set to the same thing when adjusting them!";
                     contractNotes ="You have to launch 6 different satellites.  All 6 satellites have different frequencies.  But all other settings in the Satellite Cores are the same.  The Ground stations are connected by \n" +
                                 "individual frequencies, and have been placed in order for easy access and completion\n\n"+
                                 "PLEASE NOTE: There is no such thing as a KeoStationary Orbit around the polar regions, you won't be able to Keep  the lines of sight at all times with polar stations.  You can still connect to them \n" +
-                                "to finish the polar objectives.  Those objectives will remain locked and won't disconnect. Like the Equatorial Ground stations will.";
+                                "to finish the polar objectives.  Those objectives will remain locked and won't disconnect. Like the Equatorial Ground stations will.\n\n";
                     contractSynops = "Set up all satellite cores with right frequencies.  All cores have a different set of frequencies to adjust in each vessel.  Failure to do this will result in having to launch more vessels.";
                     break;
                 case 5:
                     satType = "Network Navigation System";
                     TOSName = "Establish navigation network around Kerbin";
                     satStoryDef = "Launch 6 Communication satellites to orbit and build a satellite network that connects all the Ground stations around Kerbin. All 6 satellites have to be pointed at a certain Ground station to be counted " +
-                        "as part of the network.";
+                        "as part of the network.\n\n It's possible to launch multiple satellites with one vessel. If you do this, be sure to not use Symmetry mode when adding the Satellite cores. If you use Symmetry mode the frequencies will all be set to the same thing when adjusting them!";
                     contractNotes = "You have to launch 6 different satellites.  All 6 satellites have different frequencies.  But all other settings in the Satellite Cores are the same.  The Ground stations are connected by \n" +
                                 "individual frequencies, and have been placed in order for easy access and completion\n\n" +
                                 "PLEASE NOTE: There is no such thing as a KeoStationary Orbit around the polar regions, you won't be able to Keep  the lines of sight at all times with polar stations.  You can still connect to them \n" +
-                                "to finish the polar objectives.  Those objectives will remain locked and won't disconnect. Like the Equatorial Ground stations will.";
+                                "to finish the polar objectives.  Those objectives will remain locked and won't disconnect. Like the Equatorial Ground stations will.\n\n";
                     contractSynops = "Set up all satellite cores with right frequencies.  All cores have a different set of frequencies to adjust in each vessel.  Failure to do this will result in having to launch more vessels.";
                     break;
             }

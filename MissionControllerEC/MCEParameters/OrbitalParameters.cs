@@ -52,6 +52,7 @@ namespace MissionControllerEC.MCEParameters
             {
                 GameEvents.onFlightReady.Add(flightReady);
                 GameEvents.onVesselChange.Add(vesselChange);
+                GameEvents.onTimeWarpRateChanged.Add(flightReady);
                 updated = true;
             }
         }
@@ -62,6 +63,7 @@ namespace MissionControllerEC.MCEParameters
             {
                 GameEvents.onFlightReady.Remove(flightReady);
                 GameEvents.onVesselChange.Remove(vesselChange);
+                GameEvents.onTimeWarpRateChanged.Remove(flightReady);
             }
         }
 
@@ -186,6 +188,7 @@ namespace MissionControllerEC.MCEParameters
             {
                 GameEvents.onFlightReady.Add(flightReady);
                 GameEvents.onVesselChange.Add(vesselChange);
+                GameEvents.onTimeWarpRateChanged.Add(flightReady);
                 updated = true;
             }
         }
@@ -196,6 +199,7 @@ namespace MissionControllerEC.MCEParameters
             {
                 GameEvents.onFlightReady.Remove(flightReady);
                 GameEvents.onVesselChange.Remove(vesselChange);
+                GameEvents.onTimeWarpRateChanged.Remove(flightReady);
             }
         }
 
@@ -377,6 +381,7 @@ namespace MissionControllerEC.MCEParameters
             {
                 GameEvents.onFlightReady.Add(flightReady);
                 GameEvents.onVesselChange.Add(vesselChange);
+                GameEvents.onTimeWarpRateChanged.Add(flightReady);
                 updated = true;
             }
         }
@@ -387,6 +392,7 @@ namespace MissionControllerEC.MCEParameters
             {
                 GameEvents.onFlightReady.Remove(flightReady);
                 GameEvents.onVesselChange.Remove(vesselChange);
+                GameEvents.onTimeWarpRateChanged.Remove(flightReady);
             }
         }
 
@@ -519,6 +525,7 @@ namespace MissionControllerEC.MCEParameters
             {
                 GameEvents.onFlightReady.Add(flightReady);
                 GameEvents.onVesselChange.Add(vesselChange);
+                GameEvents.onTimeWarpRateChanged.Add(flightReady);
                 updated = true;
             }
         }
@@ -529,6 +536,7 @@ namespace MissionControllerEC.MCEParameters
             {
                 GameEvents.onFlightReady.Remove(flightReady);
                 GameEvents.onVesselChange.Remove(vesselChange);
+                GameEvents.onTimeWarpRateChanged.Remove(flightReady);
             }
         }
 
@@ -661,6 +669,7 @@ namespace MissionControllerEC.MCEParameters
             {
                 GameEvents.onFlightReady.Add(flightReady);
                 GameEvents.onVesselChange.Add(vesselChange);
+                GameEvents.onTimeWarpRateChanged.Add(flightReady);
                 updated = true;
             }
         }
@@ -671,6 +680,7 @@ namespace MissionControllerEC.MCEParameters
             {
                 GameEvents.onFlightReady.Remove(flightReady);
                 GameEvents.onVesselChange.Remove(vesselChange);
+                GameEvents.onTimeWarpRateChanged.Remove(flightReady);
             }
         }
 
@@ -787,6 +797,7 @@ namespace MissionControllerEC.MCEParameters
             {
                 GameEvents.onFlightReady.Add(flightReady);
                 GameEvents.onVesselChange.Add(vesselChange);
+                GameEvents.onTimeWarpRateChanged.Add(flightReady);
                 updated = true;
             }
         }
@@ -797,6 +808,7 @@ namespace MissionControllerEC.MCEParameters
             {
                 GameEvents.onFlightReady.Remove(flightReady);
                 GameEvents.onVesselChange.Remove(vesselChange);
+                GameEvents.onTimeWarpRateChanged.Remove(flightReady);
             }
         }
 
