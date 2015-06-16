@@ -15,7 +15,8 @@ namespace MissionControllerEC.MCEContracts
     {
         Settings settings = new Settings("config.cfg");
         public double minHeight = 70000;
-
+        public int totalContracts;
+        public int TotalFinished;
         public int crew = 1;
 
         CelestialBody targetBody = Planetarium.fetch.Home;
@@ -26,6 +27,13 @@ namespace MissionControllerEC.MCEContracts
 
         protected override bool Generate()
         {
+            totalContracts = ContractSystem.Instance.GetCurrentContracts<Vostok>().Count();
+            TotalFinished = ContractSystem.Instance.GetCompletedContracts<Vostok>().Count();
+
+            if (totalContracts >= 1)
+            {
+                return false;
+            }
             if (HighLogic.LoadedSceneIsFlight) { return false; }
             if (SaveInfo.all_Historical_Contracts_Off == true) { return false; }
             minHeight = settings.vostok12height;
@@ -146,7 +154,8 @@ namespace MissionControllerEC.MCEContracts
         Settings settings = new Settings("config.cfg");
         public double minHeight = 70000;
         public double missionTime = 21600;
-
+        public int totalContracts;
+        public int TotalFinished;
         public int crew = 1;
 
         CelestialBody targetBody = Planetarium.fetch.Home;
@@ -158,6 +167,13 @@ namespace MissionControllerEC.MCEContracts
 
         protected override bool Generate()
         {
+            totalContracts = ContractSystem.Instance.GetCurrentContracts<Vostok2>().Count();
+            TotalFinished = ContractSystem.Instance.GetCompletedContracts<Vostok2>().Count();
+
+            if (totalContracts >= 1)
+            {
+                return false;
+            }
 
             if (HighLogic.LoadedSceneIsFlight) { return false; }
             if (SaveInfo.all_Historical_Contracts_Off == true) { return false; }
@@ -270,7 +286,8 @@ namespace MissionControllerEC.MCEContracts
     {
         Settings settings = new Settings("config.cfg");
         public double minHeight = 82000;
-
+        public int totalContracts;
+        public int TotalFinished;
         public int crew = 2;
 
         CelestialBody targetBody = Planetarium.fetch.Home;
@@ -282,6 +299,13 @@ namespace MissionControllerEC.MCEContracts
 
         protected override bool Generate()
         {
+            totalContracts = ContractSystem.Instance.GetCurrentContracts<Voskhod2>().Count();
+            TotalFinished = ContractSystem.Instance.GetCompletedContracts<Voskhod2>().Count();
+
+            if (totalContracts >= 1)
+            {
+                return false;
+            }
             if (prestige == ContractPrestige.Trivial)
             {
                 return false;
@@ -402,7 +426,8 @@ namespace MissionControllerEC.MCEContracts
         private double AmountDaysActive = 0;
         private int TirosTitleMissionNumber;
         private float contractMult = 1.0f;
-
+        public int totalContracts;
+        public int TotalFinished;
         private string tirosNotes = "none";
         private string tirosHash = "none";
         private string tirostitle = "none";
@@ -495,6 +520,13 @@ namespace MissionControllerEC.MCEContracts
 
         protected override bool Generate()
         {
+            totalContracts = ContractSystem.Instance.GetCurrentContracts<Tiros>().Count();
+            TotalFinished = ContractSystem.Instance.GetCompletedContracts<Tiros>().Count();
+
+            if (totalContracts >= 1)
+            {
+                return false;
+            }
             if (prestige == ContractPrestige.Trivial)
             {
                 return false;
@@ -664,7 +696,8 @@ namespace MissionControllerEC.MCEContracts
         private double extraBody4 = 0;
         private double extraBody5 = 0;
         private double extraBody6 = 0;
-
+        public int totalContracts;
+        public int TotalFinished;
         private string marinerTitle = "None";
         private string marinerDescription = "none";
         private string marinerSynops = "None";
@@ -736,6 +769,13 @@ namespace MissionControllerEC.MCEContracts
 
         protected override bool Generate()
         {
+            totalContracts = ContractSystem.Instance.GetCurrentContracts<Mariner>().Count();
+            TotalFinished = ContractSystem.Instance.GetCompletedContracts<Mariner>().Count();
+
+            if (totalContracts >= 1)
+            {
+                return false;
+            }
             if (prestige == ContractPrestige.Trivial)
             {
                 return false;
@@ -906,7 +946,8 @@ namespace MissionControllerEC.MCEContracts
     {
         Settings settings = new Settings("config.cfg");
         public int crew = 0;
-
+        public int totalContracts;
+        public int TotalFinished;
         CelestialBody targetBody = FlightGlobals.Bodies[2];
 
         ContractParameter luna1;
@@ -914,6 +955,13 @@ namespace MissionControllerEC.MCEContracts
         ContractParameter luna3;
         protected override bool Generate()
         {
+            totalContracts = ContractSystem.Instance.GetCurrentContracts<Luna2>().Count();
+            TotalFinished = ContractSystem.Instance.GetCompletedContracts<Luna2>().Count();
+
+            if (totalContracts >= 1)
+            {
+                return false;
+            }
             if (prestige == ContractPrestige.Trivial)
             {
                 return false;
@@ -1041,6 +1089,8 @@ namespace MissionControllerEC.MCEContracts
     {
         Settings settings = new Settings("config.cfg");
         public int crew = 0;
+        public int totalContracts;
+        public int TotalFinished;
         CelestialBody targetBody = FlightGlobals.Bodies[2];
         ContractParameter luna1;
         ContractParameter luna2;
@@ -1048,6 +1098,13 @@ namespace MissionControllerEC.MCEContracts
 
         protected override bool Generate()
         {
+            totalContracts = ContractSystem.Instance.GetCurrentContracts<Luna16>().Count();
+            TotalFinished = ContractSystem.Instance.GetCompletedContracts<Luna16>().Count();
+
+            if (totalContracts >= 1)
+            {
+                return false;
+            }
             if (prestige == ContractPrestige.Trivial)
             {
                 return false;
@@ -1882,11 +1939,19 @@ namespace MissionControllerEC.MCEContracts
         public int crewCount = 0;
 
         CelestialBody targetBody = FlightGlobals.Bodies[6];
-        
+
         public int totalContracts;
+        public int TotalFinished;
 
         protected override bool Generate()
         {
+            totalContracts = ContractSystem.Instance.GetCurrentContracts<ApolloDunaStation>().Count();
+            TotalFinished = ContractSystem.Instance.GetCompletedContracts<ApolloDunaStation>().Count();
+
+            if (totalContracts >= 1)
+            {
+                return false;
+            }
             if (prestige == ContractPrestige.Trivial)
             {
                 return false;
