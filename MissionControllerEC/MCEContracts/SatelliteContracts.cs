@@ -174,7 +174,7 @@ namespace MissionControllerEC.MCEContracts
             bool parttechUnlock = ResearchAndDevelopment.GetTechnologyState("advConstruction") == RDTech.State.Available;
                                              
             SatTypeValue();
-            int frequencyTest = rnd.Next(1, 50);
+            int frequencyTest = rnd.Next(3, 47);
             frequency = (float)frequencyTest - .5f;
             moduletype = rnd.Next(1, 4);
 
@@ -283,22 +283,22 @@ namespace MissionControllerEC.MCEContracts
                     frequency = -10;
                 }
                 ContractParameter Network1 = this.AddParameter(new satelliteCoreCheck(SatTypeName, frequency, moduletype, targetBody), null);
-                Network1.SetFunds(90000, 100000, targetBody);
+                Network1.SetFunds(90000, 100000 * st.Contract_Payment_Multiplier, targetBody);
                 this.AddParameter(new GroundStationPostion("Kerbal Space Center", -74, 0, frequency, false), null);
                 ContractParameter Network2 = this.AddParameter(new satelliteCoreCheck(SatTypeName, frequency + 1, moduletype, targetBody), null);
-                Network2.SetFunds(90000, 100000, targetBody);
+                Network2.SetFunds(90000, 100000 * st.Contract_Payment_Multiplier, targetBody);
                 this.AddParameter(new GroundStationPostion("East Shore Station", 16, 0, frequency + 1, false), null);
                 ContractParameter Network3 = this.AddParameter(new satelliteCoreCheck(SatTypeName, frequency + 2, moduletype, targetBody), null);
-                Network3.SetFunds(90000, 100000, targetBody);
+                Network3.SetFunds(90000, 100000 * st.Contract_Payment_Multiplier, targetBody);
                 this.AddParameter(new GroundStationPostion("Heart Station", 106, 0, frequency + 2, false), null);
                 ContractParameter Network4 = this.AddParameter(new satelliteCoreCheck(SatTypeName, frequency + 3, moduletype, targetBody), null);
-                Network4.SetFunds(90000, 100000, targetBody);
+                Network4.SetFunds(90000, 100000 * st.Contract_Payment_Multiplier, targetBody);
                 this.AddParameter(new GroundStationPostion("Crator Station", -164, 0, frequency + 3, false), null);
                 ContractParameter Network5 = this.AddParameter(new satelliteCoreCheck(SatTypeName, frequency + 4, moduletype, targetBody), null);
-                Network5.SetFunds(90000, 100000, targetBody);
+                Network5.SetFunds(90000, 100000 * st.Contract_Payment_Multiplier, targetBody);
                 this.AddParameter(new GroundStationPostion("North Pole Station", 0, 89, frequency + 4, true), null);
                 ContractParameter Network6 = this.AddParameter(new satelliteCoreCheck(SatTypeName, frequency + 5, moduletype, targetBody), null);
-                Network6.SetFunds(90000, 100000, targetBody);
+                Network6.SetFunds(90000, 100000 * st.Contract_Payment_Multiplier, targetBody);
                 this.AddParameter(new GroundStationPostion("South Pole Station", 0, -89, frequency + 5, true), null);
             }
             else if (SaveInfo.SatelliteTypeChoice == 5)
@@ -313,22 +313,22 @@ namespace MissionControllerEC.MCEContracts
                     frequency = -10;
                 }
                 ContractParameter Network1 = this.AddParameter(new satelliteCoreCheck(SatTypeName, frequency, moduletype, targetBody), null);
-                Network1.SetFunds(90000, 100000, targetBody);
+                Network1.SetFunds(90000, 100000 * st.Contract_Payment_Multiplier, targetBody);
                 this.AddParameter(new GroundStationPostion("Kerbal Space Center", -74, 0, frequency, false), null);
                 ContractParameter Network2 = this.AddParameter(new satelliteCoreCheck(SatTypeName, frequency + 1, moduletype, targetBody), null);
-                Network2.SetFunds(90000, 100000, targetBody);
+                Network2.SetFunds(90000, 100000 * st.Contract_Payment_Multiplier, targetBody);
                 this.AddParameter(new GroundStationPostion("East Shore Station", 16, 0, frequency + 1, false), null);
                 ContractParameter Network3 = this.AddParameter(new satelliteCoreCheck(SatTypeName, frequency + 2, moduletype, targetBody), null);
-                Network3.SetFunds(90000, 100000, targetBody);
+                Network3.SetFunds(90000, 100000 * st.Contract_Payment_Multiplier, targetBody);
                 this.AddParameter(new GroundStationPostion("Heart Station", 106, 0, frequency + 2, false), null);
                 ContractParameter Network4 = this.AddParameter(new satelliteCoreCheck(SatTypeName, frequency + 3, moduletype, targetBody), null);
-                Network4.SetFunds(90000, 100000, targetBody);
+                Network4.SetFunds(90000, 100000 * st.Contract_Payment_Multiplier, targetBody);
                 this.AddParameter(new GroundStationPostion("Crator Station", -164, 0, frequency + 3,false), null);
                 ContractParameter Network5 = this.AddParameter(new satelliteCoreCheck(SatTypeName, frequency + 4, moduletype, targetBody), null);
-                Network5.SetFunds(90000, 100000, targetBody);
+                Network5.SetFunds(90000, 100000 * st.Contract_Payment_Multiplier, targetBody);
                 this.AddParameter(new GroundStationPostion("North Pole Station", 0, 89, frequency + 4, true), null);
                 ContractParameter Network6 = this.AddParameter(new satelliteCoreCheck(SatTypeName, frequency + 5, moduletype, targetBody), null);
-                Network6.SetFunds(90000, 100000, targetBody);
+                Network6.SetFunds(90000, 100000 * st.Contract_Payment_Multiplier, targetBody);
                 this.AddParameter(new GroundStationPostion("South Pole Station", 0, -89, frequency + 5,true), null);
             }
 
@@ -351,7 +351,7 @@ namespace MissionControllerEC.MCEContracts
 
             base.SetExpiry(3f, 10f);
             base.SetDeadlineYears(3f, targetBody);
-            base.SetFunds(10000, 145000, 160000, targetBody);
+            base.SetFunds(10000 * st.Contract_Payment_Multiplier, 145000 * st.Contract_Payment_Multiplier, 160000 * st.Contract_Payment_Multiplier, targetBody);
             base.SetReputation(25, 50, targetBody);
             return true;
         }

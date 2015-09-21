@@ -43,7 +43,7 @@ namespace MissionControllerEC.PartModules
         [KSPField(isPersistant = true, guiActiveEditor = true, guiName = "Module Type"), UI_FloatRange(minValue = 1f, maxValue = 4f, stepIncrement = 1f)]
         public float moduleType = 1;
 
-        [KSPField(isPersistant = true, guiActiveEditor = true, guiName = "Set Frequency"), UI_FloatRange(minValue = 1f, maxValue = 50f, stepIncrement = .5f)]
+        [KSPField(isPersistant = true, guiActiveEditor = true, guiName = "Set Frequency"), UI_FloatRange(minValue = 0f, maxValue = 51f, stepIncrement = .5f)]
         public float frequencyModulation = 1;
 
         [KSPEvent(guiActive = true, guiName = "Start Data Linkup", active = true)]

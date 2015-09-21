@@ -196,7 +196,7 @@ namespace MissionControllerEC.MCEContracts
             base.SetExpiry(1f, 10f);
             base.SetDeadlineYears(.3f, targetBody);
             base.SetReputation(20f, 40f, targetBody);
-            base.SetFunds(20000, 90000, 150000, targetBody);
+            base.SetFunds(20000 * st.Contract_Payment_Multiplier, 90000 * st.Contract_Payment_Multiplier, 150000 * st.Contract_Payment_Multiplier, targetBody);
 
             return true;
         }
@@ -336,7 +336,7 @@ namespace MissionControllerEC.MCEContracts
             base.SetExpiry(15f, 40f);
             base.SetDeadlineYears(700, targetBody);
             base.SetReputation(25f, 50f, targetBody);
-            base.SetFunds(15000, 100000, 130000, targetBody);
+            base.SetFunds(15000 * st.Contract_Payment_Multiplier, 100000 * st.Contract_Payment_Multiplier, 130000 * st.Contract_Payment_Multiplier, targetBody);
 
             return true;
         }

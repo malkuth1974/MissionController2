@@ -224,6 +224,46 @@ namespace MissionControllerEC
 
                 catch { Debug.LogError("could not run FinePrint Satellite Returned Null"); }
             }
+            if (settings.No_Fineprint_Base_Contracts && ContractSystem.ContractTypes.Contains(typeof(FinePrint.Contracts.BaseContract)))
+            {
+                try
+                {
+                    ContractSystem.ContractTypes.Remove(typeof(FinePrint.Contracts.BaseContract));
+                    Debug.Log("Removed FinePrint Satellite Type Contracts from Gererating");
+                }
+
+                catch { Debug.LogError("could not run FinePrint Satellite Returned Null"); }
+            }
+            if (settings.No_Fineprint_Station_Contracts && ContractSystem.ContractTypes.Contains(typeof(FinePrint.Contracts.StationContract)))
+            {
+                try
+                {
+                    ContractSystem.ContractTypes.Remove(typeof(FinePrint.Contracts.StationContract));
+                    Debug.Log("Removed FinePrint Satellite Type Contracts from Gererating");
+                }
+
+                catch { Debug.LogError("could not run FinePrint Satellite Returned Null"); }
+            }
+            if (settings.No_Fineprint_ISRU_Contracts && ContractSystem.ContractTypes.Contains(typeof(FinePrint.Contracts.ISRUContract)))
+            {
+                try
+                {
+                    ContractSystem.ContractTypes.Remove(typeof(FinePrint.Contracts.ISRUContract));
+                    Debug.Log("Removed FinePrint Satellite Type Contracts from Gererating");
+                }
+
+                catch { Debug.LogError("could not run FinePrint Satellite Returned Null"); }
+            }
+            if (settings.No_Fineprint_Tourism_Contracts && ContractSystem.ContractTypes.Contains(typeof(FinePrint.Contracts.TourismContract)))
+            {
+                try
+                {
+                    ContractSystem.ContractTypes.Remove(typeof(FinePrint.Contracts.TourismContract));
+                    Debug.Log("Removed FinePrint Satellite Type Contracts from Gererating");
+                }
+
+                catch { Debug.LogError("could not run FinePrint Satellite Returned Null"); }
+            }
             if (settings.No_Fineprint_Survey_Contracts && ContractSystem.ContractTypes.Contains(typeof(FinePrint.Contracts.SurveyContract)))
             {
                 try
@@ -239,6 +279,26 @@ namespace MissionControllerEC
                 try
                 {
                     ContractSystem.ContractTypes.Remove(typeof(Contracts.Templates.PartTest));
+                    Debug.Log("Removed PartTest Type Contracts from Gererating");
+                }
+
+                catch { Debug.LogError("could not run NoPartTest Returned Null"); }
+            }
+            if (settings.No_GrandTour_Contracts && ContractSystem.ContractTypes.Contains(typeof(Contracts.Templates.GrandTour)))
+            {
+                try
+                {
+                    ContractSystem.ContractTypes.Remove(typeof(Contracts.Templates.GrandTour));
+                    Debug.Log("Removed PartTest Type Contracts from Gererating");
+                }
+
+                catch { Debug.LogError("could not run NoPartTest Returned Null"); }
+            }
+            if (settings.No_Explore_Body && ContractSystem.ContractTypes.Contains(typeof(Contracts.Templates.ExploreBody)))
+            {
+                try
+                {
+                    ContractSystem.ContractTypes.Remove(typeof(Contracts.Templates.ExploreBody));
                     Debug.Log("Removed PartTest Type Contracts from Gererating");
                 }
 

@@ -10,6 +10,7 @@ namespace MissionControllerEC.MCEParameters
     #region ApA OrbitGaol
     public class ApAOrbitGoal : ContractParameter
     {
+        Settings st = new Settings("Config.cfg");
         private CelestialBody targetBody;
         private double ApA = 0.0;
         private bool updated = false;
@@ -109,8 +110,8 @@ namespace MissionControllerEC.MCEParameters
             {
                 if (vessel.isActiveVessel && FlightGlobals.ActiveVessel.orbit.referenceBody.Equals(targetBody))
                 {
-                    double minApA = ApA - 1000;
-                    double maxApA = ApA + 1000;
+                    double minApA = ApA - st.Margin_Of_Error_Contract_Orbits;
+                    double maxApA = ApA + st.Margin_Of_Error_Contract_Orbits;
                     if (vessel.orbit.ApA >= minApA && vessel.orbit.ApA <= maxApA)
                     {
                         base.SetComplete();
@@ -124,8 +125,8 @@ namespace MissionControllerEC.MCEParameters
             {
                 if (vessel.isActiveVessel && FlightGlobals.ActiveVessel.orbit.referenceBody.Equals(targetBody))
                 {
-                    double minApA = ApA - 1000;
-                    double maxApA = ApA + 1000;
+                    double minApA = ApA - st.Margin_Of_Error_Contract_Orbits;
+                    double maxApA = ApA + st.Margin_Of_Error_Contract_Orbits;
                     if (vessel.orbit.ApA <= minApA && vessel.orbit.ApA >= maxApA)
                     {
                         base.SetIncomplete();
@@ -146,6 +147,7 @@ namespace MissionControllerEC.MCEParameters
     #region  Sat ApA OrbitGaol
     public class SatApAOrbitGoal : ContractParameter
     {
+        Settings st = new Settings("Config.cfg");
         private CelestialBody targetBody;
         private double ApA = 0.0;
         private bool updated = false;
@@ -244,8 +246,8 @@ namespace MissionControllerEC.MCEParameters
             {
                 if (vessel.isActiveVessel && FlightGlobals.ActiveVessel.orbit.referenceBody.Equals(targetBody))
                 {
-                    double minApA = ApA - 1000;
-                    double maxApA = ApA + 1000;
+                    double minApA = ApA - st.Margin_Of_Error_Contract_Orbits;
+                    double maxApA = ApA + st.Margin_Of_Error_Contract_Orbits;
                     if (vessel.orbit.ApA >= minApA && vessel.orbit.ApA <= maxApA)
                     {
                         base.SetComplete();
@@ -260,8 +262,8 @@ namespace MissionControllerEC.MCEParameters
             {
                 if (vessel.isActiveVessel && FlightGlobals.ActiveVessel.orbit.referenceBody.Equals(targetBody))
                 {
-                    double minApA = ApA - 1000;
-                    double maxApA = ApA + 1000;
+                    double minApA = ApA - st.Margin_Of_Error_Contract_Orbits;
+                    double maxApA = ApA + st.Margin_Of_Error_Contract_Orbits;
                     if (vessel.orbit.ApA <= minApA && vessel.orbit.ApA >= maxApA)
                     {
                         base.SetIncomplete();
@@ -294,7 +296,7 @@ namespace MissionControllerEC.MCEParameters
         }
         protected override string GetHashString()
         {
-            return targetBody.bodyName + this.Root.MissionSeed.ToString();
+            return "InOrbitGoal" + this.Root.MissionSeed.ToString();
         }
         protected override string GetTitle()
         {
@@ -338,6 +340,7 @@ namespace MissionControllerEC.MCEParameters
     #region PeA OrbitGoal
     public class PeAOrbitGoal : ContractParameter
     {
+        Settings st = new Settings("Config.cfg");
         private CelestialBody targetBody;
         private double PeA = 0.0;
         private bool updated = false;
@@ -445,8 +448,8 @@ namespace MissionControllerEC.MCEParameters
             {
                 if (vessel.isActiveVessel)
                 {
-                    double minPeA = PeA - 1000;
-                    double maxPeA = PeA + 1000;
+                    double minPeA = PeA - st.Margin_Of_Error_Contract_Orbits;
+                    double maxPeA = PeA + st.Margin_Of_Error_Contract_Orbits;
                     if (vessel.orbit.PeA >= minPeA && vessel.orbit.PeA <= PeA)
                     {
                         base.SetComplete();
@@ -460,8 +463,8 @@ namespace MissionControllerEC.MCEParameters
             {
                 if (vessel.isActiveVessel)
                 {
-                    double minPeA = PeA - 1000;
-                    double maxPeA = PeA + 1000;
+                    double minPeA = PeA - st.Margin_Of_Error_Contract_Orbits;
+                    double maxPeA = PeA + st.Margin_Of_Error_Contract_Orbits;
                     if (vessel.orbit.PeA <= minPeA && vessel.orbit.PeA >= PeA)
                     {
                         base.SetIncomplete();
@@ -482,6 +485,7 @@ namespace MissionControllerEC.MCEParameters
     #region Sat PeA OrbitGoal
     public class SatPeAOrbitGoal : ContractParameter
     {
+        Settings st = new Settings("Config.cfg");
         private CelestialBody targetBody;
         private double PeA = 0.0;
         private bool updated = false;
@@ -589,8 +593,8 @@ namespace MissionControllerEC.MCEParameters
             {
                 if (vessel.isActiveVessel)
                 {
-                    double minPeA = PeA - 1000;
-                    double maxPeA = PeA + 1000;
+                    double minPeA = PeA - st.Margin_Of_Error_Contract_Orbits;
+                    double maxPeA = PeA + st.Margin_Of_Error_Contract_Orbits;
                     if (vessel.orbit.PeA >= minPeA && vessel.orbit.PeA <= PeA)
                     {
                         base.SetComplete();
@@ -605,8 +609,8 @@ namespace MissionControllerEC.MCEParameters
             {
                 if (vessel.isActiveVessel)
                 {
-                    double minPeA = PeA - 1000;
-                    double maxPeA = PeA + 1000;
+                    double minPeA = PeA - st.Margin_Of_Error_Contract_Orbits;
+                    double maxPeA = PeA + st.Margin_Of_Error_Contract_Orbits;
                     if (vessel.orbit.PeA <= minPeA && vessel.orbit.PeA >= PeA)
                     {
                         base.SetIncomplete();
@@ -723,8 +727,8 @@ namespace MissionControllerEC.MCEParameters
             {
                 if (FlightGlobals.ActiveVessel)
                 {
-                    double maxInclination = InclinationValue + 3;
-                    double minInclination = InclinationValue - 3;
+                    double maxInclination = InclinationValue + settings.Margin_Of_Error_Contract_Inclination;
+                    double minInclination = InclinationValue - settings.Margin_Of_Error_Contract_Inclination;
                     if (vessel.orbit.inclination <= maxInclination && vessel.orbit.inclination >= minInclination)
                         base.SetComplete();
                 }
@@ -736,8 +740,8 @@ namespace MissionControllerEC.MCEParameters
             {
                 if (FlightGlobals.ActiveVessel)
                 {
-                    double maxInclination = InclinationValue + 3;
-                    double minInclination = InclinationValue - 3;
+                    double maxInclination = InclinationValue + settings.Margin_Of_Error_Contract_Inclination;
+                    double minInclination = InclinationValue - settings.Margin_Of_Error_Contract_Inclination;
                     if (vessel.orbit.inclination >= maxInclination && vessel.orbit.inclination <= minInclination)
                         base.SetIncomplete();
                 }
@@ -757,6 +761,7 @@ namespace MissionControllerEC.MCEParameters
 
     public class EccentricGoal : ContractParameter
     {
+        Settings st = new Settings("Config.cfg");
         CelestialBody targetBody;
         private double eccentricity = 0.0;
         private bool updated = false;
@@ -849,8 +854,8 @@ namespace MissionControllerEC.MCEParameters
         {
             if (vessel.launchTime > this.Root.DateAccepted)
             {
-                double maxeccn = eccentricity + .5;
-                double mineccn = eccentricity - .5;
+                double maxeccn = eccentricity + st.Margin_Of_Error_Contract_Eccentric;
+                double mineccn = eccentricity - st.Margin_Of_Error_Contract_Eccentric;
                 if (vessel.situation == Vessel.Situations.ORBITING && vessel.orbit.eccentricity <= maxeccn && vessel.orbit.eccentricity >= mineccn)
                     base.SetComplete();
             }
@@ -859,8 +864,8 @@ namespace MissionControllerEC.MCEParameters
         {
             if (vessel.launchTime > this.Root.DateAccepted)
             {
-                double maxeccn = eccentricity + .5;
-                double mineccn = eccentricity - .5;
+                double maxeccn = eccentricity + st.Margin_Of_Error_Contract_Eccentric;
+                double mineccn = eccentricity - st.Margin_Of_Error_Contract_Eccentric;
                 if (vessel.situation == Vessel.Situations.ORBITING && vessel.orbit.eccentricity > maxeccn && vessel.orbit.eccentricity < mineccn)
                     base.SetIncomplete();
             }

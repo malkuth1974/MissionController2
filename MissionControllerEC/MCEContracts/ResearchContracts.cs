@@ -174,7 +174,6 @@ namespace MissionControllerEC.MCEContracts
         Settings st = new Settings("Config.cfg");
         CelestialBody targetBody = null;
         int crewCount = 0;
-        public double testpos = 0;
         string partName = "Mass Spectrometry Tube";
         int partNumber = 1;
         double amountTime = Tools.RandomNumber(200, 1500);
@@ -186,21 +185,17 @@ namespace MissionControllerEC.MCEContracts
 
         protected override bool Generate()
         {
+            return false;
             if (prestige != ContractPrestige.Trivial)
             {
                 return false;
             }
             if (HighLogic.LoadedSceneIsFlight) { return false; }
             targetBody = GetUnreachedTargets();
-
             if (targetBody != null)
             {
                 return false;
-            }
-            else
-            {
-                return false;
-            }
+            }            
             if (SaveInfo.NoLanderResearchContracts)
             {
                 return false;
@@ -208,14 +203,9 @@ namespace MissionControllerEC.MCEContracts
             totalContracts = ContractSystem.Instance.GetCurrentContracts<LanderResearchScan>().Count();
             TotalFinished = ContractSystem.Instance.GetCompletedContracts<LanderResearchScan>().Count();
             if (totalContracts >= st.Science_Contract_Per_Cycle)
-            {               
-                return false;
-            }
-            if (targetBody.flightGlobalsIndex == 8)
             {
-                Debug.LogWarning("Landing Goal Body set to: " + targetBody.theName + " Contract Generate cancelled");
                 return false;
-            }
+            }            
             this.landerscan1 = this.AddParameter(new InOrbitGoal(targetBody), null);
             landerscan1.SetFunds(8000, targetBody);
             landerscan1.SetReputation(4, targetBody);
@@ -230,7 +220,7 @@ namespace MissionControllerEC.MCEContracts
             landerscan3.SetScience(4, targetBody);
             this.AddParameter(new PartGoal(partName, partNumber,false), null);
             this.AddParameter(new GetCrewCount(0), null);
-            this.prestige = ContractPrestige.Significant;
+            //this.prestige = ContractPrestige.Significant;
             base.SetExpiry(3f, 10f);
             base.SetScience(15f, targetBody);
             base.SetDeadlineYears(3f, targetBody);
@@ -251,7 +241,7 @@ namespace MissionControllerEC.MCEContracts
 
         protected override string GetHashString()
         {
-            return targetBody.bodyName + " " + TotalFinished + this.MissionSeed.ToString();
+            return "LanderResearch" + this.MissionSeed.ToString();
         }
         protected override string GetTitle()
         {
@@ -285,7 +275,6 @@ namespace MissionControllerEC.MCEContracts
         {
             MCELanderResearch.doLanderResearch = false;
             return "You have successfully landed on and conducted research on " + targetBody.theName + ".  After landing we have discovered many fascinating secrets about what makes up the composition of the landing site.\n\n" +
-
             "Further research missions, both manned and robotic, will be needed in the future to unlock the secrets of " + targetBody.theName + ".";
         }
 
@@ -301,11 +290,9 @@ namespace MissionControllerEC.MCEContracts
         {
             int bodyID = targetBody.flightGlobalsIndex;
             node.AddValue("targetBody", bodyID);
-
             node.AddValue("crewcount", crewCount);
             node.AddValue("partname", partName);
             node.AddValue("maxcount", partNumber);
-
             node.AddValue("amountTime", amountTime);
         }
 
@@ -319,7 +306,7 @@ namespace MissionControllerEC.MCEContracts
         }
         protected static CelestialBody GetUnreachedTargets()
         {
-            var bodies = Contract.GetBodies_Reached(false, false);
+            var bodies = Contract.GetBodies_Reached(true, false);
             if (bodies != null)
             {
                 if (bodies.Count > 0)
