@@ -124,11 +124,7 @@ namespace MissionControllerEC.MCEContracts
         }
 
         protected override bool Generate()
-        {
-            if (prestige == ContractPrestige.Trivial)
-            {
-                return false;
-            }
+        {           
             if (HighLogic.LoadedSceneIsFlight)
             {
                 return false;
@@ -138,11 +134,10 @@ namespace MissionControllerEC.MCEContracts
             //Debug.Log(" Repair Contract Totalcontracts " + totalContracts + " - " + " Total Finsihed " + TotalFinished);           
             if (totalContracts >= 1 || SaveInfo.NoRepairContracts)
             {
-                //Debug.Log("contract is generated right now terminating Repair Vessel");
-
+                Debug.Log("contract is generated right now terminating Repair Vessel");
                 return false;
             }
-            if (!SaveInfo.RepairContractOn)
+            if (SaveInfo.RepairContractGeneratedOn == false)
             {
                 Debug.LogWarning("(Repair) contract random is false, contract not generated");
                 return false;
@@ -275,7 +270,10 @@ namespace MissionControllerEC.MCEContracts
         {
             bool techUnlock = ResearchAndDevelopment.GetTechnologyState("advConstruction") == RDTech.State.Available;
             if (techUnlock)
+            {
+                //Debug.LogWarning("Attempting To generate Repair Contract");
                 return true;
+            }
             else
                 return false;
         }
@@ -368,11 +366,7 @@ namespace MissionControllerEC.MCEContracts
         }
 
         protected override bool Generate()
-        {
-            if (prestige == ContractPrestige.Trivial)
-            {
-                return false;
-            }
+        {          
             if (HighLogic.LoadedSceneIsFlight)
             {
                 return false;
@@ -381,9 +375,10 @@ namespace MissionControllerEC.MCEContracts
             TotalFinished = ContractSystem.Instance.GetCompletedContracts<RepairStation>().Count();
             if (totalContracts >= 1 || SaveInfo.NoRepairContracts)
             {
-                return false;
+                Debug.LogWarning("Total Repair station Contracts is greater then one Repair Contract Not Generated");
+                return false;                
             }
-            if (!SaveInfo.RepairStationContract)
+            if (SaveInfo.RepairStationContractGeneratedOn == false)
             {
                 Debug.LogWarning("(Repair Station) contract random is false, contract not generated");
                 return false;

@@ -70,8 +70,8 @@ namespace MissionControllerEC
             GUILayout.Space(10);
             GUILayout.BeginHorizontal();
             GUILayout.Box("No MCE Orbital Research Contracts", MCE_ScenarioStartup.StyleBold, GUILayout.Width(300));
-            GUILayout.Box("" + SaveInfo.NoOrbitalResearchContracts, MCE_ScenarioStartup.styleBlueBold, GUILayout.Width(75));
-            SaveInfo.NoOrbitalResearchContracts = GUILayout.Toggle(SaveInfo.NoOrbitalResearchContracts, "Set", GUILayout.Width(25));
+            GUILayout.Box("" + SaveInfo.OrbitalResearchContractActivated, MCE_ScenarioStartup.styleBlueBold, GUILayout.Width(75));
+            SaveInfo.OrbitalResearchContractActivated = GUILayout.Toggle(SaveInfo.OrbitalResearchContractActivated, "Set", GUILayout.Width(25));
             GUILayout.EndHorizontal();
 
             GUILayout.Space(10);

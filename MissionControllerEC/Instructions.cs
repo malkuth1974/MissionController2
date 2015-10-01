@@ -126,22 +126,23 @@ namespace MissionControllerEC
         {
             randomContractsCheck();
             currentContractType = Tools.MC2RandomWieghtSystem.PickOne<int>(RandomContractsCheck);
+            Debug.LogWarning("Checking for Random Contracts Now MCE");
             if (currentContractType == 0)
             {
-                SaveInfo.RepairContractOn = false;               
-                SaveInfo.RepairStationContract = false;
+                SaveInfo.RepairContractGeneratedOn = false;               
+                SaveInfo.RepairStationContractGeneratedOn = false;
                 Debug.Log("No random contracts at this time");
             }            
             else if (currentContractType == 1)
             {
-                SaveInfo.RepairContractOn = true;             
-                SaveInfo.RepairStationContract = false;
+                SaveInfo.RepairContractGeneratedOn = true;             
+                SaveInfo.RepairStationContractGeneratedOn = false;
                 Debug.Log("Repair Contract Selected");
             }
             else if (currentContractType == 2)
             {
-                SaveInfo.RepairContractOn = false;
-                SaveInfo.RepairStationContract = true;
+                SaveInfo.RepairContractGeneratedOn = false;
+                SaveInfo.RepairStationContractGeneratedOn = true;
                 Debug.Log("RepairStation Contract Selected");
             }           
             else

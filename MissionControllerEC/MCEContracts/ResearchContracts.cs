@@ -28,30 +28,26 @@ namespace MissionControllerEC.MCEContracts
         ContractParameter orbitresearch2;
 
         protected override bool Generate()
-        {
-            if (prestige != ContractPrestige.Trivial)
-            {
-                return false;
-            }
+        {           
             if (HighLogic.LoadedSceneIsFlight) { return false; }
             targetBody = GetUnreachedTargets();
-            if (targetBody != null)
+            if (targetBody == null)
             {
-                return false;
+                Debug.LogWarning("Orbital Research Has No Valid Target bodies contract rejected");
+                return false;                
             }
-            else
+            Debug.LogWarning("Orbit Research Body is " + targetBody.theName);          
+            if (SaveInfo.OrbitalResearchContractActivated == true)
             {
-                targetBody = Planetarium.fetch.Home;
-            }
-            if (SaveInfo.NoOrbitalResearchContracts)
-            {
+                Debug.LogWarning("Orbit Research Random Selection is false, contract not Generated.");
                 return false;
             }
             totalContracts = ContractSystem.Instance.GetCurrentContracts<OrbitalScanContract>().Count();
             TotalFinished = ContractSystem.Instance.GetCompletedContracts<OrbitalScanContract>().Count();
             if (totalContracts >= st.Science_Contract_Per_Cycle)
-            {                
-               return false;
+            {
+                Debug.LogWarning("Orbit Research Already Generated, only 1 contract at time please.");
+                return false;
             }
             missionTime = Tools.RandomNumber(200, 1500);
             this.orbitresearch1 = this.AddParameter(new InOrbitGoal(targetBody), null);
@@ -149,20 +145,27 @@ namespace MissionControllerEC.MCEContracts
 
         public override bool MeetRequirements()
         {           
-            bool techUnlock = ResearchAndDevelopment.GetTechnologyState("electrics") == RDTech.State.Available;
+            bool techUnlock = ResearchAndDevelopment.GetTechnologyState("basicScience") == RDTech.State.Available;
             if (techUnlock)
+            {
+                //Debug.LogWarning("Attempting To generate Orbital Research Contract");
                 return true;
+            }
             else
                 return false;
         }
 
         protected static CelestialBody GetUnreachedTargets()
         {
-            var bodies = Contract.GetBodies_Reached(true, true);
+            var bodies = Contract.GetBodies_Reached(true, false);
             if (bodies != null)
             {
                 if (bodies.Count > 0)
                     return bodies[UnityEngine.Random.Range(0, bodies.Count)];
+            }
+            else
+            {
+                return null;
             }
             return null;
         }
@@ -184,26 +187,23 @@ namespace MissionControllerEC.MCEContracts
         ContractParameter landerscan3;
 
         protected override bool Generate()
-        {
-            return false;
-            if (prestige != ContractPrestige.Trivial)
-            {
-                return false;
-            }
+        {            
             if (HighLogic.LoadedSceneIsFlight) { return false; }
             targetBody = GetUnreachedTargets();
-            if (targetBody != null)
+            if (targetBody == null)
             {
                 return false;
             }            
-            if (SaveInfo.NoLanderResearchContracts)
+            if (SaveInfo.NoLanderResearchContracts == true)
             {
+                Debug.LogWarning("Lander Research Contracts random set to false No contract generated.");
                 return false;
             }
             totalContracts = ContractSystem.Instance.GetCurrentContracts<LanderResearchScan>().Count();
             TotalFinished = ContractSystem.Instance.GetCompletedContracts<LanderResearchScan>().Count();
             if (totalContracts >= st.Science_Contract_Per_Cycle)
             {
+                Debug.LogWarning("Lander Research Already Generated, only 1 contract at time please.");
                 return false;
             }            
             this.landerscan1 = this.AddParameter(new InOrbitGoal(targetBody), null);
@@ -298,7 +298,7 @@ namespace MissionControllerEC.MCEContracts
 
         public override bool MeetRequirements()
         {           
-            bool techUnlock = ResearchAndDevelopment.GetTechnologyState("advElectrics") == RDTech.State.Available;
+            bool techUnlock = ResearchAndDevelopment.GetTechnologyState("landing") == RDTech.State.Available;
             if (techUnlock)
                 return true;
             else

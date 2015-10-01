@@ -49,13 +49,13 @@ namespace MissionControllerEC
         public static bool NoSatelliteContracts = false;
         public static bool NoOrbitalPeriodcontracts = false;
         public static bool NoLanderResearchContracts = false;
-        public static bool NoOrbitalResearchContracts = false;
+        public static bool OrbitalResearchContractActivated = false;
         public static bool NoRepairContracts = false;
         public static bool all_Historical_Contracts_Off = false;
         public static bool Duna_NonHistorical_Contracts_Off = false; 
 
-        public static bool RepairContractOn = false;
-        public static bool RepairStationContract = false;
+        public static bool RepairContractGeneratedOn = false;
+        public static bool RepairStationContractGeneratedOn = false;
         public static int SatelliteTypeChoice = 0;
 
         public static bool spResourceSet = false;

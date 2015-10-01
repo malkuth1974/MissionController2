@@ -325,7 +325,7 @@ namespace MissionControllerEC
             }
             if (GUILayout.Button("Turn On All Repair Mission At Once"))
             {
-                SaveInfo.RepairContractOn = true; SaveInfo.RepairStationContract = true;
+                SaveInfo.RepairContractGeneratedOn = true; SaveInfo.RepairStationContractGeneratedOn = true;
             }
             
             if (GUILayout.Button("Test EVA Type Kerbal"))
@@ -494,7 +494,7 @@ namespace MissionControllerEC
             SaveInfo.supplyContractOn = supplyContractOn;
             SaveInfo.supplyAmount = supplyResAmount;
            
-            SaveInfo.NoOrbitalResearchContracts = noOrbitalContract;
+            SaveInfo.OrbitalResearchContractActivated = noOrbitalContract;
             SaveInfo.NoLanderResearchContracts = noLandingContract;
             SaveInfo.NoSatelliteContracts = noSatelliteContract;
             SaveInfo.NoRepairContracts = noRepairContract;
@@ -554,7 +554,7 @@ namespace MissionControllerEC
             supplyContractOn = SaveInfo.supplyContractOn;
             supplyResAmount = SaveInfo.supplyAmount;
           
-            noOrbitalContract = SaveInfo.NoOrbitalResearchContracts;
+            noOrbitalContract = SaveInfo.OrbitalResearchContractActivated;
             noLandingContract = SaveInfo.NoLanderResearchContracts;
             noSatelliteContract = SaveInfo.NoSatelliteContracts;
             noRepairContract = SaveInfo.NoRepairContracts;
