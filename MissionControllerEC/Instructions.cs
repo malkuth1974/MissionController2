@@ -34,7 +34,7 @@ namespace MissionControllerEC
 
         public static List<string> CivName = new List<string>();
 
-        Tools.MC2RandomWieghtSystem.Item<int>[] RandomContractsCheck;
+        Tools.MC2RandomWieghtSystem.Item<int>[] RandomRepairContractsCheck;
         Tools.MC2RandomWieghtSystem.Item<int>[] RandomSatelliteContractsCheck;
         
         public void loadTextures()
@@ -122,16 +122,16 @@ namespace MissionControllerEC
             }
         }
                
-        public void CheckRandomContractTypes(GameScenes gs)
+        public void CheckRepairContractTypes(GameScenes gs)
         {
             randomContractsCheck();
-            currentContractType = Tools.MC2RandomWieghtSystem.PickOne<int>(RandomContractsCheck);
+            currentContractType = Tools.MC2RandomWieghtSystem.PickOne<int>(RandomRepairContractsCheck);
             Debug.LogWarning("Checking for Random Contracts Now MCE");
             if (currentContractType == 0)
             {
                 SaveInfo.RepairContractGeneratedOn = false;               
                 SaveInfo.RepairStationContractGeneratedOn = false;
-                Debug.Log("No random contracts at this time");
+                Debug.Log("No Repair Type contracts at this time");
             }            
             else if (currentContractType == 1)
             {
@@ -160,18 +160,18 @@ namespace MissionControllerEC
 
         public void randomContractsCheck()
         {
-            RandomContractsCheck = new Tools.MC2RandomWieghtSystem.Item<int>[3];
-            RandomContractsCheck[0] = new Tools.MC2RandomWieghtSystem.Item<int>();
-            RandomContractsCheck[0].weight = 30;
-            RandomContractsCheck[0].value = 0;
+            RandomRepairContractsCheck = new Tools.MC2RandomWieghtSystem.Item<int>[3];
+            RandomRepairContractsCheck[0] = new Tools.MC2RandomWieghtSystem.Item<int>();
+            RandomRepairContractsCheck[0].weight = 30;
+            RandomRepairContractsCheck[0].value = 0;
 
-            RandomContractsCheck[1] = new Tools.MC2RandomWieghtSystem.Item<int>();
-            RandomContractsCheck[1].weight = settings.contract_repair_Random_percent;
-            RandomContractsCheck[1].value = 1;
+            RandomRepairContractsCheck[1] = new Tools.MC2RandomWieghtSystem.Item<int>();
+            RandomRepairContractsCheck[1].weight = 40;
+            RandomRepairContractsCheck[1].value = 1;
 
-            RandomContractsCheck[2] = new Tools.MC2RandomWieghtSystem.Item<int>();
-            RandomContractsCheck[2].weight = settings.contract_repair_Station_Random_percent;
-            RandomContractsCheck[2].value = 2;
+            RandomRepairContractsCheck[2] = new Tools.MC2RandomWieghtSystem.Item<int>();
+            RandomRepairContractsCheck[2].weight = 25;
+            RandomRepairContractsCheck[2].value = 2;
            
         }
 

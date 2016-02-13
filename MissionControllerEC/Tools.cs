@@ -158,7 +158,7 @@ namespace MissionControllerEC
                 i = node.GetValue(savedFile);
                 value = (t)(object)i;
             }
-            catch (Exception ex)
+            catch //(Exception ex)
             {
                 //Debug.LogWarning("MCE Exeption failed to load contract saved value " + valueName + " " + savedFile + "Backup Loaded: " + backupDefault + " Node Name: " + node);
                 //Debug.LogWarning(ex.Message + " " + ex.StackTrace);

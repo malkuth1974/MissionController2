@@ -27,9 +27,7 @@ namespace MissionControllerEC
         [Persistent]internal bool DebugMenu = false;
         [Persistent]internal double Satellite_Contract_Per_Cycle = 2;
         [Persistent]internal double Science_Contract_Per_Cycle = 2;      
-        [Persistent]internal float Contract_Payment_Multiplier = 1;        
-        [Persistent]internal int contract_repair_Random_percent = 35;
-        [Persistent]internal int contract_repair_Station_Random_percent = 35;
+        [Persistent]internal float Contract_Payment_Multiplier = 1;                
         [Persistent]internal int Margin_Of_Error_Contract_Orbits = 1000;
         [Persistent]internal int Margin_Of_Error_Contract_Inclination = 3;
         [Persistent]internal double Margin_Of_Error_Contract_Eccentric = .5;

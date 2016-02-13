@@ -342,7 +342,7 @@ namespace MissionControllerEC.MCEContracts
                 this.AddParameter(new PartGoal(partName, "Small Repair Panel", partAmount, true), null);
             }
             //this.AddParameter(new GetCrewCount(crewCount), null);
-            this.AddParameter(new FinePrint.Contracts.Parameters.ProbeSystemsParameter(), null);
+            //this.AddParameter(new FinePrint.Contracts.Parameters.VesselSystemsParameter(), null);
             if (SaveInfo.Hardcore_Vessel_Must_Survive == true)
             {
                 this.OnDestroy = this.AddParameter(new VesselMustSurvive(), null);

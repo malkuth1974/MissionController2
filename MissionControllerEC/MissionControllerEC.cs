@@ -192,7 +192,7 @@ namespace MissionControllerEC
             loadFiles();
             CreateButtons();          
             GameEvents.Contract.onContractsLoaded.Add(this.onContractLoaded);
-            GameEvents.onGameSceneLoadRequested.Add(this.CheckRandomContractTypes);
+            GameEvents.onGameSceneLoadRequested.Add(this.CheckRepairContractTypes);
             //Debug.Log("MCE Awake");
             getSupplyList(false);
         }    
@@ -207,7 +207,7 @@ namespace MissionControllerEC
             DestroyButtons();
             //Debug.Log("MCE OnDestroy");
             GameEvents.Contract.onContractsLoaded.Remove(this.onContractLoaded);
-            GameEvents.onGameSceneLoadRequested.Remove(this.CheckRandomContractTypes);
+            GameEvents.onGameSceneLoadRequested.Remove(this.CheckRepairContractTypes);
             //Debug.Log("Game All values removed for MCE");
         }                
       
