@@ -29,6 +29,37 @@ namespace MissionControllerEC
             return value;
         }
 
+        public static double ReturnOrbitValues(CelestialBody targetBody,bool RandomChance,float multiplier)
+        {
+            if (targetBody != null)
+            {
+                double TempOrbitMin = targetBody.atmosphereDepth;
+                Debug.LogWarning("TempOrbitMin is = " + TempOrbitMin);
+                double Temporbitmax = TempOrbitMin * multiplier;
+                Debug.LogWarning("MaxOrbit Multiplier is " + Temporbitmax);
+                double TempOrbitRandom = Tools.RandomNumber((int)TempOrbitMin, (int)Temporbitmax);
+                if (RandomChance == false)
+                {
+                    double TempOrbitRandom2 = TempOrbitMin * multiplier;
+                    return TempOrbitRandom2;
+                }
+                else
+                {
+                    return TempOrbitRandom + 5000;
+                }
+            }
+            else
+            {
+                Debug.LogWarning("Failed to load celestialbody for ReturnOrbitValues in Mission Controller defaulting to 300000");
+                return 300000;                
+            }
+
+        }
+        public static double ReturnMinOrbit(CelestialBody targetbody,float multipier)
+        {
+            return targetbody.atmosphereDepth * multipier;
+        }
+
         public static double ConvertDays(double seconds)
         {
             double newValue;

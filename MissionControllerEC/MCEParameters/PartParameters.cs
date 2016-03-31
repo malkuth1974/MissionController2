@@ -115,7 +115,7 @@ namespace MissionControllerEC.MCEParameters
                         {
                             if (p.partInfo.title.Equals(partName) || p.partInfo.title.Equals(partName2))
                             {
-                                ++partCount;
+                                partCount = 1;
                             }
                         }
                     }

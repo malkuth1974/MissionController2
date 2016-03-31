@@ -65,7 +65,7 @@ namespace MissionControllerEC.MCEContracts
             base.SetScience(5f, targetBody);
             base.SetDeadlineYears(3f, targetBody);
             base.SetReputation(5f, 3f, targetBody);
-            base.SetFunds(34000f * st.Contract_Payment_Multiplier, 53000f * st.Contract_Payment_Multiplier, 130000f * st.Contract_Payment_Multiplier, targetBody);
+            base.SetFunds(12000f * st.Contract_Payment_Multiplier, 53000f * st.Contract_Payment_Multiplier, 130000f * st.Contract_Payment_Multiplier, targetBody);
 
             return true;
         }

@@ -26,16 +26,11 @@ namespace MissionControllerEC
         [Persistent]internal bool No_Explore_Body = false;
         [Persistent]internal bool DebugMenu = false;
         [Persistent]internal double Satellite_Contract_Per_Cycle = 2;
-        [Persistent]internal double Science_Contract_Per_Cycle = 2;      
+        [Persistent]internal double Science_Contract_Per_Cycle = 1;      
         [Persistent]internal float Contract_Payment_Multiplier = 1;                
-        [Persistent]internal int Margin_Of_Error_Contract_Orbits = 1000;
+        [Persistent]internal int Margin_Of_Error_Contract_Orbits = 5000;
         [Persistent]internal int Margin_Of_Error_Contract_Inclination = 3;
-        [Persistent]internal double Margin_Of_Error_Contract_Eccentric = .5;
-        [Persistent]internal double vostok12height = 70000;
-        [Persistent]internal double voshodheight = 82000;
-        [Persistent]internal double skyLabheight = 90000;
-        [Persistent]internal double skyLab4MaxApA = 120000;
-        [Persistent]internal double skyLab4MaxPeA = 120000;
+        [Persistent]internal double Margin_Of_Error_Contract_Eccentric = .5;       
         [Persistent]internal List<String> SupplyResourceList = new List<string>() { "LiquidFuel", "Oxidizer", "MonoPropellant", "XenonGas", "Food", "Water", "Oxygen", "Kibbal" };        
     }
 }

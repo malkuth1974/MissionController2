@@ -3,6 +3,8 @@ using UnityEngine;
 using Contracts;
 using KSP;
 using KSPAchievements;
+using FinePrint;
+using FinePrint.Utilities;
 
 namespace MissionControllerEC.MCEParameters
 {
@@ -42,7 +44,7 @@ namespace MissionControllerEC.MCEParameters
         }
         protected override string GetTitle()
         {
-            return "Enter " + OrbitType + " Around: " + targetBody.theName + "  With APA Of: " + ApA;
+            return "Enter " + OrbitType + " Around: " + targetBody.theName + "  With APA below: " + ApA.ToString("N0") + ". You have a margin of error of " + st.Margin_Of_Error_Contract_Orbits.ToString("N0");
         }
 
         protected override void OnRegister()
@@ -53,7 +55,6 @@ namespace MissionControllerEC.MCEParameters
             {
                 GameEvents.onFlightReady.Add(flightReady);
                 GameEvents.onVesselChange.Add(vesselChange);
-                GameEvents.onTimeWarpRateChanged.Add(flightReady);
                 updated = true;
             }
         }
@@ -64,7 +65,6 @@ namespace MissionControllerEC.MCEParameters
             {
                 GameEvents.onFlightReady.Remove(flightReady);
                 GameEvents.onVesselChange.Remove(vesselChange);
-                GameEvents.onTimeWarpRateChanged.Remove(flightReady);
             }
         }
 
@@ -179,7 +179,7 @@ namespace MissionControllerEC.MCEParameters
         }
         protected override string GetTitle()
         {
-            return "Enter "+ OrbitType + " Around: " + targetBody.theName + " With ApA of At Least: " + ApA;
+            return "Enter "+ OrbitType + " Around: " + targetBody.theName + " With APA below: " + ApA.ToString("N0") + ". You have a margin of error of " + st.Margin_Of_Error_Contract_Orbits.ToString("N0");
         }
 
         protected override void OnRegister()
@@ -190,7 +190,6 @@ namespace MissionControllerEC.MCEParameters
             {
                 GameEvents.onFlightReady.Add(flightReady);
                 GameEvents.onVesselChange.Add(vesselChange);
-                GameEvents.onTimeWarpRateChanged.Add(flightReady);
                 updated = true;
             }
         }
@@ -201,7 +200,6 @@ namespace MissionControllerEC.MCEParameters
             {
                 GameEvents.onFlightReady.Remove(flightReady);
                 GameEvents.onVesselChange.Remove(vesselChange);
-                GameEvents.onTimeWarpRateChanged.Remove(flightReady);
             }
         }
 
@@ -373,7 +371,7 @@ namespace MissionControllerEC.MCEParameters
         }
         protected override string GetTitle()
         {
-            return "Enter " + orbitType + " Around " + targetBody.theName + "  With PeA Of: " + PeA;
+            return "Enter " + orbitType + " Around " + targetBody.theName + " With PeA above: " + PeA.ToString("N0") + ". You have a margin of error of " + st.Margin_Of_Error_Contract_Orbits.ToString("N0");
         }
 
         protected override void OnRegister()
@@ -384,7 +382,6 @@ namespace MissionControllerEC.MCEParameters
             {
                 GameEvents.onFlightReady.Add(flightReady);
                 GameEvents.onVesselChange.Add(vesselChange);
-                GameEvents.onTimeWarpRateChanged.Add(flightReady);
                 updated = true;
             }
         }
@@ -395,7 +392,6 @@ namespace MissionControllerEC.MCEParameters
             {
                 GameEvents.onFlightReady.Remove(flightReady);
                 GameEvents.onVesselChange.Remove(vesselChange);
-                GameEvents.onTimeWarpRateChanged.Remove(flightReady);
             }
         }
 
@@ -450,7 +446,7 @@ namespace MissionControllerEC.MCEParameters
                 {
                     double minPeA = PeA - st.Margin_Of_Error_Contract_Orbits;
                     double maxPeA = PeA + st.Margin_Of_Error_Contract_Orbits;
-                    if (vessel.orbit.PeA >= minPeA && vessel.orbit.PeA <= PeA)
+                    if (vessel.orbit.PeA >= minPeA && vessel.orbit.PeA <= maxPeA)
                     {
                         base.SetComplete();
                     }
@@ -465,7 +461,7 @@ namespace MissionControllerEC.MCEParameters
                 {
                     double minPeA = PeA - st.Margin_Of_Error_Contract_Orbits;
                     double maxPeA = PeA + st.Margin_Of_Error_Contract_Orbits;
-                    if (vessel.orbit.PeA <= minPeA && vessel.orbit.PeA >= PeA)
+                    if (vessel.orbit.PeA <= minPeA && vessel.orbit.PeA >= maxPeA)
                     {
                         base.SetIncomplete();
                     }
@@ -518,7 +514,7 @@ namespace MissionControllerEC.MCEParameters
         }
         protected override string GetTitle()
         {
-            return "Enter " + orbitType + " Around " + targetBody.theName + " With PeA of At Least: " + PeA;
+            return "Enter " + orbitType + " Around " + targetBody.theName + " With PeA above: " + PeA.ToString("N0") + ". You have a margin of error of " + st.Margin_Of_Error_Contract_Orbits.ToString("N0");
         }
 
         protected override void OnRegister()
@@ -529,7 +525,6 @@ namespace MissionControllerEC.MCEParameters
             {
                 GameEvents.onFlightReady.Add(flightReady);
                 GameEvents.onVesselChange.Add(vesselChange);
-                GameEvents.onTimeWarpRateChanged.Add(flightReady);
                 updated = true;
             }
         }
@@ -540,7 +535,6 @@ namespace MissionControllerEC.MCEParameters
             {
                 GameEvents.onFlightReady.Remove(flightReady);
                 GameEvents.onVesselChange.Remove(vesselChange);
-                GameEvents.onTimeWarpRateChanged.Remove(flightReady);
             }
         }
 
@@ -595,7 +589,7 @@ namespace MissionControllerEC.MCEParameters
                 {
                     double minPeA = PeA - st.Margin_Of_Error_Contract_Orbits;
                     double maxPeA = PeA + st.Margin_Of_Error_Contract_Orbits;
-                    if (vessel.orbit.PeA >= minPeA && vessel.orbit.PeA <= PeA)
+                    if (vessel.orbit.PeA >= minPeA && vessel.orbit.PeA <= maxPeA)
                     {
                         base.SetComplete();
                         sc.SetPeABoolSatelliteCoreValue(true);
@@ -611,7 +605,7 @@ namespace MissionControllerEC.MCEParameters
                 {
                     double minPeA = PeA - st.Margin_Of_Error_Contract_Orbits;
                     double maxPeA = PeA + st.Margin_Of_Error_Contract_Orbits;
-                    if (vessel.orbit.PeA <= minPeA && vessel.orbit.PeA >= PeA)
+                    if (vessel.orbit.PeA <= minPeA && vessel.orbit.PeA >= maxPeA)
                     {
                         base.SetIncomplete();
                     }
@@ -662,7 +656,7 @@ namespace MissionControllerEC.MCEParameters
         }
         protected override string GetTitle()
         {
-            return "Reach an inclination of: " + InclinationValue;
+            return "Reach an inclination of: " + InclinationValue + ". You have a margin of error of " + settings.Margin_Of_Error_Contract_Inclination;
         }
 
         protected override void OnRegister()
@@ -1043,7 +1037,7 @@ namespace MissionControllerEC.MCEParameters
         }
         protected override string GetTitle()
         {
-            return "Achieve an altitude of at least: " + minAlt;
+            return "Achieve an altitude of at least: " + minAlt.ToString("N0");
         }
 
         protected override void OnRegister()

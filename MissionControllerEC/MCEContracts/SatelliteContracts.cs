@@ -49,7 +49,7 @@ namespace MissionControllerEC.MCEContracts
                               "balloon that reflected radio signals striking it. This passive mode of operation quickly gave way to the active or repeater mode, in which complex electronic equipment aboard the satellite " +
                               "receives a signal from the earth, amplifies it, and transmits it to another point on the earth, in this case Kerbin.";
                     contractNotes ="You can set both the frequency and module type in the editor with Tweak Sliders. Set these values before takeoff, They cannot be changed after the vessel is launched!\n\n";
-                    contractSynops ="You must bring the satellite to the specified orbit with Module type And Frequency. Set your satellite values in the Editor before taking Off, "+ 
+                    contractSynops = "You must bring the satellite to the specified orbit(Below The ApA, And Above The PeA) with Module type And Frequency. Set your satellite values in the Editor before taking Off, " + 
                                "Once you get to your assigned orbital height transmit the Data packet to customers to complete the objectives. Be warned, you only have 1 shot to send the packet. If it's incorrect, you will have to " + 
                                "launch a new vessel";
                     break;
@@ -60,7 +60,7 @@ namespace MissionControllerEC.MCEContracts
                               "Tiros 1, the first such (Earth) satellite, was launched in 1960; it transmitted infrared television pictures of the earth's cloud cover and was able to detect the development of hurricanes and to chart " +
                               "their paths.";
                     contractNotes = "You can set both the frequency and module type in the editor with Tweak Sliders. Set these values before takeoff, They cannot be changed after the vessel is launched!\n\n";
-                    contractSynops = "You must bring the  satellite to the specified orbit with Module type And Frequency. Set your satellite values in the Editor before taking Off, " +
+                    contractSynops = "You must bring the  satellite to the specified orbit (Below The ApA, And Above The PeA) with Module type And Frequency. Set your satellite values in the Editor before taking Off, " +
                                "Once you get to your assigned orbital height transmit the Data packet to customers to complete the objectives. Be warned, you only have 1 shot to send the packet. If it's incorrect, you will have to " +
                                "launch a new vessel";
                     break;
@@ -72,7 +72,7 @@ namespace MissionControllerEC.MCEContracts
                                 "aircraft and ships could determine their positions with great accuracy.\n\n" +
                                 "In kerbin society these satellites help with the day to day needs of most travel options for kerbin Land, Sea, Air Based navigation.";
                     contractNotes = "You can set both the frequency and module type in the editor with Tweak Sliders. Set these values before takeoff, They cannot be changed after the vessel is launched!\n\n";
-                    contractSynops = "You must bring the satellite to the specified orbit with Module type And Frequency. Set your satellite values in the Editor before taking Off, " +
+                    contractSynops = "You must bring the satellite to the specified orbit (Below The ApA, And Above The PeA) with Module type And Frequency. Set your satellite values in the Editor before taking Off, " +
                                "Once you get to your assigned orbital height transmit the Data packet to customers to complete the objectives. Be warned, you only have 1 shot to send the packet. If it's incorrect, you will have to " +
                                "launch a new vessel";
                     break;
@@ -81,7 +81,7 @@ namespace MissionControllerEC.MCEContracts
                     TOSName = "Our research, test will take about this amount of time to complete\n ";
                     satStoryDef = "Research satellites are designed to test different scientific studies while in the freedom of space. Away for the problems of Kerbin Ground studies";
                     contractNotes = "You can set both the frequency and module type in the editor with Tweak Sliders. Set these values before takeoff, They cannot be changed after the vessel is launched!\n\n";
-                    contractSynops = "You must bring the satellite to the specified orbit with Module type And Frequency. Set your satellite values in the Editor before taking Off, " +
+                    contractSynops = "You must bring the satellite to the specified orbit (Below The ApA, And Above The PeA) with Module type And Frequency. Set your satellite values in the Editor before taking Off, " +
                                "Once you get to your assigned orbital height transmit the Data packet to customers to complete the objectives. Be warned, you only have 1 shot to send the packet. If it's incorrect, you will have to " +
                                "launch a new vessel";
                     break;
@@ -170,18 +170,18 @@ namespace MissionControllerEC.MCEContracts
             int stationNumber = rnd.Next(1,4);
             SetTrackStationNumber(stationNumber);
             mc.CheckRandomSatelliteContractTypes();
+            float OrbitRandomMult = Tools.RandomNumber(1, 5);
                                                   
             bool parttechUnlock = ResearchAndDevelopment.GetTechnologyState("advConstruction") == RDTech.State.Available;
                                              
             SatTypeValue();
-            int frequencyTest = rnd.Next(3, 47);
+            int frequencyTest = rnd.Next(12, 40);
             frequency = (float)frequencyTest - .5f;
-            moduletype = rnd.Next(1, 4);
-
+            moduletype = rnd.Next(1, 4);           
             if (SaveInfo.SatelliteTypeChoice == 0)
             {
-                contractApA = 2868000;
-                contractPeA = 2868000;
+                contractApA = Tools.ReturnOrbitValues(targetBody, true,OrbitRandomMult);
+                contractPeA = contractApA - Tools.RandomNumber(1000, 5000);
                 SatTypeName = "Communication";
                 
                 int randomPolar;
@@ -198,8 +198,8 @@ namespace MissionControllerEC.MCEContracts
                 }
                 else
                 {
-                    this.AddParameter(new SatApAOrbitGoal(targetBody, contractApA, "KeoStationary"), null);
-                    this.AddParameter(new SatPeAOrbitGoal(targetBody, contractPeA, "KeoStationary"), null);
+                    this.AddParameter(new SatApAOrbitGoal(targetBody, contractApA, "Orbit"), null);
+                    this.AddParameter(new SatPeAOrbitGoal(targetBody, contractPeA, "Orbit"), null);
                     this.AddParameter(new GroundStationPostion(StationName, trackStationNumber, PolarStationNumber, frequency, false), null);
                 }
                 this.AddParameter(new satelliteCoreCheck(SatTypeName, frequency, moduletype, targetBody), null);                
@@ -207,14 +207,14 @@ namespace MissionControllerEC.MCEContracts
             else if (SaveInfo.SatelliteTypeChoice == 1)
             {
                 SatTypeName = "Weather";
-                contractApA = 2868000;
-                contractPeA = 2868000;
+                contractApA = Tools.ReturnOrbitValues(targetBody, true, 3f);
+                contractPeA = contractApA - Tools.RandomNumber(1000,10000);
                 int randomPolar;
                 randomPolar = Tools.RandomNumber(1, 100);
                 if (randomPolar > 70)
                 {
-                    contractApA = 850000;
-                    contractPeA = 850000;
+                    contractApA = Tools.ReturnOrbitValues(targetBody, true,3f);
+                    contractPeA = contractApA - Tools.RandomNumber(1000, 5000);
                     this.AddParameter(new Inclination(targetBody,90), null);
                     this.AddParameter(new SatApAOrbitGoal(targetBody, contractApA, "Polar Orbit"), null);
                     this.AddParameter(new SatPeAOrbitGoal(targetBody, contractPeA, "Polar Orbit"), null);
@@ -222,8 +222,8 @@ namespace MissionControllerEC.MCEContracts
                 }
                 else
                 {
-                    this.AddParameter(new SatApAOrbitGoal(targetBody, contractApA, "KeoStationary Orbit"), null);
-                    this.AddParameter(new SatPeAOrbitGoal(targetBody, contractPeA, "KeoStationary Orbit"), null);
+                    this.AddParameter(new SatApAOrbitGoal(targetBody, contractApA, "Orbit"), null);
+                    this.AddParameter(new SatPeAOrbitGoal(targetBody, contractPeA, "Orbit"), null);
                     this.AddParameter(new satelliteCoreCheck(SatTypeName, frequency, moduletype, targetBody), null);
                     this.AddParameter(new GroundStationPostion(StationName, trackStationNumber, PolarStationNumber, frequency, false), null);
                 }
@@ -232,8 +232,8 @@ namespace MissionControllerEC.MCEContracts
             else if (SaveInfo.SatelliteTypeChoice == 2)
             {
                 SatTypeName = "Navigation";
-                contractApA = 2868000;
-                contractPeA = 2868000;              
+                contractApA = Tools.ReturnOrbitValues(targetBody, true, OrbitRandomMult);
+                contractPeA = contractApA - Tools.RandomNumber(1000, 5000);
                 int randomPolar;
                 randomPolar = Tools.RandomNumber(1, 100);
                 if (randomPolar > 75)
@@ -248,8 +248,8 @@ namespace MissionControllerEC.MCEContracts
                 }
                 else
                 {
-                    this.AddParameter(new SatApAOrbitGoal(targetBody, contractApA, "KeoStationary Orbit"), null);
-                    this.AddParameter(new SatPeAOrbitGoal(targetBody, contractPeA, "KeoStationary Orbit"), null);
+                    this.AddParameter(new SatApAOrbitGoal(targetBody, contractApA, "Orbit"), null);
+                    this.AddParameter(new SatPeAOrbitGoal(targetBody, contractPeA, "Orbit"), null);
                     this.AddParameter(new GroundStationPostion(StationName, trackStationNumber, PolarStationNumber, frequency, false), null);
                 }
                 this.AddParameter(new satelliteCoreCheck(SatTypeName, frequency, moduletype, targetBody), null);
@@ -258,9 +258,9 @@ namespace MissionControllerEC.MCEContracts
 
             else if (SaveInfo.SatelliteTypeChoice == 3)
             {
-                SatTypeName = "Research";              
-                contractApA = Tools.RandomNumber(75000,2868001);              
-                contractPeA = contractApA - 1000;
+                SatTypeName = "Research";
+                contractApA = Tools.ReturnOrbitValues(targetBody, true, OrbitRandomMult);
+                contractPeA = contractApA - Tools.RandomNumber(1000, 5000);
                 this.AddParameter(new SatApAOrbitGoal(targetBody, contractApA, "Orbit"), null);
                 this.AddParameter(new SatPeAOrbitGoal(targetBody, contractPeA, "Orbit"), null);
                 int randomPolar;
@@ -273,62 +273,62 @@ namespace MissionControllerEC.MCEContracts
             }
             else if (SaveInfo.SatelliteTypeChoice == 4)
             {
-                contractApA = 2868000;
-                contractPeA = 2868000;
+                contractApA = Tools.ReturnOrbitValues(targetBody, false, 4.099f);
+                contractPeA = Tools.ReturnOrbitValues(targetBody, false, 4.096f); 
                 SatTypeName = "Communication";
-                this.AddParameter(new SatApAOrbitGoal(targetBody, contractApA, "KeoStationary/Polar Orbit"), null);
-                this.AddParameter(new SatPeAOrbitGoal(targetBody, contractPeA, "KeoStationary/Polar Orbit"), null);
+                this.AddParameter(new SatApAOrbitGoal(targetBody, contractApA, "Keosynchronous/Polar Orbit"), null);
+                this.AddParameter(new SatPeAOrbitGoal(targetBody, contractPeA, "Keosynchronous/Polar Orbit"), null);
                 if (frequency >= 50)
                 {
                     frequency = -10;
                 }
                 ContractParameter Network1 = this.AddParameter(new satelliteCoreCheck(SatTypeName, frequency, moduletype, targetBody), null);
-                Network1.SetFunds(90000, 100000 * st.Contract_Payment_Multiplier, targetBody);
+                Network1.SetFunds(50000, 50000 * st.Contract_Payment_Multiplier, targetBody);
                 this.AddParameter(new GroundStationPostion("Kerbal Space Center", -74, 0, frequency, false), null);
                 ContractParameter Network2 = this.AddParameter(new satelliteCoreCheck(SatTypeName, frequency + 1, moduletype, targetBody), null);
-                Network2.SetFunds(90000, 100000 * st.Contract_Payment_Multiplier, targetBody);
+                Network2.SetFunds(50000, 50000 * st.Contract_Payment_Multiplier, targetBody);
                 this.AddParameter(new GroundStationPostion("East Shore Station", 16, 0, frequency + 1, false), null);
                 ContractParameter Network3 = this.AddParameter(new satelliteCoreCheck(SatTypeName, frequency + 2, moduletype, targetBody), null);
-                Network3.SetFunds(90000, 100000 * st.Contract_Payment_Multiplier, targetBody);
+                Network3.SetFunds(50000, 50000 * st.Contract_Payment_Multiplier, targetBody);
                 this.AddParameter(new GroundStationPostion("Heart Station", 106, 0, frequency + 2, false), null);
                 ContractParameter Network4 = this.AddParameter(new satelliteCoreCheck(SatTypeName, frequency + 3, moduletype, targetBody), null);
-                Network4.SetFunds(90000, 100000 * st.Contract_Payment_Multiplier, targetBody);
+                Network4.SetFunds(50000, 50000 * st.Contract_Payment_Multiplier, targetBody);
                 this.AddParameter(new GroundStationPostion("Crator Station", -164, 0, frequency + 3, false), null);
                 ContractParameter Network5 = this.AddParameter(new satelliteCoreCheck(SatTypeName, frequency + 4, moduletype, targetBody), null);
-                Network5.SetFunds(90000, 100000 * st.Contract_Payment_Multiplier, targetBody);
+                Network5.SetFunds(50000, 50000 * st.Contract_Payment_Multiplier, targetBody);
                 this.AddParameter(new GroundStationPostion("North Pole Station", 0, 89, frequency + 4, true), null);
                 ContractParameter Network6 = this.AddParameter(new satelliteCoreCheck(SatTypeName, frequency + 5, moduletype, targetBody), null);
-                Network6.SetFunds(90000, 100000 * st.Contract_Payment_Multiplier, targetBody);
+                Network6.SetFunds(50000, 50000 * st.Contract_Payment_Multiplier, targetBody);
                 this.AddParameter(new GroundStationPostion("South Pole Station", 0, -89, frequency + 5, true), null);
             }
             else if (SaveInfo.SatelliteTypeChoice == 5)
             {
-                contractApA = 2868000;
-                contractPeA = 2868000;
+                contractApA = Tools.ReturnOrbitValues(targetBody, false, 4.099f);
+                contractPeA = Tools.ReturnOrbitValues(targetBody, false, 4.096f);
                 SatTypeName = "Navigation";
-                this.AddParameter(new SatApAOrbitGoal(targetBody, contractApA, "KeoStationary/Polar Orbit"), null);
-                this.AddParameter(new SatPeAOrbitGoal(targetBody, contractPeA, "KeoStationary/Polar Orbit"), null);
+                this.AddParameter(new SatApAOrbitGoal(targetBody, contractApA, "Keosynchronous/Polar Orbit"), null);
+                this.AddParameter(new SatPeAOrbitGoal(targetBody, contractPeA, "Keosynchronous/Polar Orbit"), null);
                 if (frequency >= 50)
                 {
                     frequency = -10;
                 }
                 ContractParameter Network1 = this.AddParameter(new satelliteCoreCheck(SatTypeName, frequency, moduletype, targetBody), null);
-                Network1.SetFunds(90000, 100000 * st.Contract_Payment_Multiplier, targetBody);
+                Network1.SetFunds(500000, 50000 * st.Contract_Payment_Multiplier, targetBody);
                 this.AddParameter(new GroundStationPostion("Kerbal Space Center", -74, 0, frequency, false), null);
                 ContractParameter Network2 = this.AddParameter(new satelliteCoreCheck(SatTypeName, frequency + 1, moduletype, targetBody), null);
-                Network2.SetFunds(90000, 100000 * st.Contract_Payment_Multiplier, targetBody);
+                Network2.SetFunds(50000, 50000 * st.Contract_Payment_Multiplier, targetBody);
                 this.AddParameter(new GroundStationPostion("East Shore Station", 16, 0, frequency + 1, false), null);
                 ContractParameter Network3 = this.AddParameter(new satelliteCoreCheck(SatTypeName, frequency + 2, moduletype, targetBody), null);
-                Network3.SetFunds(90000, 100000 * st.Contract_Payment_Multiplier, targetBody);
+                Network3.SetFunds(50000, 50000 * st.Contract_Payment_Multiplier, targetBody);
                 this.AddParameter(new GroundStationPostion("Heart Station", 106, 0, frequency + 2, false), null);
                 ContractParameter Network4 = this.AddParameter(new satelliteCoreCheck(SatTypeName, frequency + 3, moduletype, targetBody), null);
-                Network4.SetFunds(90000, 100000 * st.Contract_Payment_Multiplier, targetBody);
+                Network4.SetFunds(50000, 50000 * st.Contract_Payment_Multiplier, targetBody);
                 this.AddParameter(new GroundStationPostion("Crator Station", -164, 0, frequency + 3,false), null);
                 ContractParameter Network5 = this.AddParameter(new satelliteCoreCheck(SatTypeName, frequency + 4, moduletype, targetBody), null);
-                Network5.SetFunds(90000, 100000 * st.Contract_Payment_Multiplier, targetBody);
+                Network5.SetFunds(50000, 50000 * st.Contract_Payment_Multiplier, targetBody);
                 this.AddParameter(new GroundStationPostion("North Pole Station", 0, 89, frequency + 4, true), null);
                 ContractParameter Network6 = this.AddParameter(new satelliteCoreCheck(SatTypeName, frequency + 5, moduletype, targetBody), null);
-                Network6.SetFunds(90000, 100000 * st.Contract_Payment_Multiplier, targetBody);
+                Network6.SetFunds(50000, 50000 * st.Contract_Payment_Multiplier, targetBody);
                 this.AddParameter(new GroundStationPostion("South Pole Station", 0, -89, frequency + 5,true), null);
             }
 
@@ -351,7 +351,7 @@ namespace MissionControllerEC.MCEContracts
 
             base.SetExpiry(3f, 10f);
             base.SetDeadlineYears(3f, targetBody);
-            base.SetFunds(10000 * st.Contract_Payment_Multiplier, 145000 * st.Contract_Payment_Multiplier, 160000 * st.Contract_Payment_Multiplier, targetBody);
+            base.SetFunds(5000 * st.Contract_Payment_Multiplier, 70000 * st.Contract_Payment_Multiplier, 90000 * st.Contract_Payment_Multiplier, targetBody);
             base.SetReputation(25, 50, targetBody);
             return true;
         }

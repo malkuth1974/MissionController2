@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using UnityEngine;
 using Contracts;
 using Contracts.Parameters;
-using KSP;
-using KSPAchievements;
+using KSP.UI.Screens;
 using MissionControllerEC.MCEParameters;
 
 namespace MissionControllerEC.MCEContracts
@@ -36,7 +33,7 @@ namespace MissionControllerEC.MCEContracts
             }
             if (HighLogic.LoadedSceneIsFlight) { return false; }
             if (SaveInfo.all_Historical_Contracts_Off == true) { return false; }
-            minHeight = settings.vostok12height;
+            minHeight = Tools.ReturnMinOrbit(targetBody, 1.2f);
             vostok1 = this.AddParameter(new AltitudeGoal(targetBody, minHeight, true), null);
             vostok1.SetFunds(1000f, targetBody);
             vostok1.SetReputation(2f, targetBody);
@@ -177,7 +174,7 @@ namespace MissionControllerEC.MCEContracts
 
             if (HighLogic.LoadedSceneIsFlight) { return false; }
             if (SaveInfo.all_Historical_Contracts_Off == true) { return false; }
-            minHeight = settings.vostok12height;
+            minHeight = Tools.ReturnMinOrbit(targetBody, 1.3f);
             vostok1 = this.AddParameter(new AltitudeGoal(targetBody, minHeight, true), null);
             vostok1.SetFunds(1000f, targetBody);
             vostok1.SetReputation(2f, targetBody);
@@ -312,7 +309,7 @@ namespace MissionControllerEC.MCEContracts
             }
             if (HighLogic.LoadedSceneIsFlight) { return false; }
             if (SaveInfo.all_Historical_Contracts_Off == true) { return false; }
-            minHeight = settings.voshodheight;
+            minHeight = Tools.ReturnMinOrbit(targetBody, 1.3f);
             vostok1 = this.AddParameter(new AltitudeGoal(targetBody, minHeight, true), null);
             vostok1.SetFunds(2000f, targetBody);
             vostok1.SetReputation(2f, targetBody);
@@ -533,7 +530,7 @@ namespace MissionControllerEC.MCEContracts
             }
             if (HighLogic.LoadedSceneIsFlight) { return false; }
             if (SaveInfo.all_Historical_Contracts_Off == true) { return false; }
-            minHeight = Tools.RandomNumber((int)settings.vostok12height, (int)settings.vostok12height + 15000);
+            minHeight = Tools.ReturnMinOrbit(targetBody, 1.3f);
             Eccentricity = .01;
             AmountDaysActive = 10800;
             TirosTitleMissionNumber = SaveInfo.tirosCurrentNumber;
@@ -635,7 +632,6 @@ namespace MissionControllerEC.MCEContracts
             Tools.ContractLoadCheck(node, ref tirosSynops, "synops Did Not Load", tirosSynops, "tsynop");
             Tools.ContractLoadCheck(node, ref tirosCompleteMessage, "Message Complete Did Not Load", tirosCompleteMessage,"tmessagecomplete");
             Tools.ContractLoadCheck(node, ref targetBody, Planetarium.fetch.Home, targetBody, "targetBody");
-            Tools.ContractLoadCheck(node, ref minHeight, settings.vostok12height, minHeight, "minheight");
             Tools.ContractLoadCheck(node, ref inclination, 180, inclination, "inclination");
             Tools.ContractLoadCheck(node, ref Eccentricity, .01, Eccentricity, "eccentricity");
             Tools.ContractLoadCheck(node, ref AmountDaysActive, 5, AmountDaysActive, "amountdays");
@@ -2422,7 +2418,7 @@ namespace MissionControllerEC.MCEContracts
             if (totalContracts >= 1) { return false; }
             if (HighLogic.LoadedSceneIsFlight) { return false; }
             if (SaveInfo.all_Historical_Contracts_Off == true) { return false; }
-            minHeight = settings.skyLabheight;
+            minHeight = Tools.ReturnMinOrbit(targetBody, 1.2f);
             this.AddParameter(new AltitudeGoal(targetBody, minHeight), null);
             this.AddParameter(new InOrbitGoal(targetBody), null);
             this.AddParameter(new PartGoal(part1goal, "Small Repair Panel", part1amount, true), null);
@@ -2894,8 +2890,8 @@ namespace MissionControllerEC.MCEContracts
 
             if (SaveInfo.all_Historical_Contracts_Off == true) { return false; }
 
-            ApA = settings.skyLab4MaxApA;
-            PeA = settings.skyLab4MaxPeA;
+            ApA = Tools.ReturnMinOrbit(targetBody, 1.8f); ;
+            PeA = ApA;
 
             vesselId = SaveInfo.skyLabVesID;
             vesselName = SaveInfo.skyLabName;

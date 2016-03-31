@@ -6,6 +6,7 @@ using System.Text;
 using System.IO;
 using System.Reflection;
 using Contracts;
+using KSP.UI.Screens;
 using Contracts.Parameters;
 using MissionControllerEC.MCEContracts;
 

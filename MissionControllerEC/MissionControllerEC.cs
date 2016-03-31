@@ -6,6 +6,7 @@ using System.Linq;
 using MissionControllerEC;
 using System.Collections.Generic;
 using System.Reflection;
+using KSP.UI.Screens;
 using System.Text;
 using System.IO;
 using KSP;

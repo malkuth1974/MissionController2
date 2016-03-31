@@ -39,6 +39,13 @@
       <HintPath>..\..\..\..\..\..\Steam\steamapps\common\Kerbal Space Program\KSP_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="KSPAssets">
+      <HintPath>..\..\..\..\..\..\Steam\steamapps\common\Kerbal Space Program\KSP_Data\Managed\KSPAssets.dll</HintPath>
+    </Reference>
+    <Reference Include="KSPUtil">
+      <HintPath>..\..\..\..\..\..\Steam\steamapps\common\Kerbal Space Program\KSP_Data\Managed\KSPUtil.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -47,6 +54,14 @@
     <Reference Include="System.Xml" />
     <Reference Include="UnityEngine">
       <HintPath>..\..\..\..\..\..\Steam\steamapps\common\Kerbal Space Program\KSP_Data\Managed\UnityEngine.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>..\..\..\..\..\..\Steam\steamapps\common\Kerbal Space Program\KSP_Data\Managed\UnityEngine.UI.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Vectrosity">
+      <HintPath>..\..\..\..\..\..\Steam\steamapps\common\Kerbal Space Program\KSP_Data\Managed\Vectrosity.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
@@ -67,7 +82,7 @@
     <Compile Include="MCEParameters\PartParameters.cs" />
     <Compile Include="MCEParameters\ResourcesParameters.cs" />
     <Compile Include="MCEParameters\TimedParameters.cs" />
-    <Compile Include="MCEParameters\VesselMustSurvive.cs" />
+    <Compile Include="PartModules\VesselMustSurvive.cs" />
     <Compile Include="PartModules\MCECommunicationsCore.cs" />
     <Compile Include="PartModules\MCELanderResearch.cs" />
     <Compile Include="PartModules\MCEOrbitalScanning.cs" />

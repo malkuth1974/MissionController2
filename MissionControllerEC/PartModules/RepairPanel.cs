@@ -47,10 +47,10 @@ namespace MissionControllerEC.PartModules
             this.part.force_activate();            
         }
 
-        [KSPField(isPersistant = true, guiActive = true, guiName = "Ready To Repair")]
+        [KSPField(isPersistant = true,guiActive = true, guiName = "Ready To Repair")]
         public bool readyRep = false;
 
-        [KSPEvent(externalToEVAOnly = true, unfocusedRange = 4f, guiActiveUnfocused = true, guiName = "Engineer CheckSystems", active = false)]
+        [KSPEvent(externalToEVAOnly = true, unfocusedRange = 4f, guiActiveUnfocused = true, guiIcon = "Engineer CheckSystems",guiName = "Engineer CheckSystems", active = false)]
         public void CheckSystems()
         {
 
