@@ -364,7 +364,7 @@ namespace MissionControllerEC.MCEContracts
 
                 "Information on Voskhod 2 was gathered from Wikipedia\n\n" +
 
-                "Objectives are too \n\n1. Enter Space \n\n2. Bring vessel to Orbit Height at least 82000m (2 Kerbals Total) \n3. EVA 1 Kerbal \n 4. Return to Kerbin safely.";
+                "Objectives are too \n\n1. Enter Space \n\n2. Bring vessel to Orbit And Specified height (2 Kerbals Total) \n3. EVA 1 Kerbal \n 4. Return to Kerbin safely.";
         }
         protected override string GetSynopsys()
         {

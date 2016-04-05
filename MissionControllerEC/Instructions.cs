@@ -163,15 +163,15 @@ namespace MissionControllerEC
         {
             RandomRepairContractsCheck = new Tools.MC2RandomWieghtSystem.Item<int>[3];
             RandomRepairContractsCheck[0] = new Tools.MC2RandomWieghtSystem.Item<int>();
-            RandomRepairContractsCheck[0].weight = 30;
+            RandomRepairContractsCheck[0].weight = 10;
             RandomRepairContractsCheck[0].value = 0;
 
             RandomRepairContractsCheck[1] = new Tools.MC2RandomWieghtSystem.Item<int>();
-            RandomRepairContractsCheck[1].weight = 40;
+            RandomRepairContractsCheck[1].weight = 55;
             RandomRepairContractsCheck[1].value = 1;
 
             RandomRepairContractsCheck[2] = new Tools.MC2RandomWieghtSystem.Item<int>();
-            RandomRepairContractsCheck[2].weight = 25;
+            RandomRepairContractsCheck[2].weight = 35;
             RandomRepairContractsCheck[2].value = 2;
            
         }
