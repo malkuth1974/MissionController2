@@ -144,6 +144,7 @@ namespace MissionControllerEC
                 var c = gameObject.AddComponent<MissionControllerEC>();
                 mcechildren.Add(c);
             }
+            else { }
         }
 
         public override void OnSave(ConfigNode node)
@@ -251,15 +252,21 @@ namespace MissionControllerEC
             {
                 MCE_ScenarioStartup.PopUpWindowPosition3 = GUILayout.Window(1011974, new Rect(Screen.width / 2 - 200, Screen.height / 2 - 100, 450, 150), drawPopUpWindow3, "MCE Information Window");
             }
+            //Debug.Log("MCE GUI Loaded");
         }
 
         private void DrawMainWindow(int id)
         {
             GUI.skin = HighLogic.Skin;
             GUILayout.BeginVertical();
-           
-            GUILayout.Label("Current Funds: " + Funding.Instance.Funds);
 
+            //if (GUILayout.Button("Test Contract List"))
+            //{
+            //    GetContractList();
+            //}
+
+            GUILayout.Label("Current Funds: " + Funding.Instance.Funds);
+           
             if (GUILayout.Button("Add Money"))
             {
                 Funding.Instance.AddFunds(500000,TransactionReasons.Cheating);
@@ -443,7 +450,8 @@ namespace MissionControllerEC
 
         [Persistent]internal double apolldunLat = 1;
         [Persistent]internal double apolldunLon = 1;
-      
+        [Persistent]internal List<McContractList> KspContractList = new List<McContractList>() { };
+
         public override void OnDecodeFromConfigNode()
         {           
             SaveInfo.apolloDunaStation = apolloStationStatus;
@@ -500,7 +508,8 @@ namespace MissionControllerEC
             SaveInfo.NoSatelliteContracts = noSatelliteContract;
             SaveInfo.NoRepairContracts = noRepairContract;
             SaveInfo.NoOrbitalPeriodcontracts = noOrbitalPeriodContract;
-            SaveInfo.all_Historical_Contracts_Off = noHistoricContracts;           
+            SaveInfo.all_Historical_Contracts_Off = noHistoricContracts;
+            SaveInfo.KspContractList = KspContractList;           
 
         }
 

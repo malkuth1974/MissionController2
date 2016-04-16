@@ -69,6 +69,7 @@
     <Compile Include="ConfigNodeStorage.cs" />
     <Compile Include="MCEContracts\CustomContracts.cs" />
     <Compile Include="MCEContracts\RepairContracts.cs" />
+    <Compile Include="MCEContracts\RoverContracts.cs" />
     <Compile Include="MCEContracts\SatelliteContracts.cs" />
     <Compile Include="FinanceWindow1.cs" />
     <Compile Include="MCEContracts\HistoricContracts.cs" />

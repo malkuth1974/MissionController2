@@ -33,6 +33,7 @@ namespace MissionControllerEC.MCEParameters
                 GameEvents.onPartCouple.Add(onPartCouple);
                 updated = true;
             }
+            else { }
 
         }
         protected override void OnUnregister()
@@ -41,6 +42,7 @@ namespace MissionControllerEC.MCEParameters
             {                
                 GameEvents.onPartCouple.Remove(onPartCouple);
             }
+            else { }
 
         }
 
@@ -66,6 +68,7 @@ namespace MissionControllerEC.MCEParameters
                 Debug.LogError("Docked TO ID: " + action.to.vessel.id.ToString());
                 base.SetComplete();
             }
+            else { }
         }
         public void flightReady()
         {
@@ -132,6 +135,7 @@ namespace MissionControllerEC.MCEParameters
                 GameEvents.onPartCouple.Add(onPartCouple);
                 updated = true;
             }
+            else { }
 
         }
         protected override void OnUnregister()
@@ -140,6 +144,7 @@ namespace MissionControllerEC.MCEParameters
             {              
                 GameEvents.onPartCouple.Remove(onPartCouple);
             }
+            else { }
 
         }
 
@@ -181,6 +186,7 @@ namespace MissionControllerEC.MCEParameters
                 else
                     ScreenMessages.PostScreenMessage("Did not connect to the correct target ID vessel, Try Again");
             }
+            else { }
         }        
     }
     #endregion

@@ -72,6 +72,7 @@ namespace MissionControllerEC.MCEParameters
                 GameEvents.onVesselChange.Add(vesselChange);
                 updated = true;
             }
+            else { }
         }
 
         protected override void OnUnregister()
@@ -81,12 +82,14 @@ namespace MissionControllerEC.MCEParameters
                 GameEvents.onFlightReady.Remove(flightReady);
                 GameEvents.onVesselChange.Remove(vesselChange);
             }
+            else { }
         }
 
         protected override void OnUpdate()
         {
             if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel)
                 CheckPartGoal(FlightGlobals.ActiveVessel);
+            else { }
         }
 
         protected override void OnLoad(ConfigNode node)
@@ -117,6 +120,7 @@ namespace MissionControllerEC.MCEParameters
                             {
                                 partCount = 1;
                             }
+                            else { }
                         }
                     }
                     if (partCount > 0)
@@ -125,11 +129,13 @@ namespace MissionControllerEC.MCEParameters
                         {
                             base.SetComplete();
                         }
+                        else { }
                     }
-
-
+                    else { }
                 }
+                else { }
             }
+            else { }
         }
         public void flightReady()
         {
@@ -188,7 +194,7 @@ namespace MissionControllerEC.MCEParameters
                 GameEvents.onPartCouple.Add(onPartCouple);
                 updated = true;
             }
-
+            else { }
         }
         protected override void OnUnregister()
         {
@@ -198,7 +204,7 @@ namespace MissionControllerEC.MCEParameters
                 GameEvents.onVesselChange.Remove(vesselChange);
                 GameEvents.onPartCouple.Remove(onPartCouple);
             }
-
+            else { }
         }
 
         protected override void OnLoad(ConfigNode node)
@@ -229,7 +235,9 @@ namespace MissionControllerEC.MCEParameters
                 {
                     base.SetComplete();
                 }
+                else { }
             }
+            else { }
         }
 
         private void onPartCouple(GameEvents.FromToAction<Part, Part> action)
@@ -252,6 +260,7 @@ namespace MissionControllerEC.MCEParameters
                 }
                 else Debug.Log("Docked to vessel was not repair vessel, no ID change needed");
             }
+            else { }
         }
         public void flightReady()
         {
@@ -318,7 +327,9 @@ namespace MissionControllerEC.MCEParameters
                 {
                     checkPartDataPacket();
                 }
-            }  
+                else { }
+            }
+            else { }
         }
        
 
@@ -485,6 +496,7 @@ namespace MissionControllerEC.MCEParameters
                 GameEvents.onVesselChange.Add(vesselChange);
                 updated = true;
             }
+            else { }
         }
 
         protected override void OnUnregister()
@@ -494,6 +506,7 @@ namespace MissionControllerEC.MCEParameters
                 GameEvents.onFlightReady.Remove(flightReady);
                 GameEvents.onVesselChange.Remove(vesselChange);
             }
+            else { }
         }
 
         protected override void OnUpdate()
@@ -502,6 +515,7 @@ namespace MissionControllerEC.MCEParameters
             {
                 CheckIfOrbit(FlightGlobals.ActiveVessel);
             }
+            else { }
         }
         protected override void OnLoad(ConfigNode node)
         {         
@@ -546,11 +560,15 @@ namespace MissionControllerEC.MCEParameters
                                 base.SetComplete();
                                 Debug.Log("Time Completed");
                             }
+                            else { }
                         }
-
+                        else { }
                     }
+                    else { }
                 }
+                else { }
             }
+            else { }
         }
         public void flightReady()
         {
@@ -611,6 +629,7 @@ namespace MissionControllerEC.MCEParameters
                 GameEvents.onVesselChange.Add(vesselChange);
                 updated = true;
             }
+            else { }
         }
 
         protected override void OnUnregister()
@@ -620,6 +639,7 @@ namespace MissionControllerEC.MCEParameters
                 GameEvents.onFlightReady.Remove(flightReady);
                 GameEvents.onVesselChange.Remove(vesselChange);
             }
+            else { }
         }
 
         protected override void OnUpdate()
@@ -628,6 +648,7 @@ namespace MissionControllerEC.MCEParameters
             {
                 CheckIflanded(FlightGlobals.ActiveVessel);
             }
+            else { }
         }
         protected override void OnLoad(ConfigNode node)
         {           
@@ -672,11 +693,15 @@ namespace MissionControllerEC.MCEParameters
                                 base.SetComplete();
                                 Debug.Log("Time Completed");
                             }
+                            else { }
                         }
+                        else { }
 
                     }
+                    else { }
                 }
             }
+            else { }
         }
         public void contractSetTime()
         {
@@ -727,6 +752,7 @@ namespace MissionControllerEC.MCEParameters
             {
                 CheckPartGoal(FlightGlobals.ActiveVessel);
             }
+            else { }
         }
 
         protected override void OnLoad(ConfigNode node)
@@ -756,10 +782,13 @@ namespace MissionControllerEC.MCEParameters
                             {
                                 base.SetComplete();
                             }
+                            else { }
                         }
                     }
                 }
+                else { }
             }
+            else { }
         }
         public void flightReady()
         {

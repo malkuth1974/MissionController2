@@ -41,6 +41,7 @@ namespace MissionControllerEC.MCEParameters
                 GameEvents.onVesselChange.Add(vesselChange);
                 updated = true;
             }
+            else { }
         }
 
         protected override void OnUnregister()
@@ -50,6 +51,7 @@ namespace MissionControllerEC.MCEParameters
                 GameEvents.onFlightReady.Remove(flightReady);
                 GameEvents.onVesselChange.Remove(vesselChange);
             }
+            else { }
         }
 
         protected override void OnUpdate()
@@ -57,6 +59,7 @@ namespace MissionControllerEC.MCEParameters
 
             if (FlightGlobals.ActiveVessel && HighLogic.LoadedSceneIsFlight)
                 CheckCrewValues(FlightGlobals.ActiveVessel);
+            else { }
 
         }
 
@@ -82,6 +85,7 @@ namespace MissionControllerEC.MCEParameters
             {
                 base.SetComplete();
             }
+            else { }
         }
         public void flightReady()
         {
@@ -127,6 +131,7 @@ namespace MissionControllerEC.MCEParameters
                 GameEvents.onVesselChange.Add(vesselChange);
                 updated = true;
             }
+            else { }
         }
 
         protected override void OnUnregister()
@@ -136,6 +141,7 @@ namespace MissionControllerEC.MCEParameters
                 GameEvents.onFlightReady.Remove(flightReady);
                 GameEvents.onVesselChange.Remove(vesselChange);
             }
+            else { }
         }
 
         protected override void OnUpdate()
@@ -165,6 +171,7 @@ namespace MissionControllerEC.MCEParameters
             {
                 base.SetComplete();
             }
+            else { }
         }
         public void flightReady()
         {
@@ -215,6 +222,7 @@ namespace MissionControllerEC.MCEParameters
                 GameEvents.onVesselChange.Add(vesselChange);
                 updated = true;
             }
+            else { }
         }
 
         protected override void OnUnregister()
@@ -224,12 +232,14 @@ namespace MissionControllerEC.MCEParameters
                 GameEvents.onFlightReady.Remove(flightReady);
                 GameEvents.onVesselChange.Remove(vesselChange);
             }
+            else { }
         }
 
         protected override void OnUpdate()
         {
             if (FlightGlobals.ActiveVessel && HighLogic.LoadedSceneIsFlight)
                 CheckCrewValues(FlightGlobals.ActiveVessel);
+            else { }
         }
 
         protected override void OnLoad(ConfigNode node)
@@ -252,11 +262,14 @@ namespace MissionControllerEC.MCEParameters
                     base.SetComplete();
                     //Debug.Log("Passed Crew Check");
                 }
+                else { }
                 if (crewCount == 0 && currentcrew == 0 )
                 {
                     base.SetComplete();
                 }
+                else { }
             }
+            else { }
         }
         public void flightReady()
         {
@@ -294,6 +307,7 @@ namespace MissionControllerEC.MCEParameters
         {
             if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel.situation == Vessel.Situations.ORBITING)
                 isEVA(FlightGlobals.ActiveVessel);
+            else { }
         }
 
         protected override void OnLoad(ConfigNode node)
@@ -310,6 +324,7 @@ namespace MissionControllerEC.MCEParameters
         {
             if (FlightGlobals.ActiveVessel.isEVA)
                 base.SetComplete();
+            else { }
         }
 
         public void flightReady()

@@ -47,6 +47,7 @@ namespace MissionControllerEC.MCEParameters
                 GameEvents.onVesselChange.Add(vesselChange);
                 updated = true;
             }
+            else { }
         }
 
         protected override void OnUnregister()
@@ -56,12 +57,14 @@ namespace MissionControllerEC.MCEParameters
                 GameEvents.onFlightReady.Remove(flightReady);
                 GameEvents.onVesselChange.Remove(vesselChange);
             }
+            else { }
         }
 
         protected override void OnUpdate()
         {
             if (Root.ContractState == Contract.State.Active && HighLogic.LoadedSceneIsFlight)
                 OnResourceCheck(FlightGlobals.ActiveVessel);
+            else { }
         }
 
         protected override void OnLoad(ConfigNode node)
@@ -90,6 +93,7 @@ namespace MissionControllerEC.MCEParameters
                         {
                             resources = +p.Resources[targetName].amount;
                         }
+                        else { }
                     }
                     if (resources > 0)
                     {
@@ -97,9 +101,13 @@ namespace MissionControllerEC.MCEParameters
                         {
                             base.SetComplete();
                         }
+                        else { }
                     }
+                    else { }
                 }
+                else { }
             }
+            else { }
         }
         public void flightReady()
         {
@@ -146,6 +154,7 @@ namespace MissionControllerEC.MCEParameters
                 GameEvents.onVesselChange.Add(vesselChange);
                 updated = true;
             }
+            else { }
         }
 
         protected override void OnUnregister()
@@ -155,12 +164,14 @@ namespace MissionControllerEC.MCEParameters
                 GameEvents.onFlightReady.Remove(flightReady);
                 GameEvents.onVesselChange.Remove(vesselChange);
             }
+            else { }
         }
 
         protected override void OnUpdate()
         {
             if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel.situation == Vessel.Situations.ORBITING)
                 MassCheck(FlightGlobals.ActiveVessel);
+            else { }
         }
 
         protected override void OnLoad(ConfigNode node)
@@ -188,8 +199,11 @@ namespace MissionControllerEC.MCEParameters
                     {
                         base.SetComplete();
                     }
+                    else { }
                 }
+                else { }
             }
+            else { }
         }
         public void flightReady()
         {
@@ -255,6 +269,7 @@ namespace MissionControllerEC.MCEParameters
                 GameEvents.onVesselChange.Add(vesselChange);
                 updated = true;
             }
+            else { }
         }
 
         protected override void OnUnregister()
@@ -264,12 +279,14 @@ namespace MissionControllerEC.MCEParameters
                 GameEvents.onFlightReady.Remove(flightReady);
                 GameEvents.onVesselChange.Remove(vesselChange);
             }
+            else { }
         }
 
         protected override void OnUpdate()
         {
             if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel.situation == Vessel.Situations.ORBITING)
                 ResourceCheck(FlightGlobals.ActiveVessel);
+            else { }
         }
 
         protected override void OnLoad(ConfigNode node)
@@ -302,6 +319,7 @@ namespace MissionControllerEC.MCEParameters
                             {
                                 resources += p.Resources[targetName].amount;
                             }
+                            else { }
                         }
                         if (resources > 0)
                         {
@@ -309,10 +327,14 @@ namespace MissionControllerEC.MCEParameters
                             {
                                 base.SetComplete();
                             }
+                            else { }
                         }
                     }
+                    else { }
                 }
+                else { }
             }
+            else { }
         }
         public void flightReady()
         {

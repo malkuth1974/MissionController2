@@ -62,10 +62,13 @@ namespace MissionControllerEC.MCEParameters
                     {                     
                             CheckIfOrbit(FlightGlobals.ActiveVessel);                                               
                     }
+                    else { }
                 }
+                else { }
                 timeCountDown(); 
             }
-            
+            else { }
+
         }
         protected override void OnLoad(ConfigNode node)
         {
@@ -105,6 +108,7 @@ namespace MissionControllerEC.MCEParameters
                 contractSetTime();
                 vesselID = vessel.id.ToString();
             }
+            else { }
 
         }
         public void timeCountDown()
@@ -121,7 +125,9 @@ namespace MissionControllerEC.MCEParameters
                 {
                     base.SetComplete();
                 }
+                else { }
             }
+            else { }
         }
         public void contractSetTime()
         {
@@ -193,7 +199,9 @@ namespace MissionControllerEC.MCEParameters
                 {
                     CheckIfLanded(FlightGlobals.ActiveVessel);
                 }
+                else { }
             }
+            else { }
         }
         protected override void OnLoad(ConfigNode node)
         {          
@@ -329,7 +337,7 @@ namespace MissionControllerEC.MCEParameters
                 GameEvents.onPartCouple.Add(onPartCouple);
                 updated = true;
             }
-
+            else { }
         }
         protected override void OnUnregister()
         {
@@ -337,13 +345,14 @@ namespace MissionControllerEC.MCEParameters
             {
                 GameEvents.onPartCouple.Remove(onPartCouple);
             }
-
+            else { }
         }
 
         protected override void OnUpdate()
         {
             if (Root.ContractState == Contract.State.Active)
                 timeCountDown();
+            else { }
         }
         protected override void OnLoad(ConfigNode node)
         {           
@@ -392,6 +401,7 @@ namespace MissionControllerEC.MCEParameters
                     ScreenMessages.PostScreenMessage("Time not started not correct docking vessel, Try Again");                    
                 }              
             }
+            else { }
         }
         public void timeCountDown()
         {
@@ -407,7 +417,9 @@ namespace MissionControllerEC.MCEParameters
                 {
                     base.SetComplete();
                 }
+                else { }
             }
+            else { }
         }
         public void contractSetTime()
         {

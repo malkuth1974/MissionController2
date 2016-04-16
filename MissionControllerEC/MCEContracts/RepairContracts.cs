@@ -42,7 +42,11 @@ namespace MissionControllerEC.MCEContracts
                             {
                                 repairvesselList.Add(new RepairVesselsList(vs.vesselName, vs.id.ToString(), vs.orbit.ApA, vs.mainBody.flightGlobalsIndex));
                             }
+                            else
+                            { Debug.Log("No satellites found with a Repair panel, Skiping satellite repair Contracts"); }
                         }
+                        else
+                        { Debug.Log("Could not find any repair panels on vessel type satellites.  Make sure your placing repair panels on your satellites."); }
                     }
                 }
             }
@@ -59,6 +63,8 @@ namespace MissionControllerEC.MCEContracts
                     vs.vesselName = vs.vesselName.Replace(originalName, originalName + "(Repair)");
                     Debug.Log("vessel original name is " + originalName + "new name " + vs.vesselName);
                 }
+                else
+                    Debug.Log("Vessel ID does not match for repair contract");
             }
         }
 
@@ -308,13 +314,22 @@ namespace MissionControllerEC.MCEContracts
                         {
                             if (vs.vesselType == VesselType.Station)
                             {
-                                repairvesselListStations.Add(new RepairVesselsList(vs.vesselName, vs.id.ToString(), vs.orbit.ApA, vs.mainBody.flightGlobalsIndex));
+                                repairvesselListStations.Add(new RepairVesselsList(vs.vesselName, vs.id.ToString(), vs.orbit.ApA, vs.mainBody.flightGlobalsIndex)); 
+                           
                             }
+                            else
+                            {
+                                Debug.Log("Could not find station with a repair panel, if you want these types of contracts place a repair panel anywhere on your station.");
+                            }
+                        }
+                        else
+                        {
+                            Debug.Log("Could not find station with a repair panel, if you want these types of contracts place a repair panel anywhere on your station.");
                         }
                     }
                 }
             }
-
+                                                   
         }
 
         public void chooseVesselRepairStationFromList()
@@ -330,7 +345,7 @@ namespace MissionControllerEC.MCEContracts
                 Debug.LogWarning("Random Repair Orbital Station Selected " + random.vesselName + "  " + random.vesselId + "  " + random.MaxApA);
                 NoVessel = true;
             }
-            //else { Debug.LogError(" Vessel Selection Null, skiped process"); NoVessel = false; }
+            else { /*Debug.LogError(" Vessel Selection Null, skiped process"); NoVessel = false;*/ }
         }
 
         public int totalContracts;

@@ -1,4 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using UnityEngine;
 
 namespace MissionControllerEC
 {
@@ -72,5 +76,6 @@ namespace MissionControllerEC
         public static string SatelliteContractType = "none";
         public static float SatelliteContractFrequency = -1;
         public static float SatelliteContractModule = 0;
+        public static List<McContractList> KspContractList = new List<McContractList>() { };
     }   
 }

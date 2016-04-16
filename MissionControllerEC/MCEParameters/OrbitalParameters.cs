@@ -1050,6 +1050,7 @@ namespace MissionControllerEC.MCEParameters
                 GameEvents.onVesselChange.Add(vesselChange);
                 updated = true;
             }
+            else { }
         }
 
         protected override void OnUnregister()
@@ -1059,6 +1060,7 @@ namespace MissionControllerEC.MCEParameters
                 GameEvents.onFlightReady.Remove(flightReady);
                 GameEvents.onVesselChange.Remove(vesselChange);
             }
+            else { }
         }
 
         protected override void OnUpdate()
@@ -1075,8 +1077,11 @@ namespace MissionControllerEC.MCEParameters
                     {
                         OffOrbits(FlightGlobals.ActiveVessel);
                     }
+                    else { }
                 }
+                else { }
             }
+            else { }
         }
 
         protected override void OnLoad(ConfigNode node)
@@ -1104,8 +1109,11 @@ namespace MissionControllerEC.MCEParameters
                     {
                         base.SetComplete();
                     }
-                }              
+                    else { }
+                }
+                else { }
             }
+            else { }
         }
         public void OffOrbits(Vessel vessel)
         {
@@ -1117,8 +1125,11 @@ namespace MissionControllerEC.MCEParameters
                     {
                         base.SetIncomplete();
                     }
-                }             
+                    else { }
+                }
+                else { }
             }
+            else { }
         }
         public void flightReady()
         {
@@ -1168,6 +1179,7 @@ namespace MissionControllerEC.MCEParameters
                 GameEvents.onVesselChange.Add(vesselChange);
                 updated = true;
             }
+            else { }
         }
 
         protected override void OnUnregister()
@@ -1177,12 +1189,14 @@ namespace MissionControllerEC.MCEParameters
                 GameEvents.onFlightReady.Remove(flightReady);
                 GameEvents.onVesselChange.Remove(vesselChange);
             }
+            else { }
         }
 
         protected override void OnUpdate()
         {
             if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel.situation != Vessel.Situations.PRELAUNCH)
                 launchAgena(FlightGlobals.ActiveVessel);
+            else { }
         }
 
         protected override void OnLoad(ConfigNode node)
@@ -1203,6 +1217,7 @@ namespace MissionControllerEC.MCEParameters
             {
                 base.SetComplete();
             }
+            else { }
         }
         public void flightReady()
         {
@@ -1244,6 +1259,7 @@ namespace MissionControllerEC.MCEParameters
             {
                 ReadyToCrash = true;
             }
+            else { }
         }
 
         protected override void OnRegister()
@@ -1254,6 +1270,7 @@ namespace MissionControllerEC.MCEParameters
                 GameEvents.onCrash.Add(crashGoal);
                 updated = true;
             }
+            else { }
 
         }
         protected override void OnUnregister()
@@ -1262,7 +1279,7 @@ namespace MissionControllerEC.MCEParameters
             {
                 GameEvents.onCrash.Remove(crashGoal);
             }
-
+            else { }
         }
 
         protected override void OnLoad(ConfigNode node)
@@ -1281,6 +1298,7 @@ namespace MissionControllerEC.MCEParameters
         {
             if (ReadyToCrash)
                 base.SetComplete();
+            else { }
         }
 
         public void flightReady()
@@ -1340,15 +1358,20 @@ namespace MissionControllerEC.MCEParameters
                         if (this.state == ParameterState.Incomplete)
                         {
                             flyby(FlightGlobals.ActiveVessel);
-                        }                      
+                        }
+                        else { }
                     }
+                    else { }
                 }
+                else { }
             }
+            else { }
 
             if (HighLogic.LoadedSceneIsFlight && SaveInfo.MessageHelpers == true)
             {
                 Tools.ObitalPeriodHelper(FlightGlobals.ActiveVessel);
             }
+            else { }
         }
 
         protected override void OnLoad(ConfigNode node)
@@ -1381,8 +1404,11 @@ namespace MissionControllerEC.MCEParameters
                     {
                         base.SetComplete();
                     }
+                    else { }
                 }
+                else { }
             }
+            else { }
         }        
         public void flightReady()
         {

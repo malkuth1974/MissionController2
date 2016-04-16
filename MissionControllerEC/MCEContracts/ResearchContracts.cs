@@ -311,8 +311,9 @@ namespace MissionControllerEC.MCEContracts
             {
                 if (bodies.Count > 0)
                     return bodies[UnityEngine.Random.Range(0, bodies.Count)];
+                else { return null; }
             }
-            return null;
+            else { return null; }
         }
     }
     #endregion

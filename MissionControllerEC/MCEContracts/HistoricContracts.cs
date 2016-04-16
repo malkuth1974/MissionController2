@@ -124,6 +124,7 @@ namespace MissionControllerEC.MCEContracts
             {
                 if (body.flightGlobalsIndex == bodyID)
                     targetBody = body;
+                else { }
             }
             minHeight = double.Parse(node.GetValue("minheight"));
             crew = int.Parse(node.GetValue("crewcount"));
@@ -302,11 +303,7 @@ namespace MissionControllerEC.MCEContracts
             if (totalContracts >= 1)
             {
                 return false;
-            }
-            if (prestige == ContractPrestige.Trivial)
-            {
-                return false;
-            }
+            }         
             if (HighLogic.LoadedSceneIsFlight) { return false; }
             if (SaveInfo.all_Historical_Contracts_Off == true) { return false; }
             minHeight = Tools.ReturnMinOrbit(targetBody, 1.3f);
@@ -391,6 +388,7 @@ namespace MissionControllerEC.MCEContracts
             {
                 if (body.flightGlobalsIndex == bodyID)
                     targetBody = body;
+                else { }
             }
             minHeight = double.Parse(node.GetValue("minheight"));
             crew = int.Parse(node.GetValue("crewcount"));
@@ -523,11 +521,7 @@ namespace MissionControllerEC.MCEContracts
             if (totalContracts >= 1)
             {
                 return false;
-            }
-            if (prestige == ContractPrestige.Trivial)
-            {
-                return false;
-            }
+            }           
             if (HighLogic.LoadedSceneIsFlight) { return false; }
             if (SaveInfo.all_Historical_Contracts_Off == true) { return false; }
             minHeight = Tools.ReturnMinOrbit(targetBody, 1.3f);
@@ -771,11 +765,7 @@ namespace MissionControllerEC.MCEContracts
             if (totalContracts >= 1)
             {
                 return false;
-            }
-            if (prestige == ContractPrestige.Trivial)
-            {
-                return false;
-            }
+            }           
             if (HighLogic.LoadedSceneIsFlight) { return false; }
             if (SaveInfo.all_Historical_Contracts_Off == true) { return false; }
             marinerNumber = SaveInfo.marinerCurrentNumber;
@@ -957,11 +947,7 @@ namespace MissionControllerEC.MCEContracts
             if (totalContracts >= 1)
             {
                 return false;
-            }
-            if (prestige == ContractPrestige.Trivial)
-            {
-                return false;
-            }
+            }          
             if (HighLogic.LoadedSceneIsFlight) { return false; }
             if (SaveInfo.all_Historical_Contracts_Off == true) { return false; }
             luna1 = this.AddParameter(new InOrbitGoal(targetBody), null);
@@ -1060,6 +1046,7 @@ namespace MissionControllerEC.MCEContracts
             {
                 if (body.flightGlobalsIndex == bodyID)
                     targetBody = body;
+                else { }
             }
             crew = int.Parse(node.GetValue("crewcount"));
 
@@ -1100,11 +1087,7 @@ namespace MissionControllerEC.MCEContracts
             if (totalContracts >= 1)
             {
                 return false;
-            }
-            if (prestige == ContractPrestige.Trivial)
-            {
-                return false;
-            }
+            }            
             if (HighLogic.LoadedSceneIsFlight) { return false; }
             if (SaveInfo.all_Historical_Contracts_Off == true) { return false; }
             luna1 = this.AddParameter(new InOrbitGoal(targetBody), null);
@@ -1200,6 +1183,7 @@ namespace MissionControllerEC.MCEContracts
             {
                 if (body.flightGlobalsIndex == bodyID)
                     targetBody = body;
+                else { }
             }
             crew = int.Parse(node.GetValue("crewcount"));
 
@@ -1333,7 +1317,7 @@ namespace MissionControllerEC.MCEContracts
                     break;
                 case 6:
                     ApNoteText ="Apollo 17";                    
-                    apTitleText ="Apollo 17: Minmus Landing On " + ApolloBiome2 + " With Minmus Rover";
+                    apTitleText ="Apollo 17: Minmus Landing On " + ApolloBiome3 + " With Minmus Rover";
                     apSynopsText = "The mission plan of Apollo 17 is to land on Minmus in the Great Flats, Scientific objectives of the Apollo 17 mission included, geological surveying and sampling of materials and surface features" +
                     "in a preselected area of the Taurus-Littrow region; deploying and activating surface experiments; and conducting in-flight experiments and photographic tasks during lunar orbit and transearth coast";
                     apDescriptText="The lunar landing site was the Taurus-Littrow highlands and valley area. This site was picked for Apollo 17 as a location where rocks both older and younger than those previously returned from other" +
@@ -1357,11 +1341,7 @@ namespace MissionControllerEC.MCEContracts
             if (totalContracts >= 1)
             {
                 return false;
-            }
-            if (prestige == ContractPrestige.Trivial)
-            {
-                return false;
-            }
+            }          
             if (HighLogic.LoadedSceneIsFlight) { return false; }
             if (SaveInfo.all_Historical_Contracts_Off == true) { return false; }
             ApolloMissionNumber = SaveInfo.apolloCurrentNumber;
@@ -1374,7 +1354,7 @@ namespace MissionControllerEC.MCEContracts
                 this.AddParameter(new ModuleGoal(WheelModule, wheelModuleDescription), null);
                 base.SetFunds(12000f, 210000f, targetBody3);
                 base.SetExpiry(3f, 10f);
-                base.SetDeadlineDays(100f, targetBody3);
+                base.SetDeadlineYears(6, targetBody);
                 base.SetReputation(20f, targetBody3);
                 base.SetScience(3f, targetBody3);
             }
@@ -1386,7 +1366,7 @@ namespace MissionControllerEC.MCEContracts
                 this.AddParameter(new ModuleGoal(WheelModule, wheelModuleDescription), null);
                 base.SetFunds(10000f, 140000f, targetBody);
                 base.SetExpiry(3f, 10f);
-                base.SetDeadlineDays(100f, targetBody);
+                base.SetDeadlineYears(6, targetBody);
                 base.SetReputation(20f, targetBody);
                 base.SetScience(3f, targetBody);
             }
@@ -1397,7 +1377,7 @@ namespace MissionControllerEC.MCEContracts
                 this.AddParameter(new BiomLandingParameters(targetBody, false, ApolloBiome), null);
                 base.SetFunds(10000f, 120000f, targetBody);
                 base.SetExpiry(3f, 10f);
-                base.SetDeadlineDays(100f, targetBody);
+                base.SetDeadlineYears(6, targetBody);
                 base.SetReputation(15f, targetBody);
                 base.SetScience(5f, targetBody);
             }
@@ -1407,7 +1387,7 @@ namespace MissionControllerEC.MCEContracts
                 this.AddParameter(new InOrbitGoal(targetBody), null);
                 base.SetFunds(8000f, 100000f, targetBody);
                 base.SetExpiry(3f, 10f);
-                base.SetDeadlineDays(100f, targetBody);
+                base.SetDeadlineYears(6, targetBody);
                 base.SetReputation(7f, targetBody);
                 base.SetScience(2f, targetBody);
             }
@@ -1418,7 +1398,7 @@ namespace MissionControllerEC.MCEContracts
                 this.AddParameter(new DockingGoal(), null);
                 base.SetFunds(5000f, 65000f, targetBody);
                 base.SetExpiry(3f, 10f);
-                base.SetDeadlineDays(100f, targetBody);
+                base.SetDeadlineYears(6, targetBody);
                 base.SetReputation(4f, targetBody);
                 base.SetScience(1f, targetBody);
             }
@@ -1428,7 +1408,7 @@ namespace MissionControllerEC.MCEContracts
                 this.AddParameter(new InOrbitGoal(targetBody2), null);
                 base.SetFunds(4000f, 35000f, targetBody);
                 base.SetExpiry(3f, 10f);
-                base.SetDeadlineDays(100f, targetBody);
+                base.SetDeadlineYears(6, targetBody);
                 base.SetReputation(2f, targetBody);
                 base.SetScience(1f, targetBody);
             }
@@ -1536,7 +1516,7 @@ namespace MissionControllerEC.MCEContracts
 
         public override bool MeetRequirements()
         {
-            bool techUnlock = ResearchAndDevelopment.GetTechnologyState("fieldScience") == RDTech.State.Available;
+            bool techUnlock = ResearchAndDevelopment.GetTechnologyState("specializedConstruction") == RDTech.State.Available;
             bool techUnlock2 = ResearchAndDevelopment.GetTechnologyState("advLanding") == RDTech.State.Available;
             bool techUnlock3 = ResearchAndDevelopment.GetTechnologyState("heavierRocketry") == RDTech.State.Available;
             //if (SaveInfo.Luna16Done == false)
@@ -1709,11 +1689,7 @@ namespace MissionControllerEC.MCEContracts
             if (totalContracts >= 1)
             {
                 return false;
-            }
-            if (prestige == ContractPrestige.Trivial)
-            {
-                return false;
-            }
+            }            
             if (HighLogic.LoadedSceneIsFlight) { return false; }
             if (SaveInfo.Duna_NonHistorical_Contracts_Off == true) { return false; }
             ApolloDunaMissionNumber = SaveInfo.apolloDunaCurrentNumber;
@@ -1726,7 +1702,7 @@ namespace MissionControllerEC.MCEContracts
                 this.AddParameter(new LandingParameters(targetBody2, true), null);
                 base.SetFunds(30000f, 350000f, targetBody);
                 base.SetExpiry(3f, 10f);
-                base.SetDeadlineDays(1000f, targetBody);
+                base.SetDeadlineYears(6, targetBody);
                 base.SetReputation(20f, targetBody);
                 base.SetScience(3f, targetBody);
             }
@@ -1741,7 +1717,7 @@ namespace MissionControllerEC.MCEContracts
                 this.AddParameter(new LandingParameters(targetBody2, true), null);
                 base.SetFunds(30000f, 400000f, targetBody);
                 base.SetExpiry(3f, 10f);
-                base.SetDeadlineDays(1000f, targetBody);
+                base.SetDeadlineYears(6, targetBody);
                 base.SetReputation(4f, targetBody);
                 base.SetScience(1f, targetBody);
             }
@@ -1755,7 +1731,7 @@ namespace MissionControllerEC.MCEContracts
                 this.AddParameter(new LandingParameters(targetBody2, true), null);
                 base.SetFunds(30000f, 400000f, targetBody);
                 base.SetExpiry(3f, 10f);
-                base.SetDeadlineDays(1000f, targetBody);
+                base.SetDeadlineYears(6, targetBody);
                 base.SetReputation(4f, targetBody);
                 base.SetScience(1f, targetBody);
             }
@@ -1767,7 +1743,7 @@ namespace MissionControllerEC.MCEContracts
                 this.AddParameter(new GetCrewCount(0), null);
                 base.SetFunds(25000f, 300000f, targetBody);
                 base.SetExpiry(3f, 10f);
-                base.SetDeadlineDays(1000f, targetBody);
+                base.SetDeadlineYears(6, targetBody);
                 base.SetReputation(25f, targetBody);
                 base.SetScience(5f, targetBody);
             }
@@ -1779,7 +1755,7 @@ namespace MissionControllerEC.MCEContracts
                 this.AddParameter(new LandingParameters(targetBody2, true), null);
                 base.SetFunds(30000f, 300000f, targetBody);
                 base.SetExpiry(3f, 10f);
-                base.SetDeadlineDays(1000f, targetBody);
+                base.SetDeadlineYears(6, targetBody);
                 base.SetReputation(20f, targetBody);
                 base.SetScience(3f, targetBody);
             }
@@ -1793,7 +1769,7 @@ namespace MissionControllerEC.MCEContracts
                 this.AddParameter(new LandingParameters(targetBody2, true), null);
                 base.SetFunds(30000f, 150000f, targetBody);
                 base.SetExpiry(3f, 10f);
-                base.SetDeadlineDays(100f, targetBody);
+                base.SetDeadlineYears(6, targetBody);
                 base.SetReputation(4f, targetBody);
                 base.SetScience(1f, targetBody);
             }
@@ -1807,7 +1783,7 @@ namespace MissionControllerEC.MCEContracts
                 this.AddParameter(new LandingParameters(targetBody2, true), null);
                 base.SetFunds(30000f, 150000f, targetBody);
                 base.SetExpiry(3f, 10f);
-                base.SetDeadlineDays(100f, targetBody);
+                base.SetDeadlineYears(6, targetBody);
                 base.SetReputation(4f, targetBody);
                 base.SetScience(1f, targetBody);
             }
@@ -1819,7 +1795,7 @@ namespace MissionControllerEC.MCEContracts
                 this.AddParameter(new GetCrewCount(0), null);                
                 base.SetFunds(30000f, 190000f, targetBody);
                 base.SetExpiry(3f, 10f);
-                base.SetDeadlineDays(100f, targetBody);
+                base.SetDeadlineYears(6, targetBody);
                 base.SetReputation(4f, targetBody);
                 base.SetScience(1f, targetBody);
             }
@@ -1831,7 +1807,7 @@ namespace MissionControllerEC.MCEContracts
                 this.AddParameter(new GetCrewCount(0), null);               
                 base.SetFunds(25000f, 200000f, targetBody);
                 base.SetExpiry(3f, 10f);
-                base.SetDeadlineDays(100f, targetBody);
+                base.SetDeadlineYears(6, targetBody);
                 base.SetReputation(25f, targetBody);
                 base.SetScience(5f, targetBody);
             }
@@ -1947,11 +1923,7 @@ namespace MissionControllerEC.MCEContracts
             if (totalContracts >= 1)
             {
                 return false;
-            }
-            if (prestige == ContractPrestige.Trivial)
-            {
-                return false;
-            }
+            }           
             totalContracts = ContractSystem.Instance.GetCurrentContracts<ApolloDunaStation>().Count();
             if (totalContracts >= 1) { return false; }
             if (HighLogic.LoadedSceneIsFlight) { return false; }
@@ -1961,7 +1933,7 @@ namespace MissionControllerEC.MCEContracts
             this.AddParameter(new GetCrewCount(0), null);
             base.SetFunds(30000f, 75000f, targetBody);
             base.SetExpiry(3f, 10f);
-            base.SetDeadlineDays(1000f, targetBody);
+            base.SetDeadlineYears(6, targetBody);
             base.SetReputation(20f, targetBody);
             base.SetScience(3f, targetBody);
             return true;
@@ -2049,11 +2021,7 @@ namespace MissionControllerEC.MCEContracts
         ContractParameter AgenaParameter;
 
         protected override bool Generate()
-        {
-            if (prestige == ContractPrestige.Trivial)
-            {
-                return false;
-            }
+        {          
             if (HighLogic.LoadedSceneIsFlight) { return false; }
             totalContracts = ContractSystem.Instance.GetCurrentContracts<AgenaTargetPracticeContract>().Count();
             Agena1Done = ContractSystem.Instance.GetCompletedContracts<AgenaTargetPracticeContract>().Count();
@@ -2071,8 +2039,8 @@ namespace MissionControllerEC.MCEContracts
             }
             if (SaveInfo.all_Historical_Contracts_Off == true) { return false; }
             targetBody = Planetarium.fetch.Home;
-            ApA = Tools.RandomNumber((int)Tools.getBodyAltitude(targetBody) + 3000, (int)Tools.getBodyAltitude(targetBody) + 300000);
-            PeA = ApA;
+            ApA = Tools.ReturnMinOrbit(targetBody, 1.2f);
+            PeA = ApA - 1000;
 
             AgenaParameter = this.AddParameter(new AgenaInOrbit(targetBody), null);
             AgenaParameter.SetFunds(2000.0f, targetBody);
@@ -2161,6 +2129,7 @@ namespace MissionControllerEC.MCEContracts
             {
                 if (body.flightGlobalsIndex == bodyID)
                     targetBody = body;
+                else { }
             }
             double maxApa = double.Parse(node.GetValue("maxaPa"));
             ApA = maxApa;
@@ -2227,11 +2196,7 @@ namespace MissionControllerEC.MCEContracts
 
 
         protected override bool Generate()
-        {
-            if (prestige == ContractPrestige.Trivial)
-            {
-                return false;
-            }
+        {          
             totalContracts = ContractSystem.Instance.GetCurrentContracts<AgenaTargetPracticeContractDocking>().Count();
             Agena1Done = ContractSystem.Instance.GetCompletedContracts<AgenaTargetPracticeContract>().Count();
             Agena2Done = ContractSystem.Instance.GetCompletedContracts<AgenaTargetPracticeContractDocking>().Count();
@@ -2249,8 +2214,8 @@ namespace MissionControllerEC.MCEContracts
             }
             if (SaveInfo.all_Historical_Contracts_Off == true) { return false; }
             targetBody = Planetarium.fetch.Home;
-            ApA = Tools.RandomNumber((int)Tools.getBodyAltitude(targetBody) + 3000, (int)Tools.getBodyAltitude(targetBody) + 300000);
-            PeA = ApA;
+            ApA = Tools.ReturnMinOrbit(targetBody, 1.6f);
+            PeA = ApA - 1000;
 
             vesselTestID = SaveInfo.AgenaTargetVesselID;
             vesselTestName = SaveInfo.AgenaTargetVesselName;
@@ -2323,6 +2288,7 @@ namespace MissionControllerEC.MCEContracts
             {
                 if (body.flightGlobalsIndex == bodyID)
                     targetBody = body;
+                else { }
             }
             double maxApa = double.Parse(node.GetValue("maxaPa"));
             ApA = maxApa;
@@ -2409,11 +2375,7 @@ namespace MissionControllerEC.MCEContracts
         public int totalContracts;
 
         protected override bool Generate()
-        {
-            if (prestige == ContractPrestige.Trivial)
-            {
-                return false;
-            }
+        {           
             totalContracts = ContractSystem.Instance.GetCurrentContracts<SkyLab1>().Count();
             if (totalContracts >= 1) { return false; }
             if (HighLogic.LoadedSceneIsFlight) { return false; }
@@ -2489,6 +2451,7 @@ namespace MissionControllerEC.MCEContracts
             {
                 if (body.flightGlobalsIndex == bodyID)
                     targetBody = body;
+                else { }
             }
             minHeight = double.Parse(node.GetValue("minheight"));
             crewCount = int.Parse(node.GetValue("crewcount"));
@@ -2554,11 +2517,7 @@ namespace MissionControllerEC.MCEContracts
         public int totalContracts;
 
         protected override bool Generate()
-        {
-            if (prestige == ContractPrestige.Trivial)
-            {
-                return false;
-            }
+        {        
             totalContracts = ContractSystem.Instance.GetCurrentContracts<SkyLab2>().Count();
             if (HighLogic.LoadedSceneIsFlight) { return false; }
             if (totalContracts >= 1) { return false; }
@@ -2661,6 +2620,7 @@ namespace MissionControllerEC.MCEContracts
             {
                 if (body.flightGlobalsIndex == bodyID)
                     targetBody = body;
+                else { }
             }
             crew = int.Parse(node.GetValue("crewcount"));
             contractTime = int.Parse(node.GetValue("ctime"));
@@ -2722,11 +2682,7 @@ namespace MissionControllerEC.MCEContracts
         public int totalContracts;
 
         protected override bool Generate()
-        {
-            if (prestige == ContractPrestige.Trivial)
-            {
-                return false;
-            }
+        {          
             totalContracts = ContractSystem.Instance.GetCurrentContracts<SkyLab3>().Count();
             if (HighLogic.LoadedSceneIsFlight) { return false; }
             if (totalContracts >= 1) { return false; }
@@ -2827,6 +2783,7 @@ namespace MissionControllerEC.MCEContracts
             {
                 if (body.flightGlobalsIndex == bodyID)
                     targetBody = body;
+                else { }
             }
             crew = int.Parse(node.GetValue("crewcount"));
             contractTime = int.Parse(node.GetValue("ctime"));
@@ -2879,11 +2836,7 @@ namespace MissionControllerEC.MCEContracts
         public int totalContracts;
 
         protected override bool Generate()
-        {
-            if (prestige == ContractPrestige.Trivial)
-            {
-                return false;
-            }
+        {          
             totalContracts = ContractSystem.Instance.GetCurrentContracts<SkyLab4>().Count();
             if (HighLogic.LoadedSceneIsFlight) { return false; }
             if (totalContracts >= 1) { return false; }
@@ -3008,6 +2961,7 @@ namespace MissionControllerEC.MCEContracts
             {
                 if (body.flightGlobalsIndex == bodyID)
                     targetBody = body;
+                else { }
             }
             crew = int.Parse(node.GetValue("crewcount"));
             contractTime = int.Parse(node.GetValue("ctime"));

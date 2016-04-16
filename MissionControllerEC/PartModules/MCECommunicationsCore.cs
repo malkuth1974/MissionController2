@@ -81,11 +81,9 @@ namespace MissionControllerEC.PartModules
             }
         }
         
-        MCEParameters.satelliteCoreCheck sc = new MCEParameters.satelliteCoreCheck(false);
-        MCEParameters.GroundStationPostion gs = new MCEParameters.GroundStationPostion(0);
-
         public void dataStartup()
         {
+            MCEParameters.satelliteCoreCheck sc = new MCEParameters.satelliteCoreCheck(false);           
             sc.SetBoolSatelliteCoreValue(true);
             sc.SetSatelliteCoreCheck(satTypeDisplay, moduleType, frequencyDisplay);           
             dataLocked = true;
@@ -178,6 +176,7 @@ namespace MissionControllerEC.PartModules
              
         public override void OnStart(PartModule.StartState state)
         {
+            MCEParameters.GroundStationPostion gs = new MCEParameters.GroundStationPostion(0);
             if (satTypeDisplay == "Communication")
             {
                 ModuleTypeSwitch();              
@@ -199,6 +198,7 @@ namespace MissionControllerEC.PartModules
         }
         public override void OnFixedUpdate()
         {
+            MCEParameters.GroundStationPostion gs = new MCEParameters.GroundStationPostion(0);
             frequencyDisplay = frequencyModulation;
             gs.SetGroundStationCheck(frequencyDisplay);
         }

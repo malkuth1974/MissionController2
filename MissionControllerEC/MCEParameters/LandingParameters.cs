@@ -43,6 +43,7 @@ namespace MissionControllerEC.MCEParameters
                 GameEvents.onLaunch.Add(onLaunch);
                 updated = true;
             }
+            else { }
 
         }
         protected override void OnUnregister()
@@ -51,6 +52,7 @@ namespace MissionControllerEC.MCEParameters
             {
                 GameEvents.onLaunch.Remove(onLaunch);
             }
+            else { }
 
         }
             
@@ -60,23 +62,24 @@ namespace MissionControllerEC.MCEParameters
             {
                 if (AllowLandedWet)
                 {
-                    if (HighLogic.LoadedSceneIsFlight && (FlightGlobals.ActiveVessel.situation == Vessel.Situations.LANDED || FlightGlobals.ActiveVessel.situation == Vessel.Situations.SPLASHED))
-                        if (this.state == ParameterState.Incomplete)
-                        {
-                            Landing(FlightGlobals.ActiveVessel);
-                            //Debug.Log("Wet and dry landing accepted for contract");
-                        }
+                    if (HighLogic.LoadedSceneIsFlight && (FlightGlobals.ActiveVessel.situation == Vessel.Situations.LANDED || FlightGlobals.ActiveVessel.situation == Vessel.Situations.SPLASHED) && this.state == ParameterState.Incomplete)
+                    {
+                        Landing(FlightGlobals.ActiveVessel);
+                        //Debug.Log("Wet and dry landing accepted for contract");
+                    }
+                    else { }
                 }
                 else
                 {
-                    if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel.situation == Vessel.Situations.LANDED && FlightGlobals.ActiveVessel.situation != Vessel.Situations.SPLASHED)
-                        if (this.state == ParameterState.Incomplete)
-                        {
-                            Landing(FlightGlobals.ActiveVessel);
-                            //Debug.Log("only dry landing accepted for this contract");
-                        }
+                    if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel.situation == Vessel.Situations.LANDED && FlightGlobals.ActiveVessel.situation != Vessel.Situations.SPLASHED && this.state == ParameterState.Incomplete)
+                    {
+                        Landing(FlightGlobals.ActiveVessel);
+                        //Debug.Log("only dry landing accepted for this contract");
+                    }
+                    else { }
                 }
             }
+            else { }
         }
 
         protected override void OnLoad(ConfigNode node)
@@ -95,13 +98,11 @@ namespace MissionControllerEC.MCEParameters
 
         public void Landing(Vessel vessel)
         {
-            if (FlightGlobals.ActiveVessel.orbit.referenceBody.Equals(targetBody) && LaunchTrue)
-            {
-                if (FlightGlobals.ActiveVessel.situation != Vessel.Situations.PRELAUNCH)
-                {
-                    base.SetComplete();
-                }                                   
-            }           
+            if (FlightGlobals.ActiveVessel.orbit.referenceBody.Equals(targetBody) && LaunchTrue && FlightGlobals.ActiveVessel.situation != Vessel.Situations.PRELAUNCH)
+            {              
+                    base.SetComplete();                                                  
+            }
+            else { }           
         }
         public void onLaunch(EventReport er)
         {
@@ -157,6 +158,7 @@ namespace MissionControllerEC.MCEParameters
                 GameEvents.onLaunch.Add(onLaunch);
                 updated = true;
             }
+            else { }
 
         }
         protected override void OnUnregister()
@@ -165,6 +167,7 @@ namespace MissionControllerEC.MCEParameters
             {
                 GameEvents.onLaunch.Remove(onLaunch);
             }
+            else { }
 
         }
 
@@ -179,23 +182,24 @@ namespace MissionControllerEC.MCEParameters
                 }
                 if (AllowLandedWet)
                 {
-                    if (HighLogic.LoadedSceneIsFlight && (FlightGlobals.ActiveVessel.situation == Vessel.Situations.LANDED || FlightGlobals.ActiveVessel.situation == Vessel.Situations.SPLASHED))
-                        if (this.state == ParameterState.Incomplete)
+                    if (HighLogic.LoadedSceneIsFlight && (FlightGlobals.ActiveVessel.situation == Vessel.Situations.LANDED || FlightGlobals.ActiveVessel.situation == Vessel.Situations.SPLASHED) && this.state == ParameterState.Incomplete)
                         {
                             Landing(FlightGlobals.ActiveVessel);
                             //Debug.Log("Wet and dry landing accepted for contract");
                         }
+                    else { }
                 }
                 else
                 {
-                    if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel.situation == Vessel.Situations.LANDED && FlightGlobals.ActiveVessel.situation != Vessel.Situations.SPLASHED)
-                        if (this.state == ParameterState.Incomplete)
+                    if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel.situation == Vessel.Situations.LANDED && FlightGlobals.ActiveVessel.situation != Vessel.Situations.SPLASHED && this.state == ParameterState.Incomplete)
                         {
                             Landing(FlightGlobals.ActiveVessel);
                             //Debug.Log("only dry landing accepted for this contract");
                         }
+                    else { }
                 }
             }
+            else { }
         }
 
         protected override void OnLoad(ConfigNode node)
@@ -220,13 +224,15 @@ namespace MissionControllerEC.MCEParameters
             {
                 if (FlightGlobals.ActiveVessel.situation != Vessel.Situations.PRELAUNCH)
                 {
-
                     if (currentBiome == BiomeName)
                     {
                         base.SetComplete();
                     }
+                    else { }
                 }
+                else { }
             }
+            else { }
         }
         public void onLaunch(EventReport er)
         {
@@ -251,7 +257,9 @@ namespace MissionControllerEC.MCEParameters
         private double savedLat = 0;
         private bool hasToBeNewVessel = true;
         private string title = "Land at specific target area";
-        
+        private bool FinePrintWaypoint = false;
+        private FinePrint.Waypoint wp;
+
         public CheckLandingLonAndLat()
         {
         }
@@ -265,6 +273,18 @@ namespace MissionControllerEC.MCEParameters
             this.title = title;
             this.hasToBeNewVessel = vesselHasBeNew;
         }
+        public CheckLandingLonAndLat(CelestialBody target, bool WetDryLanding, double saveLon, double saveLat, string title, bool vesselHasBeNew, bool WaypointTargetShow)
+        {
+            this.targetBody = target;
+            this.AllowLandedWet = WetDryLanding;
+            this.savedLon = saveLon;
+            this.savedLat = saveLat;
+            this.title = title;
+            this.hasToBeNewVessel = vesselHasBeNew;
+            this.FinePrintWaypoint = WaypointTargetShow;
+            wp = new FinePrint.Waypoint();
+        }
+
         protected override string GetHashString()
         {
             return "" + this.Root.MissionSeed.ToString();
@@ -278,7 +298,17 @@ namespace MissionControllerEC.MCEParameters
         {
             return "this value is based off a Longitude and Latitude recorded when Vessel Landed originally";
         }
-                     
+
+        protected override void OnRegister()
+        {           
+        }
+
+        protected override void OnUnregister()
+        {            
+            if (FinePrintWaypoint)
+                FinePrint.WaypointManager.RemoveWaypoint(wp);
+        }
+
         protected override void OnUpdate()
         {
             if (Root.ContractState == Contract.State.Active)
@@ -291,27 +321,28 @@ namespace MissionControllerEC.MCEParameters
                 }
                 if (AllowLandedWet)
                 {
-                    if (HighLogic.LoadedSceneIsFlight && (FlightGlobals.ActiveVessel.situation == Vessel.Situations.LANDED || FlightGlobals.ActiveVessel.situation == Vessel.Situations.SPLASHED))
-                        if (this.state == ParameterState.Incomplete)
+                    if (HighLogic.LoadedSceneIsFlight && (FlightGlobals.ActiveVessel.situation == Vessel.Situations.LANDED || FlightGlobals.ActiveVessel.situation == Vessel.Situations.SPLASHED) && this.state == ParameterState.Incomplete)
                         {
                             currentLat = FlightGlobals.ActiveVessel.latitude;
                             currentLon = FlightGlobals.ActiveVessel.longitude;
                             Landing(FlightGlobals.ActiveVessel);
                             //Debug.Log("Wet and dry landing accepted for contract");
                         }
+                    else { }
                 }
                 else
                 {
-                    if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel.situation == Vessel.Situations.LANDED && FlightGlobals.ActiveVessel.situation != Vessel.Situations.SPLASHED)
-                        if (this.state == ParameterState.Incomplete)
+                    if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel.situation == Vessel.Situations.LANDED && FlightGlobals.ActiveVessel.situation != Vessel.Situations.SPLASHED && this.state == ParameterState.Incomplete)
                         {
                             currentLat = FlightGlobals.ActiveVessel.latitude;
                             currentLon = FlightGlobals.ActiveVessel.longitude;
                             Landing(FlightGlobals.ActiveVessel);
                             //Debug.Log("only dry landing accepted for this contract");
                         }
+                    else { }
                 }
             }
+            else { }
         }
 
         public void Landing(Vessel vessel)
@@ -329,7 +360,9 @@ namespace MissionControllerEC.MCEParameters
                     {
                         base.SetComplete();
                     }
+                    else { }
                 }
+                else { }
             }
             if (FlightGlobals.ActiveVessel.orbit.referenceBody.Equals(targetBody) && !hasToBeNewVessel)
             {
@@ -344,8 +377,11 @@ namespace MissionControllerEC.MCEParameters
                     {
                         base.SetComplete();
                     }
+                    else { }
                 }
+                else { }
             }
+            else { }
         }        
 
         protected override void OnLoad(ConfigNode node)
@@ -358,6 +394,64 @@ namespace MissionControllerEC.MCEParameters
             Tools.ContractLoadCheck(node, ref savedLon, 0, savedLon, "savedlon");
             Tools.ContractLoadCheck(node, ref title, "Land at target area", title, "title");
             Tools.ContractLoadCheck(node, ref hasToBeNewVessel, true, hasToBeNewVessel, "newvessel");
+            if (HighLogic.LoadedSceneIsFlight && this.Root.ContractState == Contract.State.Active && FinePrintWaypoint)
+            {
+                try
+                {
+                    wp.celestialName = targetBody.theName;
+                    wp.latitude = savedLat;
+                    wp.longitude = savedLon;
+                    wp.seed = Root.MissionSeed;
+                    wp.id = "dish";
+                    wp.name = "Rover landing Site";
+                    wp.index = 1;
+                    wp.altitude = 0;
+                    wp.isOnSurface = true;
+                    wp.isNavigatable = true;
+                    FinePrint.WaypointManager.AddWaypoint(wp);
+                    FinePrintWaypoint = true;
+                }
+                catch (ArgumentOutOfRangeException r)
+                {
+                    Debug.LogError(r.Message + " " + r.Source);
+                }
+                catch (Exception e)
+                {
+                    Debug.LogError(e.Message + " " + e.Source);
+                }
+            }
+            else { }
+            if (HighLogic.LoadedScene == GameScenes.TRACKSTATION && FinePrintWaypoint)
+            {
+                if (this.Root.ContractState != Contract.State.Completed)
+                {
+                    try
+                    {
+                        wp.celestialName = targetBody.theName;
+                        wp.latitude = savedLat;
+                        wp.longitude = savedLon;
+                        wp.seed = Root.MissionSeed;
+                        wp.id = "dish";
+                        wp.name = "Rover landing Site";
+                        wp.index = 1;
+                        wp.altitude = 0;
+                        wp.isOnSurface = true;
+                        wp.isNavigatable = true;
+                        FinePrint.WaypointManager.AddWaypoint(wp);
+                        FinePrintWaypoint = true;
+                    }
+                    catch (ArgumentOutOfRangeException r)
+                    {
+                        Debug.LogError(r.Message + " " + r.Source);
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.LogError(e.Message + " " + e.Source);
+                    }
+                }
+                else { }
+            }
+            else { }
         }
         protected override void OnSave(ConfigNode node)
         {

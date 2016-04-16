@@ -50,6 +50,7 @@ namespace MissionControllerEC
                 texture2 = new Texture2D(36, 36, TextureFormat.RGBA32, false);
                 texture2.LoadImage(File.ReadAllBytes(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "MCERevert.png")));
             }
+            else { /*Debug.Log("MCE LoadTexture Failure"); */}
             //Debug.Log("MCE Textures Loaded");
         }
 
@@ -91,6 +92,7 @@ namespace MissionControllerEC
                     );
                 //Debug.Log("creating MCERevert Buttons");
             }
+            else { /*Debug.Log("MCE2 CreateButtons Failed");*/ }
         }
 
         private void MCEOn()
@@ -121,6 +123,7 @@ namespace MissionControllerEC
             {
                 ApplicationLauncher.Instance.RemoveModApplication(this.MCERevert);
             }
+            else { /*Debug.Log("MCE destroy buttons failed");*/ }
         }
                
         public void CheckRepairContractTypes(GameScenes gs)
@@ -305,7 +308,8 @@ namespace MissionControllerEC
                 }
 
                 catch { Debug.LogError("could not run NoPartTest Returned Null"); }
-            } 
+            }
+            Debug.Log("MCE Remove Contracts loaded"); 
         }    
                                    
         public void getSupplyList(bool stationOnly)
@@ -324,6 +328,7 @@ namespace MissionControllerEC
                         supplyCount++;
                         //Debug.Log("Found Vessel " + v.name + " " + v.vesselType + " Count is: " + supplyCount);
                     }
+                    else { }
                 }
             }
             else
@@ -336,6 +341,7 @@ namespace MissionControllerEC
                         supplyCount++;
                         //Debug.Log("Found Vessel " + v.name + " " + v.vesselType + " Count is: " + supplyCount);
                     }
+                    else { }
                 }
             }
         }
@@ -373,6 +379,35 @@ namespace MissionControllerEC
             FlightGlobals.ActiveVessel.launchTime = currentTime;
             Debug.Log("New LaunchTime Is: " + Tools.ConvertDays(FlightGlobals.ActiveVessel.launchTime));
         }
+        public void GetContractList()
+        {
+            SaveInfo.KspContractList.Clear();
+            if (ContractSystem.Instance != null)
+            {
+                foreach(Contract c in Contracts.ContractSystem.Instance.Contracts)
+                {
+                    Type ContractType = c.GetType();
+                    if (c.ContractState == Contract.State.Offered || c.ContractState == Contract.State.Active)
+                    {
+                        SaveInfo.KspContractList.Add(new McContractList(ContractType.Name, false));
+                    }
+                    else { }
+                }
+                
+            }
+            else
+            {
+                Debug.Log("Contract Instance Not found, list not loading");
+            }
+            if (ContractSystem.Instance != false)
+            {
+                foreach (McContractList t in SaveInfo.KspContractList)
+                {
+                    Debug.LogError("ContractList = " + t.ContractName + t.ContractDisabled);
+                }
+            }
+            else { }
+        }
     }
    
     public class RepairVesselsList
@@ -409,5 +444,17 @@ namespace MissionControllerEC
             this.vesselId = vId;
             this.body = bod;
         }
+    }
+    public class McContractList
+    {
+        public string ContractName;
+        public bool ContractDisabled = false;
+        public McContractList() { }
+        public McContractList(string ContName, bool ContDisabled)
+        {
+            this.ContractName = ContName;
+            this.ContractDisabled = ContDisabled;
+        }
+        
     }
 }

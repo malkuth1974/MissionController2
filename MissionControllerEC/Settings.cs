@@ -31,6 +31,6 @@ namespace MissionControllerEC
         [Persistent]internal int Margin_Of_Error_Contract_Orbits = 5000;
         [Persistent]internal int Margin_Of_Error_Contract_Inclination = 3;
         [Persistent]internal double Margin_Of_Error_Contract_Eccentric = .5;       
-        [Persistent]internal List<String> SupplyResourceList = new List<string>() { "LiquidFuel", "Oxidizer", "MonoPropellant", "XenonGas", "Food", "Water", "Oxygen", "Kibbal" };        
+        [Persistent]internal List<String> SupplyResourceList = new List<string>() { "LiquidFuel", "Oxidizer", "MonoPropellant", "XenonGas", "Food", "Water", "Oxygen", "Kibbal" };       
     }
 }

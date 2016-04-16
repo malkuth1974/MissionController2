@@ -45,6 +45,7 @@ namespace MissionControllerEC
             {
                 GUI.DragWindow();
             }
+            else { }
         }
         #endregion
         #region finance Window
@@ -86,6 +87,7 @@ namespace MissionControllerEC
             {
                 GUI.DragWindow();
             }
+            else { }
         }
         # endregion
         # region Custom GUI Window

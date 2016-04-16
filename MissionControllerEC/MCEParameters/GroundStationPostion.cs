@@ -55,7 +55,9 @@ namespace MissionControllerEC.MCEParameters
                 this.disableOnStateChange = true;
             }
             else
-            this.DisableOnStateChange = false;
+            {
+                this.DisableOnStateChange = false;
+            }
 
             if (Root.ContractState == Contract.State.Active && freqPass)
             {
@@ -64,6 +66,7 @@ namespace MissionControllerEC.MCEParameters
                 GameEvents.onTimeWarpRateChanged.Add(FlightReady);
                 eventsAdded = true;
             }
+            else { }
         }
 
         protected override void OnUnregister()
@@ -75,7 +78,10 @@ namespace MissionControllerEC.MCEParameters
                 GameEvents.onTimeWarpRateChanged.Remove(FlightReady);
             }
             if (submittedWaypoint)
+            {
                 FinePrint.WaypointManager.RemoveWaypoint(wp);
+            }
+            else { }
         }
 
         protected override void OnUpdate()
@@ -103,17 +109,23 @@ namespace MissionControllerEC.MCEParameters
                                 base.SetComplete();
                                 //Debug.Log("SetComplete Logitude is " + longitude + " Latitude is " + latitude);
                             }
+                            else { }
                         }
 
                         if (this.State == ParameterState.Complete && freqPass)
                         {
                             if (!AngleCheck)
                                 base.SetIncomplete();
+                            else { }
                         }
+                        else { }
                     }
+                    else { }
                 }
-                
-            }           
+                else { }
+
+            }
+            else { }
         }
         protected virtual void OnSatelliteChanged()
         {
@@ -221,7 +233,9 @@ namespace MissionControllerEC.MCEParameters
                         Debug.LogError(e.Message + " " + e.Source);
                     }
                 }
+                else { }
             }
+            else { }
 
         }
         protected override void OnSave(ConfigNode node)
