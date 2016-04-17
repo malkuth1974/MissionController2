@@ -2502,7 +2502,6 @@ namespace MissionControllerEC.MCEContracts
         public int contractTime = 605448;
         public string contractName = "Launch And Repair " + SaveInfo.skyLabName;
         public string contTimeTitle = " Dock and stay in orbit ";
-        string repairParts = "SpareParts";
         string Ctitle = "To Repair Station You must have at Least ";
         double RPamount = 1;
         string vesselId = "none";
@@ -2549,8 +2548,6 @@ namespace MissionControllerEC.MCEContracts
             skylab5.SetFunds(5000, 75000, targetBody);
             skylab5.SetReputation(20, targetBody);
             skylab5.SetScience(3, targetBody);
-
-            this.AddParameter(new ResourceSupplyGoal(repairParts, RPamount, Ctitle, true), null);
 
             this.AddParameter(new GetCrewCount(crew), null);
 
@@ -2627,7 +2624,6 @@ namespace MissionControllerEC.MCEContracts
             contractName = node.GetValue("cname");
             contTimeTitle = node.GetValue("ctitle");
 
-            repairParts = node.GetValue("rparts");
             Ctitle = node.GetValue("ctitle");
             RPamount = double.Parse(node.GetValue("rpamount"));
 
@@ -2644,7 +2640,6 @@ namespace MissionControllerEC.MCEContracts
             node.AddValue("cname", contractName);
             node.AddValue("ctitle", contTimeTitle);
 
-            node.AddValue("rparts", repairParts);
             node.AddValue("ctitle", Ctitle);
             node.AddValue("rpamount", RPamount);
 

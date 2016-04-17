@@ -41,12 +41,13 @@ namespace MissionControllerEC.MCEContracts
                             if (vs.vesselType == VesselType.Probe)
                             {
                                 repairvesselList.Add(new RepairVesselsList(vs.vesselName, vs.id.ToString(), vs.orbit.ApA, vs.mainBody.flightGlobalsIndex));
+                                Debug.Log("Added Vessel " + vs.name + " To repair list for selection.");
                             }
                             else
-                            { Debug.Log("No satellites found with a Repair panel, Skiping satellite repair Contracts"); }
+                            { /*Debug.Log("No satellites found with a Repair panel, Skiping satellite repair Contracts");*/ }
                         }
                         else
-                        { Debug.Log("Could not find any repair panels on vessel type satellites.  Make sure your placing repair panels on your satellites."); }
+                        { /*Debug.Log("Could not find any repair panels on vessel type satellites.  Make sure your placing repair panels on your satellites.");*/ }
                     }
                 }
             }
@@ -319,12 +320,12 @@ namespace MissionControllerEC.MCEContracts
                             }
                             else
                             {
-                                Debug.Log("Could not find station with a repair panel, if you want these types of contracts place a repair panel anywhere on your station.");
+                                //Debug.Log("Could not find station with a repair panel, if you want these types of contracts place a repair panel anywhere on your station.");
                             }
                         }
                         else
                         {
-                            Debug.Log("Could not find station with a repair panel, if you want these types of contracts place a repair panel anywhere on your station.");
+                            //Debug.Log("Could not find station with a repair panel, if you want these types of contracts place a repair panel anywhere on your station.");
                         }
                     }
                 }

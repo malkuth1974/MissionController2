@@ -296,7 +296,12 @@ namespace MissionControllerEC.MCEParameters
 
         protected override string GetNotes()
         {
-            return "this value is based off a Longitude and Latitude recorded when Vessel Landed originally";
+            if (FinePrintWaypoint)
+            {
+                return " Land you Rover in the general area marked on the map";
+            }
+            else
+            return " this value is based off a Longitude and Latitude recorded when Vessel Landed originally";
         }
 
         protected override void OnRegister()
@@ -394,64 +399,64 @@ namespace MissionControllerEC.MCEParameters
             Tools.ContractLoadCheck(node, ref savedLon, 0, savedLon, "savedlon");
             Tools.ContractLoadCheck(node, ref title, "Land at target area", title, "title");
             Tools.ContractLoadCheck(node, ref hasToBeNewVessel, true, hasToBeNewVessel, "newvessel");
-            if (HighLogic.LoadedSceneIsFlight && this.Root.ContractState == Contract.State.Active && FinePrintWaypoint)
-            {
-                try
-                {
-                    wp.celestialName = targetBody.theName;
-                    wp.latitude = savedLat;
-                    wp.longitude = savedLon;
-                    wp.seed = Root.MissionSeed;
-                    wp.id = "dish";
-                    wp.name = "Rover landing Site";
-                    wp.index = 1;
-                    wp.altitude = 0;
-                    wp.isOnSurface = true;
-                    wp.isNavigatable = true;
-                    FinePrint.WaypointManager.AddWaypoint(wp);
-                    FinePrintWaypoint = true;
-                }
-                catch (ArgumentOutOfRangeException r)
-                {
-                    Debug.LogError(r.Message + " " + r.Source);
-                }
-                catch (Exception e)
-                {
-                    Debug.LogError(e.Message + " " + e.Source);
-                }
-            }
-            else { }
-            if (HighLogic.LoadedScene == GameScenes.TRACKSTATION && FinePrintWaypoint)
-            {
-                if (this.Root.ContractState != Contract.State.Completed)
-                {
-                    try
-                    {
-                        wp.celestialName = targetBody.theName;
-                        wp.latitude = savedLat;
-                        wp.longitude = savedLon;
-                        wp.seed = Root.MissionSeed;
-                        wp.id = "dish";
-                        wp.name = "Rover landing Site";
-                        wp.index = 1;
-                        wp.altitude = 0;
-                        wp.isOnSurface = true;
-                        wp.isNavigatable = true;
-                        FinePrint.WaypointManager.AddWaypoint(wp);
-                        FinePrintWaypoint = true;
-                    }
-                    catch (ArgumentOutOfRangeException r)
-                    {
-                        Debug.LogError(r.Message + " " + r.Source);
-                    }
-                    catch (Exception e)
-                    {
-                        Debug.LogError(e.Message + " " + e.Source);
-                    }
-                }
-                else { }
-            }
-            else { }
+            //if (HighLogic.LoadedSceneIsFlight && this.Root.ContractState != Contract.State.Completed)
+            //{
+            //    try
+            //    {
+            //        wp.celestialName = targetBody.theName;
+            //        wp.latitude = savedLat;
+            //        wp.longitude = savedLon;
+            //        wp.seed = Root.MissionSeed;
+            //        wp.id = "dish";
+            //        wp.name = "Rover landing Site";
+            //        wp.index = 1;
+            //        wp.altitude = 0;
+            //        wp.isOnSurface = true;
+            //        wp.isNavigatable = true;
+            //        FinePrint.WaypointManager.AddWaypoint(wp);
+            //        FinePrintWaypoint = true;
+            //    }
+            //    catch (ArgumentOutOfRangeException r)
+            //    {
+            //        Debug.LogError(r.Message + " " + r.Source);
+            //    }
+            //    catch (Exception e)
+            //    {
+            //        Debug.LogError(e.Message + " " + e.Source);
+            //    }
+            //}
+            //else { }
+            //if (HighLogic.LoadedScene == GameScenes.TRACKSTATION)
+            //{
+            //    if (this.Root.ContractState != Contract.State.Completed)
+            //    {
+            //        try
+            //        {
+            //            wp.celestialName = targetBody.theName;
+            //            wp.latitude = savedLat;
+            //            wp.longitude = savedLon;
+            //            wp.seed = Root.MissionSeed;
+            //            wp.id = "dish";
+            //            wp.name = "Rover landing Site";
+            //            wp.index = 1;
+            //            wp.altitude = 0;
+            //            wp.isOnSurface = true;
+            //            wp.isNavigatable = true;
+            //            FinePrint.WaypointManager.AddWaypoint(wp);
+            //            FinePrintWaypoint = true;
+            //        }
+            //        catch (ArgumentOutOfRangeException r)
+            //        {
+            //            Debug.LogError(r.Message + " " + r.Source);
+            //        }
+            //        catch (Exception e)
+            //        {
+            //            Debug.LogError(e.Message + " " + e.Source);
+            //        }
+            //    }
+            //    else { }
+            //}
+            //else { }
         }
         protected override void OnSave(ConfigNode node)
         {
