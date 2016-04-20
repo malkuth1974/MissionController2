@@ -209,29 +209,33 @@ namespace MissionControllerEC.MCEParameters
             {
                 if (this.Root.ContractState != Contract.State.Completed)
                 {
-                    try
+                    if (this.Root.ContractState != Contract.State.Cancelled)
                     {
-                        wp.celestialName = targetBody.theName;
-                        wp.latitude = latitude;
-                        wp.longitude = longitude;
-                        wp.seed = Root.MissionSeed;
-                        wp.id = "dish";                       
-                        wp.name = stationName;
-                        wp.index = 1;
-                        wp.altitude = 0;
-                        wp.isOnSurface = true;
-                        wp.isNavigatable = true;
-                        FinePrint.WaypointManager.AddWaypoint(wp);
-                        submittedWaypoint = true;
+                        try
+                        {
+                            wp.celestialName = targetBody.theName;
+                            wp.latitude = latitude;
+                            wp.longitude = longitude;
+                            wp.seed = Root.MissionSeed;
+                            wp.id = "dish";
+                            wp.name = stationName;
+                            wp.index = 1;
+                            wp.altitude = 0;
+                            wp.isOnSurface = true;
+                            wp.isNavigatable = true;
+                            FinePrint.WaypointManager.AddWaypoint(wp);
+                            submittedWaypoint = true;
+                        }
+                        catch (ArgumentOutOfRangeException r)
+                        {
+                            Debug.LogError(r.Message + " " + r.Source);
+                        }
+                        catch (Exception e)
+                        {
+                            Debug.LogError(e.Message + " " + e.Source);
+                        }
                     }
-                    catch (ArgumentOutOfRangeException r)
-                    {
-                        Debug.LogError(r.Message + " " + r.Source);
-                    }
-                    catch (Exception e)
-                    {
-                        Debug.LogError(e.Message + " " + e.Source);
-                    }
+                    else { }
                 }
                 else { }
             }
@@ -247,6 +251,431 @@ namespace MissionControllerEC.MCEParameters
             node.AddValue("station", stationName);
             node.AddValue("freq", frequency);
             node.AddValue("polarlock", PolarRegionLock);
+        }
+    }
+    class RoverLandingPositionCheck : ContractParameter
+    {
+        private FinePrint.Waypoint wp;
+        private bool submittedWaypoint;
+        private CelestialBody targetBody = Planetarium.fetch.Home;
+        private double longitude = 0;
+        private double latitude = 0;
+        private double SavedLong;
+        private double SavedLat;
+        private string LandingName = "none";
+        bool eventsAdded;
+        private double MarginOfErrorInDegree = 10;
+        private bool HasToBeNewVessel = false;
+      
+        public RoverLandingPositionCheck()
+        {
+            wp = new FinePrint.Waypoint();
+        }
+
+        public RoverLandingPositionCheck(CelestialBody targetBody,string landingSite, double longitudeValue, double latitudeValue,double margofErrInDegree,bool HasToBeNewVessel)
+        {
+            this.targetBody = targetBody;
+            this.SavedLat = longitudeValue;
+            this.SavedLong = latitudeValue;
+            this.LandingName = landingSite;
+            this.HasToBeNewVessel = HasToBeNewVessel;
+            this.MarginOfErrorInDegree = margofErrInDegree;
+            wp = new FinePrint.Waypoint();
+        }
+
+        protected override string GetHashString()
+        {
+            return "Land rover at " + SavedLong + " " + SavedLat;
+        }
+        protected override string GetTitle()
+        {
+            return LandingName + targetBody.name + " at specific location marked map";
+        }
+
+        protected override void OnRegister()
+        {
+                     
+
+            if (Root.ContractState == Contract.State.Active)
+            {
+                GameEvents.onFlightReady.Add(FlightReady);
+                GameEvents.onVesselChange.Add(VesselChange);
+                eventsAdded = true;
+            }
+            else { }
+        }
+
+        protected override void OnUnregister()
+        {
+            if (eventsAdded)
+            {
+                GameEvents.onFlightReady.Remove(FlightReady);
+                GameEvents.onVesselChange.Remove(VesselChange);
+            }
+            if (submittedWaypoint)
+            {
+                FinePrint.WaypointManager.RemoveWaypoint(wp);
+            }
+            else { }
+        }
+
+        protected override void OnUpdate()
+        {
+            if (Root.ContractState == Contract.State.Active)
+            {
+                if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel.orbit.referenceBody.Equals(targetBody))
+                {
+                    latitude = FlightGlobals.ActiveVessel.latitude;
+                    longitude = FlightGlobals.ActiveVessel.longitude;
+                    GetNotes();
+                    if (FlightGlobals.ActiveVessel.situation == Vessel.Situations.LANDED && this.state == ParameterState.Incomplete)
+                    {
+                        latitude = FlightGlobals.ActiveVessel.latitude;
+                        longitude = FlightGlobals.ActiveVessel.longitude;
+                        Landing(FlightGlobals.ActiveVessel);
+                    }
+                    else { }
+                }               
+            }
+            else { }
+        }
+
+        public void Landing(Vessel vessel)
+        {
+            if (FlightGlobals.ActiveVessel.orbit.referenceBody.Equals(targetBody) && HasToBeNewVessel)
+            {
+                if (FlightGlobals.ActiveVessel.situation != Vessel.Situations.PRELAUNCH && vessel.launchTime > this.Root.DateAccepted)
+                {
+                    double latMin = SavedLat - MarginOfErrorInDegree;
+                    double latMax = SavedLat + MarginOfErrorInDegree;
+                    double lonMin = SavedLong - MarginOfErrorInDegree;
+                    double lonMax = SavedLong + MarginOfErrorInDegree;
+
+                    if (latitude >= latMin && latitude <= latMax && longitude >= lonMin && longitude <= lonMax)
+                    {
+                        base.SetComplete();
+                    }
+                    else { }
+                }
+                else { }
+            }
+            if (FlightGlobals.ActiveVessel.orbit.referenceBody.Equals(targetBody) && !HasToBeNewVessel)
+            {
+                if (FlightGlobals.ActiveVessel.situation != Vessel.Situations.PRELAUNCH)
+                {
+                    double latMin = SavedLat - 3000;
+                    double latMax = SavedLat + 3000;
+                    double lonMin = SavedLong - 3000;
+                    double lonMax = SavedLong + 3000;
+
+                    if (latitude >= latMin && latitude <= latMax && longitude >= lonMin && longitude <= lonMax)
+                    {
+                        base.SetComplete();
+                    }
+                    else { }
+                }
+                else { }
+            }
+            else { }
+        }
+                
+        private void FlightReady()
+        {
+            base.SetIncomplete();
+        }
+
+        private void VesselChange(Vessel v)
+        {
+            base.SetIncomplete();
+        }
+        
+        protected override void OnLoad(ConfigNode node)
+        {
+            Tools.ContractLoadCheck(node, ref targetBody, Planetarium.fetch.Home, targetBody, "targetbody");
+            Tools.ContractLoadCheck(node, ref longitude, 0, longitude, "long");
+            Tools.ContractLoadCheck(node, ref latitude, 0, latitude, "lati");
+            Tools.ContractLoadCheck(node, ref LandingName, "None", LandingName, "landingName");
+            Tools.ContractLoadCheck(node, ref SavedLat, 100, SavedLat, "savedLat");
+            Tools.ContractLoadCheck(node, ref SavedLong, 100, SavedLong, "savedLong");
+            Tools.ContractLoadCheck(node, ref HasToBeNewVessel, false, HasToBeNewVessel, "vesselNew");
+
+            if (HighLogic.LoadedSceneIsFlight && this.Root.ContractState == Contract.State.Active)
+            {
+                try
+                {
+                    wp.celestialName = targetBody.theName;
+                    wp.latitude = SavedLat;
+                    wp.longitude = SavedLong;
+                    wp.seed = Root.MissionSeed;
+                    wp.id = "dish";
+                    wp.name = LandingName;
+                    wp.index = 1;
+                    wp.altitude = 0;
+                    wp.isOnSurface = true;
+                    wp.isNavigatable = true;
+                    FinePrint.WaypointManager.AddWaypoint(wp);
+                    submittedWaypoint = true;
+                }
+                catch (ArgumentOutOfRangeException r)
+                {
+                    Debug.LogError(r.Message + " " + r.Source);
+                }
+                catch (Exception e)
+                {
+                    Debug.LogError(e.Message + " " + e.Source);
+                }
+            }
+            if (HighLogic.LoadedScene == GameScenes.TRACKSTATION)
+            {
+                if (this.Root.ContractState != Contract.State.Completed)
+                {
+                    if (this.Root.ContractState != Contract.State.Cancelled)
+                    {
+                        try
+                        {
+                            wp.celestialName = targetBody.theName;
+                            wp.latitude = SavedLat;
+                            wp.longitude = SavedLong;
+                            wp.seed = Root.MissionSeed;
+                            wp.id = "dish";
+                            wp.name = LandingName;
+                            wp.index = 1;
+                            wp.altitude = 0;
+                            wp.isOnSurface = true;
+                            wp.isNavigatable = true;
+                            FinePrint.WaypointManager.AddWaypoint(wp);
+                            submittedWaypoint = true;
+                        }
+                        catch (ArgumentOutOfRangeException r)
+                        {
+                            Debug.LogError(r.Message + " " + r.Source);
+                        }
+                        catch (Exception e)
+                        {
+                            Debug.LogError(e.Message + " " + e.Source);
+                        }
+                    }
+                    else { }
+                }
+                else { }
+            }
+            else { }
+
+        }
+        protected override void OnSave(ConfigNode node)
+        {
+            int bodyID = targetBody.flightGlobalsIndex;
+            node.AddValue("targetbody", bodyID);
+            node.AddValue("long", longitude);
+            node.AddValue("lati", latitude);
+            node.AddValue("landingName", LandingName);
+            node.AddValue("savedLong", SavedLong);
+            node.AddValue("savedLat", SavedLat);
+            node.AddValue("vesselNew", HasToBeNewVessel);
+        }
+    }
+    class RoverGroundWaypointPara : ContractParameter
+    {
+        private FinePrint.Waypoint wp;
+        private bool submittedWaypoint;
+        private CelestialBody targetBody = Planetarium.fetch.Home;
+        private double longitude = 0;
+        private double latitude = 0;
+        private double SavedLong;
+        private double SavedLat;
+        private string GroundWaypointName = "none";
+        bool eventsAdded;
+        private double MarginOfErrorInDegree = 10;
+        private string RoverName = "None";
+
+        public RoverGroundWaypointPara()
+        {
+            wp = new FinePrint.Waypoint();
+        }
+
+        public RoverGroundWaypointPara(CelestialBody targetBody, string groundWaypointName, double longitudeValue, double latitudeValue, double margofErrInDegree, string RoverName)
+        {
+            this.targetBody = targetBody;
+            this.SavedLat = longitudeValue;
+            this.SavedLong = latitudeValue;
+            this.GroundWaypointName = groundWaypointName;
+            this.MarginOfErrorInDegree = margofErrInDegree;
+            this.RoverName = RoverName;
+            wp = new FinePrint.Waypoint();
+        }
+
+        protected override string GetHashString()
+        {
+            return "Bring Rover To Waypoint At " + SavedLong + " " + SavedLat;
+        }
+        protected override string GetTitle()
+        {
+            return GroundWaypointName + " " + RoverName + "located On " + targetBody.name + " To specific location marked on map";
+        }
+
+        protected override void OnRegister()
+        {
+
+
+            if (Root.ContractState == Contract.State.Active)
+            {
+                GameEvents.onFlightReady.Add(FlightReady);
+                GameEvents.onVesselChange.Add(VesselChange);
+                eventsAdded = true;
+            }
+            else { }
+        }
+
+        protected override void OnUnregister()
+        {
+            if (eventsAdded)
+            {
+                GameEvents.onFlightReady.Remove(FlightReady);
+                GameEvents.onVesselChange.Remove(VesselChange);
+            }
+            if (submittedWaypoint)
+            {
+                FinePrint.WaypointManager.RemoveWaypoint(wp);
+            }
+            else { }
+        }
+
+        protected override void OnUpdate()
+        {
+            if (Root.ContractState == Contract.State.Active)
+            {
+                if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel.orbit.referenceBody.Equals(targetBody))
+                {
+                    latitude = FlightGlobals.ActiveVessel.latitude;
+                    longitude = FlightGlobals.ActiveVessel.longitude;
+                    GetNotes();
+                    if (FlightGlobals.ActiveVessel.situation == Vessel.Situations.LANDED && this.state == ParameterState.Incomplete)
+                    {
+                        latitude = FlightGlobals.ActiveVessel.latitude;
+                        longitude = FlightGlobals.ActiveVessel.longitude;
+                        Landing(FlightGlobals.ActiveVessel);
+                    }
+                    else { }
+                }
+            }
+            else { }
+        }
+
+        public void Landing(Vessel vessel)
+        {
+            if (FlightGlobals.ActiveVessel.orbit.referenceBody.Equals(targetBody))
+            {
+                if (FlightGlobals.ActiveVessel.situation != Vessel.Situations.PRELAUNCH)
+                {
+                    double latMin = SavedLat - MarginOfErrorInDegree;
+                    double latMax = SavedLat + MarginOfErrorInDegree;
+                    double lonMin = SavedLong - MarginOfErrorInDegree;
+                    double lonMax = SavedLong + MarginOfErrorInDegree;
+
+                    if (latitude >= latMin && latitude <= latMax && longitude >= lonMin && longitude <= lonMax)
+                    {
+                        base.SetComplete();
+                    }
+                    else { }
+                }
+                else { }
+            }           
+            else { }
+        }
+
+        private void FlightReady()
+        {
+            base.SetIncomplete();
+        }
+
+        private void VesselChange(Vessel v)
+        {
+            base.SetIncomplete();
+        }
+
+        protected override void OnLoad(ConfigNode node)
+        {
+            Tools.ContractLoadCheck(node, ref targetBody, Planetarium.fetch.Home, targetBody, "targetbody");
+            Tools.ContractLoadCheck(node, ref longitude, 0, longitude, "long");
+            Tools.ContractLoadCheck(node, ref latitude, 0, latitude, "lati");
+            Tools.ContractLoadCheck(node, ref GroundWaypointName, "None", GroundWaypointName, "landingName");
+            Tools.ContractLoadCheck(node, ref SavedLat, 100, SavedLat, "savedLat");
+            Tools.ContractLoadCheck(node, ref SavedLong, 100, SavedLong, "savedLong");
+            Tools.ContractLoadCheck(node, ref RoverName, "Name Not Loaded", RoverName, "roverName");
+
+            if (HighLogic.LoadedSceneIsFlight && this.Root.ContractState == Contract.State.Active)
+            {
+                try
+                {
+                    wp.celestialName = targetBody.theName;
+                    wp.latitude = SavedLat;
+                    wp.longitude = SavedLong;
+                    wp.seed = Root.MissionSeed;
+                    wp.id = "dish";
+                    wp.name = GroundWaypointName;
+                    wp.index = 1;
+                    wp.altitude = 0;
+                    wp.isOnSurface = true;
+                    wp.isNavigatable = true;
+                    FinePrint.WaypointManager.AddWaypoint(wp);
+                    submittedWaypoint = true;
+                }
+                catch (ArgumentOutOfRangeException r)
+                {
+                    Debug.LogError(r.Message + " " + r.Source);
+                }
+                catch (Exception e)
+                {
+                    Debug.LogError(e.Message + " " + e.Source);
+                }
+            }
+            if (HighLogic.LoadedScene == GameScenes.TRACKSTATION)
+            {
+                if (this.Root.ContractState != Contract.State.Completed)
+                {
+                    if (this.Root.ContractState != Contract.State.Cancelled)
+                    {
+                        try
+                        {
+                            wp.celestialName = targetBody.theName;
+                            wp.latitude = SavedLat;
+                            wp.longitude = SavedLong;
+                            wp.seed = Root.MissionSeed;
+                            wp.id = "dish";
+                            wp.name = GroundWaypointName;
+                            wp.index = 1;
+                            wp.altitude = 0;
+                            wp.isOnSurface = true;
+                            wp.isNavigatable = true;
+                            FinePrint.WaypointManager.AddWaypoint(wp);
+                            submittedWaypoint = true;
+                        }
+                        catch (ArgumentOutOfRangeException r)
+                        {
+                            Debug.LogError(r.Message + " " + r.Source);
+                        }
+                        catch (Exception e)
+                        {
+                            Debug.LogError(e.Message + " " + e.Source);
+                        }
+                    }
+                    else { }
+                }
+                else { }
+            }
+            else { }
+
+        }
+        protected override void OnSave(ConfigNode node)
+        {
+            int bodyID = targetBody.flightGlobalsIndex;
+            node.AddValue("targetbody", bodyID);
+            node.AddValue("long", longitude);
+            node.AddValue("lati", latitude);
+            node.AddValue("landingName", GroundWaypointName);
+            node.AddValue("savedLong", SavedLong);
+            node.AddValue("savedLat", SavedLat);
+            node.AddValue("roverName", RoverName);
         }
     }
 }

@@ -379,35 +379,44 @@ namespace MissionControllerEC
             FlightGlobals.ActiveVessel.launchTime = currentTime;
             Debug.Log("New LaunchTime Is: " + Tools.ConvertDays(FlightGlobals.ActiveVessel.launchTime));
         }
-        public void GetContractList()
-        {
-            SaveInfo.KspContractList.Clear();
-            if (ContractSystem.Instance != null)
-            {
-                foreach(Contract c in Contracts.ContractSystem.Instance.Contracts)
-                {
-                    Type ContractType = c.GetType();
-                    if (c.ContractState == Contract.State.Offered || c.ContractState == Contract.State.Active)
-                    {
-                        SaveInfo.KspContractList.Add(new McContractList(ContractType.Name, false));
-                    }
-                    else { }
-                }
+        //public void GetContractList()
+        //{
+        //    SaveInfo.KspContractList.Clear();
+        //    if (ContractSystem.Instance != null)
+        //    {
+        //        foreach(Contract c in Contracts.ContractSystem.Instance.Contracts)
+        //        {
+        //            Type ContractType = c.GetType();
+        //            if (c.ContractState == Contract.State.Offered || c.ContractState == Contract.State.Active)
+        //            {
+        //                SaveInfo.KspContractList.Add(new McContractList(ContractType.Name, false));
+        //            }
+        //            else { }
+        //        }
                 
-            }
-            else
-            {
-                Debug.Log("Contract Instance Not found, list not loading");
-            }
-            if (ContractSystem.Instance != false)
-            {
-                foreach (McContractList t in SaveInfo.KspContractList)
-                {
-                    Debug.LogError("ContractList = " + t.ContractName + t.ContractDisabled);
-                }
-            }
-            else { }
+        //    }
+        //    else
+        //    {
+        //        Debug.Log("Contract Instance Not found, list not loading");
+        //    }
+        //    if (ContractSystem.Instance != false)
+        //    {
+        //        foreach (McContractList t in SaveInfo.KspContractList)
+        //        {
+        //            Debug.LogError("ContractList = " + t.ContractName + t.ContractDisabled);
+        //        }
+        //    }
+        //    else { }
+        //}
+        public void GetLongAndLat(Vessel v)
+        {
+            double longitude;
+            double latitude;
+            longitude = v.longitude;
+            latitude = v.latitude;
+            Debug.LogError("Current longitude is " + longitude + " Current latitude is " + latitude);
         }
+        
     }
    
     public class RepairVesselsList

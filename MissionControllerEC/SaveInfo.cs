@@ -76,6 +76,9 @@ namespace MissionControllerEC
         public static string SatelliteContractType = "none";
         public static float SatelliteContractFrequency = -1;
         public static float SatelliteContractModule = 0;
-        public static List<McContractList> KspContractList = new List<McContractList>() { };
+        public static double SavedRoverLat = 0;
+        public static double savedRoverLong = 0;
+        public static bool RoverLanded = false;
+        public static string RoverName = "Rover Name";
     }   
 }

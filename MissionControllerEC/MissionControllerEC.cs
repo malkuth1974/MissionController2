@@ -260,10 +260,10 @@ namespace MissionControllerEC
             GUI.skin = HighLogic.Skin;
             GUILayout.BeginVertical();
 
-            //if (GUILayout.Button("Test Contract List"))
-            //{
-            //    GetContractList();
-            //}
+            if (GUILayout.Button("Get Long & Lat"))
+            {
+                GetLongAndLat(FlightGlobals.ActiveVessel);
+            }
 
             GUILayout.Label("Current Funds: " + Funding.Instance.Funds);
            
@@ -424,9 +424,6 @@ namespace MissionControllerEC
         [Persistent]public int crewbodyIDX = 0;
         [Persistent]public bool crewcontracton = false;
 
-        [Persistent]public bool apCivilianPod = false;
-        [Persistent]public string apCivilianName = "none";
-
         [Persistent]public bool noOrbitalContract = false;
         [Persistent]public bool noLandingContract = false;
         [Persistent]public bool noSatelliteContract = false;
@@ -450,7 +447,10 @@ namespace MissionControllerEC
 
         [Persistent]internal double apolldunLat = 1;
         [Persistent]internal double apolldunLon = 1;
-        [Persistent]internal List<McContractList> KspContractList = new List<McContractList>() { };
+        [Persistent]internal double savedroverLat = 0;
+        [Persistent]internal double savedroverlong = 0;
+        [Persistent]internal bool roverislanded = false;
+        [Persistent]internal string roversName = "Rover Name";
 
         public override void OnDecodeFromConfigNode()
         {           
@@ -509,8 +509,10 @@ namespace MissionControllerEC
             SaveInfo.NoRepairContracts = noRepairContract;
             SaveInfo.NoOrbitalPeriodcontracts = noOrbitalPeriodContract;
             SaveInfo.all_Historical_Contracts_Off = noHistoricContracts;
-            SaveInfo.KspContractList = KspContractList;           
-
+            SaveInfo.SavedRoverLat = savedroverLat;
+            SaveInfo.savedRoverLong = savedroverlong;
+            SaveInfo.RoverLanded = roverislanded;
+            SaveInfo.RoverName = roversName;                  
         }
 
         public override void OnEncodeToConfigNode()
@@ -569,7 +571,11 @@ namespace MissionControllerEC
             noSatelliteContract = SaveInfo.NoSatelliteContracts;
             noRepairContract = SaveInfo.NoRepairContracts;
             noOrbitalPeriodContract = SaveInfo.NoOrbitalPeriodcontracts;
-            noHistoricContracts = SaveInfo.all_Historical_Contracts_Off;            
+            noHistoricContracts = SaveInfo.all_Historical_Contracts_Off;
+            savedroverLat = SaveInfo.SavedRoverLat;
+            savedroverlong = SaveInfo.savedRoverLong;
+            roverislanded = SaveInfo.RoverLanded;
+            roversName = SaveInfo.RoverName;            
         }
     
 

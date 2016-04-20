@@ -257,8 +257,6 @@ namespace MissionControllerEC.MCEParameters
         private double savedLat = 0;
         private bool hasToBeNewVessel = true;
         private string title = "Land at specific target area";
-        private bool FinePrintWaypoint = false;
-        private FinePrint.Waypoint wp;
 
         public CheckLandingLonAndLat()
         {
@@ -273,18 +271,7 @@ namespace MissionControllerEC.MCEParameters
             this.title = title;
             this.hasToBeNewVessel = vesselHasBeNew;
         }
-        public CheckLandingLonAndLat(CelestialBody target, bool WetDryLanding, double saveLon, double saveLat, string title, bool vesselHasBeNew, bool WaypointTargetShow)
-        {
-            this.targetBody = target;
-            this.AllowLandedWet = WetDryLanding;
-            this.savedLon = saveLon;
-            this.savedLat = saveLat;
-            this.title = title;
-            this.hasToBeNewVessel = vesselHasBeNew;
-            this.FinePrintWaypoint = WaypointTargetShow;
-            wp = new FinePrint.Waypoint();
-        }
-
+        
         protected override string GetHashString()
         {
             return "" + this.Root.MissionSeed.ToString();
@@ -295,12 +282,7 @@ namespace MissionControllerEC.MCEParameters
         }
 
         protected override string GetNotes()
-        {
-            if (FinePrintWaypoint)
-            {
-                return " Land you Rover in the general area marked on the map";
-            }
-            else
+        {           
             return " this value is based off a Longitude and Latitude recorded when Vessel Landed originally";
         }
 
@@ -309,9 +291,8 @@ namespace MissionControllerEC.MCEParameters
         }
 
         protected override void OnUnregister()
-        {            
-            if (FinePrintWaypoint)
-                FinePrint.WaypointManager.RemoveWaypoint(wp);
+        {                       
+               
         }
 
         protected override void OnUpdate()
@@ -399,64 +380,7 @@ namespace MissionControllerEC.MCEParameters
             Tools.ContractLoadCheck(node, ref savedLon, 0, savedLon, "savedlon");
             Tools.ContractLoadCheck(node, ref title, "Land at target area", title, "title");
             Tools.ContractLoadCheck(node, ref hasToBeNewVessel, true, hasToBeNewVessel, "newvessel");
-            //if (HighLogic.LoadedSceneIsFlight && this.Root.ContractState != Contract.State.Completed)
-            //{
-            //    try
-            //    {
-            //        wp.celestialName = targetBody.theName;
-            //        wp.latitude = savedLat;
-            //        wp.longitude = savedLon;
-            //        wp.seed = Root.MissionSeed;
-            //        wp.id = "dish";
-            //        wp.name = "Rover landing Site";
-            //        wp.index = 1;
-            //        wp.altitude = 0;
-            //        wp.isOnSurface = true;
-            //        wp.isNavigatable = true;
-            //        FinePrint.WaypointManager.AddWaypoint(wp);
-            //        FinePrintWaypoint = true;
-            //    }
-            //    catch (ArgumentOutOfRangeException r)
-            //    {
-            //        Debug.LogError(r.Message + " " + r.Source);
-            //    }
-            //    catch (Exception e)
-            //    {
-            //        Debug.LogError(e.Message + " " + e.Source);
-            //    }
-            //}
-            //else { }
-            //if (HighLogic.LoadedScene == GameScenes.TRACKSTATION)
-            //{
-            //    if (this.Root.ContractState != Contract.State.Completed)
-            //    {
-            //        try
-            //        {
-            //            wp.celestialName = targetBody.theName;
-            //            wp.latitude = savedLat;
-            //            wp.longitude = savedLon;
-            //            wp.seed = Root.MissionSeed;
-            //            wp.id = "dish";
-            //            wp.name = "Rover landing Site";
-            //            wp.index = 1;
-            //            wp.altitude = 0;
-            //            wp.isOnSurface = true;
-            //            wp.isNavigatable = true;
-            //            FinePrint.WaypointManager.AddWaypoint(wp);
-            //            FinePrintWaypoint = true;
-            //        }
-            //        catch (ArgumentOutOfRangeException r)
-            //        {
-            //            Debug.LogError(r.Message + " " + r.Source);
-            //        }
-            //        catch (Exception e)
-            //        {
-            //            Debug.LogError(e.Message + " " + e.Source);
-            //        }
-            //    }
-            //    else { }
-            //}
-            //else { }
+           
         }
         protected override void OnSave(ConfigNode node)
         {

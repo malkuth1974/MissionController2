@@ -1215,7 +1215,7 @@ namespace MissionControllerEC.MCEContracts
         private string PartDockingModule = "ModuleDockingNode";
         private string ElectricPowerSource = "ElectricCharge";
         private string SolarPanelsModule = "ModuleDeployableSolarPanel";
-        private string WheelModule = "ModuleWheel";
+        private string WheelModule = "ModuleWheelBase";
         private int ApolloMissionNumber = 1;
 
         private double MinHeight = 250000;

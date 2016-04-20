@@ -29,6 +29,15 @@ namespace MissionControllerEC
             return value;
         }
 
+        public static double GetRandomLongOrLat(double BaseLatitude, int MaxDistance)
+        {
+            double NLatitude = BaseLatitude;
+            int NegMaxDistance = 0 - MaxDistance;
+            BaseLatitude = NLatitude + UnityEngine.Random.Range(MaxDistance, NegMaxDistance);
+            Debug.Log("Base Latitude is: " + NLatitude + "New Value is: " + BaseLatitude);
+            return BaseLatitude;
+        }
+
         public static double ReturnOrbitValues(CelestialBody targetBody,bool RandomChance,float multiplier)
         {
             if (targetBody != null)
@@ -292,7 +301,7 @@ namespace MissionControllerEC
                 public T value;
                 public float weight;
 
-                public static float GetTotalWeight<T>(Item<T>[] p_itens)
+                public static float GetTotalWeight<GT>(Item<GT>[] p_itens)
                 {
                     float __toReturn = 0;
                     foreach (var item in p_itens)
