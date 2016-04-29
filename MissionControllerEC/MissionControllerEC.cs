@@ -35,7 +35,7 @@ namespace MissionControllerEC
         public static Rect EditorWindowPosition;
         public static bool ShowEditorWindow = false;
         public static Vector2 scrollPosition = new Vector2(0, 0);
-
+        
         public static Rect CustomWindowPostion;
         public static bool ShowCustomWindow;
 
@@ -184,7 +184,8 @@ namespace MissionControllerEC
         private string tirosNumber;
         private string marinerNumber;
         private string apolloNumber;
-        
+        private int id = new System.Random().Next(int.MaxValue);
+
         Settings settings = new Settings("Config.cfg");        
 
         public void Awake()
@@ -219,38 +220,32 @@ namespace MissionControllerEC
             
             if (MCE_ScenarioStartup.ShowMainWindow)
             {
-                MCE_ScenarioStartup.MainWindowPosition = GUILayout.Window(971974, MCE_ScenarioStartup.MainWindowPosition, DrawMainWindow, "Maine MCE Window", GUILayout.MaxHeight(600), GUILayout.MaxWidth(400), GUILayout.MinHeight(300), GUILayout.MinWidth(200));
+                MCE_ScenarioStartup.MainWindowPosition = GUILayout.Window(id + 1, MCE_ScenarioStartup.MainWindowPosition, DrawMainWindow, "Maine MCE Window", GUILayout.Height(Screen.height / 3f), GUILayout.Width(Screen.width / 4f));
                 MCE_ScenarioStartup.MainWindowPosition.x = Mathf.Clamp(MCE_ScenarioStartup.MainWindowPosition.x, 0, Screen.width - MCE_ScenarioStartup.MainWindowPosition.width);
                 MCE_ScenarioStartup.MainWindowPosition.y = Mathf.Clamp(MCE_ScenarioStartup.MainWindowPosition.y, 0, Screen.height - MCE_ScenarioStartup.MainWindowPosition.height);
             }
             if (MCE_ScenarioStartup.ShowfinanaceWindow)
             {
-                MCE_ScenarioStartup.FinanceWindowPosition = GUILayout.Window(981974, MCE_ScenarioStartup.FinanceWindowPosition, drawFinanceWind, "MCE Finances", GUILayout.MaxHeight(350), GUILayout.MaxWidth(400), GUILayout.MinHeight(250), GUILayout.MinWidth(390));
+                MCE_ScenarioStartup.FinanceWindowPosition = GUILayout.Window(id + 2, MCE_ScenarioStartup.FinanceWindowPosition, drawFinanceWind, "MCE Finances", GUILayout.Height(Screen.height / 3f), GUILayout.Width(Screen.width / 4f));
                 MCE_ScenarioStartup.FinanceWindowPosition.x = Mathf.Clamp(MCE_ScenarioStartup.FinanceWindowPosition.x, 0, Screen.width - MCE_ScenarioStartup.FinanceWindowPosition.width);
                 MCE_ScenarioStartup.FinanceWindowPosition.y = Mathf.Clamp(MCE_ScenarioStartup.FinanceWindowPosition.y, 0, Screen.height - MCE_ScenarioStartup.FinanceWindowPosition.height);
             }
             if (MCE_ScenarioStartup.ShowCustomWindow)
             {
-                MCE_ScenarioStartup.CustomWindowPostion = GUILayout.Window(1091974, MCE_ScenarioStartup.CustomWindowPostion, drawCustomGUI, "Custom Contracts", GUILayout.MaxHeight(800), GUILayout.MaxWidth(400), GUILayout.MinHeight(250), GUILayout.MinWidth(390));
+                MCE_ScenarioStartup.CustomWindowPostion = GUILayout.Window(id + 3, MCE_ScenarioStartup.CustomWindowPostion, drawCustomGUI, "Custom Contracts", GUILayout.Height(Screen.height / 1.5f), GUILayout.Width(Screen.width / 4f));
                 MCE_ScenarioStartup.CustomWindowPostion.x = Mathf.Clamp(MCE_ScenarioStartup.CustomWindowPostion.x, 0, Screen.width - MCE_ScenarioStartup.CustomWindowPostion.width);
                 MCE_ScenarioStartup.CustomWindowPostion.y = Mathf.Clamp(MCE_ScenarioStartup.CustomWindowPostion.y, 0, Screen.height - MCE_ScenarioStartup.CustomWindowPostion.height);
-            }
-            if (MCE_ScenarioStartup.ShowEditorWindow)
-            {
-                MCE_ScenarioStartup.EditorWindowPosition = GUILayout.Window(1031974, MCE_ScenarioStartup.EditorWindowPosition, drawEditorwindow, "Ship Cost BreakDown", GUILayout.MaxHeight(800), GUILayout.MaxWidth(410), GUILayout.MinHeight(750), GUILayout.MinWidth(410));
-                MCE_ScenarioStartup.EditorWindowPosition.x = Mathf.Clamp(MCE_ScenarioStartup.EditorWindowPosition.x, 0, Screen.width - MCE_ScenarioStartup.EditorWindowPosition.width);
-                MCE_ScenarioStartup.EditorWindowPosition.y = Mathf.Clamp(MCE_ScenarioStartup.EditorWindowPosition.y, 0, Screen.height - MCE_ScenarioStartup.EditorWindowPosition.height);
-            }
+            }            
             
             if (MCE_ScenarioStartup.ShowSettingsWindow)
             {
-                MCE_ScenarioStartup.SettingsWindowPostion = GUILayout.Window(1061974, MCE_ScenarioStartup.SettingsWindowPostion, drawSettings, "MCE Settings", GUILayout.MaxHeight(500), GUILayout.MaxWidth(400), GUILayout.MinHeight(250), GUILayout.MinWidth(400));
+                MCE_ScenarioStartup.SettingsWindowPostion = GUILayout.Window(id + 4, MCE_ScenarioStartup.SettingsWindowPostion, drawSettings, "MCE Settings", GUILayout.Height(Screen.height / 2.2f), GUILayout.Width(Screen.width / 3));
                 MCE_ScenarioStartup.SettingsWindowPostion.x = Mathf.Clamp(MCE_ScenarioStartup.SettingsWindowPostion.x, 0, Screen.width - MCE_ScenarioStartup.SettingsWindowPostion.width);
                 MCE_ScenarioStartup.SettingsWindowPostion.y = Mathf.Clamp(MCE_ScenarioStartup.SettingsWindowPostion.y, 0, Screen.height - MCE_ScenarioStartup.SettingsWindowPostion.height);
             }
             if (MCE_ScenarioStartup.ShowPopUpWindow3)
             {
-                MCE_ScenarioStartup.PopUpWindowPosition3 = GUILayout.Window(1011974, new Rect(Screen.width / 2 - 200, Screen.height / 2 - 100, 450, 150), drawPopUpWindow3, "MCE Information Window");
+                MCE_ScenarioStartup.PopUpWindowPosition3 = GUILayout.Window(id + 5, new Rect(Screen.width / 2 - 200, Screen.height / 2 - 100, 450, 150), drawPopUpWindow3, "MCE Information Window");
             }
             //Debug.Log("MCE GUI Loaded");
         }
@@ -260,9 +255,9 @@ namespace MissionControllerEC
             GUI.skin = HighLogic.Skin;
             GUILayout.BeginVertical();
 
-            if (GUILayout.Button("Get Long & Lat"))
+            if (GUILayout.Button("Contract Finsihed List"))
             {
-                GetLongAndLat(FlightGlobals.ActiveVessel);
+                GetContractList();
             }
 
             GUILayout.Label("Current Funds: " + Funding.Instance.Funds);
@@ -451,6 +446,7 @@ namespace MissionControllerEC
         [Persistent]internal double savedroverlong = 0;
         [Persistent]internal bool roverislanded = false;
         [Persistent]internal string roversName = "Rover Name";
+        [Persistent]internal int roverBody = 6;
 
         public override void OnDecodeFromConfigNode()
         {           
@@ -512,7 +508,8 @@ namespace MissionControllerEC
             SaveInfo.SavedRoverLat = savedroverLat;
             SaveInfo.savedRoverLong = savedroverlong;
             SaveInfo.RoverLanded = roverislanded;
-            SaveInfo.RoverName = roversName;                  
+            SaveInfo.RoverName = roversName;
+            SaveInfo.RoverBody = roverBody;                
         }
 
         public override void OnEncodeToConfigNode()
@@ -575,7 +572,8 @@ namespace MissionControllerEC
             savedroverLat = SaveInfo.SavedRoverLat;
             savedroverlong = SaveInfo.savedRoverLong;
             roverislanded = SaveInfo.RoverLanded;
-            roversName = SaveInfo.RoverName;            
+            roversName = SaveInfo.RoverName;
+            roverBody = SaveInfo.RoverBody;            
         }
     
 

@@ -183,7 +183,7 @@ namespace MissionControllerEC.MCEParameters
             {
                 try
                 {
-                    wp.celestialName = targetBody.theName;
+                    wp.celestialName = targetBody.name;
                     wp.latitude = latitude;
                     wp.longitude = longitude;
                     wp.seed = Root.MissionSeed;
@@ -213,7 +213,7 @@ namespace MissionControllerEC.MCEParameters
                     {
                         try
                         {
-                            wp.celestialName = targetBody.theName;
+                            wp.celestialName = targetBody.name;
                             wp.latitude = latitude;
                             wp.longitude = longitude;
                             wp.seed = Root.MissionSeed;
@@ -403,7 +403,7 @@ namespace MissionControllerEC.MCEParameters
             {
                 try
                 {
-                    wp.celestialName = targetBody.theName;
+                    wp.celestialName = targetBody.name;
                     wp.latitude = SavedLat;
                     wp.longitude = SavedLong;
                     wp.seed = Root.MissionSeed;
@@ -433,7 +433,7 @@ namespace MissionControllerEC.MCEParameters
                     {
                         try
                         {
-                            wp.celestialName = targetBody.theName;
+                            wp.celestialName = targetBody.name;
                             wp.latitude = SavedLat;
                             wp.longitude = SavedLong;
                             wp.seed = Root.MissionSeed;
@@ -607,7 +607,7 @@ namespace MissionControllerEC.MCEParameters
             {
                 try
                 {
-                    wp.celestialName = targetBody.theName;
+                    wp.celestialName = targetBody.name;
                     wp.latitude = SavedLat;
                     wp.longitude = SavedLong;
                     wp.seed = Root.MissionSeed;
@@ -637,7 +637,7 @@ namespace MissionControllerEC.MCEParameters
                     {
                         try
                         {
-                            wp.celestialName = targetBody.theName;
+                            wp.celestialName = targetBody.name;
                             wp.latitude = SavedLat;
                             wp.longitude = SavedLong;
                             wp.seed = Root.MissionSeed;

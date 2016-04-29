@@ -4,6 +4,8 @@ using Contracts;
 using Contracts.Parameters;
 using KSP.UI.Screens;
 using MissionControllerEC.MCEParameters;
+using System;
+
 
 namespace MissionControllerEC.MCEContracts
 {
@@ -449,13 +451,7 @@ namespace MissionControllerEC.MCEContracts
                     "orientation.\n\n" +
                     "Description: The spacecraft was 42 inches in diameter, 19 inches high and weighed 270 pounds. The craft was made of aluminum alloy and stainless steel which was then covered by 9200 solar cells." +
                     "The solar cells served to charge the on-board batteries. Three pairs of solid-propellant spin rockets were mounted on the base plate.";
-                    tirosCompleteMessage = "Good Job you have finsished this contract\n\n" +
-                    "TIROS-1 STATS:\n" +
-                    "Launch Date:    April 1, 1960\n" +
-                    "Operational Period: 78 days\n" +
-                    "Launch Vehicle:    Standard Thor-Able\n" +
-                    "Launch Site:    Cape Canaveral, FL\n" +
-                    "Type:    Weather Satellite";
+                    tirosCompleteMessage = "Good Job you have finsished this contract\n\n";                  
                     break;
                 case 2:
                     tirosNotes ="Launch Tiros/NOOA with batteries and solar panels to a Kebin Polar Orbit";
@@ -483,7 +479,7 @@ namespace MissionControllerEC.MCEContracts
                     "Launch Vehicle:    Three-Stage Delta\n" +
                     "Launch Site:    Cape Canaveral, FL\n" +
                     "Type:   Weather Satellite";
-                    break;;
+                    break;
                 case 3:
                     tirosNotes ="Launch Tiros with new technology batteries and solar panels to keep satellite in orbit longer";
                     tirosHash ="Tiros/NOOA - N";
@@ -509,7 +505,7 @@ namespace MissionControllerEC.MCEContracts
                     "Launch Vehicle:   Atlas E/F\n" +
                     "Launch Site:    Vandenberg Air Force Base, CA\n" +
                     "Type:   Weather Satellite";
-                    break;;
+                    break;
             }
         }
 
@@ -614,40 +610,53 @@ namespace MissionControllerEC.MCEContracts
         protected override string MessageCompleted()
         {
             SaveInfo.tirosCurrentNumber++;
-            return tirosCompleteMessage;
+            return "Good job launching the tiros vessel";
         }
 
         protected override void OnLoad(ConfigNode node)       
         {
-            Tools.ContractLoadCheck(node, ref tirosNotes, "Notes Did Not Load", tirosNotes, "tnotes");
-            Tools.ContractLoadCheck(node, ref tirosHash, "Hash Message Did Not Load", tirosHash, "thash");
-            Tools.ContractLoadCheck(node, ref tirostitle, "Title did not load", tirostitle, "ttitle");
-            Tools.ContractLoadCheck(node, ref tirosDescription, "Descripition Did Not Load", tirosDescription, "tdescript");
-            Tools.ContractLoadCheck(node, ref tirosSynops, "synops Did Not Load", tirosSynops, "tsynop");
-            Tools.ContractLoadCheck(node, ref tirosCompleteMessage, "Message Complete Did Not Load", tirosCompleteMessage,"tmessagecomplete");
-            Tools.ContractLoadCheck(node, ref targetBody, Planetarium.fetch.Home, targetBody, "targetBody");
-            Tools.ContractLoadCheck(node, ref inclination, 180, inclination, "inclination");
-            Tools.ContractLoadCheck(node, ref Eccentricity, .01, Eccentricity, "eccentricity");
-            Tools.ContractLoadCheck(node, ref AmountDaysActive, 5, AmountDaysActive, "amountdays");
-            Tools.ContractLoadCheck(node, ref contractMult, 1.0f, contractMult, "mult");
-            Tools.ContractLoadCheck(node, ref TirosTitleMissionNumber, SaveInfo.tirosCurrentNumber, TirosTitleMissionNumber, "number");
+            try {
+                Tools.ContractLoadCheck(node, ref tirosNotes, "Notes Did Not Load", tirosNotes, "tnotes");
+                Tools.ContractLoadCheck(node, ref tirosHash, "Hash Message Did Not Load", tirosHash, "thash");
+                Tools.ContractLoadCheck(node, ref tirostitle, "Title did not load", tirostitle, "ttitle");
+                Tools.ContractLoadCheck(node, ref tirosDescription, "Descripition Did Not Load", tirosDescription, "tdescript");
+                Tools.ContractLoadCheck(node, ref tirosSynops, "synops Did Not Load", tirosSynops, "tsynop");
+                Tools.ContractLoadCheck(node, ref targetBody, Planetarium.fetch.Home, targetBody, "targetBody");
+                Tools.ContractLoadCheck(node, ref inclination, 180, inclination, "inclination");
+                Tools.ContractLoadCheck(node, ref Eccentricity, .01, Eccentricity, "eccentricity");
+                Tools.ContractLoadCheck(node, ref AmountDaysActive, 5, AmountDaysActive, "amountdays");
+                Tools.ContractLoadCheck(node, ref contractMult, 1.0f, contractMult, "mult");
+                Tools.ContractLoadCheck(node, ref minHeight, 140000, minHeight, "minheight");
+                Tools.ContractLoadCheck(node, ref TirosTitleMissionNumber, SaveInfo.tirosCurrentNumber, TirosTitleMissionNumber, "number");
+            }
+            catch(Exception ex)
+            {
+                Debug.LogError("OnLoad " + ex.Message);
+                Debug.LogError("OnLoad " + ex.StackTrace);
+            }
         }
         protected override void OnSave(ConfigNode node)
         {
-            int bodyID = targetBody.flightGlobalsIndex;
-            node.AddValue("targetBody", bodyID);
-            node.AddValue("tnotes", tirosNotes);
-            node.AddValue("thash", tirosHash);
-            node.AddValue("ttitle", tirostitle);
-            node.AddValue("tdescript", tirosDescription);
-            node.AddValue("tsynop", tirosSynops);
-            node.AddValue("tmessagecompete", tirosCompleteMessage);
-            node.AddValue("minheight", minHeight);
-            node.AddValue("inclination", inclination);
-            node.AddValue("eccentricity", Eccentricity);
-            node.AddValue("amountdays", AmountDaysActive);
-            node.AddValue("mult", contractMult);
-            node.AddValue("number", TirosTitleMissionNumber);
+            try {
+                int bodyID = targetBody.flightGlobalsIndex;
+                node.AddValue("targetBody", bodyID);
+                node.AddValue("tnotes", tirosNotes);
+                node.AddValue("thash", tirosHash);
+                node.AddValue("ttitle", tirostitle);
+                node.AddValue("tdescript", tirosDescription);
+                node.AddValue("tsynop", tirosSynops);
+                node.AddValue("minheight", minHeight);
+                node.AddValue("inclination", inclination);
+                node.AddValue("eccentricity", Eccentricity);
+                node.AddValue("amountdays", AmountDaysActive);
+                node.AddValue("mult", contractMult);
+                node.AddValue("number", TirosTitleMissionNumber);
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError("OnSave " + ex.Message);
+                Debug.LogError("OnSave " + ex.StackTrace);
+            }
         }
 
         public override bool MeetRequirements()
@@ -881,7 +890,7 @@ namespace MissionControllerEC.MCEContracts
         protected override string MessageCompleted()
         {
             SaveInfo.marinerCurrentNumber++;
-            return marinerCompleteMessage;
+            return "Good job finishing the Mariner Mission";
         }
 
         protected override void OnLoad(ConfigNode node)
@@ -2816,7 +2825,7 @@ namespace MissionControllerEC.MCEContracts
         string vesselId = "none";
         string vesselName = "none";
         public double ApA = 120000;
-        public double PeA = 120000;
+        public double PeA = 100000;
 
         CelestialBody targetBody = Planetarium.fetch.Home;
 
@@ -2857,10 +2866,10 @@ namespace MissionControllerEC.MCEContracts
             skylab2.SetReputation(3, targetBody);
             skylab2.SetScience(5, targetBody);
 
-            skylab6 = this.AddParameter(new ApAOrbitGoal(targetBody, (double)ApA, true, "Orbit"), null);
+            skylab6 = this.AddParameter(new ApAOrbitGoal(targetBody, (double)ApA, true, "Orbit",false), null);
             skylab6.SetFunds(1000, targetBody);
 
-            skylab7 = this.AddParameter(new PeAOrbitGoal(targetBody, (double)PeA, true, "Orbit"), null);
+            skylab7 = this.AddParameter(new PeAOrbitGoal(targetBody, (double)PeA, true, "Orbit",false), null);
             skylab7.SetFunds(1000, targetBody);
 
             this.skylab4 = this.AddParameter(new TimeCountdownDocking(targetBody, contractTime, contTimeTitle, vesselId, vesselName), null);

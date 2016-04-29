@@ -629,7 +629,6 @@ namespace MissionControllerEC.MCEParameters
                 GameEvents.onVesselChange.Add(vesselChange);
                 updated = true;
             }
-            else { }
         }
 
         protected override void OnUnregister()
@@ -639,7 +638,6 @@ namespace MissionControllerEC.MCEParameters
                 GameEvents.onFlightReady.Remove(flightReady);
                 GameEvents.onVesselChange.Remove(vesselChange);
             }
-            else { }
         }
 
         protected override void OnUpdate()
@@ -648,7 +646,6 @@ namespace MissionControllerEC.MCEParameters
             {
                 CheckIflanded(FlightGlobals.ActiveVessel);
             }
-            else { }
         }
         protected override void OnLoad(ConfigNode node)
         {           

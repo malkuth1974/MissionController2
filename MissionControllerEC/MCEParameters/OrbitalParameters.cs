@@ -18,6 +18,7 @@ namespace MissionControllerEC.MCEParameters
         private bool updated = false;
         private bool LockOut = false;
         private string OrbitType = "Orbit";
+        private bool HasBeNewVessel = true;
 
         public ApAOrbitGoal()
         {
@@ -37,6 +38,14 @@ namespace MissionControllerEC.MCEParameters
             this.ApA = maxapA;
             this.LockOut = lockout;
             this.OrbitType = typeOfOrbit;
+        }
+        public ApAOrbitGoal(CelestialBody target, double maxapA, bool lockout, string typeOfOrbit,bool HasBeNewVessel)
+        {
+            this.targetBody = target;
+            this.ApA = maxapA;
+            this.LockOut = lockout;
+            this.OrbitType = typeOfOrbit;
+            this.HasBeNewVessel = HasBeNewVessel;
         }
         protected override string GetHashString()
         {
@@ -92,6 +101,7 @@ namespace MissionControllerEC.MCEParameters
             Tools.ContractLoadCheck(node, ref ApA, 71000, ApA , "aPa");           
             Tools.ContractLoadCheck(node, ref LockOut, true, LockOut, "lockout");
             Tools.ContractLoadCheck(node,ref OrbitType,"Orbit",OrbitType,"typeorbit");
+            Tools.ContractLoadCheck(node, ref HasBeNewVessel, false, HasBeNewVessel, "HasToBeNewVessel");
 
         }
         protected override void OnSave(ConfigNode node)
@@ -102,11 +112,12 @@ namespace MissionControllerEC.MCEParameters
             node.AddValue("aPa", ApAID);           
             node.AddValue("lockout", LockOut);
             node.AddValue("typeorbit", OrbitType);
+            node.AddValue("HasToBeNewVessel", HasBeNewVessel);
         }
 
         public void Orbits(Vessel vessel)
         {
-            if (vessel.launchTime > this.Root.DateAccepted)
+            if (vessel.launchTime > this.Root.DateAccepted || HasBeNewVessel == false)
             {
                 if (vessel.isActiveVessel && FlightGlobals.ActiveVessel.orbit.referenceBody.Equals(targetBody))
                 {
@@ -121,7 +132,7 @@ namespace MissionControllerEC.MCEParameters
         }
         public void OffOrbits(Vessel vessel)
         {
-            if (vessel.launchTime > this.Root.DateAccepted)
+            if (vessel.launchTime > this.Root.DateAccepted || HasBeNewVessel == false)
             {
                 if (vessel.isActiveVessel && FlightGlobals.ActiveVessel.orbit.referenceBody.Equals(targetBody))
                 {
@@ -344,6 +355,7 @@ namespace MissionControllerEC.MCEParameters
         private bool updated = false;
         private bool lockOut = false;
         private string orbitType = "Orbit";
+        private bool HasToBeNewVessel = true;
 
         public PeAOrbitGoal()
         {
@@ -363,6 +375,14 @@ namespace MissionControllerEC.MCEParameters
             this.PeA = maxpeA;
             this.lockOut = lockout;
             this.orbitType = typeOrbit;
+        }
+        public PeAOrbitGoal(CelestialBody target, double maxpeA, bool lockout, string typeOrbit,bool HasToBeNewVessel)
+        {
+            this.targetBody = target;
+            this.PeA = maxpeA;
+            this.lockOut = lockout;
+            this.orbitType = typeOrbit;
+            this.HasToBeNewVessel = HasToBeNewVessel;
         }
 
         protected override string GetHashString()
@@ -427,6 +447,7 @@ namespace MissionControllerEC.MCEParameters
             Tools.ContractLoadCheck(node, ref PeA, 71000, PeA, "pea");
             Tools.ContractLoadCheck(node, ref lockOut, true, lockOut, "lockout");
             Tools.ContractLoadCheck(node, ref orbitType, "orbit", orbitType, "orbittype");
+            Tools.ContractLoadCheck(node, ref HasToBeNewVessel, false, HasToBeNewVessel, "HasToBeNewVessel");
 
         }
         protected override void OnSave(ConfigNode node)
@@ -436,11 +457,12 @@ namespace MissionControllerEC.MCEParameters
             node.AddValue("pea", PeA);
             node.AddValue("lockout", lockOut);
             node.AddValue("orbittype", orbitType);
+            node.AddValue("HasToBeNewVessel", HasToBeNewVessel);
         }
 
         public void Orbits(Vessel vessel)
         {
-            if (vessel.launchTime > this.Root.DateAccepted)
+            if (vessel.launchTime > this.Root.DateAccepted || HasToBeNewVessel == false)
             {
                 if (vessel.isActiveVessel)
                 {
@@ -455,7 +477,7 @@ namespace MissionControllerEC.MCEParameters
         }
         public void OffOrbits(Vessel vessel)
         {
-            if (vessel.launchTime > this.Root.DateAccepted)
+            if (vessel.launchTime > this.Root.DateAccepted || HasToBeNewVessel == false)
             {
                 if (vessel.isActiveVessel)
                 {

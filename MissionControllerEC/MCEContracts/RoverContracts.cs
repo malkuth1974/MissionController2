@@ -20,7 +20,24 @@ namespace MissionControllerEC.MCEContracts
         private string WheelModule = "ModuleWheelBase";
         CelestialBody targetBody;
 
-
+        public void roverBodyNum(int bodyNum)
+        {
+            switch(bodyNum)
+            {
+                case 1:
+                    targetBody = FlightGlobals.Bodies[2];
+                    break;
+                case 2:
+                    targetBody = FlightGlobals.Bodies[6];
+                    break;
+                case 3:
+                    targetBody = FlightGlobals.Bodies[7];
+                    break;
+                default:
+                    targetBody = FlightGlobals.Bodies[6];
+                    break;
+            }
+        }
 
         protected override bool Generate()
         {
@@ -32,13 +49,14 @@ namespace MissionControllerEC.MCEContracts
             {
                 return false;
             }
-            targetBody = FlightGlobals.Bodies[6];
+            roverBodyNum(Tools.RandomNumber(1, 3));
+            
             if (targetBody == null)
             {
                 return false;
             }
-            RcLatitude = Tools.GetRandomLongOrLat(SaveInfo.SavedRoverLat, 180);
-            RcLongitude = Tools.GetRandomLongOrLat(SaveInfo.savedRoverLong, 180);
+            RcLatitude = Tools.GetRandomLongOrLat(0, 180);
+            RcLongitude = Tools.GetRandomLongOrLat(0, 180);
             if (RcLatitude == 0 || RcLongitude == 0)
             {
                 return false;
@@ -89,6 +107,9 @@ namespace MissionControllerEC.MCEContracts
         {
             SaveInfo.RoverLanded = true;
             SaveInfo.RoverName = FlightGlobals.ActiveVessel.vesselName.Replace("(unloaded)", "");
+            SaveInfo.SavedRoverLat = RcLatitude;
+            SaveInfo.savedRoverLong = RcLongitude;
+            SaveInfo.RoverBody = targetBody.flightGlobalsIndex;
             return "Good job landing on, we will be sending you some more information.  Our scientist on the ground have found a few spots we want you to check out with rover, please check mission control." + targetBody.theName;
         }
 
@@ -138,7 +159,7 @@ namespace MissionControllerEC.MCEContracts
             {
                 return false;
             }
-            targetBody = FlightGlobals.Bodies[6];
+            targetBody = FlightGlobals.Bodies[SaveInfo.RoverBody];
             if (targetBody == null)
             {
                 return false;
@@ -196,6 +217,16 @@ namespace MissionControllerEC.MCEContracts
         {
             SaveInfo.RoverLanded = false;
             return "Good job driving to the waypoint, we will be sending you some more information. If we find any more point of interest to explore we will send you more information via the contracts system.";
+        }
+        protected override string MessageCancelled()
+        {
+            SaveInfo.RoverLanded = false;
+            return "Rover Contract has been cancled resseting Rover Contracts";
+        }
+        protected override string MessageFailed()
+        {
+            SaveInfo.RoverLanded = false;
+            return "You failed the rover drive contracts, we are pulling out all support of this mission.  Resseting contracts";
         }
 
         protected override void OnLoad(ConfigNode node)

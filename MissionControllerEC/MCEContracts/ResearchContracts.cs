@@ -179,7 +179,7 @@ namespace MissionControllerEC.MCEContracts
         int crewCount = 0;
         string partName = "Mass Spectrometry Tube";
         int partNumber = 1;
-        double amountTime = Tools.RandomNumber(200, 1500);
+        double amountTime = 5000;
         public int totalContracts;
         public int TotalFinished;
         ContractParameter landerscan1;
@@ -188,12 +188,7 @@ namespace MissionControllerEC.MCEContracts
 
         protected override bool Generate()
         {            
-            if (HighLogic.LoadedSceneIsFlight) { return false; }
-            targetBody = GetUnreachedTargets();
-            if (targetBody == null)
-            {
-                return false;
-            }            
+            if (HighLogic.LoadedSceneIsFlight) { return false; }                  
             if (SaveInfo.NoLanderResearchContracts == true)
             {
                 Debug.LogWarning("Lander Research Contracts random set to false No contract generated.");
@@ -205,7 +200,13 @@ namespace MissionControllerEC.MCEContracts
             {
                 Debug.LogWarning("Lander Research Already Generated, only 1 contract at time please.");
                 return false;
-            }            
+            }
+            amountTime = Tools.RandomNumber(200, 1500);
+            targetBody = GetUnreachedTargets();
+            if (targetBody == null)
+            {
+                return false;
+            }
             this.landerscan1 = this.AddParameter(new InOrbitGoal(targetBody), null);
             landerscan1.SetFunds(8000, targetBody);
             landerscan1.SetReputation(4, targetBody);

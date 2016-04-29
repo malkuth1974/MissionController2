@@ -80,5 +80,6 @@ namespace MissionControllerEC
         public static double savedRoverLong = 0;
         public static bool RoverLanded = false;
         public static string RoverName = "Rover Name";
+        public static int RoverBody = 6;
     }   
 }
