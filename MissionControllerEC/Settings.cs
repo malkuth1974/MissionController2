@@ -23,7 +23,6 @@ namespace MissionControllerEC
         [Persistent]internal bool No_Fineprint_ISRU_Contracts = false;
         [Persistent]internal bool No_Fineprint_Tourism_Contracts = false;
         [Persistent]internal bool No_GrandTour_Contracts = false;
-        [Persistent]internal bool No_Explore_Body = false;
         [Persistent]internal bool DebugMenu = false;
         [Persistent]internal double Satellite_Contract_Per_Cycle = 2;
         [Persistent]internal double Science_Contract_Per_Cycle = 1;      

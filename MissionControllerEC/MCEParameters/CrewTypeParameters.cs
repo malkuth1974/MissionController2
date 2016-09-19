@@ -114,11 +114,11 @@ namespace MissionControllerEC.MCEParameters
         }
         protected override string GetHashString()
         {
-            return "Amount crew " + seatCount;
+            return "Amount crew " + this.Root.MissionSeed;
         }
         protected override string GetTitle()
         {
-            return title + "Must Have This Many Seats: " + seatCount + this.Root.MissionSeed.ToString();
+            return title + "Must Have This Many Seats: " + seatCount;
         }
 
         protected override void OnRegister()
@@ -200,7 +200,7 @@ namespace MissionControllerEC.MCEParameters
         protected override string GetHashString()
         {
             if (crewCount > 0)
-                return "Amount crew " + crewCount + this.Root.MissionSeed.ToString();
+                return "Amount crew " + this.Root.MissionSeed.ToString();
             else
                 return "Vessel is automated: (nocrew)" + this.Root.MissionSeed.ToString();
         }

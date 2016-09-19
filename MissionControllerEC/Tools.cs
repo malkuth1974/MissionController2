@@ -189,18 +189,22 @@ namespace MissionControllerEC
                 "Current eccentricity is: " + FlightGlobals.ActiveVessel.orbit.eccentricity.ToString("F2") +"\n" +
             "Current Biome Is: " + FlightGlobals.ActiveVessel.mainBody.BiomeMap.GetAtt(FlightGlobals.ActiveVessel.latitude * Math.PI / 180d, FlightGlobals.ActiveVessel.longitude * Math.PI / 180d), .001f);
         }
+        public static void GroundStationRangeHelper(Vessel v,string GstationName,bool inRangeTF)
+        {           
+            ScreenMessages.PostScreenMessage("Ground Station " + GstationName + "In range? " +inRangeTF , .001f);
+        }
 
         public static void ContractLoadCheck<t>(ConfigNode node, ref t value, t backupDefault, string valueName, string savedFile)
         {
             try
             {
                 string i;
-                i = node.GetValue(savedFile);
+                i = string.Format(node.GetValue(savedFile));
                 value = (t)(object)i;
             }
             catch (Exception ex)
             {
-                Debug.LogWarning("MCE Exeption failed to load contract saved value " + valueName + " " + savedFile + "Backup Loaded: " + backupDefault + " Node Name: " + node);
+                Debug.LogWarning("MCE Exeption failed to load contract saved value for strings " + valueName + " " + savedFile + "Backup Loaded: " + backupDefault + " Node Name: " + node.name);
                 Debug.LogWarning(ex.Message + " " + ex.StackTrace);
                 value = backupDefault;
 
@@ -216,7 +220,7 @@ namespace MissionControllerEC
             }
             catch (Exception ex)
             {
-                Debug.LogWarning("MCE Exeption failed to load contract saved value " + valueName + " " + savedFile + "Backup Loaded");
+                Debug.LogWarning("MCE Exeption failed to load contract saved value for floats " + valueName + " " + savedFile + "Backup Loaded " + backupDefault + " Node Name: " + node.name);
                 Debug.LogWarning(ex.Message + " " + ex.StackTrace);
                 value = backupDefault;
 
@@ -232,7 +236,7 @@ namespace MissionControllerEC
             }
             catch (Exception ex)
             {
-                Debug.LogWarning("MCE Exeption failed to load contract saved value " + valueName + " " + savedFile + "Backup Loaded");
+                Debug.LogWarning("MCE Exeption failed to load contract saved value for intergers " + valueName + " " + savedFile + "Backup Loaded " + backupDefault + " Node Name: " + node.name);
                 Debug.LogWarning(ex.Message + " " + ex.StackTrace);
                 value = backupDefault;
             }
@@ -247,7 +251,7 @@ namespace MissionControllerEC
             }
             catch (Exception ex)
             {
-                Debug.LogWarning("MCE Exeption failed to load contract saved value " + valueName + " " + savedFile + "Backup Loaded");
+                Debug.LogWarning("MCE Exeption failed to load contract saved value for doubles " + valueName + " " + savedFile + "Backup Loaded " + backupDefault + " Node Name: " + node.name);
                 Debug.LogWarning(ex.Message + " " + ex.StackTrace);
                 value = backupDefault;
             }
@@ -262,7 +266,7 @@ namespace MissionControllerEC
             }
             catch (Exception ex)
             {
-                Debug.LogWarning("MCE Exeption failed to load contract saved value " + valueName + " " + savedFile + "Backup Loaded");
+                Debug.LogWarning("MCE Exeption failed to load contract saved value for Bools " + valueName + " " + savedFile + " Backup Loaded " + backupDefault + " Node Name: " + node.name);
                 Debug.LogWarning(ex.Message + " " + ex.StackTrace);
                 value = backupDefault;
             }
@@ -276,7 +280,7 @@ namespace MissionControllerEC
                 cb = FlightGlobals.Bodies[bodyID];
                 if (cb == null)
                     {
-                        Debug.LogError("Celestrial Body is null from Node Load have to load Backup Value");
+                        Debug.LogError("Celestrial Body is null from Node Load have to load Backup Value " + backupDefault);
                         value = backupDefault;
                     }
                     else
@@ -285,9 +289,9 @@ namespace MissionControllerEC
             }
             catch (Exception ex)
             {
-                Debug.LogWarning("MCE Exeption failed to load contract saved value " + savedFile + "Backup Loaded");
-                Debug.LogWarning("MCE CelestrialBody Failed Load");
-                Debug.LogWarning(ex.Message + " " + ex.StackTrace);
+                Debug.LogWarning("MCE Exeption failed to load contract saved value For Celestrail Bodies " + savedFile + " Backup Loaded " + backupDefault + " Node Name: " + node.id);
+                Debug.LogWarning("MCE CelestrialBody Failed Load " + valueName);
+                Debug.LogWarning(ex.Source + " " + ex.TargetSite);
                 value = backupDefault;
                 Debug.LogWarning("MCE Set value to default of " + backupDefault);
 

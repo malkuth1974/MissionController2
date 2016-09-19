@@ -51,23 +51,15 @@ namespace MissionControllerEC.PartModules
         {
             if (!dataLocked && FlightGlobals.ActiveVessel.situation == Vessel.Situations.ORBITING)
             {
-                if (MCEParameters.satelliteCoreCheck.APReady && MCEParameters.satelliteCoreCheck.PEReady)
+                ScreenMessages.PostScreenMessage("Sending Data Package, This Part core is now disabled and can't be used again");
+                Debug.Log("current sattype is: " + satTypeDisplay + " Current frequency is: " + frequencyDisplay + " Current module type is: " + moduleName);
+                dataStartup();
+                if (haveAnimation)
                 {
-                    ScreenMessages.PostScreenMessage("Sending Data Package, This Part core is now disabled and can't be used again");
-                    Debug.Log("current sattype is: " + satTypeDisplay + " Current frequency is: " + frequencyDisplay + " Current module type is: " + moduleName);
-                    dataStartup();
-                    if (haveAnimation)
-                    {
-                        PlaySatelliteCoreAnimation(1, 0);
-                        PlaySatelliteCoreAnimation(-1, 1);
-                       
-                    }
-                }
-                else
-                {
-                    ScreenMessages.PostScreenMessage("You have not yet reached your orbital goal to Send this data package yet.  Please Reach correct APA and PEA");
-                }
-               
+                    PlaySatelliteCoreAnimation(1, 0);
+                    PlaySatelliteCoreAnimation(-1, 1);
+
+                }              
             }
             else if (dataLocked)
             {

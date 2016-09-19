@@ -255,9 +255,22 @@ namespace MissionControllerEC
             GUI.skin = HighLogic.Skin;
             GUILayout.BeginVertical();
 
-            if (GUILayout.Button("Contract Finsihed List"))
+            //if (GUILayout.Button("Contract Finsihed List"))
+            //{
+            //    GetContractList();
+            //}
+
+            if (GUILayout.Button("reource info IDs"))
             {
-                GetContractList();
+                int partidtest = FlightGlobals.ActiveVessel.resourcePartSet.setId;
+                double maxamount;
+                double currentamount;
+                foreach (Part p in FlightGlobals.ActiveVessel.parts)
+                {                    
+                    FlightGlobals.ActiveVessel.resourcePartSet.GetConnectedResourceTotals(partidtest,out currentamount, out maxamount,true);
+                    Debug.LogWarning("CurrentID " + partidtest + "Max Amount Resource " + maxamount.ToString() + "Current Amount Resource " + currentamount.ToString());
+                    partidtest ++;
+                }
             }
 
             GUILayout.Label("Current Funds: " + Funding.Instance.Funds);

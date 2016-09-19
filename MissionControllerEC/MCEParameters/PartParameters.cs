@@ -282,8 +282,8 @@ namespace MissionControllerEC.MCEParameters
         private float Moduletype = 1;
         private CelestialBody targetBody;
         public static bool SatelliteCalled = false;
-        public static bool APReady = false;
-        public static bool PEReady = false;
+        public static bool APReady = true;
+        public static bool PEReady = true;
 
         //Should not have to Save Or Load these Below Values, since they are changed on spot by MCECommunicationsCore rather not use static but for now they work.
         public static string testSatType = "test";

@@ -1542,10 +1542,10 @@ namespace MissionControllerEC.MCEContracts
     }
     public class ApolloDunaProgram : Contract
     {
-        CelestialBody targetBody = FlightGlobals.Bodies[2];
-        CelestialBody targetBody2 = FlightGlobals.Bodies[1];
-        CelestialBody targetBody3 = FlightGlobals.Bodies[6];
-        CelestialBody targetBody4 = FlightGlobals.Bodies[5];
+        CelestialBody targetBody;
+        CelestialBody targetBody2;
+        CelestialBody targetBody3;
+        CelestialBody targetBody4;
         private string ApolloDunaBiome = "Farside Crater";       
         private int ApolloDunaMissionNumber = 1;        
         private int crewCount = 3;
@@ -1703,6 +1703,10 @@ namespace MissionControllerEC.MCEContracts
             if (SaveInfo.Duna_NonHistorical_Contracts_Off == true) { return false; }
             ApolloDunaMissionNumber = SaveInfo.apolloDunaCurrentNumber;
             apdMessageSelection();
+            targetBody = FlightGlobals.Bodies[2];
+            targetBody2 = FlightGlobals.Bodies[1];
+            targetBody3 = FlightGlobals.Bodies[6];
+            targetBody4 = FlightGlobals.Bodies[5];
             if (ApolloDunaMissionNumber == 9)
             {
                 this.AddParameter(new InOrbitGoal(targetBody4), null);
@@ -1869,7 +1873,7 @@ namespace MissionControllerEC.MCEContracts
             Tools.ContractLoadCheck(node, ref targetBody, FlightGlobals.Bodies[2], targetBody, "targetBody");
             Tools.ContractLoadCheck(node, ref targetBody2, FlightGlobals.Bodies[1], targetBody2, "targetBody2");
             Tools.ContractLoadCheck(node, ref targetBody3, FlightGlobals.Bodies[3], targetBody3, "targetBody3");
-            Tools.ContractLoadCheck(node, ref targetBody4, FlightGlobals.Bodies[4], targetBody4, "targetbody4");
+            Tools.ContractLoadCheck(node, ref targetBody4, FlightGlobals.Bodies[5], targetBody4, "targetbody4");
             Tools.ContractLoadCheck(node, ref ApolloDunaBiome, "None", ApolloDunaBiome, "apbiome");            
             Tools.ContractLoadCheck(node, ref ApolloDunaMissionNumber, SaveInfo.apolloCurrentNumber, ApolloDunaMissionNumber, "apnumber");           
             Tools.ContractLoadCheck(node, ref crewCount, 3, crewCount, "crewcount");
@@ -1884,13 +1888,14 @@ namespace MissionControllerEC.MCEContracts
             node.AddValue("targetBody2", bodyID2);
             int bodyID3 = targetBody3.flightGlobalsIndex;
             node.AddValue("targetBody3", bodyID3);
+            int bodyID4 = targetBody4.flightGlobalsIndex;
+            node.AddValue("targetbody4", bodyID4);
             node.AddValue("apbiome", ApolloDunaBiome);          
             node.AddValue("apnumber", ApolloDunaMissionNumber);          
             node.AddValue("crewcount", crewCount);
             node.AddValue("maxseats", maxSeatCountShip);            
             node.AddValue("landingtitle", landingTitle);
-            node.AddValue("targetbody4",targetBody4);
-
+            
             node.AddValue("apdhash", apdHash);
             node.AddValue("apdtitle", apTitle);
             node.AddValue("apddescript", apDescription);

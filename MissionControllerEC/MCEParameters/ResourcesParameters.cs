@@ -15,6 +15,7 @@ namespace MissionControllerEC.MCEParameters
         private double resources = 0.0;
         private bool updated = false;
         private bool disableRecheck = false;
+        private int ResIdNum = 0;
 
         public ResourceSupplyGoal()
         {
@@ -89,9 +90,9 @@ namespace MissionControllerEC.MCEParameters
                 {
                     foreach (Part p in v.parts)
                     {
-                        if (p.Resources[targetName])
+                        if (p.Resources[targetName] != null)
                         {
-                            resources = +p.Resources[targetName].amount;
+                            resources += p.Resources[targetName].amount;
                         }
                         else { }
                     }
@@ -120,102 +121,102 @@ namespace MissionControllerEC.MCEParameters
     }
     #endregion
     #region TotalMassGoal
-    public class TotalMasGoal : ContractParameter
-    {
-        private CelestialBody targetBody;
-        private float maxweight = 0.0f;
-        private bool updated = false;
+    //public class TotalMasGoal : ContractParameter
+    //{
+    //    private CelestialBody targetBody;
+    //    private float maxweight = 0.0f;
+    //    private bool updated = false;
 
-        public TotalMasGoal()
-        {
-        }
+    //    public TotalMasGoal()
+    //    {
+    //    }
 
-        public TotalMasGoal(CelestialBody target, float maxWeight)
-        {
-            this.targetBody = target;
-            this.maxweight = maxWeight;
-        }
-        protected override string GetHashString()
-        {
-            return targetBody.bodyName + this.Root.MissionSeed.ToString();
-        }
-        protected override string GetTitle()
-        {
-            return "Satellite Mass Must Not Exceed: " + maxweight.ToString("F2") + " Tons. (InOrbit)";
-        }
+    //    public TotalMasGoal(CelestialBody target, float maxWeight)
+    //    {
+    //        this.targetBody = target;
+    //        this.maxweight = maxWeight;
+    //    }
+    //    protected override string GetHashString()
+    //    {
+    //        return targetBody.bodyName + this.Root.MissionSeed.ToString();
+    //    }
+    //    protected override string GetTitle()
+    //    {
+    //        return "Satellite Mass Must Not Exceed: " + maxweight.ToString("F2") + " Tons. (InOrbit)";
+    //    }
 
-        protected override void OnRegister()
-        {
-            this.disableOnStateChange = false;
-            updated = false;
-            if (Root.ContractState == Contract.State.Active)
-            {
-                GameEvents.onFlightReady.Add(flightReady);
-                GameEvents.onVesselChange.Add(vesselChange);
-                updated = true;
-            }
-            else { }
-        }
+    //    protected override void OnRegister()
+    //    {
+    //        this.disableOnStateChange = false;
+    //        updated = false;
+    //        if (Root.ContractState == Contract.State.Active)
+    //        {
+    //            GameEvents.onFlightReady.Add(flightReady);
+    //            GameEvents.onVesselChange.Add(vesselChange);
+    //            updated = true;
+    //        }
+    //        else { }
+    //    }
 
-        protected override void OnUnregister()
-        {
-            if (updated)
-            {
-                GameEvents.onFlightReady.Remove(flightReady);
-                GameEvents.onVesselChange.Remove(vesselChange);
-            }
-            else { }
-        }
+    //    protected override void OnUnregister()
+    //    {
+    //        if (updated)
+    //        {
+    //            GameEvents.onFlightReady.Remove(flightReady);
+    //            GameEvents.onVesselChange.Remove(vesselChange);
+    //        }
+    //        else { }
+    //    }
 
-        protected override void OnUpdate()
-        {
-            if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel.situation == Vessel.Situations.ORBITING)
-                MassCheck(FlightGlobals.ActiveVessel);
-            else { }
-        }
+    //    protected override void OnUpdate()
+    //    {
+    //        if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel.situation == Vessel.Situations.ORBITING)
+    //            MassCheck(FlightGlobals.ActiveVessel);
+    //        else { }
+    //    }
 
-        protected override void OnLoad(ConfigNode node)
-        {          
-            Tools.ContractLoadCheck(node, ref targetBody, Planetarium.fetch.Home, targetBody, "targetBody");
-            Tools.ContractLoadCheck(node, ref maxweight, 2.0f, maxweight, "maxtons");
+    //    protected override void OnLoad(ConfigNode node)
+    //    {          
+    //        Tools.ContractLoadCheck(node, ref targetBody, Planetarium.fetch.Home, targetBody, "targetBody");
+    //        Tools.ContractLoadCheck(node, ref maxweight, 2.0f, maxweight, "maxtons");
 
-        }
-        protected override void OnSave(ConfigNode node)
-        {
-            int bodyID = targetBody.flightGlobalsIndex;
-            node.AddValue("targetBody", bodyID);
+    //    }
+    //    protected override void OnSave(ConfigNode node)
+    //    {
+    //        int bodyID = targetBody.flightGlobalsIndex;
+    //        node.AddValue("targetBody", bodyID);
 
-            node.AddValue("maxtons", maxweight);
+    //        node.AddValue("maxtons", maxweight);
 
-        }
+    //    }
 
-        public void MassCheck(Vessel vessel)
-        {
-            if (vessel.launchTime > this.Root.DateAccepted)
-            {
-                if (vessel.isActiveVessel)
-                {
-                    if (vessel.GetTotalMass() <= maxweight)
-                    {
-                        base.SetComplete();
-                    }
-                    else { }
-                }
-                else { }
-            }
-            else { }
-        }
-        public void flightReady()
-        {
-            base.SetIncomplete();
-        }
-        public void vesselChange(Vessel v)
-        {
-            base.SetIncomplete();
-        }
-    }
+    //    public void MassCheck(Vessel vessel)
+    //    {
+    //        if (vessel.launchTime > this.Root.DateAccepted)
+    //        {
+    //            if (vessel.isActiveVessel)
+    //            {
+    //                if (vessel.GetTotalMass() <= maxweight)
+    //                {
+    //                    base.SetComplete();
+    //                }
+    //                else { }
+    //            }
+    //            else { }
+    //        }
+    //        else { }
+    //    }
+    //    public void flightReady()
+    //    {
+    //        base.SetIncomplete();
+    //    }
+    //    public void vesselChange(Vessel v)
+    //    {
+    //        base.SetIncomplete();
+    //    }
+    //}
     #endregion
-    
+
     #region Resource Goal Cap Check
     public class ResourceGoalCap : ContractParameter
     {

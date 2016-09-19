@@ -298,17 +298,7 @@ namespace MissionControllerEC
                 }
 
                 catch { Debug.LogError("could not run NoPartTest Returned Null"); }
-            }
-            if (settings.No_Explore_Body && ContractSystem.ContractTypes.Contains(typeof(Contracts.Templates.ExploreBody)))
-            {
-                try
-                {
-                    ContractSystem.ContractTypes.Remove(typeof(Contracts.Templates.ExploreBody));
-                    Debug.Log("Removed PartTest Type Contracts from Gererating");
-                }
-
-                catch { Debug.LogError("could not run NoPartTest Returned Null"); }
-            }
+            }            
             Debug.Log("MCE Remove Contracts loaded"); 
         }    
                                    

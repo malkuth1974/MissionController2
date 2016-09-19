@@ -293,7 +293,7 @@ namespace MissionControllerEC
                     GUILayout.Space(15);
                 }
                 else
-                    GUILayout.Label("You have no Vessels of Type Station or Base in space This contract Only works On those Types Vessels!",MCE_ScenarioStartup.StyleBold);
+                    GUILayout.Label("You Need a Station or Base To be able to Deliver Supply Contracts!",MCE_ScenarioStartup.StyleBold);
 
             }
             # endregion

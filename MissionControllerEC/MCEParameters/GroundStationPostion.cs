@@ -18,6 +18,7 @@ namespace MissionControllerEC.MCEParameters
         bool eventsAdded;
         bool freqPass = false;
         private bool PolarRegionLock = false;
+        bool angleCheck = false;
 
         public static float checkFrequency;
         public delegate void OnGroundStationCall();
@@ -101,10 +102,22 @@ namespace MissionControllerEC.MCEParameters
                             freqPass = false;
                         }
                         float GroundToVesselAngle = CheckVectorAngle2Objects(FlightGlobals.ActiveVessel,longitude,latitude);
-                        bool AngleCheck = (GroundToVesselAngle <= 45 && GroundToVesselAngle >= 0);
+                        if (FlightGlobals.ActiveVessel.orbit.altitude > 1000000)
+                        {
+                            angleCheck = (GroundToVesselAngle <= 45 && GroundToVesselAngle >= 0);
+                        }
+                        if (FlightGlobals.ActiveVessel.orbit.altitude <= 1000000 && FlightGlobals.ActiveVessel.orbit.altitude >= 500000)
+                        {
+                            angleCheck = (GroundToVesselAngle <= 65 && GroundToVesselAngle >= 0);
+                        }
+                        if (FlightGlobals.ActiveVessel.orbit.altitude < 500000)
+                        {
+                            angleCheck = (GroundToVesselAngle <= 85 && GroundToVesselAngle >= 0);
+                        }
+
                         if (this.State == ParameterState.Incomplete && freqPass)
                         {
-                            if (AngleCheck)
+                            if (angleCheck)
                             {
                                 base.SetComplete();
                                 //Debug.Log("SetComplete Logitude is " + longitude + " Latitude is " + latitude);
@@ -114,7 +127,7 @@ namespace MissionControllerEC.MCEParameters
 
                         if (this.State == ParameterState.Complete && freqPass)
                         {
-                            if (!AngleCheck)
+                            if (!angleCheck)
                                 base.SetIncomplete();
                             else { }
                         }
@@ -165,8 +178,8 @@ namespace MissionControllerEC.MCEParameters
             groundStation = Planetarium.fetch.Home.GetWorldSurfacePosition(latT, LongT, 0);
             Vector3 groundStationUpVec = (groundStation - v.mainBody.position);
             Vector3 groundToVesselVec = (v.rootPart.transform.position - groundStation);
-            float angle = Vector3.Angle(groundToVesselVec, groundStationUpVec);          
-            //Debug.Log("Angle: " + angle);
+            float angle = Vector3.Angle(groundToVesselVec, groundStationUpVec);
+            //Debug.Log("MCE GroundStation Angle: " + angle + " Vessel Height is: " + v.heightFromSurface);
             return angle;          
         }
         

@@ -152,8 +152,8 @@ namespace MissionControllerEC.MCEContracts
         protected override bool Generate()
         {
             if (HighLogic.LoadedSceneIsFlight) { return false; }
-            totalContracts = ContractSystem.Instance.GetCurrentContracts<RoverContracts>().Count();
-            TotalFinished = ContractSystem.Instance.GetCompletedContracts<RoverContracts>().Count();
+            totalContracts = ContractSystem.Instance.GetCurrentContracts<RoverContractsDrive>().Count();
+            TotalFinished = ContractSystem.Instance.GetCompletedContracts<RoverContractsDrive>().Count();
 
             if (totalContracts >= 1)
             {

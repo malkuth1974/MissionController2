@@ -19,3 +19,6 @@ C:\Users\Danny\(testMods)\GameData\MissionControllerEC\MissionControllerEC.pdb
 C:\kerbal\CareerGame(Testing)\GameData\MissionControllerEC\MissionControllerEC.dll
 C:\kerbal\CareerGame(Testing)\GameData\MissionControllerEC\MissionControllerEC.pdb
 C:\Users\Danny\Documents\GitHub\MissionController2\MissionControllerEC\obj\Debug\MissionControllerEC.csprojResolveAssemblyReference.cache
+C:\Users\malku\Documents\GitHub\MissionController2\MissionControllerEC\obj\Debug\MissionControllerEC.dll
+C:\Users\malku\Documents\GitHub\MissionController2\MissionControllerEC\obj\Debug\MissionControllerEC.pdb
+C:\Users\malku\Documents\GitHub\MissionController2\MissionControllerEC\obj\Debug\MissionControllerEC.csprojResolveAssemblyReference.cache
