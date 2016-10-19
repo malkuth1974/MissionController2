@@ -260,18 +260,26 @@ namespace MissionControllerEC
             //    GetContractList();
             //}
 
-            if (GUILayout.Button("reource info IDs"))
-            {
-                int partidtest = FlightGlobals.ActiveVessel.resourcePartSet.setId;
-                double maxamount;
-                double currentamount;
-                foreach (Part p in FlightGlobals.ActiveVessel.parts)
-                {                    
-                    FlightGlobals.ActiveVessel.resourcePartSet.GetConnectedResourceTotals(partidtest,out currentamount, out maxamount,true);
-                    Debug.LogWarning("CurrentID " + partidtest + "Max Amount Resource " + maxamount.ToString() + "Current Amount Resource " + currentamount.ToString());
-                    partidtest ++;
-                }
-            }
+            //if (GUILayout.Button("DeltaVCalcs"))
+            //{
+            //    if (HighLogic.LoadedSceneIsEditor)
+            //    {
+            //        try
+            //        {
+            //            List<Part> parts;
+            //            parts = EditorLogic.SortedShipList;
+            //            vesseltons = 0;
+            //            vesselResourceTons = 0;
+            //            foreach (Part p in parts)
+            //            {
+            //                vesseltons = p.stag;
+            //                vesselResourceTons = p.resourceMass + p.mass;
+            //            }
+
+            //        }
+            //        catch { };
+            //    }
+            //}
 
             GUILayout.Label("Current Funds: " + Funding.Instance.Funds);
            

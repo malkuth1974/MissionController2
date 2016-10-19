@@ -17,6 +17,7 @@ namespace MissionControllerEC.MCEContracts
         CelestialBody targetBody = Planetarium.fetch.Home;      
         public double contractAMA = 0;
         public double contractINC = 0;
+        public double contractAOP = 0;
         public int crewCount = 0;
         public bool techUnlocked = false;
         public float frequency = 0;
@@ -182,6 +183,7 @@ namespace MissionControllerEC.MCEContracts
             {               
                 contractAMA = Tools.RandomNumber(680000, 950000);
                 contractINC = 0;
+                contractAOP = Tools.getAOPCalc(contractAMA, 2.1);
                 SatTypeName = "Communication";               
 
                 int randomPolar;
@@ -190,13 +192,13 @@ namespace MissionControllerEC.MCEContracts
                 {
                     stationNumber = Tools.RandomNumber(5, 6);
                     SetTrackStationNumber(stationNumber);                    
-                    this.AddParameter(new FinePrint.Contracts.Parameters.SpecificOrbitParameter(FinePrint.Utilities.OrbitType.EQUATORIAL, 90, .01, contractAMA, 99, 90, 1, 0, targetBody, 3), null);
+                    this.AddParameter(new FinePrint.Contracts.Parameters.SpecificOrbitParameter(FinePrint.Utilities.OrbitType.EQUATORIAL, 90, .01, contractAMA, 99, contractAOP, 1, 0, targetBody, 3), null);
                     this.AddParameter(new GroundStationPostion(StationName, trackStationNumber, PolarStationNumber, frequency,true), null);
                     base.prestige = ContractPrestige.Exceptional;
                 }
                 else
                 {                  
-                    this.AddParameter(new FinePrint.Contracts.Parameters.SpecificOrbitParameter(FinePrint.Utilities.OrbitType.EQUATORIAL, contractINC, .01, contractAMA, 99, 90, 1, 0, targetBody, 4), null);
+                    this.AddParameter(new FinePrint.Contracts.Parameters.SpecificOrbitParameter(FinePrint.Utilities.OrbitType.EQUATORIAL, contractINC, .01, contractAMA, 99, contractAOP, 1, 0, targetBody, 4), null);
                     this.AddParameter(new GroundStationPostion(StationName, trackStationNumber, PolarStationNumber, frequency, false), null);
                 }
                 this.AddParameter(new satelliteCoreCheck(SatTypeName, frequency, moduletype, targetBody), null);                
@@ -206,18 +208,19 @@ namespace MissionControllerEC.MCEContracts
                 SatTypeName = "Weather";               
                 contractAMA = Tools.RandomNumber(700000, 800000);
                 contractINC = Tools.RandomNumber(-8, 8);
+                contractAOP = Tools.getAOPCalc(contractAMA, 2.1);
                 int randomPolar;
                 randomPolar = Tools.RandomNumber(1, 100);
                 if (randomPolar > 70)
                 {
                     contractAMA = Tools.RandomNumber(700000, 800000);
                     contractINC = 90;                  
-                    this.AddParameter(new FinePrint.Contracts.Parameters.SpecificOrbitParameter(FinePrint.Utilities.OrbitType.EQUATORIAL, 90, .01, contractAMA, 99, 90, 1, 0, targetBody, 3), null);
+                    this.AddParameter(new FinePrint.Contracts.Parameters.SpecificOrbitParameter(FinePrint.Utilities.OrbitType.EQUATORIAL, 90, .01, contractAMA, 99, contractAOP, 1, 0, targetBody, 3), null);
                     this.AddParameter(new satelliteCoreCheck(SatTypeName, frequency, moduletype, targetBody), null);
                 }
                 else
                 {                  
-                    this.AddParameter(new FinePrint.Contracts.Parameters.SpecificOrbitParameter(FinePrint.Utilities.OrbitType.EQUATORIAL, contractINC, .01, contractAMA, 99, 90, 1, 0, targetBody, 6), null);
+                    this.AddParameter(new FinePrint.Contracts.Parameters.SpecificOrbitParameter(FinePrint.Utilities.OrbitType.EQUATORIAL, contractINC, .01, contractAMA, 99, contractAOP, 1, 0, targetBody, 6), null);
                     this.AddParameter(new satelliteCoreCheck(SatTypeName, frequency, moduletype, targetBody), null);
                 }
             }
@@ -227,19 +230,20 @@ namespace MissionControllerEC.MCEContracts
                 SatTypeName = "Navigation";              
                 contractAMA = Tools.RandomNumber(700000, 870000);
                 contractINC = 0;
+                contractAOP = Tools.getAOPCalc(contractAMA, 2.1);
                 int randomPolar;
                 randomPolar = Tools.RandomNumber(1, 100);
                 if (randomPolar > 75)
                 {
                     stationNumber = Tools.RandomNumber(5, 6);
                     SetTrackStationNumber(stationNumber);                  
-                    this.AddParameter(new FinePrint.Contracts.Parameters.SpecificOrbitParameter(FinePrint.Utilities.OrbitType.EQUATORIAL, 90, .01, contractAMA, 99, 90, 1, 0, targetBody, 3), null);                    
+                    this.AddParameter(new FinePrint.Contracts.Parameters.SpecificOrbitParameter(FinePrint.Utilities.OrbitType.EQUATORIAL, 90, .01, contractAMA, 99, contractAOP, 1, 0, targetBody, 3), null);                    
                     this.AddParameter(new GroundStationPostion(StationName, trackStationNumber, PolarStationNumber, frequency, true), null);
                     base.prestige = ContractPrestige.Exceptional;
                 }
                 else
                 {                  
-                    this.AddParameter(new FinePrint.Contracts.Parameters.SpecificOrbitParameter(FinePrint.Utilities.OrbitType.EQUATORIAL, contractINC, .01, contractAMA, 99, 90, 1, 0, targetBody, 3), null);
+                    this.AddParameter(new FinePrint.Contracts.Parameters.SpecificOrbitParameter(FinePrint.Utilities.OrbitType.EQUATORIAL, contractINC, .01, contractAMA, 99, contractAOP, 1, 0, targetBody, 3), null);
                     this.AddParameter(new GroundStationPostion(StationName, trackStationNumber, PolarStationNumber, frequency, false), null);
                 }
                 this.AddParameter(new satelliteCoreCheck(SatTypeName, frequency, moduletype, targetBody), null);
@@ -250,26 +254,27 @@ namespace MissionControllerEC.MCEContracts
             {
                 SatTypeName = "Research";              
                 contractAMA = Tools.RandomNumber(700000, 800000);
-                contractINC = Tools.RandomNumber(-10, 10);                               
+                contractINC = Tools.RandomNumber(-10, 10);
+                contractAOP = Tools.getAOPCalc(contractAMA, 2.3);
                 int randomPolar;
                 randomPolar = Tools.RandomNumber(1, 100);
                 if (randomPolar > 90)
                 {
-                    this.AddParameter(new FinePrint.Contracts.Parameters.SpecificOrbitParameter(FinePrint.Utilities.OrbitType.EQUATORIAL, 90, .01, contractAMA, 99, 90, 1, 0, targetBody, 3), null);
+                    this.AddParameter(new FinePrint.Contracts.Parameters.SpecificOrbitParameter(FinePrint.Utilities.OrbitType.EQUATORIAL, 90, .01, contractAMA, 99, contractAOP, 1, 0, targetBody, 3), null);
                 }
                 else
                 {
-                    this.AddParameter(new FinePrint.Contracts.Parameters.SpecificOrbitParameter(FinePrint.Utilities.OrbitType.EQUATORIAL, contractINC, .01, contractAMA, 99, 90, 1, 0, targetBody, 3), null);
+                    this.AddParameter(new FinePrint.Contracts.Parameters.SpecificOrbitParameter(FinePrint.Utilities.OrbitType.EQUATORIAL, contractINC, .01, contractAMA, 99, contractAOP, 1, 0, targetBody, 3), null);
                 }
                 this.AddParameter(new satelliteCoreCheck(SatTypeName, frequency, moduletype, targetBody), null);
             }
             else if (SaveInfo.SatelliteTypeChoice == 4)
             {
-                contractAMA = Tools.ReturnOrbitValues(targetBody, false, 40.92f);
-                contractINC = Tools.ReturnOrbitValues(targetBody, false, 40.89f); 
+                contractAMA = 3463330;
+                contractINC = 0;
+                contractAOP = Tools.getAOPCalc(contractAMA, 2);
                 SatTypeName = "Communication";
-                this.AddParameter(new SatApAOrbitGoal(targetBody, contractAMA, "Keosynchronous/Polar Orbit"), null);
-                this.AddParameter(new SatPeAOrbitGoal(targetBody, contractINC, "Keosynchronous/Polar Orbit"), null);
+                this.AddParameter(new FinePrint.Contracts.Parameters.SpecificOrbitParameter(FinePrint.Utilities.OrbitType.EQUATORIAL, contractINC, .01, contractAMA, 99, contractAOP, 1, 0, targetBody, 3), null);
                 if (frequency >= 50)
                 {
                     frequency = -10;
@@ -295,11 +300,11 @@ namespace MissionControllerEC.MCEContracts
             }
             else if (SaveInfo.SatelliteTypeChoice == 5)
             {
-                contractAMA = Tools.ReturnOrbitValues(targetBody, false, 40.92f);
-                contractINC = Tools.ReturnOrbitValues(targetBody, false, 40.89f);
+                contractAMA = 3463330;
+                contractINC = 0;
+                contractAOP = Tools.getAOPCalc(contractAMA, 2);
                 SatTypeName = "Navigation";
-                this.AddParameter(new SatApAOrbitGoal(targetBody, contractAMA, "Keosynchronous/Polar Orbit"), null);
-                this.AddParameter(new SatPeAOrbitGoal(targetBody, contractINC, "Keosynchronous/Polar Orbit"), null);
+                this.AddParameter(new FinePrint.Contracts.Parameters.SpecificOrbitParameter(FinePrint.Utilities.OrbitType.EQUATORIAL, contractINC, .01, contractAMA, 99, contractAOP, 1, 0, targetBody, 3), null);
                 if (frequency >= 50)
                 {
                     frequency = -10;
@@ -408,6 +413,7 @@ namespace MissionControllerEC.MCEContracts
             Tools.ContractLoadCheck(node, ref trackStationNumber, 106, trackStationNumber, "tracknumber");
             Tools.ContractLoadCheck(node, ref PolarStationNumber, 0, PolarStationNumber, "polarstation");
             Tools.ContractLoadCheck(node, ref StationName, "Did Not Load", StationName, "stationname");
+            Tools.ContractLoadCheck(node, ref contractAOP, 99, contractAOP, "contractAOP");
 
         }
         protected override void OnSave(ConfigNode node)
@@ -434,6 +440,7 @@ namespace MissionControllerEC.MCEContracts
             node.AddValue("tracknumber", trackStationNumber);
             node.AddValue("polarstation", PolarStationNumber);
             node.AddValue("stationname", StationName);
+            node.AddValue("contractAOP", contractAOP);
         }
 
         //for testing purposes

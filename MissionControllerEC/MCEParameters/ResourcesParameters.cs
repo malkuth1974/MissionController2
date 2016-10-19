@@ -15,7 +15,6 @@ namespace MissionControllerEC.MCEParameters
         private double resources = 0.0;
         private bool updated = false;
         private bool disableRecheck = false;
-        private int ResIdNum = 0;
 
         public ResourceSupplyGoal()
         {

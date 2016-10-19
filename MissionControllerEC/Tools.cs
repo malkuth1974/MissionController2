@@ -181,7 +181,19 @@ namespace MissionControllerEC
 
             return Math.Round(atmosphere);
         }
-
+        public static double getAOPCalc(double a, double b)
+        {
+            double result = a / b;
+            return result;
+        }
+        public static double DeltaVCalc(double isp,double Fmass, double Emass)
+        {
+            double GravityCon = 9.807;
+            double DeltaVCal = 0;
+            DeltaVCal = Math.Round(isp * GravityCon * Math.Log(Fmass / Emass));
+            return DeltaVCal;               
+        }
+        
         public static void ObitalPeriodHelper(Vessel v)
         {            
             ScreenMessages.PostScreenMessage("Current Orbital Period is: " + Tools.formatTime(FlightGlobals.ActiveVessel.orbit.period) + "\n" +
