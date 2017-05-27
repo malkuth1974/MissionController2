@@ -29,9 +29,9 @@ namespace MissionControllerEC.MCEParameters
         protected override string GetTitle()
         {
             if (AllowLandedWet)
-                return "Land Your Vessel on " + targetBody.theName;
+                return "Land Your Vessel on " + targetBody.bodyName;
             else
-                return "Land Your Vessel on " + targetBody.theName + ".  You must also only land on dry land, landing Wet will not count!";
+                return "Land Your Vessel on " + targetBody.bodyName + ".  You must also only land on dry land, landing Wet will not count!";
         }
 
         protected override void OnRegister()
@@ -141,7 +141,7 @@ namespace MissionControllerEC.MCEParameters
         }
         protected override string GetTitle()
         {            
-         return "Land Your Vessel on " + targetBody.theName + ". The biome name is: " + BiomeName;          
+         return "Land Your Vessel on " + targetBody.bodyName + ". The biome name is: " + BiomeName;          
         }
 
         protected override string GetNotes()

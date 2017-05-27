@@ -81,7 +81,7 @@ namespace MissionControllerEC.MCEContracts
         }
         protected override string GetTitle()
         {
-            return ContractPlayerName + " " + targetBody.theName;
+            return ContractPlayerName + " " + targetBody.bodyName;
         }
         protected override string GetDescription()
         {
@@ -96,11 +96,11 @@ namespace MissionControllerEC.MCEContracts
         }
         protected override string GetSynopsys()
         {
-            return "Launch your ComSat Network " + targetBody.theName;
+            return "Launch your ComSat Network " + targetBody.bodyName;
         }
         protected override string MessageCompleted()
         {
-            return "You have delivered your ComSat to its assigned height around " + targetBody.theName + " Continue to build you network.  When you're done you can turn off ComSat Contracts in the MCE Information Window.  Please note it will take a few contract cycles for them to disappear! ";
+            return "You have delivered your ComSat to its assigned height around " + targetBody.bodyName + " Continue to build you network.  When you're done you can turn off ComSat Contracts in the MCE Information Window.  Please note it will take a few contract cycles for them to disappear! ";
         }
 
         protected override void OnLoad(ConfigNode node)
@@ -223,7 +223,7 @@ namespace MissionControllerEC.MCEContracts
 
             return "This is a custom supply mission.  Use these contracts to supply your land bases and orbital stations with whatever supplies you choose. You must dock with the vessel you selected in order to finish the contract! \n" +
                 "You can edit this contract by going to the Space Center screen and selecting Mission Controller Icon.  In the GUI choose the Custom Contract Button to start editing this contract. \n\n" +
-                "All supply contract information is stored in your Persistent Save File. The location of the Station or Base you will resupply is " + targetBody.theName + " Payments are adjusted for Travel Time To Body";
+                "All supply contract information is stored in your Persistent Save File. The location of the Station or Base you will resupply is " + targetBody.bodyName + " Payments are adjusted for Travel Time To Body";
         }
         protected override string GetNotes()
         {
@@ -231,7 +231,7 @@ namespace MissionControllerEC.MCEContracts
         }
         protected override string GetSynopsys()
         {
-            return "Launch Your ComSat Network " + targetBody.theName;
+            return "Launch Your ComSat Network " + targetBody.bodyName;
         }
         protected override string MessageCompleted()
         {
@@ -352,7 +352,7 @@ namespace MissionControllerEC.MCEContracts
 
         protected override string GetHashString()
         {
-            return "Transfer " + crewAmount + " Crew To (" + vesselName + ") for " + Tools.formatTime(crewTime) + " Over " + targetBody.theName + this.MissionSeed.ToString();
+            return "Transfer " + crewAmount + " Crew To (" + vesselName + ") for " + Tools.formatTime(crewTime) + " Over " + targetBody.bodyName + this.MissionSeed.ToString();
         }
         protected override string GetTitle()
         {
@@ -363,7 +363,7 @@ namespace MissionControllerEC.MCEContracts
 
             return "This is a custom Crew Transfer mission.  Use these contracts to supply your land bases and orbital stations with crew and select the Time Spent in station or base. You must dock with the Vessel you selected to finish contract! " +
                 "You can edit this contract by going to the Space Center screen and selecting the Mission Controller Icon.  In the GUI choose the Custom Contract Button to start editing this contract. \n\n" +
-                "All Crew Transfer contract information is stored in your Persistent Save File. The location of the Station or Base you will Transfer crew is " + targetBody.theName + "." + " Payments are adjusted for Travel Time to Body";
+                "All Crew Transfer contract information is stored in your Persistent Save File. The location of the Station or Base you will Transfer crew is " + targetBody.bodyName + "." + " Payments are adjusted for Travel Time to Body";
         }
         protected override string GetNotes()
         {
@@ -371,7 +371,7 @@ namespace MissionControllerEC.MCEContracts
         }
         protected override string GetSynopsys()
         {
-            return "Transfer crew to Station/Base over " + targetBody.theName;
+            return "Transfer crew to Station/Base over " + targetBody.bodyName;
         }
         protected override string MessageCompleted()
         {

@@ -367,8 +367,8 @@ namespace MissionControllerEC.MCEParameters
                             Debug.Log("Satellite Frequency matches " + frequency);
                             base.SetComplete();
                             SatelliteCalled = false;
-                            APReady = false;
-                            PEReady = false;
+                            APReady = true;
+                            PEReady = true;
                         }
                         else 
                         {
@@ -479,7 +479,7 @@ namespace MissionControllerEC.MCEParameters
 
         protected override string GetHashString()
         {
-            return "Orbit " + targetBody.theName + " and conduct Ionization Scan." + this.Root.MissionSeed.ToString();
+            return "Orbit " + targetBody.bodyName + " and conduct Ionization Scan." + this.Root.MissionSeed.ToString();
         }
         protected override string GetTitle()
         {

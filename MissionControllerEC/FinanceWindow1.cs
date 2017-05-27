@@ -152,7 +152,7 @@ namespace MissionControllerEC
                 GUILayout.Space(5);
                 GUILayout.BeginHorizontal();
                 GUILayout.Box("ComSat Body", MCE_ScenarioStartup.StyleBold, GUILayout.Width(200));
-                GUILayout.Box("" + targetbody.theName, MCE_ScenarioStartup.styleBlueBold, GUILayout.Width(200));
+                GUILayout.Box("" + targetbody.bodyName, MCE_ScenarioStartup.styleBlueBold, GUILayout.Width(200));
                 GUILayout.EndHorizontal();
                 GUILayout.BeginHorizontal();
                 if (GUILayout.Button("- Previous"))
@@ -281,7 +281,7 @@ namespace MissionControllerEC
                     GUILayout.Space(15);
                     GUILayout.BeginHorizontal();
                     GUILayout.Box("Vessel Is Located At Body", MCE_ScenarioStartup.StyleBold, GUILayout.Width(200));
-                    GUILayout.Box("" + FlightGlobals.Bodies[SaveInfo.SupplyBodyIDX].theName, MCE_ScenarioStartup.styleBlueBold, GUILayout.Width(200));
+                    GUILayout.Box("" + FlightGlobals.Bodies[SaveInfo.SupplyBodyIDX].bodyName, MCE_ScenarioStartup.styleBlueBold, GUILayout.Width(200));
                     GUILayout.EndHorizontal();
 
                     GUILayout.Space(15);
@@ -415,7 +415,7 @@ namespace MissionControllerEC
                     GUILayout.Space(15);
                     GUILayout.BeginHorizontal();
                     GUILayout.Box("Station/Base Is Located At Body", MCE_ScenarioStartup.StyleBold, GUILayout.Width(200));
-                    GUILayout.Box("" + FlightGlobals.Bodies[SaveInfo.crewBodyIDX].theName, MCE_ScenarioStartup.styleBlueBold, GUILayout.Width(200));
+                    GUILayout.Box("" + FlightGlobals.Bodies[SaveInfo.crewBodyIDX].bodyName, MCE_ScenarioStartup.styleBlueBold, GUILayout.Width(200));
                     GUILayout.EndHorizontal();
 
                     GUILayout.Space(15);

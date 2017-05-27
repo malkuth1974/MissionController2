@@ -373,7 +373,7 @@ namespace MissionControllerEC.MCEContracts
         }
         protected override string GetTitle()
         {
-            return "Launch new " + satType + " Satellite " + targetBody.theName;
+            return "Launch new " + satType + " Satellite " + targetBody.bodyName;
         }
         protected override string GetDescription()
         {
@@ -389,7 +389,7 @@ namespace MissionControllerEC.MCEContracts
             SaveInfo.SatelliteContractModule = 0;
             SaveInfo.SatelliteContractFrequency = -1;
             Debug.Log("values for satellites have been reset");
-            return "You have successfully delivered our " + satType + " satellite to orbit around " + targetBody.theName;
+            return "You have successfully delivered our " + satType + " satellite to orbit around " + targetBody.bodyName;
         }
 
         protected override void OnLoad(ConfigNode node)
@@ -555,15 +555,15 @@ namespace MissionControllerEC.MCEContracts
         }
         protected override string GetTitle()
         {
-            return "Land on specific Biome on " + targetBody.theName + ", Then collect science";
+            return "Land on specific Biome on " + targetBody.bodyName + ", Then collect science";
         }
         protected override string GetDescription()
         {
-            return "Land a vessel on " + targetBody.theName + " in the biome called " + BiomeName + ". Then collect science to complete the contract. You must have at least " + crew + " crew member on your vessel";
+            return "Land a vessel on " + targetBody.bodyName + " in the biome called " + BiomeName + ". Then collect science to complete the contract. You must have at least " + crew + " crew member on your vessel";
         }
         protected override string GetSynopsys()
         {
-            return "Land at specific Body and Biome we Request " + targetBody.theName + ". " + BiomeName + " Then collect science.";
+            return "Land at specific Body and Biome we Request " + targetBody.bodyName + ". " + BiomeName + " Then collect science.";
         }
         protected override string MessageCompleted()
         {

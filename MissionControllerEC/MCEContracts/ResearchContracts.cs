@@ -36,7 +36,7 @@ namespace MissionControllerEC.MCEContracts
                 Debug.LogWarning("Orbital Research Has No Valid Target bodies contract rejected");
                 return false;                
             }
-            Debug.LogWarning("Orbit Research Body is " + targetBody.theName);          
+            Debug.LogWarning("Orbit Research Body is " + targetBody.bodyName);          
             if (SaveInfo.OrbitalResearchContractActivated == true)
             {
                 Debug.LogWarning("Orbit Research Random Selection is false, contract not Generated.");
@@ -85,7 +85,7 @@ namespace MissionControllerEC.MCEContracts
         }
         protected override string GetTitle()
         {
-            return "Ionization Scan of  " + targetBody.theName;
+            return "Ionization Scan of  " + targetBody.bodyName;
         }
         protected override string GetDescription()
         {
@@ -115,12 +115,12 @@ namespace MissionControllerEC.MCEContracts
         }
         protected override string GetSynopsys()
         {
-            return "Orbit And Conduct Ionization Scan Of " + targetBody.theName;
+            return "Orbit And Conduct Ionization Scan Of " + targetBody.bodyName;
         }
         protected override string MessageCompleted()
         {
             MCEOrbitalScanning.doOrbitResearch = false;
-            return "You have reached the target body " + targetBody.theName + ", and conducted a Ionization Scan.  We have learned a lot of new information about the composition " +
+            return "You have reached the target body " + targetBody.bodyName + ", and conducted a Ionization Scan.  We have learned a lot of new information about the composition " +
                 "of this planetary body in preparation for a possible landing in the future by our manned program or Robotic Legions.";
         }
 
@@ -246,7 +246,7 @@ namespace MissionControllerEC.MCEContracts
         }
         protected override string GetTitle()
         {
-            return "Land And Conduct Mass Spectrometry Analysis Of " + targetBody.theName;
+            return "Land And Conduct Mass Spectrometry Analysis Of " + targetBody.bodyName;
         }
         protected override string GetDescription()
         {
@@ -270,13 +270,13 @@ namespace MissionControllerEC.MCEContracts
         }
         protected override string GetSynopsys()
         {
-            return "Land an unmanned vessel on " + targetBody.theName + " and conduct Mass Spectrometry Analysis for our company.";
+            return "Land an unmanned vessel on " + targetBody.bodyName + " and conduct Mass Spectrometry Analysis for our company.";
         }
         protected override string MessageCompleted()
         {
             MCELanderResearch.doLanderResearch = false;
-            return "You have successfully landed on and conducted research on " + targetBody.theName + ".  After landing we have discovered many fascinating secrets about what makes up the composition of the landing site.\n\n" +
-            "Further research missions, both manned and robotic, will be needed in the future to unlock the secrets of " + targetBody.theName + ".";
+            return "You have successfully landed on and conducted research on " + targetBody.bodyName + ".  After landing we have discovered many fascinating secrets about what makes up the composition of the landing site.\n\n" +
+            "Further research missions, both manned and robotic, will be needed in the future to unlock the secrets of " + targetBody.bodyName + ".";
         }
 
         protected override void OnLoad(ConfigNode node)

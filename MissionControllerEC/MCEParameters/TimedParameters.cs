@@ -45,7 +45,7 @@ namespace MissionControllerEC.MCEParameters
                
         protected override string GetHashString()
         {
-            return "Orbit " + targetBody.theName + " and conduct research." + this.Root.MissionSeed.ToString();
+            return "Orbit " + targetBody.bodyName + " and conduct research." + this.Root.MissionSeed.ToString();
         }
         protected override string GetTitle()
         {
@@ -179,7 +179,7 @@ namespace MissionControllerEC.MCEParameters
 
         protected override string GetHashString()
         {
-            return "Orbit " + targetBody.theName + " and conduct research." + this.Root.MissionSeed.ToString();
+            return "Orbit " + targetBody.bodyName + " and conduct research." + this.Root.MissionSeed.ToString();
         }
         protected override string GetTitle()
         {

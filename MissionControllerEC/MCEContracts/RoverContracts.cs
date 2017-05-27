@@ -91,7 +91,7 @@ namespace MissionControllerEC.MCEContracts
         }
         protected override string GetTitle()
         {
-            return "Launch Rover To " + targetBody.theName + " And Land";
+            return "Launch Rover To " + targetBody.bodyName + " And Land";
         }
         protected override string GetDescription()
         {
@@ -110,7 +110,7 @@ namespace MissionControllerEC.MCEContracts
             SaveInfo.SavedRoverLat = RcLatitude;
             SaveInfo.savedRoverLong = RcLongitude;
             SaveInfo.RoverBody = targetBody.flightGlobalsIndex;
-            return "Good job landing on, we will be sending you some more information.  Our scientist on the ground have found a few spots we want you to check out with rover, please check mission control." + targetBody.theName;
+            return "Good job landing on, we will be sending you some more information.  Our scientist on the ground have found a few spots we want you to check out with rover, please check mission control." + targetBody.bodyName;
         }
 
         protected override void OnLoad(ConfigNode node)

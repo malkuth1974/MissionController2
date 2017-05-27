@@ -76,7 +76,7 @@ namespace MissionControllerEC.MCEContracts
         }
         protected override string GetTitle()
         {
-            return "Launch of Vostok 1 " + targetBody.theName;
+            return "Launch of Vostok 1 " + targetBody.bodyName;
         }
         protected override string GetDescription()
         {
@@ -93,7 +93,7 @@ namespace MissionControllerEC.MCEContracts
         }
         protected override string GetSynopsys()
         {
-            return "Bring Vostok 1 to orbit around " + targetBody.theName + ". " + " Orbit at least once!";
+            return "Bring Vostok 1 to orbit around " + targetBody.bodyName + ". " + " Orbit at least once!";
         }
         protected override string MessageCompleted()
         {
@@ -221,7 +221,7 @@ namespace MissionControllerEC.MCEContracts
         }
         protected override string GetTitle()
         {
-            return "Launch of Vostok 2 " + targetBody.theName;
+            return "Launch of Vostok 2 " + targetBody.bodyName;
         }
         protected override string GetDescription()
         {
@@ -237,7 +237,7 @@ namespace MissionControllerEC.MCEContracts
         }
         protected override string GetSynopsys()
         {
-            return "Bring Vostok 2 to orbit around " + targetBody.theName + ". " + " stay in orbit for 1 day.";
+            return "Bring Vostok 2 to orbit around " + targetBody.bodyName + ". " + " stay in orbit for 1 day.";
         }
         protected override string MessageCompleted()
         {
@@ -352,7 +352,7 @@ namespace MissionControllerEC.MCEContracts
         }
         protected override string GetTitle()
         {
-            return "Launch of Voskhod 2 (2 Kerbals) " + targetBody.theName;
+            return "Launch of Voskhod 2 (2 Kerbals) " + targetBody.bodyName;
         }
         protected override string GetDescription()
         {
@@ -367,7 +367,7 @@ namespace MissionControllerEC.MCEContracts
         }
         protected override string GetSynopsys()
         {
-            return "Bring Voskhod 2 (2 Kerbals) to orbit around " + targetBody.theName + ". " + " stay in orbit for 1 day.";
+            return "Bring Voskhod 2 (2 Kerbals) to orbit around " + targetBody.bodyName + ". " + " stay in orbit for 1 day.";
         }
         protected override string MessageCompleted()
         {
@@ -873,7 +873,7 @@ namespace MissionControllerEC.MCEContracts
 
         protected override string GetHashString()
         {
-            return "Conduct Flyby of " + targetBody.theName + this.MissionSeed.ToString();
+            return "Conduct Flyby of " + targetBody.bodyName + this.MissionSeed.ToString();
         }
         protected override string GetTitle()
         {
@@ -1012,7 +1012,7 @@ namespace MissionControllerEC.MCEContracts
         }
         protected override string GetTitle()
         {
-            return "Launch of Luna 2 " + targetBody.theName;
+            return "Launch of Luna 2 " + targetBody.bodyName;
         }
         protected override string GetDescription()
         {
@@ -1032,7 +1032,7 @@ namespace MissionControllerEC.MCEContracts
         }
         protected override string GetSynopsys()
         {
-            return "Bring Luna 2 to orbit around " + targetBody.theName + ". " + " Conduct Science, Then crash into surface of Mun.";
+            return "Bring Luna 2 to orbit around " + targetBody.bodyName + ". " + " Conduct Science, Then crash into surface of Mun.";
         }
         protected override string MessageCompleted()
         {
@@ -1144,7 +1144,7 @@ namespace MissionControllerEC.MCEContracts
         }
         protected override string GetTitle()
         {
-            return "Launch of Luna 16 " + targetBody.theName;
+            return "Launch of Luna 16 " + targetBody.bodyName;
         }
         protected override string GetDescription()
         {
@@ -1171,7 +1171,7 @@ namespace MissionControllerEC.MCEContracts
         }
         protected override string GetSynopsys()
         {
-            return "Bring Luna 16 to orbit around " + targetBody.theName + ". " + " Land on Mun, Return To Kerbin with automated samples.";
+            return "Bring Luna 16 to orbit around " + targetBody.bodyName + ". " + " Land on Mun, Return To Kerbin with automated samples.";
         }
         protected override string MessageCompleted()
         {
@@ -2108,7 +2108,7 @@ namespace MissionControllerEC.MCEContracts
         }
         protected override string GetSynopsys()
         {
-            return "Agena Test " + targetBody.theName;
+            return "Agena Test " + targetBody.bodyName;
         }
         protected override string MessageCompleted()
         {
@@ -2283,7 +2283,7 @@ namespace MissionControllerEC.MCEContracts
         }
         protected override string GetSynopsys()
         {
-            return "Agena Test " + targetBody.theName;
+            return "Agena Test " + targetBody.bodyName;
         }
         protected override string MessageCompleted()
         {
@@ -2429,7 +2429,7 @@ namespace MissionControllerEC.MCEContracts
         }
         protected override string GetTitle()
         {
-            return "Launch and deployment of skylab over " + targetBody.theName;
+            return "Launch and deployment of skylab over " + targetBody.bodyName;
         }
         protected override string GetDescription()
         {

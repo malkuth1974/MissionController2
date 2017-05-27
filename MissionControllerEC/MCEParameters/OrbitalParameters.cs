@@ -53,7 +53,7 @@ namespace MissionControllerEC.MCEParameters
         }
         protected override string GetTitle()
         {
-            return "Enter " + OrbitType + " Around: " + targetBody.theName + "  With APA below: " + ApA.ToString("N0") + ". You have a margin of error of " + st.Margin_Of_Error_Contract_Orbits.ToString("N0");
+            return "Enter " + OrbitType + " Around: " + targetBody.bodyName + "  With APA below: " + ApA.ToString("N0") + ". You have a margin of error of " + st.Margin_Of_Error_Contract_Orbits.ToString("N0");
         }
 
         protected override void OnRegister()
@@ -190,7 +190,7 @@ namespace MissionControllerEC.MCEParameters
         }
         protected override string GetTitle()
         {
-            return "Enter "+ OrbitType + " Around: " + targetBody.theName + " With APA below: " + ApA.ToString("N0") + ". You have a margin of error of " + st.Margin_Of_Error_Contract_Orbits.ToString("N0");
+            return "Enter "+ OrbitType + " Around: " + targetBody.bodyName + " With APA below: " + ApA.ToString("N0") + ". You have a margin of error of " + st.Margin_Of_Error_Contract_Orbits.ToString("N0");
         }
 
         protected override void OnRegister()
@@ -309,7 +309,7 @@ namespace MissionControllerEC.MCEParameters
         }
         protected override string GetTitle()
         {
-            return "Enter Orbit Around Goal: " + targetBody.theName;
+            return "Enter Orbit Around Goal: " + targetBody.bodyName;
         }
        
         protected override void OnUpdate()
@@ -391,7 +391,7 @@ namespace MissionControllerEC.MCEParameters
         }
         protected override string GetTitle()
         {
-            return "Enter " + orbitType + " Around " + targetBody.theName + " With PeA above: " + PeA.ToString("N0") + ". You have a margin of error of " + st.Margin_Of_Error_Contract_Orbits.ToString("N0");
+            return "Enter " + orbitType + " Around " + targetBody.bodyName + " With PeA above: " + PeA.ToString("N0") + ". You have a margin of error of " + st.Margin_Of_Error_Contract_Orbits.ToString("N0");
         }
 
         protected override void OnRegister()
@@ -536,7 +536,7 @@ namespace MissionControllerEC.MCEParameters
         }
         protected override string GetTitle()
         {
-            return "Enter " + orbitType + " Around " + targetBody.theName + " With PeA above: " + PeA.ToString("N0") + ". You have a margin of error of " + st.Margin_Of_Error_Contract_Orbits.ToString("N0");
+            return "Enter " + orbitType + " Around " + targetBody.bodyName + " With PeA above: " + PeA.ToString("N0") + ". You have a margin of error of " + st.Margin_Of_Error_Contract_Orbits.ToString("N0");
         }
 
         protected override void OnRegister()
@@ -1366,7 +1366,7 @@ namespace MissionControllerEC.MCEParameters
         }
         protected override string GetTitle()
         {
-            return "FlyBy: " + targetBody.theName + "  Between an altitude of: " + maxheight + "  And: " + minheight;
+            return "FlyBy: " + targetBody.bodyName + "  Between an altitude of: " + maxheight + "  And: " + minheight;
         }       
 
         protected override void OnUpdate()
