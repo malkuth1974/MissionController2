@@ -49,6 +49,10 @@ namespace MissionControllerEC.MCEContracts
             {
                 return false;
             }
+            if (!HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings>().MCERoverContracts)
+            {
+                return false;
+            }
             roverBodyNum(Tools.RandomNumber(1, 3));
             
             if (targetBody == null)

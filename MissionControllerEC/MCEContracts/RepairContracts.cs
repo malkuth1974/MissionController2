@@ -139,7 +139,7 @@ namespace MissionControllerEC.MCEContracts
             totalContracts = ContractSystem.Instance.GetCurrentContracts<RepairGoal>().Count();
             TotalFinished = ContractSystem.Instance.GetCompletedContracts<RepairGoal>().Count();
             //Debug.Log(" Repair Contract Totalcontracts " + totalContracts + " - " + " Total Finsihed " + TotalFinished);           
-            if (totalContracts >= 1 || SaveInfo.NoRepairContracts)
+            if (totalContracts >= 1 || !HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings>().RepairContracts)
             {
                 Debug.Log("contract is generated right now terminating Repair Vessel");
                 return false;
@@ -165,17 +165,17 @@ namespace MissionControllerEC.MCEContracts
 
             if (maxApA <= 120000)
             {
-                base.SetFunds(45000f * st.Contract_Payment_Multiplier, 71000f * st.Contract_Payment_Multiplier, 150000f * st.Contract_Payment_Multiplier, targetBody);
+                base.SetFunds(45000f * HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEContractPayoutMult, 71000f * HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEContractPayoutMult, 150000f * HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEContractPayoutMult, targetBody);
                 base.SetReputation(20f, 25f, targetBody);
             }
             if (maxApA > 120000 && maxApA <= 1000000)
             {
-                base.SetFunds(70000f * st.Contract_Payment_Multiplier, 95000f * st.Contract_Payment_Multiplier, 210000f * st.Contract_Payment_Multiplier, targetBody);
+                base.SetFunds(70000f * HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEContractPayoutMult, 95000f * HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEContractPayoutMult, 210000f * HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEContractPayoutMult, targetBody);
                 base.SetReputation(20f, 25f, targetBody);
             }
             if (maxApA > 1000001)
             {
-                base.SetFunds(120000f * st.Contract_Payment_Multiplier, 130000f * st.Contract_Payment_Multiplier, 300000f * st.Contract_Payment_Multiplier, targetBody);
+                base.SetFunds(120000f * HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEContractPayoutMult, 130000f * HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEContractPayoutMult, 300000f * HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEContractPayoutMult, targetBody);
                 base.SetReputation(20f, 25f, targetBody);
             }
 
@@ -389,7 +389,7 @@ namespace MissionControllerEC.MCEContracts
             }
             totalContracts = ContractSystem.Instance.GetCurrentContracts<RepairStation>().Count();
             TotalFinished = ContractSystem.Instance.GetCompletedContracts<RepairStation>().Count();
-            if (totalContracts >= 1 || SaveInfo.NoRepairContracts)
+            if (totalContracts >= 1 || !HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings>().RepairContracts)
             {
                 Debug.LogWarning("Total Repair station Contracts is greater then one Repair Contract Not Generated");
                 return false;                
@@ -421,7 +421,7 @@ namespace MissionControllerEC.MCEContracts
             //this.AddParameter(new ResourceSupplyGoal(repairParts, RPamount, Ctitle), null);
             base.SetExpiry(1f, 3f);
             base.SetDeadlineYears(1f, targetBody);
-            base.SetFunds(5000f * st.Contract_Payment_Multiplier, 30000f * st.Contract_Payment_Multiplier, 85000f * st.Contract_Payment_Multiplier, targetBody);
+            base.SetFunds(5000f * HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEContractPayoutMult, 30000f * HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEContractPayoutMult, 85000f * HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEContractPayoutMult, targetBody);
             base.SetReputation(75f, 125f, targetBody);
 
             return true;

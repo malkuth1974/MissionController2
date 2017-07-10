@@ -13,7 +13,7 @@ namespace MissionControllerEC.MCEContracts
     public class Vostok : Contract
     {
         Settings settings = new Settings("config.cfg");
-        public double minHeight = 70000;
+        public float minHeight = 75000;
         public int totalContracts;
         public int TotalFinished;
         public int crew = 1;
@@ -34,9 +34,12 @@ namespace MissionControllerEC.MCEContracts
                 return false;
             }
             if (HighLogic.LoadedSceneIsFlight) { return false; }
-            if (SaveInfo.all_Historical_Contracts_Off == true) { return false; }
-            minHeight = Tools.ReturnMinOrbit(targetBody, 1.2f);
-            vostok1 = this.AddParameter(new AltitudeGoal(targetBody, minHeight, true), null);
+            if (!HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings>().HistoricalContracts)
+            {
+                return false;
+            }
+            minHeight= Convert.ToSingle(Tools.getBodyAltitude(targetBody));         
+            vostok1 = this.AddParameter(new Contracts.Parameters.ReachAltitudeEnvelope(minHeight, minHeight + HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEErrorOrbits), null);
             vostok1.SetFunds(1000f, targetBody);
             vostok1.SetReputation(2f, targetBody);
             vostok2 = this.AddParameter(new InOrbitGoal(targetBody), null);
@@ -81,15 +84,7 @@ namespace MissionControllerEC.MCEContracts
         protected override string GetDescription()
         {
             //those 3 strings appear to do nothing
-            return "Vostok 1 was the first spaceflight of the Vostok program and the first human spaceflight in history. The Vostok 3KA spacecraft was " +
-                "launched on April 12, 1961 with Soviet cosmonaut Yuri Gagarin, making him the first human to cross into outer space.\n\n" +
-                "The spaceflight consisted of one orbit around Earth, the shortest manned orbital flight to date. According to official records, the spaceflight took 108 " +
-                "minutes from launch to landing. As planned, Gagarin parachuted to the ground separately from his spacecraft after ejecting at 7 km (23,000 ft) altitude. Due to the secrecy " +
-                "surrounding the Soviet space program at the time, many details of the spaceflight only came to light years later, and several details in the original press releases turned out to be false.\n\n" +
-
-                "Information on Vostok 1 was gathered from Wikipedia\n\n" +
-
-                "Objectives are to: \n\n1. Enter Space \n2. Conduct at least one orbit of Kebin \n3. Return safely to Kerbin";
+            return "Vostok 1 was the first spaceflight of the Vostok program and the first human spaceflight in history.";
         }
         protected override string GetSynopsys()
         {
@@ -128,7 +123,7 @@ namespace MissionControllerEC.MCEContracts
                     targetBody = body;
                 else { }
             }
-            minHeight = double.Parse(node.GetValue("minheight"));
+            minHeight = float.Parse(node.GetValue("minheight"));
             crew = int.Parse(node.GetValue("crewcount"));
 
         }
@@ -152,7 +147,7 @@ namespace MissionControllerEC.MCEContracts
     public class Vostok2 : Contract
     {
         Settings settings = new Settings("config.cfg");
-        public double minHeight = 70000;
+        public float minHeight = 70000;
         public double missionTime = 21600;
         public int totalContracts;
         public int TotalFinished;
@@ -176,9 +171,12 @@ namespace MissionControllerEC.MCEContracts
             }
 
             if (HighLogic.LoadedSceneIsFlight) { return false; }
-            if (SaveInfo.all_Historical_Contracts_Off == true) { return false; }
-            minHeight = Tools.ReturnMinOrbit(targetBody, 1.3f);
-            vostok1 = this.AddParameter(new AltitudeGoal(targetBody, minHeight, true), null);
+            if (!HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings>().HistoricalContracts)
+            {
+                return false;
+            }
+            minHeight = Convert.ToSingle(Tools.getBodyAltitude(targetBody));
+            vostok1 = this.AddParameter(new Contracts.Parameters.ReachAltitudeEnvelope(minHeight, minHeight + HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEErrorOrbits), null);
             vostok1.SetFunds(1000f, targetBody);
             vostok1.SetReputation(2f, targetBody);
             vostok2 = this.AddParameter(new InOrbitGoal(targetBody), null);
@@ -258,7 +256,7 @@ namespace MissionControllerEC.MCEContracts
                 if (body.flightGlobalsIndex == bodyID)
                     targetBody = body;
             }
-            minHeight = double.Parse(node.GetValue("minheight"));
+            minHeight = float.Parse(node.GetValue("minheight"));
             crew = int.Parse(node.GetValue("crewcount"));
             missionTime = double.Parse(node.GetValue("missionTime"));
 
@@ -285,7 +283,7 @@ namespace MissionControllerEC.MCEContracts
     public class Voskhod2 : Contract
     {
         Settings settings = new Settings("config.cfg");
-        public double minHeight = 82000;
+        public float minHeight = 82000;
         public int totalContracts;
         public int TotalFinished;
         public int crew = 2;
@@ -307,9 +305,12 @@ namespace MissionControllerEC.MCEContracts
                 return false;
             }         
             if (HighLogic.LoadedSceneIsFlight) { return false; }
-            if (SaveInfo.all_Historical_Contracts_Off == true) { return false; }
-            minHeight = Tools.ReturnMinOrbit(targetBody, 1.3f);
-            vostok1 = this.AddParameter(new AltitudeGoal(targetBody, minHeight, true), null);
+            if (!HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings>().HistoricalContracts)
+            {
+                return false;
+            }
+            minHeight = Convert.ToSingle(Tools.ReturnMinOrbit(targetBody, 1.3f));
+            vostok1 = this.AddParameter(new Contracts.Parameters.ReachAltitudeEnvelope(minHeight, minHeight + HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEErrorOrbits), null);
             vostok1.SetFunds(2000f, targetBody);
             vostok1.SetReputation(2f, targetBody);
             vostok2 = this.AddParameter(new InOrbitGoal(targetBody), null);
@@ -392,7 +393,7 @@ namespace MissionControllerEC.MCEContracts
                     targetBody = body;
                 else { }
             }
-            minHeight = double.Parse(node.GetValue("minheight"));
+            minHeight = float.Parse(node.GetValue("minheight"));
             crew = int.Parse(node.GetValue("crewcount"));
 
         }
@@ -519,7 +520,10 @@ namespace MissionControllerEC.MCEContracts
                 return false;
             }           
             if (HighLogic.LoadedSceneIsFlight) { return false; }
-            if (SaveInfo.all_Historical_Contracts_Off == true) { return false; }
+            if (!HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings>().HistoricalContracts)
+            {
+                return false;
+            }
             minHeight = Tools.ReturnMinOrbit(targetBody, 1.3f);
             Eccentricity = .01;
             AmountDaysActive = 10800;
@@ -776,7 +780,10 @@ namespace MissionControllerEC.MCEContracts
                 return false;
             }           
             if (HighLogic.LoadedSceneIsFlight) { return false; }
-            if (SaveInfo.all_Historical_Contracts_Off == true) { return false; }
+            if (!HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings>().HistoricalContracts)
+            {
+                return false;
+            }
             marinerNumber = SaveInfo.marinerCurrentNumber;
             if (marinerNumber == 1)
             {
@@ -958,7 +965,10 @@ namespace MissionControllerEC.MCEContracts
                 return false;
             }          
             if (HighLogic.LoadedSceneIsFlight) { return false; }
-            if (SaveInfo.all_Historical_Contracts_Off == true) { return false; }
+            if (!HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings>().HistoricalContracts)
+            {
+                return false;
+            }
             luna1 = this.AddParameter(new InOrbitGoal(targetBody), null);
             luna1.SetFunds(4000f, targetBody);
             luna1.SetReputation(8f, targetBody);
@@ -1098,7 +1108,10 @@ namespace MissionControllerEC.MCEContracts
                 return false;
             }            
             if (HighLogic.LoadedSceneIsFlight) { return false; }
-            if (SaveInfo.all_Historical_Contracts_Off == true) { return false; }
+            if (!HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings>().HistoricalContracts)
+            {
+                return false;
+            }
             luna1 = this.AddParameter(new InOrbitGoal(targetBody), null);
             luna1.SetFunds(8000f, targetBody);
             luna1.SetReputation(8f, targetBody);
@@ -1352,7 +1365,10 @@ namespace MissionControllerEC.MCEContracts
                 return false;
             }          
             if (HighLogic.LoadedSceneIsFlight) { return false; }
-            if (SaveInfo.all_Historical_Contracts_Off == true) { return false; }
+            if (!HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings>().HistoricalContracts)
+            {
+                return false;
+            }
             ApolloMissionNumber = SaveInfo.apolloCurrentNumber;
             ApolloTextSelection();
             if (ApolloMissionNumber == 6)
@@ -1700,7 +1716,10 @@ namespace MissionControllerEC.MCEContracts
                 return false;
             }            
             if (HighLogic.LoadedSceneIsFlight) { return false; }
-            if (SaveInfo.Duna_NonHistorical_Contracts_Off == true) { return false; }
+            if (!HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings>().ApolloExtraContent)
+            {
+                return false;
+            }
             ApolloDunaMissionNumber = SaveInfo.apolloDunaCurrentNumber;
             apdMessageSelection();
             targetBody = FlightGlobals.Bodies[2];
@@ -1941,7 +1960,10 @@ namespace MissionControllerEC.MCEContracts
             totalContracts = ContractSystem.Instance.GetCurrentContracts<ApolloDunaStation>().Count();
             if (totalContracts >= 1) { return false; }
             if (HighLogic.LoadedSceneIsFlight) { return false; }
-            if (SaveInfo.Duna_NonHistorical_Contracts_Off == true) { return false; }
+            if (!HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings>().ApolloExtraContent)
+            {
+                return false;
+            }
 
             this.AddParameter(new InOrbitGoal(targetBody), null);
             this.AddParameter(new GetCrewCount(0), null);
@@ -2051,7 +2073,10 @@ namespace MissionControllerEC.MCEContracts
                 //Debug.Log("count is " + totalContracts);
                 return false;
             }
-            if (SaveInfo.all_Historical_Contracts_Off == true) { return false; }
+            if (!HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings>().HistoricalContracts)
+            {
+                return false;
+            }
             targetBody = Planetarium.fetch.Home;
             ApA = Tools.ReturnMinOrbit(targetBody, 1.2f);
             PeA = ApA - 1000;
@@ -2068,7 +2093,7 @@ namespace MissionControllerEC.MCEContracts
             base.SetScience(25f, targetBody);
             base.SetDeadlineDays(19f, targetBody);
             base.SetReputation(35f, 35f, targetBody);
-            base.SetFunds(28000f * st.Contract_Payment_Multiplier, 54000f * st.Contract_Payment_Multiplier, 39000f * st.Contract_Payment_Multiplier, targetBody);
+            base.SetFunds(28000f * HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEContractPayoutMult, 54000f * HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEContractPayoutMult, 39000f * HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEContractPayoutMult, targetBody);
 
             return true;
         }
@@ -2226,7 +2251,10 @@ namespace MissionControllerEC.MCEContracts
                 //Debug.Log("Agena 2 is already loaded.");
                 return false;
             }
-            if (SaveInfo.all_Historical_Contracts_Off == true) { return false; }
+            if (!HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings>().HistoricalContracts)
+            {
+                return false;
+            }
             targetBody = Planetarium.fetch.Home;
             ApA = Tools.ReturnMinOrbit(targetBody, 1.6f);
             PeA = ApA - 1000;
@@ -2247,7 +2275,7 @@ namespace MissionControllerEC.MCEContracts
             base.SetScience(25f, targetBody);
             base.SetDeadlineDays(20f, targetBody);
             base.SetReputation(50f, 35f, targetBody);
-            base.SetFunds(29000f * st.Contract_Payment_Multiplier, 48000f * st.Contract_Payment_Multiplier, 42000f * st.Contract_Payment_Multiplier, targetBody);
+            base.SetFunds(29000f * HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEContractPayoutMult, 48000f * HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEContractPayoutMult, 42000f * HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEContractPayoutMult, targetBody);
 
             return true;
         }
@@ -2393,7 +2421,10 @@ namespace MissionControllerEC.MCEContracts
             totalContracts = ContractSystem.Instance.GetCurrentContracts<SkyLab1>().Count();
             if (totalContracts >= 1) { return false; }
             if (HighLogic.LoadedSceneIsFlight) { return false; }
-            if (SaveInfo.all_Historical_Contracts_Off == true) { return false; }
+            if (!HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings>().HistoricalContracts)
+            {
+                return false;
+            }
             minHeight = Tools.ReturnMinOrbit(targetBody, 1.2f);
             this.AddParameter(new AltitudeGoal(targetBody, minHeight), null);
             this.AddParameter(new InOrbitGoal(targetBody), null);
@@ -2535,7 +2566,10 @@ namespace MissionControllerEC.MCEContracts
             if (HighLogic.LoadedSceneIsFlight) { return false; }
             if (totalContracts >= 1) { return false; }
 
-            if (SaveInfo.all_Historical_Contracts_Off == true) { return false; }
+            if (!HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings>().HistoricalContracts)
+            {
+                return false;
+            }
 
             vesselId = SaveInfo.skyLabVesID;
             vesselName = SaveInfo.skyLabName;
@@ -2696,7 +2730,10 @@ namespace MissionControllerEC.MCEContracts
             if (HighLogic.LoadedSceneIsFlight) { return false; }
             if (totalContracts >= 1) { return false; }
 
-            if (SaveInfo.all_Historical_Contracts_Off == true) { return false; }
+            if (!HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings>().HistoricalContracts)
+            {
+                return false;
+            }
             vesselId = SaveInfo.skyLabVesID;
             vesselName = SaveInfo.skyLabName;
 
@@ -2850,7 +2887,10 @@ namespace MissionControllerEC.MCEContracts
             if (HighLogic.LoadedSceneIsFlight) { return false; }
             if (totalContracts >= 1) { return false; }
 
-            if (SaveInfo.all_Historical_Contracts_Off == true) { return false; }
+            if (!HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings>().HistoricalContracts)
+            {
+                return false;
+            }
 
             ApA = Tools.ReturnMinOrbit(targetBody, 1.8f); ;
             PeA = ApA;

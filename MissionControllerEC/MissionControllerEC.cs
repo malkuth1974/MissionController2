@@ -39,9 +39,7 @@ namespace MissionControllerEC
         public static Rect CustomWindowPostion;
         public static bool ShowCustomWindow;
 
-        public static GUIStyle StyleWhite, StyleBold, styleBoxWhite, styleBlue, styleBlueBold, styleGreenBold;
-
-        public static bool RevertHalt = false;
+        public static GUIStyle StyleWhite, StyleBold, styleBoxWhite, styleBlue, styleBlueBold, styleGreenBold;      
 
         // Special thanks to Magico13 Of Kerbal Construction Time for showing me how to Get Scenario Persistance.
 
@@ -185,6 +183,7 @@ namespace MissionControllerEC
         private string marinerNumber;
         private string apolloNumber;
         private int id = new System.Random().Next(int.MaxValue);
+        public static bool RevertHalt = false;
 
         Settings settings = new Settings("Config.cfg");        
 
@@ -195,7 +194,7 @@ namespace MissionControllerEC
             loadFiles();
             CreateButtons();          
             GameEvents.Contract.onContractsLoaded.Add(this.onContractLoaded);
-            GameEvents.onGameSceneLoadRequested.Add(this.CheckRepairContractTypes);
+            GameEvents.onGameSceneLoadRequested.Add(this.CheckRepairContractTypes);           
             //Debug.Log("MCE Awake");
             getSupplyList(false);
         }    
@@ -212,8 +211,14 @@ namespace MissionControllerEC
             GameEvents.Contract.onContractsLoaded.Remove(this.onContractLoaded);
             GameEvents.onGameSceneLoadRequested.Remove(this.CheckRepairContractTypes);
             //Debug.Log("Game All values removed for MCE");
-        }                
-      
+        }
+        internal void Update()
+        {
+            if (MCE_ScenarioStartup.ShowPopUpWindow3)
+            {
+                RevertPress();
+            }          
+        }
         public void OnGUI()
         {
             MCE_ScenarioStartup.loadStyles();
@@ -236,50 +241,12 @@ namespace MissionControllerEC
                 MCE_ScenarioStartup.CustomWindowPostion.x = Mathf.Clamp(MCE_ScenarioStartup.CustomWindowPostion.x, 0, Screen.width - MCE_ScenarioStartup.CustomWindowPostion.width);
                 MCE_ScenarioStartup.CustomWindowPostion.y = Mathf.Clamp(MCE_ScenarioStartup.CustomWindowPostion.y, 0, Screen.height - MCE_ScenarioStartup.CustomWindowPostion.height);
             }            
-            
-            if (MCE_ScenarioStartup.ShowSettingsWindow)
-            {
-                MCE_ScenarioStartup.SettingsWindowPostion = GUILayout.Window(id + 4, MCE_ScenarioStartup.SettingsWindowPostion, drawSettings, "MCE Settings", GUILayout.Height(Screen.height / 2.2f), GUILayout.Width(Screen.width / 3));
-                MCE_ScenarioStartup.SettingsWindowPostion.x = Mathf.Clamp(MCE_ScenarioStartup.SettingsWindowPostion.x, 0, Screen.width - MCE_ScenarioStartup.SettingsWindowPostion.width);
-                MCE_ScenarioStartup.SettingsWindowPostion.y = Mathf.Clamp(MCE_ScenarioStartup.SettingsWindowPostion.y, 0, Screen.height - MCE_ScenarioStartup.SettingsWindowPostion.height);
-            }
-            if (MCE_ScenarioStartup.ShowPopUpWindow3)
-            {
-                MCE_ScenarioStartup.PopUpWindowPosition3 = GUILayout.Window(id + 5, new Rect(Screen.width / 2 - 200, Screen.height / 2 - 100, 450, 150), drawPopUpWindow3, "MCE Information Window");
-            }
-            //Debug.Log("MCE GUI Loaded");
         }
 
         private void DrawMainWindow(int id)
         {
             GUI.skin = HighLogic.Skin;
-            GUILayout.BeginVertical();
-
-            //if (GUILayout.Button("Contract Finsihed List"))
-            //{
-            //    GetContractList();
-            //}
-
-            //if (GUILayout.Button("DeltaVCalcs"))
-            //{
-            //    if (HighLogic.LoadedSceneIsEditor)
-            //    {
-            //        try
-            //        {
-            //            List<Part> parts;
-            //            parts = EditorLogic.SortedShipList;
-            //            vesseltons = 0;
-            //            vesselResourceTons = 0;
-            //            foreach (Part p in parts)
-            //            {
-            //                vesseltons = p.stag;
-            //                vesselResourceTons = p.resourceMass + p.mass;
-            //            }
-
-            //        }
-            //        catch { };
-            //    }
-            //}
+            GUILayout.BeginVertical();           
 
             GUILayout.Label("Current Funds: " + Funding.Instance.Funds);
            
@@ -477,8 +444,7 @@ namespace MissionControllerEC
             SaveInfo.tirosCurrentNumber = tirosNumber;
             SaveInfo.marinerCurrentNumber = marinerNumber;
             SaveInfo.apolloCurrentNumber = apolloNumber;
-            SaveInfo.apolloDunaCurrentNumber = apolloDunaNumber;
-            SaveInfo.Hardcore_Vessel_Must_Survive = hardcoreOn;            
+            SaveInfo.apolloDunaCurrentNumber = apolloDunaNumber;          
             SaveInfo.SatContractReady = ComSatOn;
             SaveInfo.AgenaTargetVesselID = agenaTargetVesselID;
             SaveInfo.AgenaTargetVesselName = agenaTargetVesselName;
@@ -493,7 +459,6 @@ namespace MissionControllerEC
             SaveInfo.skylab2done = skylab2done;
             SaveInfo.skylab3done = skylab3done;
             SaveInfo.skylab4done = skylab4done;
-            SaveInfo.MessageHelpers = messagehelpers;
 
             SaveInfo.ComSateContractOn = com_Sat_Start_Building;
             SaveInfo.comSatmaxOrbital = com_Sat_maxOrbP;
@@ -519,13 +484,7 @@ namespace MissionControllerEC
             SaveInfo.SupplyBodyIDX = supplybodyIDX;
             SaveInfo.supplyContractOn = supplyContractOn;
             SaveInfo.supplyAmount = supplyResAmount;
-           
-            SaveInfo.OrbitalResearchContractActivated = noOrbitalContract;
-            SaveInfo.NoLanderResearchContracts = noLandingContract;
-            SaveInfo.NoSatelliteContracts = noSatelliteContract;
-            SaveInfo.NoRepairContracts = noRepairContract;
-            SaveInfo.NoOrbitalPeriodcontracts = noOrbitalPeriodContract;
-            SaveInfo.all_Historical_Contracts_Off = noHistoricContracts;
+                     
             SaveInfo.SavedRoverLat = savedroverLat;
             SaveInfo.savedRoverLong = savedroverlong;
             SaveInfo.RoverLanded = roverislanded;
@@ -541,8 +500,7 @@ namespace MissionControllerEC
             tirosNumber = SaveInfo.tirosCurrentNumber;
             marinerNumber = SaveInfo.marinerCurrentNumber;
             apolloNumber = SaveInfo.apolloCurrentNumber;
-            apolloDunaNumber = SaveInfo.apolloDunaCurrentNumber;
-            hardcoreOn = SaveInfo.Hardcore_Vessel_Must_Survive;           
+            apolloDunaNumber = SaveInfo.apolloDunaCurrentNumber;       
             ComSatOn = SaveInfo.SatContractReady;
             agenaTargetVesselID = SaveInfo.AgenaTargetVesselID;
             agenaTargetVesselName = SaveInfo.AgenaTargetVesselName;
@@ -557,7 +515,6 @@ namespace MissionControllerEC
             skylab2done = SaveInfo.skylab2done;
             skylab3done = SaveInfo.skylab3done;
             skylab4done = SaveInfo.skylab4done;
-            messagehelpers = SaveInfo.MessageHelpers;
 
             com_Sat_Start_Building = SaveInfo.ComSateContractOn;
             com_Sat_maxOrbP = SaveInfo.comSatmaxOrbital;
@@ -583,13 +540,7 @@ namespace MissionControllerEC
             supplybodyIDX = SaveInfo.SupplyBodyIDX;
             supplyContractOn = SaveInfo.supplyContractOn;
             supplyResAmount = SaveInfo.supplyAmount;
-          
-            noOrbitalContract = SaveInfo.OrbitalResearchContractActivated;
-            noLandingContract = SaveInfo.NoLanderResearchContracts;
-            noSatelliteContract = SaveInfo.NoSatelliteContracts;
-            noRepairContract = SaveInfo.NoRepairContracts;
-            noOrbitalPeriodContract = SaveInfo.NoOrbitalPeriodcontracts;
-            noHistoricContracts = SaveInfo.all_Historical_Contracts_Off;
+                    
             savedroverLat = SaveInfo.SavedRoverLat;
             savedroverlong = SaveInfo.savedRoverLong;
             roverislanded = SaveInfo.RoverLanded;

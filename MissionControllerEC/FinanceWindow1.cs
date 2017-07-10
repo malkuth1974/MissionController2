@@ -61,7 +61,7 @@ namespace MissionControllerEC
             GUILayout.EndHorizontal();
                            
             GUILayout.EndVertical();
-            if (settings.DebugMenu && GUILayout.Button("Debug Menu"))
+            if (HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEDebugMode && GUILayout.Button("Debug Menu"))
             {
                MCE_ScenarioStartup.ShowMainWindow = true;
             }
@@ -72,10 +72,11 @@ namespace MissionControllerEC
                 DictCount = settings.SupplyResourceList.Count();
                 SaveInfo.ResourceName = settings.SupplyResourceList[prCount];              
             }
-            if (GUILayout.Button("Settings Menu"))
+            if (GUILayout.Button("Test Button"))
             {
-                MCE_ScenarioStartup.ShowSettingsWindow = true;
+                RevertPress();
             }
+
             if (GUILayout.Button("Exit Window And Save"))
             {
                 MCE_ScenarioStartup.ShowfinanaceWindow = false;
@@ -98,9 +99,9 @@ namespace MissionControllerEC
            
             GUI.skin = HighLogic.Skin;
             GUILayout.BeginVertical();
-            comSatwin = GUILayout.Toggle(comSatwin, "Edit ComSat Contract Values");
-            supplywin = GUILayout.Toggle(supplywin, "Edit Supply Contract Values");
-            crewwin = GUILayout.Toggle(crewwin, "Edit Crew Transfer Contract Values");
+            //comSatwin = GUILayout.Toggle(comSatwin, "Edit ComSat Contract Values");
+            //supplywin = GUILayout.Toggle(supplywin, "Edit Supply Contract Values");
+            //crewwin = GUILayout.Toggle(crewwin, "Edit Crew Transfer Contract Values");
             
             #region ComSatValues
             if (comSatwin)
@@ -435,7 +436,12 @@ namespace MissionControllerEC
             GUILayout.EndVertical();
             if (GUILayout.Button("Exit Window"))
             {
-                MCE_ScenarioStartup.ShowCustomWindow = false;              
+                MCE_ScenarioStartup.ShowCustomWindow = false;
+                comSatwin = false;
+                supplywin = false;
+                crewwin = false;
+                MainMceWindow();
+                              
             }
 
             if (!Input.GetMouseButtonDown(1))

@@ -67,7 +67,7 @@ namespace MissionControllerEC
         public static double ReturnMinOrbit(CelestialBody targetbody,float multipier)
         {
             return targetbody.atmosphereDepth * multipier;
-        }
+        }        
 
         public static double ConvertDays(double seconds)
         {

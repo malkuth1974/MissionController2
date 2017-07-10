@@ -53,7 +53,7 @@ namespace MissionControllerEC.MCEParameters
         }
         protected override string GetTitle()
         {
-            return "Enter " + OrbitType + " Around: " + targetBody.bodyName + "  With APA below: " + ApA.ToString("N0") + ". You have a margin of error of " + st.Margin_Of_Error_Contract_Orbits.ToString("N0");
+            return "Enter " + OrbitType + " Around: " + targetBody.bodyName + "  With APA below: " + ApA.ToString("N0") + ". You have a margin of error of " + HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEErrorOrbits.ToString("N0");
         }
 
         protected override void OnRegister()
@@ -121,8 +121,8 @@ namespace MissionControllerEC.MCEParameters
             {
                 if (vessel.isActiveVessel && FlightGlobals.ActiveVessel.orbit.referenceBody.Equals(targetBody))
                 {
-                    double minApA = ApA - st.Margin_Of_Error_Contract_Orbits;
-                    double maxApA = ApA + st.Margin_Of_Error_Contract_Orbits;
+                    double minApA = ApA - HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEErrorOrbits;
+                    double maxApA = ApA + HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEErrorOrbits;
                     if (vessel.orbit.ApA >= minApA && vessel.orbit.ApA <= maxApA)
                     {
                         base.SetComplete();
@@ -136,8 +136,8 @@ namespace MissionControllerEC.MCEParameters
             {
                 if (vessel.isActiveVessel && FlightGlobals.ActiveVessel.orbit.referenceBody.Equals(targetBody))
                 {
-                    double minApA = ApA - st.Margin_Of_Error_Contract_Orbits;
-                    double maxApA = ApA + st.Margin_Of_Error_Contract_Orbits;
+                    double minApA = ApA - HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEErrorOrbits;
+                    double maxApA = ApA + HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEErrorOrbits;
                     if (vessel.orbit.ApA <= minApA && vessel.orbit.ApA >= maxApA)
                     {
                         base.SetIncomplete();
@@ -190,7 +190,7 @@ namespace MissionControllerEC.MCEParameters
         }
         protected override string GetTitle()
         {
-            return "Enter "+ OrbitType + " Around: " + targetBody.bodyName + " With APA below: " + ApA.ToString("N0") + ". You have a margin of error of " + st.Margin_Of_Error_Contract_Orbits.ToString("N0");
+            return "Enter "+ OrbitType + " Around: " + targetBody.bodyName + " With APA below: " + ApA.ToString("N0") + ". You have a margin of error of " + HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEErrorOrbits.ToString("N0");
         }
 
         protected override void OnRegister()
@@ -255,8 +255,8 @@ namespace MissionControllerEC.MCEParameters
             {
                 if (vessel.isActiveVessel && FlightGlobals.ActiveVessel.orbit.referenceBody.Equals(targetBody))
                 {
-                    double minApA = ApA - st.Margin_Of_Error_Contract_Orbits;
-                    double maxApA = ApA + st.Margin_Of_Error_Contract_Orbits;
+                    double minApA = ApA - HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEErrorOrbits;
+                    double maxApA = ApA + HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEErrorOrbits;
                     if (vessel.orbit.ApA >= minApA && vessel.orbit.ApA <= maxApA)
                     {
                         base.SetComplete();
@@ -271,8 +271,8 @@ namespace MissionControllerEC.MCEParameters
             {
                 if (vessel.isActiveVessel && FlightGlobals.ActiveVessel.orbit.referenceBody.Equals(targetBody))
                 {
-                    double minApA = ApA - st.Margin_Of_Error_Contract_Orbits;
-                    double maxApA = ApA + st.Margin_Of_Error_Contract_Orbits;
+                    double minApA = ApA - HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEErrorOrbits;
+                    double maxApA = ApA + HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEErrorOrbits;
                     if (vessel.orbit.ApA <= minApA && vessel.orbit.ApA >= maxApA)
                     {
                         base.SetIncomplete();
@@ -391,7 +391,7 @@ namespace MissionControllerEC.MCEParameters
         }
         protected override string GetTitle()
         {
-            return "Enter " + orbitType + " Around " + targetBody.bodyName + " With PeA above: " + PeA.ToString("N0") + ". You have a margin of error of " + st.Margin_Of_Error_Contract_Orbits.ToString("N0");
+            return "Enter " + orbitType + " Around " + targetBody.bodyName + " With PeA above: " + PeA.ToString("N0") + ". You have a margin of error of " + HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEErrorOrbits.ToString("N0");
         }
 
         protected override void OnRegister()
@@ -435,7 +435,7 @@ namespace MissionControllerEC.MCEParameters
                 }
             }
 
-            if (HighLogic.LoadedSceneIsFlight && SaveInfo.MessageHelpers == true)
+            if (HighLogic.LoadedSceneIsFlight && HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEReadoutHelpAllow == true)
             {
                 Tools.ObitalPeriodHelper(FlightGlobals.ActiveVessel);
             }
@@ -466,8 +466,8 @@ namespace MissionControllerEC.MCEParameters
             {
                 if (vessel.isActiveVessel)
                 {
-                    double minPeA = PeA - st.Margin_Of_Error_Contract_Orbits;
-                    double maxPeA = PeA + st.Margin_Of_Error_Contract_Orbits;
+                    double minPeA = PeA - HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEErrorOrbits;
+                    double maxPeA = PeA + HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEErrorOrbits;
                     if (vessel.orbit.PeA >= minPeA && vessel.orbit.PeA <= maxPeA)
                     {
                         base.SetComplete();
@@ -481,8 +481,8 @@ namespace MissionControllerEC.MCEParameters
             {
                 if (vessel.isActiveVessel)
                 {
-                    double minPeA = PeA - st.Margin_Of_Error_Contract_Orbits;
-                    double maxPeA = PeA + st.Margin_Of_Error_Contract_Orbits;
+                    double minPeA = PeA - HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEErrorOrbits;
+                    double maxPeA = PeA + HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEErrorOrbits;
                     if (vessel.orbit.PeA <= minPeA && vessel.orbit.PeA >= maxPeA)
                     {
                         base.SetIncomplete();
@@ -536,7 +536,7 @@ namespace MissionControllerEC.MCEParameters
         }
         protected override string GetTitle()
         {
-            return "Enter " + orbitType + " Around " + targetBody.bodyName + " With PeA above: " + PeA.ToString("N0") + ". You have a margin of error of " + st.Margin_Of_Error_Contract_Orbits.ToString("N0");
+            return "Enter " + orbitType + " Around " + targetBody.bodyName + " With PeA above: " + PeA.ToString("N0") + ". You have a margin of error of " + HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEErrorOrbits.ToString("N0");
         }
 
         protected override void OnRegister()
@@ -580,7 +580,7 @@ namespace MissionControllerEC.MCEParameters
                 }
             }
 
-            if (HighLogic.LoadedSceneIsFlight && SaveInfo.MessageHelpers == true)
+            if (HighLogic.LoadedSceneIsFlight && HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEReadoutHelpAllow == true)
             {
                 Tools.ObitalPeriodHelper(FlightGlobals.ActiveVessel);
             }
@@ -609,8 +609,8 @@ namespace MissionControllerEC.MCEParameters
             {
                 if (vessel.isActiveVessel)
                 {
-                    double minPeA = PeA - st.Margin_Of_Error_Contract_Orbits;
-                    double maxPeA = PeA + st.Margin_Of_Error_Contract_Orbits;
+                    double minPeA = PeA - HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEErrorOrbits;
+                    double maxPeA = PeA + HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEErrorOrbits;
                     if (vessel.orbit.PeA >= minPeA && vessel.orbit.PeA <= maxPeA)
                     {
                         base.SetComplete();
@@ -625,8 +625,8 @@ namespace MissionControllerEC.MCEParameters
             {
                 if (vessel.isActiveVessel)
                 {
-                    double minPeA = PeA - st.Margin_Of_Error_Contract_Orbits;
-                    double maxPeA = PeA + st.Margin_Of_Error_Contract_Orbits;
+                    double minPeA = PeA - HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEErrorOrbits;
+                    double maxPeA = PeA + HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEErrorOrbits;
                     if (vessel.orbit.PeA <= minPeA && vessel.orbit.PeA >= maxPeA)
                     {
                         base.SetIncomplete();
@@ -678,7 +678,7 @@ namespace MissionControllerEC.MCEParameters
         }
         protected override string GetTitle()
         {
-            return "Reach an inclination of: " + InclinationValue + ". You have a margin of error of " + settings.Margin_Of_Error_Contract_Inclination;
+            return "Reach an inclination of: " + InclinationValue + ". You have a margin of error of " + HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEErrorInclintation;
         }
 
         protected override void OnRegister()
@@ -743,8 +743,8 @@ namespace MissionControllerEC.MCEParameters
             {
                 if (FlightGlobals.ActiveVessel)
                 {
-                    double maxInclination = InclinationValue + settings.Margin_Of_Error_Contract_Inclination;
-                    double minInclination = InclinationValue - settings.Margin_Of_Error_Contract_Inclination;
+                    double maxInclination = InclinationValue + HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEErrorInclintation;
+                    double minInclination = InclinationValue - HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEErrorInclintation;
                     if (vessel.orbit.inclination <= maxInclination && vessel.orbit.inclination >= minInclination)
                         base.SetComplete();
                 }
@@ -756,8 +756,8 @@ namespace MissionControllerEC.MCEParameters
             {
                 if (FlightGlobals.ActiveVessel)
                 {
-                    double maxInclination = InclinationValue + settings.Margin_Of_Error_Contract_Inclination;
-                    double minInclination = InclinationValue - settings.Margin_Of_Error_Contract_Inclination;
+                    double maxInclination = InclinationValue + HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEErrorInclintation;
+                    double minInclination = InclinationValue - HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEErrorInclintation;
                     if (vessel.orbit.inclination >= maxInclination && vessel.orbit.inclination <= minInclination)
                         base.SetIncomplete();
                 }
@@ -870,8 +870,8 @@ namespace MissionControllerEC.MCEParameters
         {
             if (vessel.launchTime > this.Root.DateAccepted)
             {
-                double maxeccn = eccentricity + st.Margin_Of_Error_Contract_Eccentric;
-                double mineccn = eccentricity - st.Margin_Of_Error_Contract_Eccentric;
+                double maxeccn = eccentricity + HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEErrorEccentric;
+                double mineccn = eccentricity - HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEErrorEccentric;
                 if (vessel.situation == Vessel.Situations.ORBITING && vessel.orbit.eccentricity <= maxeccn && vessel.orbit.eccentricity >= mineccn)
                     base.SetComplete();
             }
@@ -880,8 +880,8 @@ namespace MissionControllerEC.MCEParameters
         {
             if (vessel.launchTime > this.Root.DateAccepted)
             {
-                double maxeccn = eccentricity + st.Margin_Of_Error_Contract_Eccentric;
-                double mineccn = eccentricity - st.Margin_Of_Error_Contract_Eccentric;
+                double maxeccn = eccentricity + HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEErrorEccentric;
+                double mineccn = eccentricity - HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEErrorEccentric;
                 if (vessel.situation == Vessel.Situations.ORBITING && vessel.orbit.eccentricity > maxeccn && vessel.orbit.eccentricity < mineccn)
                     base.SetIncomplete();
             }
@@ -970,7 +970,7 @@ namespace MissionControllerEC.MCEParameters
                         {
                             OffCheckOrbitalPeriod(FlightGlobals.ActiveVessel);
                         }
-                        if (HighLogic.LoadedSceneIsFlight && SaveInfo.MessageHelpers == true)
+                        if (HighLogic.LoadedSceneIsFlight && HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEReadoutHelpAllow == true)
                         {
                             Tools.ObitalPeriodHelper(FlightGlobals.ActiveVessel);
                         }
@@ -1389,7 +1389,7 @@ namespace MissionControllerEC.MCEParameters
             }
             else { }
 
-            if (HighLogic.LoadedSceneIsFlight && SaveInfo.MessageHelpers == true)
+            if (HighLogic.LoadedSceneIsFlight && HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEReadoutHelpAllow == true)
             {
                 Tools.ObitalPeriodHelper(FlightGlobals.ActiveVessel);
             }

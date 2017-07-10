@@ -37,14 +37,14 @@ namespace MissionControllerEC.MCEContracts
                 return false;                
             }
             Debug.LogWarning("Orbit Research Body is " + targetBody.bodyName);          
-            if (SaveInfo.OrbitalResearchContractActivated == true)
+            if (!HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings>().OrbitalScienceContracts)
             {
                 Debug.LogWarning("Orbit Research Random Selection is false, contract not Generated.");
                 return false;
             }
             totalContracts = ContractSystem.Instance.GetCurrentContracts<OrbitalScanContract>().Count();
             TotalFinished = ContractSystem.Instance.GetCompletedContracts<OrbitalScanContract>().Count();
-            if (totalContracts >= st.Science_Contract_Per_Cycle)
+            if (totalContracts >= HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().ScienceContractNumbers)
             {
                 Debug.LogWarning("Orbit Research Already Generated, only 1 contract at time please.");
                 return false;
@@ -65,7 +65,7 @@ namespace MissionControllerEC.MCEContracts
             base.SetScience(5f, targetBody);
             base.SetDeadlineYears(3f, targetBody);
             base.SetReputation(5f, 3f, targetBody);
-            base.SetFunds(12000f * st.Contract_Payment_Multiplier, 53000f * st.Contract_Payment_Multiplier, 130000f * st.Contract_Payment_Multiplier, targetBody);
+            base.SetFunds(12000f * HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEContractPayoutMult, 53000f * HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEContractPayoutMult, 130000f * HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEContractPayoutMult, targetBody);
 
             return true;
         }
@@ -189,14 +189,14 @@ namespace MissionControllerEC.MCEContracts
         protected override bool Generate()
         {            
             if (HighLogic.LoadedSceneIsFlight) { return false; }                  
-            if (SaveInfo.NoLanderResearchContracts == true)
+            if (!HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings>().GroundScienceContracts)
             {
                 Debug.LogWarning("Lander Research Contracts random set to false No contract generated.");
                 return false;
             }
             totalContracts = ContractSystem.Instance.GetCurrentContracts<LanderResearchScan>().Count();
             TotalFinished = ContractSystem.Instance.GetCompletedContracts<LanderResearchScan>().Count();
-            if (totalContracts >= st.Science_Contract_Per_Cycle)
+            if (totalContracts >= HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().ScienceContractNumbers)
             {
                 Debug.LogWarning("Lander Research Already Generated, only 1 contract at time please.");
                 return false;
@@ -226,7 +226,7 @@ namespace MissionControllerEC.MCEContracts
             base.SetScience(15f, targetBody);
             base.SetDeadlineYears(3f, targetBody);
             base.SetReputation(35f, 11f, targetBody);
-            base.SetFunds(37000f * st.Contract_Payment_Multiplier, 66000f * st.Contract_Payment_Multiplier, 150000f * st.Contract_Payment_Multiplier, targetBody);
+            base.SetFunds(37000f * HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEContractPayoutMult, 66000f * HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEContractPayoutMult, 150000f * HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEContractPayoutMult, targetBody);
 
             return true;
         }

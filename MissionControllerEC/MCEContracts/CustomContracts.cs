@@ -61,7 +61,7 @@ namespace MissionControllerEC.MCEContracts
             base.SetExpiry(3f, 15f);
             base.SetDeadlineYears(1f, targetBody);
             base.SetReputation(25f, 40f, targetBody);
-            base.SetFunds(39000f * settings.Contract_Payment_Multiplier, 52000f * settings.Contract_Payment_Multiplier, 100000f * settings.Contract_Payment_Multiplier, targetBody);
+            base.SetFunds(39000f * HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEContractPayoutMult, 52000f * HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEContractPayoutMult, 100000f * HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEContractPayoutMult, targetBody);
 
             return true;
         }
@@ -196,7 +196,7 @@ namespace MissionControllerEC.MCEContracts
             base.SetExpiry(1f, 10f);
             base.SetDeadlineYears(.3f, targetBody);
             base.SetReputation(20f, 40f, targetBody);
-            base.SetFunds(20000 * st.Contract_Payment_Multiplier, 90000 * st.Contract_Payment_Multiplier, 150000 * st.Contract_Payment_Multiplier, targetBody);
+            base.SetFunds(20000 * HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEContractPayoutMult, 90000 * HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEContractPayoutMult, 150000 * HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEContractPayoutMult, targetBody);
 
             return true;
         }
@@ -336,7 +336,7 @@ namespace MissionControllerEC.MCEContracts
             base.SetExpiry(15f, 40f);
             base.SetDeadlineYears(700, targetBody);
             base.SetReputation(25f, 50f, targetBody);
-            base.SetFunds(15000 * st.Contract_Payment_Multiplier, 100000 * st.Contract_Payment_Multiplier, 130000 * st.Contract_Payment_Multiplier, targetBody);
+            base.SetFunds(15000 * HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEContractPayoutMult, 100000 * HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEContractPayoutMult, 130000 * HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEContractPayoutMult, targetBody);
 
             return true;
         }

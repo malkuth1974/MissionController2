@@ -22,8 +22,6 @@ namespace MissionControllerEC
         public static bool skylab2done = false;
         public static bool skylab3done = false;
         public static bool skylab4done = false;
-        public static bool MessageHelpers = false;
-        public static bool Hardcore_Vessel_Must_Survive = true;
 
         public static bool ComSateContractOn = false;
         public static double comSatmaxOrbital = 0;
@@ -49,15 +47,7 @@ namespace MissionControllerEC
         public static int crewAmount = 0;
         public static double crewTime = 0;
         public static string crewTransferName = "Crew Transfer";
-
-        public static bool NoSatelliteContracts = false;
-        public static bool NoOrbitalPeriodcontracts = false;
-        public static bool NoLanderResearchContracts = false;
-        public static bool OrbitalResearchContractActivated = false;
-        public static bool NoRepairContracts = false;
-        public static bool all_Historical_Contracts_Off = false;
-        public static bool Duna_NonHistorical_Contracts_Off = false; 
-
+      
         public static bool RepairContractGeneratedOn = false;
         public static bool RepairStationContractGeneratedOn = false;
         public static int SatelliteTypeChoice = 0;

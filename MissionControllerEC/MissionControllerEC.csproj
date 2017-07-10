@@ -17,7 +17,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\..\..\..\Kerbal\CareerGame%28Testing%29\GameData\MissionControllerEC\</OutputPath>
+    <OutputPath>..\..\..\..\..\..\Kerbal\Kerbal Space Program%28Testing%29\GameData\MissionControllerEC\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -56,6 +56,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConfigNodeStorage.cs" />
+    <Compile Include="IntergratedSettings.cs" />
     <Compile Include="MCEContracts\CustomContracts.cs" />
     <Compile Include="MCEContracts\RepairContracts.cs" />
     <Compile Include="MCEContracts\RoverContracts.cs" />
@@ -82,7 +83,6 @@
     <Compile Include="PartModules\RepairPanel.cs" />
     <Compile Include="SaveInfo.cs" />
     <Compile Include="Settings.cs" />
-    <Compile Include="SettingsWindow.cs" />
     <Compile Include="Tools.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
