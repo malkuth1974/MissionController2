@@ -29,6 +29,9 @@ namespace MissionControllerEC
         public float KerbalFlatrate;
         public float kerbalMultiplier;
 
+        public float temp;
+        public float temp2;
+
         public static int supplyCount;
 
         public static List<SupplyVesselList> SupVes = new List<SupplyVesselList>();
@@ -66,8 +69,8 @@ namespace MissionControllerEC
             if (HighLogic.LoadedScene == GameScenes.SPACECENTER && this.MCEButton == null)
             {
                 this.MCEButton = ApplicationLauncher.Instance.AddModApplication(
-                    this.MainMceWindow,
-                    this.KillMCePopups,
+                    this.MCEOn,
+                    this.MCEOff,
                     null,
                     null,
                     null,
@@ -95,16 +98,16 @@ namespace MissionControllerEC
             else { /*Debug.Log("MCE2 CreateButtons Failed");*/ }
         }
 
-        //private void MCEOn()
-        //{           
-        //    MCE_ScenarioStartup.ShowfinanaceWindow = true;
-        //}
+        private void MCEOn()
+        {
+            SaveInfo.GUIEnabled = true;
+        }
 
-        //private void MCEOff()
-        //{           
-        //    MCE_ScenarioStartup.ShowfinanaceWindow = false;
-        //}
-       
+        private void MCEOff()
+        {
+            SaveInfo.GUIEnabled = false;
+        }
+
         //private void revertOff()
         //{
         //    MCE_ScenarioStartup.ShowPopUpWindow3 = false;
@@ -126,6 +129,16 @@ namespace MissionControllerEC
                 ApplicationLauncher.Instance.RemoveModApplication(this.MCERevert);
             }
             else { /*Debug.Log("MCE destroy buttons failed");*/ }
+        }
+        
+        public void GuiDestroy(Vector2 value, PopupDialog popupinfo)
+        {            
+            value = new Vector2(
+                ((Screen.width / 2) + popupinfo.RTrf.position.x) / Screen.width,
+                ((Screen.height / 2) + popupinfo.RTrf.position.y) / Screen.height);
+            Debug.LogError("GuiDestroy Info Save as is:  " + value.ToString());
+            //popupinfo.Dismiss();
+            //popupinfo = null;
         }
                
         public void CheckRepairContractTypes(GameScenes gs)
@@ -207,7 +220,11 @@ namespace MissionControllerEC
             RandomSatelliteContractsCheck[5] = new Tools.MC2RandomWieghtSystem.Item<int>();
             RandomSatelliteContractsCheck[5].weight = 5;
             RandomSatelliteContractsCheck[5].value = 5; 
-        }           
+        } 
+        public void onvesselRoll(ShipConstruct sc)
+        {
+            sc.GetShipCosts(out temp, out temp2);
+        }          
 
         public void onContractLoaded()
         {           

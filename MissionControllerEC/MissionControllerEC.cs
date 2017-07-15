@@ -5,6 +5,7 @@ using UnityEngine;
 using System.Linq;
 using MissionControllerEC;
 using System.Collections.Generic;
+using KSP.Localization;
 using System.Reflection;
 using KSP.UI.Screens;
 using System.Text;
@@ -12,167 +13,9 @@ using System.IO;
 using KSP;
 
 namespace MissionControllerEC
-{  
-    [KSPAddon(KSPAddon.Startup.SpaceCentre, false)]
-    public class MCE_ScenarioStartup : MonoBehaviour
-    {
-        public static AssemblyName assemblyName;
-        public static String versionCode;
-        public static String mainWindowTitle;
-
-        public static Rect PopUpWindowPosition3;
-        public static bool ShowPopUpWindow3;
-
-        public static Rect MainWindowPosition;
-        public static bool ShowMainWindow = false;
-
-        public static Rect SettingsWindowPostion;
-        public static bool ShowSettingsWindow = false;
-
-        public static Rect FinanceWindowPosition;
-        public static bool ShowfinanaceWindow = false;
-
-        public static Rect EditorWindowPosition;
-        public static bool ShowEditorWindow = false;
-        public static Vector2 scrollPosition = new Vector2(0, 0);
-        
-        public static Rect CustomWindowPostion;
-        public static bool ShowCustomWindow;
-
-        public static GUIStyle StyleWhite, StyleBold, styleBoxWhite, styleBlue, styleBlueBold, styleGreenBold;      
-
-        // Special thanks to Magico13 Of Kerbal Construction Time for showing me how to Get Scenario Persistance.
-
-        void Start()
-        {
-            
-            ProtoScenarioModule scenario = HighLogic.CurrentGame.scenarios.Find(s => s.moduleName == typeof(MissionControllerData).Name);                        
-            
-            if (scenario == null)
-            {
-                try
-                {
-                    HighLogic.CurrentGame.AddProtoScenarioModule(typeof(MissionControllerData), new GameScenes[] { GameScenes.FLIGHT, GameScenes.SPACECENTER, GameScenes.EDITOR, GameScenes.TRACKSTATION });
-                    Debug.LogWarning("[MCE] Adding InternalModule scenario to game '" + HighLogic.CurrentGame.Title + "'");
-                    // the game will add this scenario to the appropriate persistent file on save from now on
-                }
-                catch (ArgumentException ae)
-                {
-                    Debug.LogException(ae);
-                }
-                catch
-                {
-                    Debug.LogWarning("[MCE] Unknown failure while adding scenario.");
-                }
-            }
-            else
-            {
-                //Debug.LogWarning("[MCE] Scenario is not null.");
-                if (!scenario.targetScenes.Contains(GameScenes.SPACECENTER))
-                    scenario.targetScenes.Add(GameScenes.SPACECENTER);
-                if (!scenario.targetScenes.Contains(GameScenes.FLIGHT))
-                    scenario.targetScenes.Add(GameScenes.FLIGHT);
-                if (!scenario.targetScenes.Contains(GameScenes.EDITOR))
-                    scenario.targetScenes.Add(GameScenes.EDITOR);               
-                if (!scenario.targetScenes.Contains(GameScenes.TRACKSTATION))
-                    scenario.targetScenes.Add(GameScenes.TRACKSTATION);
-
-            }                   
-        }
-        void Awake()
-        {
-            assemblyName = Assembly.GetExecutingAssembly().GetName();
-            versionCode = assemblyName.Version.Major.ToString() + "." + assemblyName.Version.Minor.ToString() + "." + assemblyName.Version.Build.ToString();
-            mainWindowTitle = "Mission Controller 2 ";
-        }
-        public static void loadStyles()
-        {
-            StyleWhite = new GUIStyle(GUI.skin.label);
-            StyleWhite.normal.textColor = Color.white;
-            StyleWhite.fontStyle = FontStyle.Normal;
-            StyleWhite.alignment = TextAnchor.MiddleLeft;
-            StyleWhite.wordWrap = true;
-
-            styleBlue = new GUIStyle(GUI.skin.label);
-            styleBlue.normal.textColor = Color.cyan;
-            styleBlue.fontStyle = FontStyle.Normal;
-            styleBlue.alignment = TextAnchor.MiddleLeft;
-            styleBlue.wordWrap = true;
-
-            styleBoxWhite = new GUIStyle(GUI.skin.box);
-            styleBoxWhite.normal.textColor = Color.grey;
-            styleBoxWhite.fontStyle = FontStyle.Normal;
-            styleBoxWhite.alignment = TextAnchor.MiddleLeft;
-            styleBoxWhite.wordWrap = true;
-
-            StyleBold = new GUIStyle(GUI.skin.box);
-            StyleBold.normal.textColor = Color.white;
-            StyleBold.fontStyle = FontStyle.Bold;
-            StyleBold.alignment = TextAnchor.MiddleLeft;
-            StyleBold.wordWrap = true;
-
-            styleBlueBold = new GUIStyle(GUI.skin.box);
-            styleBlueBold.normal.textColor = Color.cyan;
-            styleBlueBold.fontStyle = FontStyle.Bold;
-            styleBlueBold.alignment = TextAnchor.MiddleLeft;
-            styleBlueBold.wordWrap = true;
-
-            styleGreenBold = new GUIStyle(GUI.skin.box);
-            styleGreenBold.normal.textColor = Color.green;
-            styleGreenBold.fontStyle = FontStyle.Bold;
-            styleGreenBold.alignment = TextAnchor.MiddleLeft;
-            styleGreenBold.wordWrap = true;
-
-        }
-    }
-
-    public class MissionControllerData : ScenarioModule
-    {
-        // used TacLife Support by Taranis Elsu way of loading Components for the MissionControllerEC Component 
-        private readonly List<Component> mcechildren = new List<Component>();
-
-        public override void OnAwake()
-        {
-            //Debug.Log("OnAwake in " + HighLogic.LoadedScene);
-
-
-            if (HighLogic.LoadedScene == GameScenes.SPACECENTER || HighLogic.LoadedScene == GameScenes.FLIGHT || HighLogic.LoadedScene == GameScenes.EDITOR)
-            {
-                //Debug.Log("Adding MissionController Child");
-                var c = gameObject.AddComponent<MissionControllerEC>();
-                mcechildren.Add(c);
-            }
-            else { }
-        }
-
-        public override void OnSave(ConfigNode node)
-        {
-            //Debug.Log("[MCE] Writing to persistence.");
-            base.OnSave(node);
-            MCE_DataStorage mceData = new MCE_DataStorage();
-            node.AddNode(mceData.AsConfigNode());
-        }
-        public override void OnLoad(ConfigNode node)
-        {
-            //Debug.Log("[MCE] Loading from persistence.");
-            base.OnLoad(node);
-            MCE_DataStorage mceData = new MCE_DataStorage();
-            ConfigNode CN = node.GetNode(mceData.GetType().Name);
-            if (CN != null)
-                ConfigNode.LoadObjectFromConfig(mceData, CN);
-        }
-
-        void OnDestroy()
-        {
-            //Debug.Log("MCE ScenarioModule OnDestroy");
-            foreach (Component c in mcechildren)
-            {
-                Destroy(c);
-                //MCELoaded = false;
-            }
-            mcechildren.Clear();
-        }
-    }
+{    
+   
+    [KSPAddon(KSPAddon.Startup.MainMenu, false)]
     public partial class MissionControllerEC : MonoBehaviour
     {
         private static Texture2D texture;
@@ -183,27 +26,153 @@ namespace MissionControllerEC
         private string marinerNumber;
         private string apolloNumber;
         private int id = new System.Random().Next(int.MaxValue);
-        public static bool RevertHalt = false;
+        public static bool RevertHalt = false;        
+       
+        // Special thanks to Magico13 Of Kerbal Construction Time for showing me how to Get Scenario Persistance.
+        // Some of New GUI Elements learned from Kerbal Forum and piezPiedPy - KSP Trajectories https://github.com/PiezPiedPy/KSPTrajectories/blob/NewGui-Test/Plugin/MainGUI.cs
+        // constants
+        private const float width = 210;
+        private const float height = 110;
+        private const float button_width = 200.0f;
+        private const float button_height = 25.0f;
 
-        Settings settings = new Settings("Config.cfg");        
+        private const float Contract_Button_Large_W = 300;
+        private const float Contract_Button_Large_H = 30;
+        private const float Contract_Button_Med_W = 150;
+        private const float Contract_Button_Med_H = 30;
+        private const float Contract_Button_Small_W = 70;
+        private const float Contract_Button_Small_H = 30;
 
+        public static AssemblyName assemblyName;
+        public static String versionCode;
+
+        public static GUIStyle StyleBold, styleBlueBold, styleGreenBold;
+
+        private static MissionControllerEC instance = null;
+
+        private static bool visible = false;
+
+        private static MultiOptionDialog Mainmulti_dialog;
+        private static MultiOptionDialog CSatmulti_dialog;
+        private static MultiOptionDialog CSupplyMulti_Dialog;
+        private static MultiOptionDialog CCrewMulti_Dialog;
+        private static MultiOptionDialog DebugMulti_Dialg;
+        private static PopupDialog popup_dialog;
+        private static PopupDialog customSatPop_dialg;
+        private static PopupDialog customSupPop_dialg;
+        private static PopupDialog customCrewPop_Dialg;
+        private static PopupDialog customDebug_Dialg;
+
+
+        private static DialogGUIBase Debug_button;
+        private static DialogGUIBase CustomCrew_button;
+        private static DialogGUIBase CustomSat_button;
+        private static DialogGUIBase CustomSupply_button;
+
+        private static DialogGUIBase Custom_Contract_Button1;
+        private static DialogGUIBase Custom_Contract_Button2;
+        private static DialogGUIBase Custom_Contract_Button3;
+        private static DialogGUIBase Custom_Contract_Button4;
+        private static DialogGUIBase Custom_Contract_Button5;
+        private static DialogGUIBase Custom_Contract_Button6;
+        private static DialogGUIBase Custom_Contract_Button7;
+        private static DialogGUIBase Custom_Contract_Button8;
+        private static DialogGUIBase Custom_Contract_Button9;
+        private static DialogGUIBase Custom_Contract_Button10;
+        private static DialogGUIBase Custom_Contract_Button11;
+
+        private static DialogGUIToggleButton Custom_Contract_Toggle1;
+        private static DialogGUIToggleButton Custom_Contract_Toggle2;
+        private static DialogGUIToggleButton Custom_Contract_Toggle3;
+        private static DialogGUIToggleButton Custom_Contract_Toggle4;
+        private static DialogGUIToggleButton Custom_Contract_Toggle5;
+        private static DialogGUIToggleButton Custom_Contract_Toggle6;
+        private static DialogGUIToggleButton Custom_Contract_Toggle7;
+        private static DialogGUIToggleButton Custom_Contract_Toggle8;       
+
+        private static DialogGUIBox Custom_Contract_GuiBox1;
+        private static DialogGUIBox Custom_Contract_GuiBox2;
+        private static DialogGUIBox Custom_Contract_GuiBox3;
+        private static DialogGUIBox Custom_Contract_GuiBox4;
+        private static DialogGUIBox Custom_Contract_GuiBox5;
+        private static DialogGUIBox Custom_Contract_GuiBox6;
+        private static DialogGUIBox Custom_Contract_GuiBox7;
+        private static DialogGUIBox Custom_Contract_GuiBox8;
+        private static DialogGUIBox Custom_Contract_GuiBox9;
+        private static DialogGUIBox Custom_Contract_GuiBox10;
+
+        private static DialogGUIBase Custom_Contract_Input;      
+
+        Settings settings = new Settings("Config.cfg");
+
+        public static MissionControllerEC Instance
+        {
+            get
+            {
+                return Instance;
+            }
+        }
+
+        public MissionControllerEC()
+        {           
+            instance = this;
+            Allocate();
+        }
+
+    void Start()
+    {
+
+            ProtoScenarioModule scenario = HighLogic.CurrentGame.scenarios.Find(s => s.moduleName == typeof(MissionControllerData).Name);
+            DictCount = settings.SupplyResourceList.Count();
+            if (scenario == null)
+        {
+            try
+            {
+                HighLogic.CurrentGame.AddProtoScenarioModule(typeof(MissionControllerData), new GameScenes[] { GameScenes.FLIGHT, GameScenes.SPACECENTER, GameScenes.EDITOR, GameScenes.TRACKSTATION });
+                Debug.LogWarning("[MCE] Adding InternalModule scenario to game '" + HighLogic.CurrentGame.Title + "'");
+                // the game will add this scenario to the appropriate persistent file on save from now on
+            }
+            catch (ArgumentException ae)
+            {
+                Debug.LogException(ae);
+            }
+            catch
+            {
+                Debug.LogWarning("[MCE] Unknown failure while adding scenario.");
+            }
+        }
+        else
+        {
+            //Debug.LogWarning("[MCE] Scenario is not null.");
+            if (!scenario.targetScenes.Contains(GameScenes.SPACECENTER))
+                scenario.targetScenes.Add(GameScenes.SPACECENTER);
+            if (!scenario.targetScenes.Contains(GameScenes.FLIGHT))
+                scenario.targetScenes.Add(GameScenes.FLIGHT);
+            if (!scenario.targetScenes.Contains(GameScenes.EDITOR))
+                scenario.targetScenes.Add(GameScenes.EDITOR);
+            if (!scenario.targetScenes.Contains(GameScenes.TRACKSTATION))
+                scenario.targetScenes.Add(GameScenes.TRACKSTATION);
+        }
+    }           
+        
         public void Awake()
         {
+            assemblyName = Assembly.GetExecutingAssembly().GetName();
+            versionCode = assemblyName.Version.Major.ToString() + "." + assemblyName.Version.Minor.ToString() + "." + assemblyName.Version.Build.ToString();
             DontDestroyOnLoad(this);
             loadTextures();
             loadFiles();
             CreateButtons();          
             GameEvents.Contract.onContractsLoaded.Add(this.onContractLoaded);
-            GameEvents.onGameSceneLoadRequested.Add(this.CheckRepairContractTypes);           
+            GameEvents.onGameSceneLoadRequested.Add(this.CheckRepairContractTypes);
+            GameEvents.OnVesselRollout.Add(this.onvesselRoll);      
             //Debug.Log("MCE Awake");
             getSupplyList(false);
+            // create popup dialog and hide it
+            popup_dialog = PopupDialog.SpawnPopupDialog(Mainmulti_dialog, true, HighLogic.UISkin, false, "");
+            Hide();
         }    
-                
-        public void Start()
-        {                 
-            DictCount = settings.SupplyResourceList.Count();           
-        }            
-                      
+                           
         void OnDestroy()
         {
             DestroyButtons();
@@ -211,164 +180,136 @@ namespace MissionControllerEC
             GameEvents.Contract.onContractsLoaded.Remove(this.onContractLoaded);
             GameEvents.onGameSceneLoadRequested.Remove(this.CheckRepairContractTypes);
             //Debug.Log("Game All values removed for MCE");
+            instance = null;
+
+            SaveInfo.MainGUIWindowPos = new Vector2(
+            ((Screen.width / 2) + popup_dialog.RTrf.position.x) / Screen.width,
+                ((Screen.height / 2) + popup_dialog.RTrf.position.y) / Screen.height);
+
+            SaveInfo.CustomSatWindowPos = new Vector2(
+            ((Screen.width / 2) + customSatPop_dialg.RTrf.position.x) / Screen.width,
+                ((Screen.height / 2) + customSatPop_dialg.RTrf.position.y) / Screen.height);          
+
+            popup_dialog.Dismiss();
+            customSatPop_dialg.Dismiss();
+            customCrewPop_Dialg.Dismiss();
+            popup_dialog = null;
+            customSatPop_dialg = null;
+            customCrewPop_Dialg = null;
         }
-        internal void Update()
+        private void Update()
         {
-            if (MCE_ScenarioStartup.ShowPopUpWindow3)
+            if (!SaveInfo.GUIEnabled)
             {
-                RevertPress();
-            }          
+                Hide();
+                return;
+            }
+            else if (SaveInfo.GUIEnabled && !visible)
+            {
+                Show();
+            }           
         }
-        public void OnGUI()
+        
+        private void Allocate()
         {
-            MCE_ScenarioStartup.loadStyles();
-            
-            if (MCE_ScenarioStartup.ShowMainWindow)
+            if (SaveInfo.MainGUIWindowPos.x <= 0 || SaveInfo.MainGUIWindowPos.y <= 0)
+                SaveInfo.MainGUIWindowPos = new Vector2(0.5f, 0.5f);
+
+            Debug_button = new DialogGUIButton(Localizer.Format("#autoLOC_MCE_DebugButton"), delegate
             {
-                MCE_ScenarioStartup.MainWindowPosition = GUILayout.Window(id + 1, MCE_ScenarioStartup.MainWindowPosition, DrawMainWindow, "Maine MCE Window", GUILayout.Height(Screen.height / 3f), GUILayout.Width(Screen.width / 4f));
-                MCE_ScenarioStartup.MainWindowPosition.x = Mathf.Clamp(MCE_ScenarioStartup.MainWindowPosition.x, 0, Screen.width - MCE_ScenarioStartup.MainWindowPosition.width);
-                MCE_ScenarioStartup.MainWindowPosition.y = Mathf.Clamp(MCE_ScenarioStartup.MainWindowPosition.y, 0, Screen.height - MCE_ScenarioStartup.MainWindowPosition.height);
-            }
-            if (MCE_ScenarioStartup.ShowfinanaceWindow)
+                DebugMenuMce();
+                SaveInfo.GUIEnabled = false;
+            }, button_width, button_height, false);
+
+            CustomCrew_button = new DialogGUIButton(Localizer.Format("#autoLOC_MCE_CustomCrew"), delegate
             {
-                MCE_ScenarioStartup.FinanceWindowPosition = GUILayout.Window(id + 2, MCE_ScenarioStartup.FinanceWindowPosition, drawFinanceWind, "MCE Finances", GUILayout.Height(Screen.height / 3f), GUILayout.Width(Screen.width / 4f));
-                MCE_ScenarioStartup.FinanceWindowPosition.x = Mathf.Clamp(MCE_ScenarioStartup.FinanceWindowPosition.x, 0, Screen.width - MCE_ScenarioStartup.FinanceWindowPosition.width);
-                MCE_ScenarioStartup.FinanceWindowPosition.y = Mathf.Clamp(MCE_ScenarioStartup.FinanceWindowPosition.y, 0, Screen.height - MCE_ScenarioStartup.FinanceWindowPosition.height);
-            }
-            if (MCE_ScenarioStartup.ShowCustomWindow)
+                CrewTransferContract();
+                SaveInfo.GUIEnabled = false;
+            }, button_width, button_height, false);
+
+            CustomSat_button = new DialogGUIButton(Localizer.Format("#autoLOC_MCE_CustomComSat"), delegate
             {
-                MCE_ScenarioStartup.CustomWindowPostion = GUILayout.Window(id + 3, MCE_ScenarioStartup.CustomWindowPostion, drawCustomGUI, "Custom Contracts", GUILayout.Height(Screen.height / 1.5f), GUILayout.Width(Screen.width / 4f));
-                MCE_ScenarioStartup.CustomWindowPostion.x = Mathf.Clamp(MCE_ScenarioStartup.CustomWindowPostion.x, 0, Screen.width - MCE_ScenarioStartup.CustomWindowPostion.width);
-                MCE_ScenarioStartup.CustomWindowPostion.y = Mathf.Clamp(MCE_ScenarioStartup.CustomWindowPostion.y, 0, Screen.height - MCE_ScenarioStartup.CustomWindowPostion.height);
-            }            
+                ComSatContract();
+                SaveInfo.GUIEnabled = false;
+            }, button_width, button_height, false);
+            CustomSupply_button = new DialogGUIButton(Localizer.Format("#autoLOC_MCE_CustomSupply"), delegate
+            {
+                TransferContract();
+                SaveInfo.GUIEnabled = false;
+              
+            }, button_width, button_height, false);
+
+            Mainmulti_dialog = new MultiOptionDialog(
+               "MissionControllerMain",
+               "",
+               Localizer.Format("#autoLOC_MCE_MCETitle"),
+               HighLogic.UISkin,
+               new Rect(SaveInfo.MainGUIWindowPos.x, SaveInfo.MainGUIWindowPos.y, width, height),
+               new DialogGUIBase[]
+               {
+                   new DialogGUIVerticalLayout(Debug_button, CustomCrew_button, CustomSat_button, CustomSupply_button),
+               });
         }
 
-        private void DrawMainWindow(int id)
+        public void Show()
         {
-            GUI.skin = HighLogic.Skin;
-            GUILayout.BeginVertical();           
+            if (popup_dialog != null)
+            {
+                visible = true;
+                popup_dialog.gameObject.SetActive(true);
+            }
+        }
 
-            GUILayout.Label("Current Funds: " + Funding.Instance.Funds);
-           
-            if (GUILayout.Button("Add Money"))
+        public void Hide()
+        {
+            if (popup_dialog != null)
             {
-                Funding.Instance.AddFunds(500000,TransactionReasons.Cheating);
+                visible = false;
+                popup_dialog.gameObject.SetActive(false);
             }
-
-            GUILayout.Label("Current Science: " + ResearchAndDevelopment.Instance.Science);
-            if (GUILayout.Button("Add Science"))
-            {
-                ResearchAndDevelopment.Instance.AddScience(1000,TransactionReasons.Cheating);
-            }
-           
-            if (GUILayout.Button("Set Agena Current Selected Vessel (Must be in flight)"))
-            {
-                SaveInfo.AgenaTargetVesselName = FlightGlobals.ActiveVessel.vesselName;
-                SaveInfo.AgenaTargetVesselID = FlightGlobals.ActiveVessel.id.ToString();
-            }
-
-            if (GUILayout.Button("Set SkyLab Current Selected Vessel(Must be in flight)"))
-            {
-                SaveInfo.skyLabName = FlightGlobals.ActiveVessel.vesselName;
-                SaveInfo.skyLabVesID = FlightGlobals.ActiveVessel.id.ToString();
-            }
-
-            if (GUILayout.Button("Set Landing Site for Apollo Missions(Flight)"))
-            {
-                GetLatandLonDefault(FlightGlobals.ActiveVessel);
-                Debug.Log("Apollo Landing Lat: " + SaveInfo.apolloLandingLat + " Apollo Landing Lon: " + SaveInfo.apolloLandingLon);
-            }
-
-            if (GUILayout.Button("Debug Landing Site For Apollo(Flight)"))
-            {
-                Debug.Log("Current Lat + Lon: " + FlightGlobals.ActiveVessel.latitude + " " + FlightGlobals.ActiveVessel.longitude + " Current Saved Values Lat + Lon " + SaveInfo.apolloLandingLat + " " + SaveInfo.apolloLandingLon);
-            }
- 
-            if (GUILayout.Button("Set Agena1 Bool False"))
-            {
-                SaveInfo.Agena1Done = false;
-            }
-
-            if (GUILayout.Button("Set Agena2 Bool False"))
-            {
-                SaveInfo.Agena2Done = false;
-            }
-
-            if (GUILayout.Button("Set Voskov1 Bool false"))
-            {
-                SaveInfo.Vostok1Done = false;
-            }
-            if (GUILayout.Button("Set Voskov2 Bool false"))
-            {
-                SaveInfo.Vostok2Done = false;
-            }
-            if (GUILayout.Button("Set Voskhod2 Bool false"))
-            {
-                SaveInfo.Voskhod2Done = false;
-            }
-            if (GUILayout.Button("Set Luna2 Bool false"))
-            {
-                SaveInfo.Luna2Done = false;
-            }
-            if (GUILayout.Button("Set Luna3 Bool false"))
-            {
-                SaveInfo.Luna16Done = false;
-            }
-            if (GUILayout.Button("Turn On All Repair Mission At Once"))
-            {
-                SaveInfo.RepairContractGeneratedOn = true; SaveInfo.RepairStationContractGeneratedOn = true;
-            }
-            
-            if (GUILayout.Button("Test EVA Type Kerbal"))
-            {
-                GetEvaTypeKerbal();
-            }
-            if (GUILayout.Button("Set Vessel Current Launch Time"))
-            {
-                SetVesselLaunchCurrentTime();
-            }
-            GUILayout.BeginHorizontal();
-            GUILayout.Box("Tiros Number 1-3", MCE_ScenarioStartup.StyleBold, GUILayout.Width(300));
-            tirosNumber = SaveInfo.tirosCurrentNumber.ToString();
-            tirosNumber= Regex.Replace(GUILayout.TextField(tirosNumber), "[^.0-9]", "");
-            SaveInfo.tirosCurrentNumber = int.Parse(tirosNumber);
-            GUILayout.EndHorizontal();
-
-            GUILayout.BeginHorizontal();
-            GUILayout.Box("Mariner Number 1-4", MCE_ScenarioStartup.StyleBold, GUILayout.Width(300));
-            marinerNumber = SaveInfo.marinerCurrentNumber.ToString();
-            marinerNumber = Regex.Replace(GUILayout.TextField(marinerNumber), "[^.0-9]", "");
-            SaveInfo.marinerCurrentNumber = int.Parse(marinerNumber);
-            GUILayout.EndHorizontal();
-
-            GUILayout.BeginHorizontal();
-            GUILayout.Box("Apollo Number 1-6", MCE_ScenarioStartup.StyleBold, GUILayout.Width(300));
-            apolloNumber = SaveInfo.apolloCurrentNumber.ToString();
-            apolloNumber = Regex.Replace(GUILayout.TextField(apolloNumber), "[^.0-9]", "");
-            SaveInfo.apolloCurrentNumber = int.Parse(apolloNumber);
-            GUILayout.EndHorizontal();
-
-            GUILayout.BeginHorizontal();
-            GUILayout.Box("Apollo-Duna Number 1-9", MCE_ScenarioStartup.StyleBold, GUILayout.Width(300));
-            apolloNumber = SaveInfo.apolloDunaCurrentNumber.ToString();
-            apolloNumber = Regex.Replace(GUILayout.TextField(apolloNumber), "[^.0-9]", "");
-            SaveInfo.apolloDunaCurrentNumber = int.Parse(apolloNumber);
-            GUILayout.EndHorizontal();
-                          
-            GUILayout.EndVertical();
-            if (GUILayout.Button("Exit Save Settings"))
-            {
-                MCE_ScenarioStartup.ShowMainWindow = false;
-            }
-
-            if (!Input.GetMouseButtonDown(1))
-            {
-                GUI.DragWindow();
-            }
-        }      
-    
+        }
+                 
     }
-               
+    public class MissionControllerData : ScenarioModule
+    {
+        // used TacLife Support by Taranis Elsu way of loading Components for the MissionControllerEC Component 
+        private readonly List<Component> mcechildren = new List<Component>();
+
+        public override void OnAwake()
+        {
+
+            if (HighLogic.LoadedScene == GameScenes.SPACECENTER || HighLogic.LoadedScene == GameScenes.FLIGHT || HighLogic.LoadedScene == GameScenes.EDITOR)
+            {
+                var c = gameObject.AddComponent<MissionControllerEC>();
+                mcechildren.Add(c);
+            }
+            else { }
+        }
+
+        public override void OnSave(ConfigNode node)
+        {
+            base.OnSave(node);
+            MCE_DataStorage mceData = new MCE_DataStorage();
+            node.AddNode(mceData.AsConfigNode());
+        }
+        public override void OnLoad(ConfigNode node)
+        {
+            base.OnLoad(node);
+            MCE_DataStorage mceData = new MCE_DataStorage();
+            ConfigNode CN = node.GetNode(mceData.GetType().Name);
+            if (CN != null)
+                ConfigNode.LoadObjectFromConfig(mceData, CN);
+        }
+
+        void OnDestroy()
+        {
+            foreach (Component c in mcechildren)
+            {
+                Destroy(c);
+            }
+            mcechildren.Clear();
+        }
+    }
     public class MCE_DataStorage : ConfigNodeStorage
     {        
         [Persistent]public bool ComSatOn = false;

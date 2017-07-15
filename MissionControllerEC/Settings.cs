@@ -11,12 +11,6 @@ namespace MissionControllerEC
         public Settings(String FilePath) : base(FilePath) 
         { 
         }
-        [Persistent]internal string Vostok1Desc = "";
-        [Persistent]internal string Vostok1Complete = "";
-        [Persistent]
-        internal string Vostok2esc = "";
-        [Persistent]
-        internal string Vostok2Complete = "";
-        [Persistent]internal List<String> SupplyResourceList = new List<string>() { "LiquidFuel", "Oxidizer", "MonoPropellant", "XenonGas", "Food", "Water", "Oxygen", "Kibbal" };       
+        [Persistent]internal List<String> SupplyResourceList = new List<string>() { "LiquidFuel", "Oxidizer", "MonoPropellant", "XenonGas", "Food", "Water", "Oxygen", "Kibbal", "Hydrogen", "Nitrogen", "Ammonia" };       
     }
 }

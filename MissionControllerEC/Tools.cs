@@ -365,8 +365,7 @@ namespace MissionControllerEC
 
             }
             
-        }
-        
+        }      
     }
                 
 }

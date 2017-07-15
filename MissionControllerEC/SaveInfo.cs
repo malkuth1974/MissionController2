@@ -7,7 +7,15 @@ using UnityEngine;
 namespace MissionControllerEC
 {
     public static class SaveInfo 
-    {             
+    {
+        public static Vector2 MainGUIWindowPos;
+        public static Vector2 CustomSatWindowPos;
+        public static Vector2 CustomTransWindowPos;
+        public static Vector2 CustomCrewTransWindowPos;
+        public static Vector2 DebugWindowPos;
+
+        public static bool GUIEnabled;
+
         public static bool SatContractReady = false;
         public static string AgenaTargetVesselID = "none";
         public static string AgenaTargetVesselName = "none";

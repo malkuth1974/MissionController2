@@ -8,6 +8,7 @@ using KSP;
 using System.Text;
 using KSPAchievements;
 using MissionControllerEC.MCEParameters;
+using KSP.Localization;
 
 namespace MissionControllerEC.MCEContracts
 {
@@ -151,7 +152,7 @@ namespace MissionControllerEC.MCEContracts
         public double resourcesAmount;
         public int totalContracts;
         public int TotalFinished;
-        public string CTitle = "Supply your Station Or Base with ";
+        public string CTitle = Localizer.Format("#autoLOC_MCE_Supply_your_Station_Or_Base_with");
         ContractParameter suppy1;
         ContractParameter suppy2;
 
@@ -221,21 +222,19 @@ namespace MissionControllerEC.MCEContracts
         protected override string GetDescription()
         {
 
-            return "This is a custom supply mission.  Use these contracts to supply your land bases and orbital stations with whatever supplies you choose. You must dock with the vessel you selected in order to finish the contract! \n" +
-                "You can edit this contract by going to the Space Center screen and selecting Mission Controller Icon.  In the GUI choose the Custom Contract Button to start editing this contract. \n\n" +
-                "All supply contract information is stored in your Persistent Save File. The location of the Station or Base you will resupply is " + targetBody.bodyName + " Payments are adjusted for Travel Time To Body";
+            return Localizer.Format("#autoLOC_MCE_Custom_Supply_Contract_Desc") + " " + targetBody.name;
         }
         protected override string GetNotes()
         {
-            return "Vessel must be a new vessel launched after accepting this contract!";
+            return Localizer.Format("#autoLOC_MCE_Custom_Supply_Contract_GetNotes");
         }
         protected override string GetSynopsys()
         {
-            return "Launch Your ComSat Network " + targetBody.bodyName;
+            return Localizer.Format("#autoLOC_MCE_Supply_Your_Station_Location") + " " +  targetBody.bodyName;
         }
         protected override string MessageCompleted()
         {
-            return "You have delivered your supplies to " + vesselName + " If you're done, you can turn off Supply Contracts in the MCE Information Window.  Please note it will take a few contract cycles for them to disappear! ";
+            return Localizer.Format("#autoLOC_MCE_Custom_Supply_Contract_FinishedContract");
         }
 
         protected override void OnLoad(ConfigNode node)

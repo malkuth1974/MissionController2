@@ -144,11 +144,11 @@ namespace MissionControllerEC.MCEContracts
                 Debug.Log("contract is generated right now terminating Repair Vessel");
                 return false;
             }
-            if (SaveInfo.RepairContractGeneratedOn == false)
-            {
-                Debug.LogWarning("(Repair) contract random is false, contract not generated");
-                return false;
-            }
+            //if (SaveInfo.RepairContractGeneratedOn == false)
+            //{
+            //    Debug.LogWarning("(Repair) contract random is false, contract not generated");
+            //    return false;
+            //}
             randomString = Tools.RandomNumber(0, 7);
             findVeselWithRepairPart();
             chooseVesselRepairFromList();
@@ -394,11 +394,11 @@ namespace MissionControllerEC.MCEContracts
                 Debug.LogWarning("Total Repair station Contracts is greater then one Repair Contract Not Generated");
                 return false;                
             }
-            if (SaveInfo.RepairStationContractGeneratedOn == false)
-            {
-                Debug.LogWarning("(Repair Station) contract random is false, contract not generated");
-                return false;
-            }
+            //if (SaveInfo.RepairStationContractGeneratedOn == false)
+            //{
+            //    Debug.LogWarning("(Repair Station) contract random is false, contract not generated");
+            //    return false;
+            //}
             titleName = "Find the Repair Panel on " + vesselName + " And start conducting repairs.";
             findVeselWithRepairPartAndStation();
             chooseVesselRepairStationFromList();
