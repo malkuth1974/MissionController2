@@ -57,17 +57,22 @@ namespace MissionControllerEC
         private static MultiOptionDialog CSupplyMulti_Dialog;
         private static MultiOptionDialog CCrewMulti_Dialog;
         private static MultiOptionDialog DebugMulti_Dialg;
+        private static MultiOptionDialog LandOrbitMulti_Dialg;
+
         private static PopupDialog popup_dialog;
         private static PopupDialog customSatPop_dialg;
         private static PopupDialog customSupPop_dialg;
         private static PopupDialog customCrewPop_Dialg;
         private static PopupDialog customDebug_Dialg;
+        private static PopupDialog customLandOrbit_dialg;
 
 
         private static DialogGUIBase Debug_button;
         private static DialogGUIBase CustomCrew_button;
         private static DialogGUIBase CustomSat_button;
         private static DialogGUIBase CustomSupply_button;
+        private static DialogGUIBase CustomLandOrbit_button;
+        private static DialogGUIBase Main_Exit_button;
 
         private static DialogGUIBase Custom_Contract_Button1;
         private static DialogGUIBase Custom_Contract_Button2;
@@ -221,17 +226,24 @@ namespace MissionControllerEC
                 SaveInfo.GUIEnabled = false;
             }, button_width, button_height, false);
 
-            CustomCrew_button = new DialogGUIButton(Localizer.Format("#autoLOC_MCE_CustomCrew"), delegate
-            {
-                CrewTransferContract();
-                SaveInfo.GUIEnabled = false;
-            }, button_width, button_height, false);
-
             CustomSat_button = new DialogGUIButton(Localizer.Format("#autoLOC_MCE_CustomComSat"), delegate
             {
                 ComSatContract();
                 SaveInfo.GUIEnabled = false;
             }, button_width, button_height, false);
+
+            CustomLandOrbit_button = new DialogGUIButton(Localizer.Format("#autoLOC_MCE2_ButtonMain_Custom_LandingOrbit_Contract_Set"), delegate
+            {
+                LandingOrbitCustomContract();
+                SaveInfo.GUIEnabled = false;
+            }, button_width, button_height, false);
+
+            CustomCrew_button = new DialogGUIButton(Localizer.Format("#autoLOC_MCE_CustomCrew"), delegate
+            {
+                CrewTransferContract();
+                SaveInfo.GUIEnabled = false;
+            }, button_width, button_height, false);
+           
             CustomSupply_button = new DialogGUIButton(Localizer.Format("#autoLOC_MCE_CustomSupply"), delegate
             {
                 TransferContract();
@@ -239,15 +251,20 @@ namespace MissionControllerEC
               
             }, button_width, button_height, false);
 
+            Main_Exit_button = new DialogGUIButton(Localizer.Format("#autoLOC_MCE_Button_Exit_Label"), delegate
+            {
+                SaveInfo.GUIEnabled = false;
+            }, button_width, button_height, false);
+
             Mainmulti_dialog = new MultiOptionDialog(
                "MissionControllerMain",
                "",
-               Localizer.Format("#autoLOC_MCE_MCETitle"),
+               Localizer.Format("#autoLOC_MCE_MCETitle") + "Developer Version",
                HighLogic.UISkin,
                new Rect(SaveInfo.MainGUIWindowPos.x, SaveInfo.MainGUIWindowPos.y, width, height),
                new DialogGUIBase[]
                {
-                   new DialogGUIVerticalLayout(Debug_button, CustomCrew_button, CustomSat_button, CustomSupply_button),
+                   new DialogGUIVerticalLayout(Debug_button, CustomSat_button,CustomLandOrbit_button ,CustomCrew_button ,CustomSupply_button, Main_Exit_button),
                });
         }
 

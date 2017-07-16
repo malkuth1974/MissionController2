@@ -13,6 +13,7 @@ namespace MissionControllerEC
         public static Vector2 CustomTransWindowPos;
         public static Vector2 CustomCrewTransWindowPos;
         public static Vector2 DebugWindowPos;
+        public static Vector2 CustomLandingOrbitWinPos;
 
         public static bool GUIEnabled;
 
@@ -45,7 +46,7 @@ namespace MissionControllerEC
         public static string SupplyVesName = "None Loaded";
         public static string SupplyVesId = "None Loaded";
         public static string ResourceName = "None Loaded";
-        public static string SupplyContractName = "Supply Contract";
+        public static string SupplyContractName = "Place Contract Name Here";
         public static double supplyAmount = 0;
 
         public static string crewVesName = "none";
@@ -54,8 +55,15 @@ namespace MissionControllerEC
         public static bool crewContractOn = false;
         public static int crewAmount = 0;
         public static double crewTime = 0;
-        public static string crewTransferName = "Crew Transfer";
-      
+        public static string crewTransferName = "Place Contract Name Here";
+
+        public static string LandingOrbitName = "Place Contract Name Here";
+        public static int LandingOrbitIDX = 1;
+        public static bool IsOrbitOrLanding = false;
+        public static bool OrbitLandingOn = false;
+        public static int LandingOrbitCrew;
+
+
         public static bool RepairContractGeneratedOn = false;
         public static bool RepairStationContractGeneratedOn = false;
         public static int SatelliteTypeChoice = 0;

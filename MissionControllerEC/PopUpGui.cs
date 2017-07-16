@@ -8,6 +8,7 @@ using System.Text.RegularExpressions;
 
 namespace MissionControllerEC
 {
+    
     public partial class MissionControllerEC
     {
         CelestialBody targetbody = null;
@@ -20,7 +21,7 @@ namespace MissionControllerEC
         private string resourceAmountString;
 
         double revertcost = HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCERevertCost;
-                         
+        #region Revert Gui                
         /// <summary>
         /// RevertPress is my early version of a GUI. I kept it this way to show that this is about the easiest way to use PopupDialog version.  But can get very confusing.
         /// If your GUI is not too complicated than this is easiest way to write a short GUI popup.
@@ -76,6 +77,9 @@ namespace MissionControllerEC
                        HighLogic.UISkin);
             }
         }
+        #endregion
+
+        #region Comsat Custom Contract GUI
         /// <summary>
         /// All Custom contracts are written like MainGUi. They are not Hdden though!! This Makes wrinting and placing the GUI much easier.  Its also easier to write more than one window by having a template.  
         /// All buttons are pulled
@@ -248,6 +252,9 @@ namespace MissionControllerEC
 
             customSatPop_dialg = PopupDialog.SpawnPopupDialog(CSatmulti_dialog, true, HighLogic.UISkin, false);
         }
+        #endregion
+
+        #region Resource Transfer Custom Contract
         internal void TransferContract()
         {
             getSupplyList(false);
@@ -412,6 +419,9 @@ namespace MissionControllerEC
             customSupPop_dialg = PopupDialog.SpawnPopupDialog(CSupplyMulti_Dialog, true, HighLogic.UISkin, false);
 
         }
+        #endregion
+
+        #region Crew Transfers Custom Contracts
         internal void CrewTransferContract()
         {
             getSupplyList(false);
@@ -564,6 +574,9 @@ namespace MissionControllerEC
 
             customCrewPop_Dialg = PopupDialog.SpawnPopupDialog(CCrewMulti_Dialog, true, HighLogic.UISkin, false);
         }
+        #endregion
+
+        #region Bebug Gui
         internal void DebugMenuMce()
         {          
             Custom_Contract_Button1 = new DialogGUIButton(Localizer.Format("#autoLOC_MCE_Button_Exit_Label"), () => { }, Contract_Button_Large_W, Contract_Button_Large_H, true);
@@ -619,20 +632,20 @@ namespace MissionControllerEC
                    DebugMenuMce();
                },
                Contract_Button_Med_W, Contract_Button_Med_H, true);
-            Custom_Contract_Button7 = new DialogGUIButton(Localizer.Format("Blank"),
+            Custom_Contract_Button7 = new DialogGUIButton(Localizer.Format("Tiros = " + SaveInfo.tirosCurrentNumber),
                delegate
                {
-
+                   SaveInfo.tirosCurrentNumber++;
                    SaveInfo.DebugWindowPos = new Vector2(
                                 ((Screen.width / 2) + customDebug_Dialg.RTrf.position.x) / Screen.width,
                                 ((Screen.height / 2) + customDebug_Dialg.RTrf.position.y) / Screen.height);
                    DebugMenuMce();
                },
                Contract_Button_Med_W, Contract_Button_Med_H, true);
-            Custom_Contract_Button8 = new DialogGUIButton(Localizer.Format("Blank"),
+            Custom_Contract_Button8 = new DialogGUIButton(Localizer.Format("Tiros = " + SaveInfo.tirosCurrentNumber),
                delegate
                {
-
+                   SaveInfo.tirosCurrentNumber--;
                    SaveInfo.DebugWindowPos = new Vector2(
                                 ((Screen.width / 2) + customDebug_Dialg.RTrf.position.x) / Screen.width,
                                 ((Screen.height / 2) + customDebug_Dialg.RTrf.position.y) / Screen.height);
@@ -788,6 +801,149 @@ namespace MissionControllerEC
 
             customDebug_Dialg = PopupDialog.SpawnPopupDialog(DebugMulti_Dialg, true, HighLogic.UISkin, false);
         }
+        #endregion
+
+        #region Landing or Orbit Custom Contract
+        internal void LandingOrbitCustomContract()
+        {
+            getSupplyList(false);            
+            SaveInfo.SupplyBodyIDX = SupVes[count].body.flightGlobalsIndex;
+            targetbody = FlightGlobals.Bodies[SaveInfo.LandingOrbitIDX];
+
+            Custom_Contract_Button1 = new DialogGUIButton(Localizer.Format("#autoLOC_MCE_Button_Exit_Label"), () => { SaveInfo.GUIEnabled = true; }, Contract_Button_Large_W, Contract_Button_Large_H, true);
+            Custom_Contract_Toggle1 = new DialogGUIToggleButton(false, Localizer.Format("#autoLOC_MCE_Button_LandOrbit_Cutom_Contract"),
+                               delegate (bool b)
+                               {
+                                   SaveInfo.OrbitLandingOn = !SaveInfo.OrbitLandingOn;
+                                   SaveInfo.CustomLandingOrbitWinPos = new Vector2(
+                                   ((Screen.width / 2) + customLandOrbit_dialg.RTrf.position.x) / Screen.width,
+                                   ((Screen.height / 2) + customLandOrbit_dialg.RTrf.position.y) / Screen.height);
+                                   LandingOrbitCustomContract();
+
+                               }, Contract_Button_Large_W, Contract_Button_Large_H);
+            Custom_Contract_Button2 = new DialogGUIButton(Localizer.Format("#autoLOC_MCE_Button_Previous"),
+                delegate
+                {
+                    SaveInfo.LandingOrbitIDX--;
+                    if (SaveInfo.LandingOrbitIDX < 1 || SaveInfo.LandingOrbitIDX > 16)
+                    {
+                        SaveInfo.LandingOrbitIDX = 1;
+                    }
+                    SaveInfo.CustomLandingOrbitWinPos = new Vector2(
+                    ((Screen.width / 2) + customLandOrbit_dialg.RTrf.position.x) / Screen.width,
+                    ((Screen.height / 2) + customLandOrbit_dialg.RTrf.position.y) / Screen.height);
+                    LandingOrbitCustomContract();
+                },
+                Contract_Button_Med_W, Contract_Button_Med_H, true);
+            Custom_Contract_Button3 = new DialogGUIButton(Localizer.Format("#autoLOC_MCE_Button_Next"),
+                delegate
+                {
+                    SaveInfo.LandingOrbitIDX++;
+                    if (SaveInfo.LandingOrbitIDX < 1 || SaveInfo.LandingOrbitIDX > 16)
+                    {
+                        SaveInfo.LandingOrbitIDX = 1;
+                    }
+                    SaveInfo.CustomLandingOrbitWinPos = new Vector2(
+                    ((Screen.width / 2) + customLandOrbit_dialg.RTrf.position.x) / Screen.width,
+                    ((Screen.height / 2) + customLandOrbit_dialg.RTrf.position.y) / Screen.height);
+                    LandingOrbitCustomContract();
+                },
+            Contract_Button_Med_W, Contract_Button_Med_H, true);
+            Custom_Contract_Button4 = new DialogGUIButton(Localizer.Format("++"),
+               delegate
+               {
+                   SaveInfo.LandingOrbitCrew++;
+                   SaveInfo.CustomLandingOrbitWinPos = new Vector2(
+                    ((Screen.width / 2) + customLandOrbit_dialg.RTrf.position.x) / Screen.width,
+                    ((Screen.height / 2) + customLandOrbit_dialg.RTrf.position.y) / Screen.height);
+                   LandingOrbitCustomContract();
+               },
+               Contract_Button_Med_W, Contract_Button_Med_H, true);
+            Custom_Contract_Button5 = new DialogGUIButton(Localizer.Format("--"),
+              delegate
+              {
+                  SaveInfo.LandingOrbitCrew--;
+                  SaveInfo.CustomLandingOrbitWinPos = new Vector2(
+                    ((Screen.width / 2) + customLandOrbit_dialg.RTrf.position.x) / Screen.width,
+                    ((Screen.height / 2) + customLandOrbit_dialg.RTrf.position.y) / Screen.height);
+                  LandingOrbitCustomContract();
+              },
+              Contract_Button_Med_W, Contract_Button_Med_H, true);
+            Custom_Contract_Button6 = new DialogGUIButton(Localizer.Format("#autoLOC_MCE_ButtonLandingOrbitSet1"),
+              delegate
+              {
+                  SaveInfo.IsOrbitOrLanding = true;
+                  SaveInfo.CustomLandingOrbitWinPos = new Vector2(
+                   ((Screen.width / 2) + customLandOrbit_dialg.RTrf.position.x) / Screen.width,
+                   ((Screen.height / 2) + customLandOrbit_dialg.RTrf.position.y) / Screen.height);
+                  LandingOrbitCustomContract();
+              },
+              Contract_Button_Med_W, Contract_Button_Med_H, true);
+            Custom_Contract_Button7 = new DialogGUIButton(Localizer.Format("#autoLOC_MCE_ButtonLandingOrbitSet2"),
+              delegate
+              {
+                  SaveInfo.IsOrbitOrLanding = false;
+                  SaveInfo.CustomLandingOrbitWinPos = new Vector2(
+                   ((Screen.width / 2) + customLandOrbit_dialg.RTrf.position.x) / Screen.width,
+                   ((Screen.height / 2) + customLandOrbit_dialg.RTrf.position.y) / Screen.height);
+                  LandingOrbitCustomContract();
+              },
+              Contract_Button_Med_W, Contract_Button_Med_H, true);
+
+            String tempOrbitLand;
+            if (SaveInfo.IsOrbitOrLanding)
+            {
+                tempOrbitLand = (Localizer.Format("#autoLOC_MCE_Label_For_LandingOrbitContract_Orbit"));
+            }
+            else
+            {
+                tempOrbitLand = (Localizer.Format("#autoLOC_MCE_label_for_LandingOrbitContract_Landing"));
+            }
+            
+            Custom_Contract_GuiBox1 = new DialogGUIBox(Localizer.Format("#autoLOC_MCE_Label_LandOrbit_Custom_Contract"), Contract_Button_Med_W, Contract_Button_Med_H);
+            Custom_Contract_GuiBox7 = new DialogGUIBox(SaveInfo.OrbitLandingOn.ToString(), Contract_Button_Med_W, Contract_Button_Med_H);
+            Custom_Contract_GuiBox2 = new DialogGUIBox(Localizer.Format("#autoLOC_MCE_Label_LandOrbit_Cutom_Contract_Target_Planet"), Contract_Button_Med_W, Contract_Button_Med_H);
+            Custom_Contract_GuiBox8 = new DialogGUIBox(targetbody.bodyName, Contract_Button_Med_W, Contract_Button_Med_H);
+            Custom_Contract_GuiBox3 = new DialogGUIBox(Localizer.Format("#autoLOC_MCE_Label_Set_Amount_Crew To_Transfer"), Contract_Button_Med_W, Contract_Button_Med_H);
+            Custom_Contract_GuiBox9 = new DialogGUIBox(SaveInfo.LandingOrbitCrew.ToString(), Contract_Button_Med_W, Contract_Button_Med_H);
+            Custom_Contract_GuiBox4 = new DialogGUIBox(Localizer.Format("#autoLOC_MCE_ButtonToggle_Custom_Contract_Landing_Orbit_Option_Bool"), Contract_Button_Med_W, Contract_Button_Med_H);
+            Custom_Contract_GuiBox5 = new DialogGUIBox(tempOrbitLand, Contract_Button_Med_W, Contract_Button_Med_H);
+            Custom_Contract_GuiBox6 = new DialogGUIBox(Localizer.Format("#autoLOC_MCE_ContractNameLabel"), Contract_Button_Med_W, Contract_Button_Med_H);
+            Custom_Contract_Input = new DialogGUITextInput(SaveInfo.LandingOrbitName,
+                                false,
+                                210,
+                                (string s) => {
+                                    SaveInfo.LandingOrbitName = s;
+                                    return s;
+                                }, 30f);
+
+            if (SaveInfo.CustomLandingOrbitWinPos.x <= 0 || SaveInfo.CustomLandingOrbitWinPos.y <= 0)
+                SaveInfo.CustomLandingOrbitWinPos = new Vector2(0.5f, 0.5f);
+
+            LandOrbitMulti_Dialg = new MultiOptionDialog("CustomLandOrbit", "", Localizer.Format("#autoLOC_MCE_Label_Custom_LandOrbit_Title_Contract"), HighLogic.UISkin,
+                new Rect(SaveInfo.CustomLandingOrbitWinPos.x, SaveInfo.CustomLandingOrbitWinPos.y, 310f, 60f),
+                new DialogGUIBase[]
+                {
+                    new DialogGUIHorizontalLayout(Custom_Contract_GuiBox1,Custom_Contract_GuiBox7),
+                    new DialogGUIVerticalLayout(Custom_Contract_Toggle1),
+
+                    new DialogGUIHorizontalLayout(Custom_Contract_GuiBox2,Custom_Contract_GuiBox8),
+                    new DialogGUIHorizontalLayout(Custom_Contract_Button2,Custom_Contract_Button3),
+
+                    new DialogGUIHorizontalLayout(Custom_Contract_GuiBox3,Custom_Contract_GuiBox9),
+                    new DialogGUIHorizontalLayout(Custom_Contract_Button4,Custom_Contract_Button5),
+                  
+                    new DialogGUIHorizontalLayout(Custom_Contract_GuiBox4, Custom_Contract_GuiBox5),           
+                    new DialogGUIHorizontalLayout(Custom_Contract_Button6, Custom_Contract_Button7),
+   
+                    new DialogGUIHorizontalLayout(Custom_Contract_GuiBox6,Custom_Contract_Input),
+                    new DialogGUIVerticalLayout(Custom_Contract_Button1)
+                });
+
+            customLandOrbit_dialg = PopupDialog.SpawnPopupDialog(LandOrbitMulti_Dialg, true, HighLogic.UISkin, false);
+
+        }
+        #endregion
         internal void KillMCePopups()
         {
             PopupDialog.ClearPopUps();

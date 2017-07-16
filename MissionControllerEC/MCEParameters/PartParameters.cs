@@ -720,6 +720,7 @@ namespace MissionControllerEC.MCEParameters
     public class ModuleGoal : ContractParameter
     {
         private String moduleName;
+        private string moduleName2 = "NoneTest";
         private String ModuleGoalname;
        
         public ModuleGoal()
@@ -731,6 +732,12 @@ namespace MissionControllerEC.MCEParameters
             this.moduleName = Modulename;
             this.ModuleGoalname = TitleName;
 
+        }
+        public ModuleGoal(string Modulename, String Modulename2, string TitleName)
+        {
+            this.moduleName = Modulename;
+            this.ModuleGoalname = TitleName;
+            this.moduleName2 = Modulename2;
         }
 
         protected override string GetHashString()
@@ -755,12 +762,14 @@ namespace MissionControllerEC.MCEParameters
         protected override void OnLoad(ConfigNode node)
         {
             Tools.ContractLoadCheck(node, ref moduleName, "Error Defaults Loaded", moduleName, "partname");
+            Tools.ContractLoadCheck(node, ref moduleName2, "Error Defaults Loaded", moduleName2, "partname2");
             Tools.ContractLoadCheck(node, ref ModuleGoalname, "Error Defaults Loaded", ModuleGoalname, "modulegoalname");
         }
         protected override void OnSave(ConfigNode node)
         {
 
             node.AddValue("partname", moduleName);
+            node.AddValue("partname2", moduleName2);
             node.AddValue("modulegoalname", ModuleGoalname);
 
         }
@@ -775,7 +784,7 @@ namespace MissionControllerEC.MCEParameters
                     {
                         foreach (PartModule pm in p.Modules)
                         {
-                            if (pm.moduleName.Equals(moduleName))
+                            if (pm.moduleName.Equals(moduleName) || pm.moduleName.Equals(moduleName2))
                             {
                                 base.SetComplete();
                             }

@@ -45,7 +45,7 @@ namespace MissionControllerEC.MCEContracts
             vostok2 = this.AddParameter(new InOrbitGoal(targetBody), null);
             vostok2.SetFunds(2000f, targetBody);
             vostok2.SetReputation(3f, targetBody);
-            vostok3 = this.AddParameter(new LandingParameters(targetBody, true), null);
+            vostok3 = this.AddParameter(new Contracts.Parameters.LandOnBody(targetBody), null);
             vostok3.SetFunds(2500f, targetBody);
             vostok3.SetReputation(4f, targetBody);
             this.AddParameter(new GetCrewCount(crew), null);
@@ -186,7 +186,7 @@ namespace MissionControllerEC.MCEContracts
             vostok4.SetFunds(3000f, targetBody);
             vostok4.SetReputation(6f, targetBody);
             vostok4.SetScience(10f, targetBody);
-            vostok3 = this.AddParameter(new LandingParameters(targetBody, true), null);
+            vostok3 = this.AddParameter(new Contracts.Parameters.LandOnBody(targetBody), null);
             vostok3.SetFunds(3500f, targetBody);
             vostok3.SetReputation(7f, targetBody);
             this.AddParameter(new GetCrewCount(crew), null);
@@ -320,7 +320,7 @@ namespace MissionControllerEC.MCEContracts
             vostok4.SetFunds(4200f, targetBody);
             vostok4.SetReputation(6f, targetBody);
             vostok4.SetScience(6f, targetBody);
-            vostok3 = this.AddParameter(new LandingParameters(targetBody, true), null);
+            vostok3 = this.AddParameter(new Contracts.Parameters.LandOnBody(targetBody), null);
             vostok3.SetFunds(4800f, targetBody);
             vostok3.SetReputation(7f, targetBody);
             this.AddParameter(new GetCrewCount(crew), null);
@@ -558,7 +558,6 @@ namespace MissionControllerEC.MCEContracts
             }
             else if (TirosTitleMissionNumber == 3)
             {
-                this.AddParameter(new PartGoal("Communotron 88-88", 1, false), null);
                 this.AddParameter(new PartGoal("PresMat Barometer", 1, false), null);
                 this.AddParameter(new PartGoal("2HOT Thermometer", 1, false), null);
             }
@@ -1116,7 +1115,7 @@ namespace MissionControllerEC.MCEContracts
             luna1.SetFunds(8000f, targetBody);
             luna1.SetReputation(8f, targetBody);
 
-            luna3 = this.AddParameter(new LandingParameters(targetBody, true), null);
+            luna3 = this.AddParameter(new Contracts.Parameters.LandOnBody(targetBody), null);
             luna3.SetFunds(8000f, targetBody);
             luna3.SetReputation(3f, targetBody);
             luna3.SetScience(25f, targetBody);
@@ -1125,7 +1124,7 @@ namespace MissionControllerEC.MCEContracts
             luna2.SetFunds(5000f, targetBody);
             luna2.SetReputation(5f, targetBody);
 
-            this.AddParameter(new LandingParameters(Planetarium.fetch.Home, true), null);
+            this.AddParameter(new Contracts.Parameters.LandOnBody(Planetarium.fetch.Home), null);
 
             this.AddParameter(new GetCrewCount(crew), null);
 
@@ -1438,9 +1437,9 @@ namespace MissionControllerEC.MCEContracts
                 base.SetScience(1f, targetBody);
             }
             this.AddParameter(new GetCrewCount(crewCount), null);
-            this.AddParameter(new LandingParameters(targetBody2, true), null);
+            this.AddParameter(new Contracts.Parameters.LandOnBody(targetBody), null);
             this.AddParameter(new ModuleGoal(PartDockingModule, dockingModuleDescription), null);
-            this.AddParameter(new ModuleGoal(SolarPanelsModule, solarPanelDescription), null);
+            this.AddParameter(new ModuleGoal(SolarPanelsModule, "KopernicusSolarPanel", solarPanelDescription), null);
             this.AddParameter(new ResourceGoalCap(ElectricPowerSource, electricPowerDescription), null);
             return true;
 
@@ -2267,8 +2266,8 @@ namespace MissionControllerEC.MCEContracts
 
             this.AddParameter(new ApAOrbitGoal(targetBody, (double)ApA,true, "Orbit"), null);
             this.AddParameter(new PeAOrbitGoal(targetBody, (double)PeA,true, "Orbit"), null);
-            this.AddParameter(new LandingParameters(targetBody, true), null);
-            this.AddParameter(new ModuleGoal(partName, ModuleTitle), null);
+            this.AddParameter(new Contracts.Parameters.LandOnBody(targetBody), null);
+            this.AddParameter(new ModuleGoal(partName, "KopernicusSolarPanel", ModuleTitle), null);
             this.AddParameter(new GetCrewCount(crewCount), null);
 
             base.SetExpiry(15f, 35f);
@@ -2592,7 +2591,7 @@ namespace MissionControllerEC.MCEContracts
             skylab4.SetReputation(25, targetBody);
             skylab4.SetScience(25, targetBody);
 
-            this.skylab5 = this.AddParameter(new LandingParameters(targetBody, true), null);
+            this.skylab5 = this.AddParameter(new Contracts.Parameters.LandOnBody(targetBody), null);
             skylab5.SetFunds(5000, 75000, targetBody);
             skylab5.SetReputation(20, targetBody);
             skylab5.SetScience(3, targetBody);
@@ -2755,7 +2754,7 @@ namespace MissionControllerEC.MCEContracts
             skylab4.SetReputation(15, targetBody);
             skylab4.SetScience(15, targetBody);
 
-            this.skylab5 = this.AddParameter(new LandingParameters(targetBody, true), null);
+            this.skylab5 = this.AddParameter(new LandOnBody(targetBody), null);
             skylab5.SetFunds(5000, 75000, targetBody);
             skylab5.SetReputation(15, targetBody);
             skylab5.SetScience(5, targetBody);
@@ -2922,7 +2921,7 @@ namespace MissionControllerEC.MCEContracts
             skylab4.SetReputation(15, targetBody);
             skylab4.SetScience(15, targetBody);
 
-            this.skylab5 = this.AddParameter(new LandingParameters(targetBody, true), null);
+            this.skylab5 = this.AddParameter(new LandOnBody(targetBody), null);
             skylab5.SetFunds(5000, 75000, targetBody);
             skylab5.SetReputation(15, targetBody);
             skylab5.SetScience(5, targetBody);

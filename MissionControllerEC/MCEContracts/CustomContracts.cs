@@ -34,18 +34,15 @@ namespace MissionControllerEC.MCEContracts
             totalContracts = ContractSystem.Instance.GetCurrentContracts<BuildComNetwork>().Count();
             TotalFinished = ContractSystem.Instance.GetCompletedContracts<BuildComNetwork>().Count();
             bool parttechUnlock = ResearchAndDevelopment.GetTechnologyState("advConstruction") == RDTech.State.Available;
-            //Debug.Log("COMSAT Totalcontracts " + totalContracts + " - " + " Total Finsihed " + TotalFinished);
             if (totalContracts >= 1)
             {
-                //Debug.Log("Contract Deliver ComSat Network Rejected");
-                //Debug.Log("count is " + totalContracts);
+                
                 return false;
             }
             settings.Load();
             StartNetwork = SaveInfo.ComSateContractOn;
             if (!StartNetwork)
             {
-                //Debug.Log("ComSat Network is shut off, and set to false");
                 return false;
             }
             targetBody = FlightGlobals.Bodies[SaveInfo.comSatBodyName];
@@ -128,7 +125,6 @@ namespace MissionControllerEC.MCEContracts
             node.AddValue("contractplayername", ContractPlayerName);
         }
 
-        //for testing purposes
         public override bool MeetRequirements()
         {
             bool techUnlock = ResearchAndDevelopment.GetTechnologyState("advFlightControl") == RDTech.State.Available;
@@ -162,24 +158,20 @@ namespace MissionControllerEC.MCEContracts
             totalContracts = ContractSystem.Instance.GetCurrentContracts<CustomSupply>().Count();
             TotalFinished = ContractSystem.Instance.GetCompletedContracts<CustomSupply>().Count();
             bool parttechUnlock = ResearchAndDevelopment.GetTechnologyState("advConstruction") == RDTech.State.Available;
-            //Debug.Log("COMSAT Totalcontracts " + totalContracts + " - " + " Total Finsihed " + TotalFinished);
+
             if (totalContracts >= 1)
             {
-                //Debug.Log("Contract Deliver ComSat Network Rejected");
-                //Debug.Log("count is " + totalContracts);
                 return false;
             }
             StartSupply = SaveInfo.supplyContractOn;
             if (!StartSupply)
             {
-                //Debug.Log("supply contract is shut off, and set to false");
                 return false;
             }
             targetBody = FlightGlobals.Bodies[SaveInfo.SupplyBodyIDX];
             if (targetBody == null)
             {
                 targetBody = Planetarium.fetch.Home;
-                //Debug.Log("Did not find Body for Supply Mission defaulting to kerbin");
             }
             vesselName = SaveInfo.SupplyVesName;
             vesselId = SaveInfo.SupplyVesId;
@@ -260,7 +252,6 @@ namespace MissionControllerEC.MCEContracts
             node.AddValue("ctitle", CTitle);
         }
 
-        //for testing purposes
         public override bool MeetRequirements()
         {
             bool techUnlock = ResearchAndDevelopment.GetTechnologyState("advFlightControl") == RDTech.State.Available;
@@ -272,6 +263,134 @@ namespace MissionControllerEC.MCEContracts
     }
     #endregion
     #region Custom Crew Transfer Contract
+    public class CustomLandingOrbit : Contract
+    {
+        CelestialBody targetBody = null;      
+        public string ContractPlayerName;
+        public int crewAmount;        
+        public int totalContracts;
+        public int TotalFinished;
+        public string CTitle = Localizer.Format("#autoLOC_MCE2_Custom_Land_Orbit_Contract_Title_Set" + " ");
+        public bool StartOrbitLand = false;
+        ContractParameter Orbit1;
+        ContractParameter Land2;
+        ContractParameter crew1;
+
+        protected override bool Generate()
+        {
+            if (HighLogic.LoadedSceneIsFlight) { return false; }
+            totalContracts = ContractSystem.Instance.GetCurrentContracts<CustomLandingOrbit>().Count();
+            TotalFinished = ContractSystem.Instance.GetCompletedContracts<CustomLandingOrbit>().Count();
+            bool parttechUnlock = ResearchAndDevelopment.GetTechnologyState("advConstruction") == RDTech.State.Available;
+
+            if (totalContracts >= 1)
+            {               
+                return false;
+            }
+            StartOrbitLand = SaveInfo.OrbitLandingOn;
+            if (!StartOrbitLand)
+            {               
+                return false;
+            }
+
+            targetBody = FlightGlobals.Bodies[SaveInfo.LandingOrbitIDX];
+            if (targetBody == null)
+            {
+                Debug.LogError("Could not find TargetBody for Custom Landing Orbit contract!!");
+                return false;              
+            }
+           
+            ContractPlayerName = SaveInfo.LandingOrbitName;
+            crewAmount = SaveInfo.LandingOrbitCrew;
+            if (SaveInfo.IsOrbitOrLanding)
+            {
+                this.Orbit1 = this.AddParameter(new Contracts.Parameters.EnterOrbit(targetBody), null);
+                Orbit1.SetFunds(4000 * crewAmount, 4000, targetBody);
+                Orbit1.SetReputation(3 * crewAmount, targetBody);
+            }
+
+            else
+            {
+                this.Land2 = this.AddParameter(new Contracts.Parameters.LandOnBody(targetBody), null);
+                Land2.SetFunds(2500 * crewAmount, targetBody);
+                Land2.SetReputation(3 * crewAmount, targetBody);
+            }
+            crew1 = this.AddParameter(new GetCrewCount(crewAmount), null);
+            crew1.SetFunds(1000 * crewAmount);
+            crew1.SetReputation(3 * crewAmount);
+            this.AddParameter(new Contracts.Parameters.KerbalDeaths(0));
+
+            base.SetExpiry(15f, 40f);
+            base.SetDeadlineYears(700, targetBody);
+            base.SetReputation(25f, 50f, targetBody);
+            base.SetFunds(5000 * HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEContractPayoutMult, 80000 * HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEContractPayoutMult, 160000 * HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEContractPayoutMult, targetBody);
+
+            return true;
+        }
+
+        public override bool CanBeCancelled()
+        {
+            return true;
+        }
+        public override bool CanBeDeclined()
+        {
+            return true;
+        }
+
+        protected override string GetHashString()
+        {
+            return "Land Or Orbit " + crewAmount + " Over " + targetBody.bodyName + this.MissionSeed.ToString();
+        }
+        protected override string GetTitle()
+        {
+            return ContractPlayerName;
+        }
+        protected override string GetDescription()
+        {
+            return Localizer.Format("#autoLOC_MCE2_Custom_Land_Orbit_Contract_ContractDescription_Set");
+        }
+        protected override string GetNotes()
+        {
+            return Localizer.Format("#autoLOC_MCE2_Custom_Land_Orbit_Contract_GetNotes_Set");
+        }
+        protected override string GetSynopsys()
+        {
+            return Localizer.Format("#autoLOC_MCE2_Custom_Land_Orbit_Contract_Synopsis_set") + " " + targetBody.bodyName;
+        }
+        protected override string MessageCompleted()
+        {
+            return Localizer.Format("#autoLOC_MCE2_Custom_Land_Orbit_Contract_ContractCompleted_Victory") ;
+        }
+
+        protected override void OnLoad(ConfigNode node)
+        {
+            Tools.ContractLoadCheck(node, ref targetBody, Planetarium.fetch.Home, targetBody, "targetBody");                  
+            Tools.ContractLoadCheck(node, ref ContractPlayerName, "Woops Defaults Loaded Error", ContractPlayerName, "contractplayername");
+            Tools.ContractLoadCheck(node, ref crewAmount, 1, crewAmount, "crew");            
+            Tools.ContractLoadCheck(node, ref CTitle, "Defaults Loaded Error", CTitle, "ctitle");
+        }
+        protected override void OnSave(ConfigNode node)
+        {
+            int bodyID = targetBody.flightGlobalsIndex;
+            Debug.LogWarning("Custom Land Orbit Saved as " + bodyID);
+            node.AddValue("targetBody", bodyID); 
+            node.AddValue("contractplayername", ContractPlayerName);
+            node.AddValue("crew", crewAmount);
+            node.AddValue("ctitle", CTitle);
+        }
+
+        //for testing purposes
+        public override bool MeetRequirements()
+        {
+            bool techUnlock = ResearchAndDevelopment.GetTechnologyState("start") == RDTech.State.Available;
+            if (techUnlock)
+                return true;
+            else
+                return false;
+        }
+    }
+    #endregion
+
     public class CustomCrewTransfer : Contract
     {
         Settings st = new Settings("Config.cfg");
@@ -295,17 +414,14 @@ namespace MissionControllerEC.MCEContracts
             totalContracts = ContractSystem.Instance.GetCurrentContracts<CustomCrewTransfer>().Count();
             TotalFinished = ContractSystem.Instance.GetCompletedContracts<CustomCrewTransfer>().Count();
             bool parttechUnlock = ResearchAndDevelopment.GetTechnologyState("advConstruction") == RDTech.State.Available;
-            //Debug.Log("COMSAT Totalcontracts " + totalContracts + " - " + " Total Finsihed " + TotalFinished);
+
             if (totalContracts >= 1)
             {
-                //Debug.Log("Contract Deliver ComSat Network Rejected");
-                //Debug.Log("count is " + totalContracts);
                 return false;
             }
             Startcrewtrans = SaveInfo.crewContractOn;
             if (!Startcrewtrans)
             {
-                //Debug.Log("supply contract is shut off, and set to false");
                 return false;
             }
 
@@ -313,7 +429,6 @@ namespace MissionControllerEC.MCEContracts
             if (targetBody == null)
             {
                 targetBody = Planetarium.fetch.Home;
-                //Debug.Log("Did not find Body for Supply Mission defaulting to kerbin");
             }
             vesselName = SaveInfo.crewVesName;
             vesselId = SaveInfo.crewVesid;
@@ -328,7 +443,7 @@ namespace MissionControllerEC.MCEContracts
             this.ctrans2 = this.AddParameter(new TimeCountdownDocking(targetBody, crewTime, "Crew will Stay For This Amount Of Time ", vesselId, vesselName), null);
             ctrans2.SetFunds(2000, 2000, targetBody);
             ctrans2.SetReputation(3, targetBody);
-            this.ctrans3 = this.AddParameter(new LandingParameters(Planetarium.fetch.Home,true), null);
+            this.ctrans3 = this.AddParameter(new LandingParameters(Planetarium.fetch.Home, true), null);
             ctrans3.SetFunds(2000, 2000, Planetarium.fetch.Home);
             ctrans3.SetReputation(3, Planetarium.fetch.Home);
             this.AddParameter(new GetCrewCount(crewAmount), null);
@@ -411,5 +526,4 @@ namespace MissionControllerEC.MCEContracts
                 return false;
         }
     }
-    #endregion
 }
