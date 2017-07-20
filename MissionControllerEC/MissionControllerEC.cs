@@ -21,10 +21,7 @@ namespace MissionControllerEC
         private static Texture2D texture;
         private static Texture2D texture2;
         private ApplicationLauncherButton MCEButton;
-        private ApplicationLauncherButton MCERevert;
-        private string tirosNumber;
-        private string marinerNumber;
-        private string apolloNumber;
+        private ApplicationLauncherButton MCERevert;        
         private int id = new System.Random().Next(int.MaxValue);
         public static bool RevertHalt = false;        
        
@@ -59,7 +56,7 @@ namespace MissionControllerEC
         private static MultiOptionDialog DebugMulti_Dialg;
         private static MultiOptionDialog LandOrbitMulti_Dialg;
 
-        private static PopupDialog popup_dialog;
+        private static PopupDialog Main_popup_dialog;
         private static PopupDialog customSatPop_dialg;
         private static PopupDialog customSupPop_dialg;
         private static PopupDialog customCrewPop_Dialg;
@@ -174,7 +171,7 @@ namespace MissionControllerEC
             //Debug.Log("MCE Awake");
             getSupplyList(false);
             // create popup dialog and hide it
-            popup_dialog = PopupDialog.SpawnPopupDialog(Mainmulti_dialog, true, HighLogic.UISkin, false, "");
+            Main_popup_dialog = PopupDialog.SpawnPopupDialog(Mainmulti_dialog, true, HighLogic.UISkin, false, "");
             Hide();
         }    
                            
@@ -183,24 +180,30 @@ namespace MissionControllerEC
             DestroyButtons();
             //Debug.Log("MCE OnDestroy");
             GameEvents.Contract.onContractsLoaded.Remove(this.onContractLoaded);
-            GameEvents.onGameSceneLoadRequested.Remove(this.CheckRepairContractTypes);
+            //GameEvents.onGameSceneLoadRequested.Remove(this.CheckRepairContractTypes);
             //Debug.Log("Game All values removed for MCE");
             instance = null;
 
-            SaveInfo.MainGUIWindowPos = new Vector2(
-            ((Screen.width / 2) + popup_dialog.RTrf.position.x) / Screen.width,
-                ((Screen.height / 2) + popup_dialog.RTrf.position.y) / Screen.height);
+            if (Main_popup_dialog = null)
+            {
+                SaveInfo.MainGUIWindowPos = new Vector2(
+                ((Screen.width / 2) + Main_popup_dialog.RTrf.position.x) / Screen.width,
+                    ((Screen.height / 2) + Main_popup_dialog.RTrf.position.y) / Screen.height);
+            }
 
-            SaveInfo.CustomSatWindowPos = new Vector2(
-            ((Screen.width / 2) + customSatPop_dialg.RTrf.position.x) / Screen.width,
-                ((Screen.height / 2) + customSatPop_dialg.RTrf.position.y) / Screen.height);          
+            Main_popup_dialog.Dismiss();
+            //customSatPop_dialg.Dismiss();
+            //customCrewPop_Dialg.Dismiss();
+            //customDebug_Dialg.Dismiss();
+            //customLandOrbit_dialg.Dismiss();
+            //customSupPop_dialg.Dismiss();
 
-            popup_dialog.Dismiss();
-            customSatPop_dialg.Dismiss();
-            customCrewPop_Dialg.Dismiss();
-            popup_dialog = null;
-            customSatPop_dialg = null;
-            customCrewPop_Dialg = null;
+            Main_popup_dialog = null;
+            //customSatPop_dialg = null;
+            //customCrewPop_Dialg = null;
+            //customDebug_Dialg = null;
+            //customLandOrbit_dialg = null;
+            //customSupPop_dialg = null;
         }
         private void Update()
         {
@@ -270,19 +273,19 @@ namespace MissionControllerEC
 
         public void Show()
         {
-            if (popup_dialog != null)
+            if (Main_popup_dialog != null)
             {
                 visible = true;
-                popup_dialog.gameObject.SetActive(true);
+                Main_popup_dialog.gameObject.SetActive(true);
             }
         }
 
         public void Hide()
         {
-            if (popup_dialog != null)
+            if (Main_popup_dialog != null)
             {
                 visible = false;
-                popup_dialog.gameObject.SetActive(false);
+                Main_popup_dialog.gameObject.SetActive(false);
             }
         }
                  

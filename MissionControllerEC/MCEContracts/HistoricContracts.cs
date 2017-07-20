@@ -567,7 +567,7 @@ namespace MissionControllerEC.MCEContracts
             }
             if (TirosTitleMissionNumber == 2 || TirosTitleMissionNumber == 3)
             {
-                this.AddParameter(new ModuleGoal("ModuleDeployableSolarPanel", "Solar Panels"), null);
+                this.AddParameter(new ModuleGoal("ModuleDeployableSolarPanel", "KopernicusSolarPanel", "Solar Panels"), null);
                 this.AddParameter(new ResourceGoalCap("ElectricCharge", 600), null);
             }
             this.AddParameter(new GetCrewCount(0), null);

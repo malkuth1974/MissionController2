@@ -18,7 +18,6 @@ namespace MissionControllerEC
         public int count = 0;
         public int prCount = 0;
         private int DictCount;
-        private string resourceAmountString;
 
         double revertcost = HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCERevertCost;
         #region Revert Gui                
@@ -90,7 +89,7 @@ namespace MissionControllerEC
         {
             targetbody = FlightGlobals.Bodies[SaveInfo.comSatBodyName];
            
-            Custom_Contract_Button1 = new DialogGUIButton(Localizer.Format("#autoLOC_MCE_Button_Exit_Label"), () => { }, Contract_Button_Large_W, Contract_Button_Large_H, true);
+            Custom_Contract_Button1 = new DialogGUIButton(Localizer.Format("#autoLOC_MCE_Button_Exit_Label"), () => { SaveInfo.GUIEnabled = true;}, Contract_Button_Large_W, Contract_Button_Large_H, true);
             Custom_Contract_Toggle1 = new DialogGUIToggleButton(false, Localizer.Format("#autoLOC_MCE_ComsatNetConButton"),
                                delegate (bool b)
                                {
@@ -264,7 +263,7 @@ namespace MissionControllerEC
 
             SaveInfo.ResourceName = settings.SupplyResourceList[prCount];
             targetbody = FlightGlobals.Bodies[SaveInfo.comSatBodyName];
-            Custom_Contract_Button1 = new DialogGUIButton(Localizer.Format("#autoLOC_MCE_Button_Exit_Label"), () => { }, Contract_Button_Large_W, Contract_Button_Large_H, true);
+            Custom_Contract_Button1 = new DialogGUIButton(Localizer.Format("#autoLOC_MCE_Button_Exit_Label"), () => { SaveInfo.GUIEnabled = true;}, Contract_Button_Large_W, Contract_Button_Large_H, true);
             Custom_Contract_Toggle1 = new DialogGUIToggleButton(false, Localizer.Format("#autoLOC_MCE_Supply_Contracts_On_Button"),
                                delegate (bool b)
                                {
@@ -429,7 +428,7 @@ namespace MissionControllerEC
             SaveInfo.crewVesid = SupVes[count].vesselId.ToString();
             SaveInfo.crewBodyIDX = SupVes[count].body.flightGlobalsIndex;
             targetbody = FlightGlobals.Bodies[SaveInfo.comSatBodyName];
-            Custom_Contract_Button1 = new DialogGUIButton(Localizer.Format("#autoLOC_MCE_Button_Exit_Label"), () => { }, Contract_Button_Large_W, Contract_Button_Large_H, true);
+            Custom_Contract_Button1 = new DialogGUIButton(Localizer.Format("#autoLOC_MCE_Button_Exit_Label"), () => { SaveInfo.GUIEnabled = true;}, Contract_Button_Large_W, Contract_Button_Large_H, true);
             Custom_Contract_Toggle1 = new DialogGUIToggleButton(false, Localizer.Format("#autoLOC_MCE_ButtonCrew_Transfer_Contracts_On"),
                                delegate (bool b)
                                {
@@ -579,7 +578,7 @@ namespace MissionControllerEC
         #region Bebug Gui
         internal void DebugMenuMce()
         {          
-            Custom_Contract_Button1 = new DialogGUIButton(Localizer.Format("#autoLOC_MCE_Button_Exit_Label"), () => { }, Contract_Button_Large_W, Contract_Button_Large_H, true);
+            Custom_Contract_Button1 = new DialogGUIButton(Localizer.Format("#autoLOC_MCE_Button_Exit_Label"), () => { SaveInfo.GUIEnabled = true;}, Contract_Button_Large_W, Contract_Button_Large_H, true);
             Custom_Contract_Button2 = new DialogGUIButton(Localizer.Format("#autoLOC_MCE_Button_Cheat_Money"),
                 delegate
                 {
