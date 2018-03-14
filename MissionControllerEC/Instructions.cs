@@ -47,25 +47,27 @@ namespace MissionControllerEC
             {
                 texture = new Texture2D(36, 36, TextureFormat.RGBA32, false);
                 texture.LoadImage(File.ReadAllBytes(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "MCEStockToolbar.png")));
+                Debug.LogError("MCE Textures Loaded");
             }
             if (texture2 == null)
             {
                 texture2 = new Texture2D(36, 36, TextureFormat.RGBA32, false);
                 texture2.LoadImage(File.ReadAllBytes(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "MCERevert.png")));
+                Debug.LogError("MCE Textures2 Loaded");
             }
-            else { /*Debug.Log("MCE LoadTexture Failure"); */}
-            //Debug.Log("MCE Textures Loaded");
+            else { Debug.Log("MCE LoadTexture Already Loaded"); }            
         }
 
         public void loadFiles()
         {           
             if (settings.FileExists) { settings.Load(); settings.Save(); }
             else { settings.Save(); settings.Load(); }
-            //Debug.Log("MCE Settings Loaded");
+            Debug.LogError("MCE Settings Loaded");
         }       
 
         public void CreateButtons()
         {
+            DestroyButtons();
             if (HighLogic.LoadedScene == GameScenes.SPACECENTER && this.MCEButton == null)
             {
                 this.MCEButton = ApplicationLauncher.Instance.AddModApplication(
@@ -78,10 +80,10 @@ namespace MissionControllerEC
                     ApplicationLauncher.AppScenes.SPACECENTER,
                     texture
                     );
-                //Debug.Log("Creating MCEButton Buttons");
+                Debug.LogError("Creating MCEButton Buttons");
             }
             
-            if (HighLogic.LoadedScene == GameScenes.FLIGHT && this.MCERevert == null && HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCERevertAllow)
+            if (HighLogic.LoadedScene == GameScenes.FLIGHT && this.MCERevert == null && HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCERevertAllow)
             {
                 this.MCERevert = ApplicationLauncher.Instance.AddModApplication(
                     this.RevertPress,
@@ -93,9 +95,9 @@ namespace MissionControllerEC
                     ApplicationLauncher.AppScenes.FLIGHT,
                     texture2
                     );
-                //Debug.Log("creating MCERevert Buttons");
+                Debug.LogError("creating MCERevert Buttons");
             }
-            else { /*Debug.Log("MCE2 CreateButtons Failed");*/ }
+            else { Debug.LogError("MCE2 CreateButtons Already Loaded"); }
         }
 
         private void MCEOn()
@@ -128,7 +130,7 @@ namespace MissionControllerEC
             {
                 ApplicationLauncher.Instance.RemoveModApplication(this.MCERevert);
             }
-            else { /*Debug.Log("MCE destroy buttons failed");*/ }
+            else { Debug.Log("MCE destroy buttons failed"); }
         }
         
         public void GuiDestroy(Vector2 value, PopupDialog popupinfo)
@@ -228,7 +230,7 @@ namespace MissionControllerEC
 
         public void onContractLoaded()
         {           
-            if (!HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings2>().RescueKerbalContracts && ContractSystem.ContractTypes.Contains(typeof(Contracts.Templates.RecoverAsset)))          
+            if (!HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings2>().RescueKerbalContracts && ContractSystem.ContractTypes.Contains(typeof(Contracts.Templates.RecoverAsset)))          
             {
                 try
                 {
@@ -238,7 +240,7 @@ namespace MissionControllerEC
 
                 catch { Debug.LogError("could not run NoRescueKerbalContracts Returned Null");}
             }
-            if (!HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings2>().FPSatelliteContracts && ContractSystem.ContractTypes.Contains(typeof(FinePrint.Contracts.SatelliteContract)))
+            if (!HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings2>().FPSatelliteContracts && ContractSystem.ContractTypes.Contains(typeof(FinePrint.Contracts.SatelliteContract)))
             {
                 try
                 {
@@ -248,7 +250,7 @@ namespace MissionControllerEC
 
                 catch { Debug.LogError("could not run FinePrint Satellite Returned Null"); }
             }
-            if (!HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings2>().FPBaseContracts && ContractSystem.ContractTypes.Contains(typeof(FinePrint.Contracts.BaseContract)))
+            if (!HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings2>().FPBaseContracts && ContractSystem.ContractTypes.Contains(typeof(FinePrint.Contracts.BaseContract)))
             {
                 try
                 {
@@ -258,7 +260,7 @@ namespace MissionControllerEC
 
                 catch { Debug.LogError("could not run FinePrint Satellite Returned Null"); }
             }
-            if (!HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings2>().FPStationContracts && ContractSystem.ContractTypes.Contains(typeof(FinePrint.Contracts.StationContract)))
+            if (!HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings2>().FPStationContracts && ContractSystem.ContractTypes.Contains(typeof(FinePrint.Contracts.StationContract)))
             {
                 try
                 {
@@ -268,7 +270,7 @@ namespace MissionControllerEC
 
                 catch { Debug.LogError("could not run FinePrint Satellite Returned Null"); }
             }
-            if (!HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings2>().FPISRUContracts && ContractSystem.ContractTypes.Contains(typeof(FinePrint.Contracts.ISRUContract)))
+            if (!HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings2>().FPISRUContracts && ContractSystem.ContractTypes.Contains(typeof(FinePrint.Contracts.ISRUContract)))
             {
                 try
                 {
@@ -278,7 +280,7 @@ namespace MissionControllerEC
 
                 catch { Debug.LogError("could not run FinePrint Satellite Returned Null"); }
             }
-            if (!HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings2>().FPTouricsmContracts && ContractSystem.ContractTypes.Contains(typeof(FinePrint.Contracts.TourismContract)))
+            if (!HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings2>().FPTouricsmContracts && ContractSystem.ContractTypes.Contains(typeof(FinePrint.Contracts.TourismContract)))
             {
                 try
                 {
@@ -288,7 +290,7 @@ namespace MissionControllerEC
 
                 catch { Debug.LogError("could not run FinePrint Satellite Returned Null"); }
             }
-            if (!HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings2>().FPSurveyContracts && ContractSystem.ContractTypes.Contains(typeof(FinePrint.Contracts.SurveyContract)))
+            if (!HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings2>().FPSurveyContracts && ContractSystem.ContractTypes.Contains(typeof(FinePrint.Contracts.SurveyContract)))
             {
                 try
                 {
@@ -298,7 +300,7 @@ namespace MissionControllerEC
 
                 catch { Debug.LogError("could not run FinePrint Survey Contracts Returned Null"); }
             }            
-            if (!HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings2>().PartTestContracts && ContractSystem.ContractTypes.Contains(typeof(Contracts.Templates.PartTest)))
+            if (!HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings2>().PartTestContracts && ContractSystem.ContractTypes.Contains(typeof(Contracts.Templates.PartTest)))
             {
                 try
                 {
@@ -308,7 +310,7 @@ namespace MissionControllerEC
 
                 catch { Debug.LogError("could not run NoPartTest Returned Null"); }
             }
-            if (!HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings2>().FPGrandTourContracts && ContractSystem.ContractTypes.Contains(typeof(Contracts.Templates.GrandTour)))
+            if (!HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings2>().FPGrandTourContracts && ContractSystem.ContractTypes.Contains(typeof(Contracts.Templates.GrandTour)))
             {
                 try
                 {

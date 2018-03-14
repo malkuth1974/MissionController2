@@ -19,7 +19,7 @@ namespace MissionControllerEC
         public int prCount = 0;
         private int DictCount;
 
-        double revertcost = HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCERevertCost;
+        double revertcost = HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCERevertCost;
         #region Revert Gui                
         /// <summary>
         /// RevertPress is my early version of a GUI. I kept it this way to show that this is about the easiest way to use PopupDialog version.  But can get very confusing.
@@ -696,7 +696,7 @@ namespace MissionControllerEC
             Custom_Contract_Toggle4 = new DialogGUIToggleButton(false, Localizer.Format("#autoLOC_MCE_Toggle_SetVoskov_False") + "2",
                               delegate (bool b)
                               {
-                                  SaveInfo.Vostok1Done = !SaveInfo.Vostok2Done;
+                                  SaveInfo.Vostok2Done = !SaveInfo.Vostok2Done;
                                   SaveInfo.DebugWindowPos = new Vector2(
                                   ((Screen.width / 2) + customDebug_Dialg.RTrf.position.x) / Screen.width,
                                   ((Screen.height / 2) + customDebug_Dialg.RTrf.position.y) / Screen.height);
@@ -733,14 +733,16 @@ namespace MissionControllerEC
                                   DebugMenuMce();
 
                               }, Contract_Button_Med_W, Contract_Button_Med_H);
-            Custom_Contract_Toggle8= new DialogGUIToggleButton(false, Localizer.Format("#autoLOC_MCE_Toggle_MCERepair_True"),
+            Custom_Contract_Toggle8= new DialogGUIToggleButton(false, Localizer.Format("Test Button"/*"#autoLOC_MCE_Toggle_MCERepair_True"*/),
                               delegate (bool b)
                               {
-                                  SaveInfo.RepairContractGeneratedOn = true; SaveInfo.RepairStationContractGeneratedOn = true;
-                                  SaveInfo.DebugWindowPos = new Vector2(
-                                  ((Screen.width / 2) + customDebug_Dialg.RTrf.position.x) / Screen.width,
-                                  ((Screen.height / 2) + customDebug_Dialg.RTrf.position.y) / Screen.height);
-                                  DebugMenuMce();
+
+                                  Tools.TestNumbers1();
+                                  //SaveInfo.RepairContractGeneratedOn = true; SaveInfo.RepairStationContractGeneratedOn = true;
+                                  //SaveInfo.DebugWindowPos = new Vector2(
+                                  //((Screen.width / 2) + customDebug_Dialg.RTrf.position.x) / Screen.width,
+                                  //((Screen.height / 2) + customDebug_Dialg.RTrf.position.y) / Screen.height);
+                                  //DebugMenuMce();
 
                               }, Contract_Button_Med_W, Contract_Button_Med_H);
 
@@ -805,8 +807,8 @@ namespace MissionControllerEC
         #region Landing or Orbit Custom Contract
         internal void LandingOrbitCustomContract()
         {
-            getSupplyList(false);            
-            SaveInfo.SupplyBodyIDX = SupVes[count].body.flightGlobalsIndex;
+            //getSupplyList(false);            
+            //SaveInfo.SupplyBodyIDX = SupVes[count].body.flightGlobalsIndex;
             targetbody = FlightGlobals.Bodies[SaveInfo.LandingOrbitIDX];
 
             Custom_Contract_Button1 = new DialogGUIButton(Localizer.Format("#autoLOC_MCE_Button_Exit_Label"), () => { SaveInfo.GUIEnabled = true; }, Contract_Button_Large_W, Contract_Button_Large_H, true);
@@ -903,7 +905,7 @@ namespace MissionControllerEC
             Custom_Contract_GuiBox7 = new DialogGUIBox(SaveInfo.OrbitLandingOn.ToString(), Contract_Button_Med_W, Contract_Button_Med_H);
             Custom_Contract_GuiBox2 = new DialogGUIBox(Localizer.Format("#autoLOC_MCE_Label_LandOrbit_Cutom_Contract_Target_Planet"), Contract_Button_Med_W, Contract_Button_Med_H);
             Custom_Contract_GuiBox8 = new DialogGUIBox(targetbody.bodyName, Contract_Button_Med_W, Contract_Button_Med_H);
-            Custom_Contract_GuiBox3 = new DialogGUIBox(Localizer.Format("#autoLOC_MCE_Label_Set_Amount_Crew To_Transfer"), Contract_Button_Med_W, Contract_Button_Med_H);
+            Custom_Contract_GuiBox3 = new DialogGUIBox(Localizer.Format("#autoLOC_MCE_Label_Set_Amount_Crew To_Stock"), Contract_Button_Med_W, Contract_Button_Med_H);
             Custom_Contract_GuiBox9 = new DialogGUIBox(SaveInfo.LandingOrbitCrew.ToString(), Contract_Button_Med_W, Contract_Button_Med_H);
             Custom_Contract_GuiBox4 = new DialogGUIBox(Localizer.Format("#autoLOC_MCE_ButtonToggle_Custom_Contract_Landing_Orbit_Option_Bool"), Contract_Button_Med_W, Contract_Button_Med_H);
             Custom_Contract_GuiBox5 = new DialogGUIBox(tempOrbitLand, Contract_Button_Med_W, Contract_Button_Med_H);

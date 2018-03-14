@@ -13,7 +13,7 @@ namespace MissionControllerEC
             if (test > randomvalue)
             {
                 Debug.Log("MCE Random Check for " + randomvalue + " is TRUE");
-                return true;                
+                return true;
             }
             else
             {
@@ -38,7 +38,7 @@ namespace MissionControllerEC
             return BaseLatitude;
         }
 
-        public static double ReturnOrbitValues(CelestialBody targetBody,bool RandomChance,float multiplier)
+        public static double ReturnOrbitValues(CelestialBody targetBody, bool RandomChance, float multiplier)
         {
             if (targetBody != null)
             {
@@ -60,14 +60,14 @@ namespace MissionControllerEC
             else
             {
                 Debug.LogWarning("Failed to load celestialbody for ReturnOrbitValues in Mission Controller defaulting to 300000");
-                return 300000;                
+                return 300000;
             }
 
         }
-        public static double ReturnMinOrbit(CelestialBody targetbody,float multipier)
+        public static double ReturnMinOrbit(CelestialBody targetbody, float multipier)
         {
             return targetbody.atmosphereDepth * multipier;
-        }        
+        }
 
         public static double ConvertDays(double seconds)
         {
@@ -76,13 +76,13 @@ namespace MissionControllerEC
             return newValue;
         }
         public static String ConvertMinsHours(double seconds)
-        {          
+        {
             int h = (int)(seconds / (60.0 * 60.0));
             seconds = seconds % (60.0 * 60.0);
             int m = (int)(seconds / (60.0));
             seconds = seconds % (60.0);
 
-            List<String> count = new List<String>();                     
+            List<String> count = new List<String>();
 
             if (h > 0)
             {
@@ -186,24 +186,24 @@ namespace MissionControllerEC
             double result = a / b;
             return result;
         }
-        public static double DeltaVCalc(double isp,double Fmass, double Emass)
+        public static double DeltaVCalc(double isp, double Fmass, double Emass)
         {
             double GravityCon = 9.807;
             double DeltaVCal = 0;
             DeltaVCal = Math.Round(isp * GravityCon * Math.Log(Fmass / Emass));
-            return DeltaVCal;               
+            return DeltaVCal;
         }
-        
+
         public static void ObitalPeriodHelper(Vessel v)
-        {            
+        {
             ScreenMessages.PostScreenMessage("Current Orbital Period is: " + Tools.formatTime(FlightGlobals.ActiveVessel.orbit.period) + "\n" +
-                "ApA Is: " + (int)v.orbit.ApA + " PeA Is: "+ (int)v.orbit.PeA + "\n" +
-                "Current eccentricity is: " + FlightGlobals.ActiveVessel.orbit.eccentricity.ToString("F2") +"\n" +
+                "ApA Is: " + (int)v.orbit.ApA + " PeA Is: " + (int)v.orbit.PeA + "\n" +
+                "Current eccentricity is: " + FlightGlobals.ActiveVessel.orbit.eccentricity.ToString("F2") + "\n" +
             "Current Biome Is: " + FlightGlobals.ActiveVessel.mainBody.BiomeMap.GetAtt(FlightGlobals.ActiveVessel.latitude * Math.PI / 180d, FlightGlobals.ActiveVessel.longitude * Math.PI / 180d), .001f);
         }
-        public static void GroundStationRangeHelper(Vessel v,string GstationName,bool inRangeTF)
-        {           
-            ScreenMessages.PostScreenMessage("Ground Station " + GstationName + "In range? " +inRangeTF , .001f);
+        public static void GroundStationRangeHelper(Vessel v, string GstationName, bool inRangeTF)
+        {
+            ScreenMessages.PostScreenMessage("Ground Station " + GstationName + "In range? " + inRangeTF, .001f);
         }
 
         public static void ContractLoadCheck<t>(ConfigNode node, ref t value, t backupDefault, string valueName, string savedFile)
@@ -221,6 +221,12 @@ namespace MissionControllerEC
                 value = backupDefault;
 
             }
+        }
+        public static void TestNumbers1()
+        {
+            CelestialBody targetbody = Planetarium.fetch.Home;
+            double Test = targetbody.atmosphereDepth;
+            Debug.LogWarning("CelestialBody Is : " + targetbody.displayName + " Value Testing = :" + Test);
         }
         public static void ContractLoadCheck<t>(ConfigNode node, ref t value, t backupDefault, float valueName, string savedFile)
         {

@@ -34,12 +34,12 @@ namespace MissionControllerEC.MCEContracts
                 return false;
             }
             if (HighLogic.LoadedSceneIsFlight) { return false; }
-            if (!HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings>().HistoricalContracts)
+            if (!HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings>().HistoricalContracts)
             {
                 return false;
             }
-            minHeight= Convert.ToSingle(Tools.getBodyAltitude(targetBody));         
-            vostok1 = this.AddParameter(new Contracts.Parameters.ReachAltitudeEnvelope(minHeight, minHeight + HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEErrorOrbits), null);
+            minHeight= Convert.ToSingle(targetBody.atmosphereDepth);         
+            vostok1 = this.AddParameter(new Contracts.Parameters.ReachAltitudeEnvelope(minHeight, minHeight + HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEErrorOrbits), null);
             vostok1.SetFunds(1000f, targetBody);
             vostok1.SetReputation(2f, targetBody);
             vostok2 = this.AddParameter(new InOrbitGoal(targetBody), null);
@@ -171,12 +171,12 @@ namespace MissionControllerEC.MCEContracts
             }
 
             if (HighLogic.LoadedSceneIsFlight) { return false; }
-            if (!HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings>().HistoricalContracts)
+            if (!HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings>().HistoricalContracts)
             {
                 return false;
             }
-            minHeight = Convert.ToSingle(Tools.getBodyAltitude(targetBody));
-            vostok1 = this.AddParameter(new Contracts.Parameters.ReachAltitudeEnvelope(minHeight, minHeight + HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEErrorOrbits), null);
+            minHeight = Convert.ToSingle(targetBody.atmosphereDepth);
+            vostok1 = this.AddParameter(new Contracts.Parameters.ReachAltitudeEnvelope(minHeight, minHeight + HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEErrorOrbits), null);
             vostok1.SetFunds(1000f, targetBody);
             vostok1.SetReputation(2f, targetBody);
             vostok2 = this.AddParameter(new InOrbitGoal(targetBody), null);
@@ -305,12 +305,12 @@ namespace MissionControllerEC.MCEContracts
                 return false;
             }         
             if (HighLogic.LoadedSceneIsFlight) { return false; }
-            if (!HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings>().HistoricalContracts)
+            if (!HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings>().HistoricalContracts)
             {
                 return false;
             }
-            minHeight = Convert.ToSingle(Tools.ReturnMinOrbit(targetBody, 1.3f));
-            vostok1 = this.AddParameter(new Contracts.Parameters.ReachAltitudeEnvelope(minHeight, minHeight + HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEErrorOrbits), null);
+            minHeight = Convert.ToSingle(targetBody.atmosphereDepth);
+            vostok1 = this.AddParameter(new Contracts.Parameters.ReachAltitudeEnvelope(minHeight, minHeight + HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEErrorOrbits), null);
             vostok1.SetFunds(2000f, targetBody);
             vostok1.SetReputation(2f, targetBody);
             vostok2 = this.AddParameter(new InOrbitGoal(targetBody), null);
@@ -438,7 +438,7 @@ namespace MissionControllerEC.MCEContracts
             switch (TirosTitleMissionNumber)
             {
                 case 1:
-                    tirosNotes ="Launch the first weather satellite to a Low Kerbin Orbit and observe weather patterns";
+                    tirosNotes = "Launch the first weather satellite to a Low Kerbin Orbit and observe weather patterns Use Commotron 16 as longAntenna";
                     tirosHash ="Tiros 1";
                     tirostitle ="Tiros 1 (Television Infrared Observation Satellite)";
                     tirosDescription ="The TIROS Program (Television Infrared Observation Satellite) was NASA's first experimental step to determine if satellites could be useful in the study of the Earth." +
@@ -455,7 +455,7 @@ namespace MissionControllerEC.MCEContracts
                     tirosCompleteMessage = "Good Job you have finsished this contract\n\n";                  
                     break;
                 case 2:
-                    tirosNotes ="Launch Tiros/NOOA with batteries and solar panels to a Kebin Polar Orbit";
+                    tirosNotes = "Launch Tiros/NOOA with batteries and solar panels to a Kebin Polar Orbit Use Commotron 16 as longAntenna";
                     tirosHash ="Tiros 7";
                     tirostitle ="Tiros 7 (Television Infrared Observation Satellite)";
                     tirosDescription ="The TIROS Program (Television Infrared Observation Satellite) was NASA's first experimental step to determine if satellites could be useful in the study of the Earth." +
@@ -520,11 +520,11 @@ namespace MissionControllerEC.MCEContracts
                 return false;
             }           
             if (HighLogic.LoadedSceneIsFlight) { return false; }
-            if (!HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings>().HistoricalContracts)
+            if (!HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings>().HistoricalContracts)
             {
                 return false;
             }
-            minHeight = Tools.ReturnMinOrbit(targetBody, 1.3f);
+            minHeight = Convert.ToSingle(targetBody.atmosphereDepth);
             Eccentricity = .01;
             AmountDaysActive = 10800;
             TirosTitleMissionNumber = SaveInfo.tirosCurrentNumber;
@@ -553,17 +553,17 @@ namespace MissionControllerEC.MCEContracts
             this.AddParameter(new TimeCountdownOrbits(targetBody, AmountDaysActive, true), null);
             if (TirosTitleMissionNumber == 2)
             {
-                this.AddParameter(new PartGoal("2HOT Thermometer", 1, false), null);
-                this.AddParameter(new PartGoal("Communotron 16", 1, false), null);
+                this.AddParameter(new ModuleGoal("ModuleScienceExperiment", "Science Device"), null);
+                this.AddParameter(new ModuleGoal("ModuleDataTransmitter", "ModuleRTAntenna", "Antenna Device"), null);
             }
             else if (TirosTitleMissionNumber == 3)
             {
-                this.AddParameter(new PartGoal("PresMat Barometer", 1, false), null);
-                this.AddParameter(new PartGoal("2HOT Thermometer", 1, false), null);
+                this.AddParameter(new ModuleGoal("ModuleScienceExperiment", "Science Device"), null);
+                this.AddParameter(new ModuleGoal("ModuleScienceExperiment", "2nd Science Device"), null);
             }
             else
             {
-                this.AddParameter(new PartGoal("Communotron 16", 1, false), null);
+                this.AddParameter(new ModuleGoal("ModuleDataTransmitter", "Antenna Device"), null);
             }
             if (TirosTitleMissionNumber == 2 || TirosTitleMissionNumber == 3)
             {
@@ -779,7 +779,7 @@ namespace MissionControllerEC.MCEContracts
                 return false;
             }           
             if (HighLogic.LoadedSceneIsFlight) { return false; }
-            if (!HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings>().HistoricalContracts)
+            if (!HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings>().HistoricalContracts)
             {
                 return false;
             }
@@ -964,7 +964,7 @@ namespace MissionControllerEC.MCEContracts
                 return false;
             }          
             if (HighLogic.LoadedSceneIsFlight) { return false; }
-            if (!HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings>().HistoricalContracts)
+            if (!HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings>().HistoricalContracts)
             {
                 return false;
             }
@@ -1107,7 +1107,7 @@ namespace MissionControllerEC.MCEContracts
                 return false;
             }            
             if (HighLogic.LoadedSceneIsFlight) { return false; }
-            if (!HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings>().HistoricalContracts)
+            if (!HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings>().HistoricalContracts)
             {
                 return false;
             }
@@ -1364,12 +1364,13 @@ namespace MissionControllerEC.MCEContracts
                 return false;
             }          
             if (HighLogic.LoadedSceneIsFlight) { return false; }
-            if (!HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings>().HistoricalContracts)
+            if (!HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings>().HistoricalContracts)
             {
                 return false;
             }
             ApolloMissionNumber = SaveInfo.apolloCurrentNumber;
             ApolloTextSelection();
+            MinHeight = Convert.ToSingle(targetBody.atmosphereDepth);
             if (ApolloMissionNumber == 6)
             {
                 this.AddParameter(new InOrbitGoal(targetBody2), null);
@@ -1437,7 +1438,6 @@ namespace MissionControllerEC.MCEContracts
                 base.SetScience(1f, targetBody);
             }
             this.AddParameter(new GetCrewCount(crewCount), null);
-            this.AddParameter(new Contracts.Parameters.LandOnBody(targetBody), null);
             this.AddParameter(new ModuleGoal(PartDockingModule, dockingModuleDescription), null);
             this.AddParameter(new ModuleGoal(SolarPanelsModule, "KopernicusSolarPanel", solarPanelDescription), null);
             this.AddParameter(new ResourceGoalCap(ElectricPowerSource, electricPowerDescription), null);
@@ -1715,7 +1715,7 @@ namespace MissionControllerEC.MCEContracts
                 return false;
             }            
             if (HighLogic.LoadedSceneIsFlight) { return false; }
-            if (!HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings>().ApolloExtraContent)
+            if (!HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings>().ApolloExtraContent)
             {
                 return false;
             }
@@ -1959,7 +1959,7 @@ namespace MissionControllerEC.MCEContracts
             totalContracts = ContractSystem.Instance.GetCurrentContracts<ApolloDunaStation>().Count();
             if (totalContracts >= 1) { return false; }
             if (HighLogic.LoadedSceneIsFlight) { return false; }
-            if (!HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings>().ApolloExtraContent)
+            if (!HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings>().ApolloExtraContent)
             {
                 return false;
             }
@@ -2072,7 +2072,7 @@ namespace MissionControllerEC.MCEContracts
                 //Debug.Log("count is " + totalContracts);
                 return false;
             }
-            if (!HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings>().HistoricalContracts)
+            if (!HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings>().HistoricalContracts)
             {
                 return false;
             }
@@ -2092,7 +2092,7 @@ namespace MissionControllerEC.MCEContracts
             base.SetScience(25f, targetBody);
             base.SetDeadlineDays(19f, targetBody);
             base.SetReputation(35f, 35f, targetBody);
-            base.SetFunds(28000f * HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEContractPayoutMult, 54000f * HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEContractPayoutMult, 39000f * HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEContractPayoutMult, targetBody);
+            base.SetFunds(28000f * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 54000f * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 39000f * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
 
             return true;
         }
@@ -2250,7 +2250,7 @@ namespace MissionControllerEC.MCEContracts
                 //Debug.Log("Agena 2 is already loaded.");
                 return false;
             }
-            if (!HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings>().HistoricalContracts)
+            if (!HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings>().HistoricalContracts)
             {
                 return false;
             }
@@ -2274,7 +2274,7 @@ namespace MissionControllerEC.MCEContracts
             base.SetScience(25f, targetBody);
             base.SetDeadlineDays(20f, targetBody);
             base.SetReputation(50f, 35f, targetBody);
-            base.SetFunds(29000f * HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEContractPayoutMult, 48000f * HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEContractPayoutMult, 42000f * HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEContractPayoutMult, targetBody);
+            base.SetFunds(29000f * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 48000f * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 42000f * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
 
             return true;
         }
@@ -2420,7 +2420,7 @@ namespace MissionControllerEC.MCEContracts
             totalContracts = ContractSystem.Instance.GetCurrentContracts<SkyLab1>().Count();
             if (totalContracts >= 1) { return false; }
             if (HighLogic.LoadedSceneIsFlight) { return false; }
-            if (!HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings>().HistoricalContracts)
+            if (!HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings>().HistoricalContracts)
             {
                 return false;
             }
@@ -2565,7 +2565,7 @@ namespace MissionControllerEC.MCEContracts
             if (HighLogic.LoadedSceneIsFlight) { return false; }
             if (totalContracts >= 1) { return false; }
 
-            if (!HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings>().HistoricalContracts)
+            if (!HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings>().HistoricalContracts)
             {
                 return false;
             }
@@ -2729,7 +2729,7 @@ namespace MissionControllerEC.MCEContracts
             if (HighLogic.LoadedSceneIsFlight) { return false; }
             if (totalContracts >= 1) { return false; }
 
-            if (!HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings>().HistoricalContracts)
+            if (!HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings>().HistoricalContracts)
             {
                 return false;
             }
@@ -2886,7 +2886,7 @@ namespace MissionControllerEC.MCEContracts
             if (HighLogic.LoadedSceneIsFlight) { return false; }
             if (totalContracts >= 1) { return false; }
 
-            if (!HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings>().HistoricalContracts)
+            if (!HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings>().HistoricalContracts)
             {
                 return false;
             }

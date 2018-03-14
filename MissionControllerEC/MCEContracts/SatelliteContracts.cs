@@ -156,14 +156,14 @@ namespace MissionControllerEC.MCEContracts
         protected override bool Generate()
         {                                 
             if (HighLogic.LoadedSceneIsFlight) { return false; }
-            if (!HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings>().SatelliteContracts)
+            if (!HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings>().SatelliteContracts)
             {              
                 return false;
             }
             totalContracts = ContractSystem.Instance.GetCurrentContracts<SatelliteContracts>().Count();
             TotalFinished = ContractSystem.Instance.GetCompletedContracts<SatelliteContracts>().Count();
 
-            if (totalContracts >= HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().SatelliteContractNumbers)
+            if (totalContracts >= HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().SatelliteContractNumbers)
             {
                 return false;
             }
@@ -178,10 +178,11 @@ namespace MissionControllerEC.MCEContracts
             SatTypeValue();
             int frequencyTest = rnd.Next(12, 40);
             frequency = (float)frequencyTest - .5f;
-            moduletype = rnd.Next(1, 4);           
+            moduletype = rnd.Next(1, 4);
+            Double AtmoDepth = targetBody.atmosphereDepth;
             if (SaveInfo.SatelliteTypeChoice == 0)
             {               
-                contractAMA = Tools.RandomNumber(680000, 950000);
+                contractAMA = Tools.RandomNumber((int)AtmoDepth, (int)AtmoDepth + 25000) *10 ;
                 contractINC = 0;
                 contractAOP = Tools.getAOPCalc(contractAMA, 2.1);
                 SatTypeName = "Communication";               
@@ -205,15 +206,15 @@ namespace MissionControllerEC.MCEContracts
             }
             else if (SaveInfo.SatelliteTypeChoice == 1)
             {
-                SatTypeName = "Weather";               
-                contractAMA = Tools.RandomNumber(700000, 800000);
+                SatTypeName = "Weather";
+                contractAMA = Tools.RandomNumber((int)AtmoDepth, (int)AtmoDepth + 10000) * 10;
                 contractINC = Tools.RandomNumber(-8, 8);
                 contractAOP = Tools.getAOPCalc(contractAMA, 2.1);
                 int randomPolar;
                 randomPolar = Tools.RandomNumber(1, 100);
                 if (randomPolar > 70)
                 {
-                    contractAMA = Tools.RandomNumber(700000, 800000);
+                    contractAMA = Tools.RandomNumber((int)AtmoDepth, (int)AtmoDepth + 10000) * 10;
                     contractINC = 90;                  
                     this.AddParameter(new FinePrint.Contracts.Parameters.SpecificOrbitParameter(FinePrint.Utilities.OrbitType.EQUATORIAL, 90, .01, contractAMA, 99, contractAOP, 1, 0, targetBody, 3), null);
                     this.AddParameter(new satelliteCoreCheck(SatTypeName, frequency, moduletype, targetBody), null);
@@ -227,8 +228,8 @@ namespace MissionControllerEC.MCEContracts
 
             else if (SaveInfo.SatelliteTypeChoice == 2)
             {
-                SatTypeName = "Navigation";              
-                contractAMA = Tools.RandomNumber(700000, 870000);
+                SatTypeName = "Navigation";
+                contractAMA = Tools.RandomNumber((int)AtmoDepth, (int)AtmoDepth + 17000) * 10;
                 contractINC = 0;
                 contractAOP = Tools.getAOPCalc(contractAMA, 2.1);
                 int randomPolar;
@@ -252,8 +253,8 @@ namespace MissionControllerEC.MCEContracts
 
             else if (SaveInfo.SatelliteTypeChoice == 3)
             {
-                SatTypeName = "Research";              
-                contractAMA = Tools.RandomNumber(700000, 800000);
+                SatTypeName = "Research";
+                contractAMA = Tools.RandomNumber((int)AtmoDepth, (int)AtmoDepth + 17000) * 10;
                 contractINC = Tools.RandomNumber(-10, 10);
                 contractAOP = Tools.getAOPCalc(contractAMA, 2.3);
                 int randomPolar;
@@ -270,7 +271,7 @@ namespace MissionControllerEC.MCEContracts
             }
             else if (SaveInfo.SatelliteTypeChoice == 4)
             {
-                contractAMA = 3463330;
+                contractAMA = Tools.RandomNumber((int)AtmoDepth, (int)AtmoDepth + 120000) * 10; ;  //Needs Fixing
                 contractINC = 0;
                 contractAOP = Tools.getAOPCalc(contractAMA, 2);
                 SatTypeName = "Communication";
@@ -280,27 +281,27 @@ namespace MissionControllerEC.MCEContracts
                     frequency = -10;
                 }
                 ContractParameter Network1 = this.AddParameter(new satelliteCoreCheck(SatTypeName, frequency, moduletype, targetBody), null);
-                Network1.SetFunds(50000, 50000 * HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEContractPayoutMult, targetBody);
+                Network1.SetFunds(50000, 50000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
                 this.AddParameter(new GroundStationPostion("Kerbal Space Center", -74, 0, frequency, false), null);
                 ContractParameter Network2 = this.AddParameter(new satelliteCoreCheck(SatTypeName, frequency + 1, moduletype, targetBody), null);
-                Network2.SetFunds(50000, 50000 * HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEContractPayoutMult, targetBody);
+                Network2.SetFunds(50000, 50000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
                 this.AddParameter(new GroundStationPostion("East Shore Station", 16, 0, frequency + 1, false), null);
                 ContractParameter Network3 = this.AddParameter(new satelliteCoreCheck(SatTypeName, frequency + 2, moduletype, targetBody), null);
-                Network3.SetFunds(50000, 50000 * HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEContractPayoutMult, targetBody);
+                Network3.SetFunds(50000, 50000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
                 this.AddParameter(new GroundStationPostion("Heart Station", 106, 0, frequency + 2, false), null);
                 ContractParameter Network4 = this.AddParameter(new satelliteCoreCheck(SatTypeName, frequency + 3, moduletype, targetBody), null);
-                Network4.SetFunds(50000, 50000 * HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEContractPayoutMult, targetBody);
+                Network4.SetFunds(50000, 50000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
                 this.AddParameter(new GroundStationPostion("Crator Station", -164, 0, frequency + 3, false), null);
                 ContractParameter Network5 = this.AddParameter(new satelliteCoreCheck(SatTypeName, frequency + 4, moduletype, targetBody), null);
-                Network5.SetFunds(50000, 50000 * HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEContractPayoutMult, targetBody);
+                Network5.SetFunds(50000, 50000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
                 this.AddParameter(new GroundStationPostion("North Pole Station", 0, 89, frequency + 4, true), null);
                 ContractParameter Network6 = this.AddParameter(new satelliteCoreCheck(SatTypeName, frequency + 5, moduletype, targetBody), null);
-                Network6.SetFunds(50000, 50000 * HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEContractPayoutMult, targetBody);
+                Network6.SetFunds(50000, 50000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
                 this.AddParameter(new GroundStationPostion("South Pole Station", 0, -89, frequency + 5, true), null);
             }
             else if (SaveInfo.SatelliteTypeChoice == 5)
             {
-                contractAMA = 3463330;
+                contractAMA = Tools.RandomNumber((int)AtmoDepth, (int)AtmoDepth + 120000) * 10; ;  //Needs Fixing
                 contractINC = 0;
                 contractAOP = Tools.getAOPCalc(contractAMA, 2);
                 SatTypeName = "Navigation";
@@ -310,22 +311,22 @@ namespace MissionControllerEC.MCEContracts
                     frequency = -10;
                 }
                 ContractParameter Network1 = this.AddParameter(new satelliteCoreCheck(SatTypeName, frequency, moduletype, targetBody), null);
-                Network1.SetFunds(500000, 50000 * HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEContractPayoutMult, targetBody);
+                Network1.SetFunds(500000, 50000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
                 this.AddParameter(new GroundStationPostion("Kerbal Space Center", -74, 0, frequency, false), null);
                 ContractParameter Network2 = this.AddParameter(new satelliteCoreCheck(SatTypeName, frequency + 1, moduletype, targetBody), null);
-                Network2.SetFunds(50000, 50000 * HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEContractPayoutMult, targetBody);
+                Network2.SetFunds(50000, 50000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
                 this.AddParameter(new GroundStationPostion("East Shore Station", 16, 0, frequency + 1, false), null);
                 ContractParameter Network3 = this.AddParameter(new satelliteCoreCheck(SatTypeName, frequency + 2, moduletype, targetBody), null);
-                Network3.SetFunds(50000, 50000 * HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEContractPayoutMult, targetBody);
+                Network3.SetFunds(50000, 50000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
                 this.AddParameter(new GroundStationPostion("Heart Station", 106, 0, frequency + 2, false), null);
                 ContractParameter Network4 = this.AddParameter(new satelliteCoreCheck(SatTypeName, frequency + 3, moduletype, targetBody), null);
-                Network4.SetFunds(50000, 50000 * HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEContractPayoutMult, targetBody);
+                Network4.SetFunds(50000, 50000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
                 this.AddParameter(new GroundStationPostion("Crator Station", -164, 0, frequency + 3,false), null);
                 ContractParameter Network5 = this.AddParameter(new satelliteCoreCheck(SatTypeName, frequency + 4, moduletype, targetBody), null);
-                Network5.SetFunds(50000, 50000 * HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEContractPayoutMult, targetBody);
+                Network5.SetFunds(50000, 50000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
                 this.AddParameter(new GroundStationPostion("North Pole Station", 0, 89, frequency + 4, true), null);
                 ContractParameter Network6 = this.AddParameter(new satelliteCoreCheck(SatTypeName, frequency + 5, moduletype, targetBody), null);
-                Network6.SetFunds(50000, 50000 * HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEContractPayoutMult, targetBody);
+                Network6.SetFunds(50000, 50000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
                 this.AddParameter(new GroundStationPostion("South Pole Station", 0, -89, frequency + 5,true), null);
             }
 
@@ -340,7 +341,7 @@ namespace MissionControllerEC.MCEContracts
             }
             //this.AddParameter(new GetCrewCount(crewCount), null);
             //this.AddParameter(new FinePrint.Contracts.Parameters.VesselSystemsParameter(), null);
-            if (HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().VesselMustSurvive == true)
+            if (HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().VesselMustSurvive == true)
             {
                 this.OnDestroy = this.AddParameter(new VesselMustSurvive(), null);
                 this.OnDestroy.DisableOnStateChange = false;
@@ -348,7 +349,7 @@ namespace MissionControllerEC.MCEContracts
 
             base.SetExpiry(3f, 10f);
             base.SetDeadlineYears(3f, targetBody);
-            base.SetFunds(5000 * HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEContractPayoutMult, 70000 * HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEContractPayoutMult, 90000 * HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings3>().MCEContractPayoutMult, targetBody);
+            base.SetFunds(5000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 70000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 90000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
             base.SetReputation(25, 50, targetBody);
             return true;
         }
@@ -480,7 +481,7 @@ namespace MissionControllerEC.MCEContracts
             {
                 return false;
             }
-            if (!HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings>().EarlyMCEContracts)
+            if (!HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings>().EarlyMCEContracts)
             {
                 return false;
             }

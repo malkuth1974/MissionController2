@@ -9,7 +9,7 @@ using System;
 
 namespace MissionControllerEC
 {
-    public class IntergratedSettings : GameParameters.CustomParameterNode
+    public class MCE_IntergratedSettings : GameParameters.CustomParameterNode
     {
 
         public override string Title { get { return "Mission Controller Contracts"; } }
@@ -38,7 +38,7 @@ namespace MissionControllerEC
 
         
     }
-    public class IntergratedSettings2 : GameParameters.CustomParameterNode
+    public class MCE_IntergratedSettings2 : GameParameters.CustomParameterNode
     {
 
         public override string Title { get { return "Stock Game Contracts"; } }
@@ -69,7 +69,7 @@ namespace MissionControllerEC
        
       
     }
-    public class IntergratedSettings3 : GameParameters.CustomParameterNode
+    public class MCE_IntergratedSettings3 : GameParameters.CustomParameterNode
     {
 
         public override string Title { get { return "MCE Diffuculty Options"; } }

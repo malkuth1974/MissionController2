@@ -49,7 +49,7 @@ namespace MissionControllerEC.MCEContracts
             {
                 return false;
             }
-            if (!HighLogic.CurrentGame.Parameters.CustomParams<IntergratedSettings>().MCERoverContracts)
+            if (!HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings>().MCERoverContracts)
             {
                 return false;
             }

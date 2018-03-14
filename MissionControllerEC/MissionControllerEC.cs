@@ -13,9 +13,50 @@ using System.IO;
 using KSP;
 
 namespace MissionControllerEC
-{    
-   
-    [KSPAddon(KSPAddon.Startup.MainMenu, false)]
+{
+
+    [KSPScenario(ScenarioCreationOptions.AddToAllGames, GameScenes.SPACECENTER, GameScenes.EDITOR, GameScenes.FLIGHT, GameScenes.TRACKSTATION)]
+    public class MissionControllerData : ScenarioModule
+    {
+        // used TacLife Support by Taranis Elsu way of loading Components for the MissionControllerEC Component 
+        private readonly List<Component> mcechildren = new List<Component>();
+
+        public override void OnAwake()
+        {
+
+            if (HighLogic.LoadedScene == GameScenes.SPACECENTER || HighLogic.LoadedScene == GameScenes.FLIGHT || HighLogic.LoadedScene == GameScenes.EDITOR)
+            {
+                var c = gameObject.AddComponent<MissionControllerEC>();
+                mcechildren.Add(c);
+            }
+            else { }
+        }
+
+        public override void OnSave(ConfigNode node)
+        {
+            base.OnSave(node);
+            MCE_DataStorage mceData = new MCE_DataStorage();
+            node.AddNode(mceData.AsConfigNode());
+        }
+        public override void OnLoad(ConfigNode node)
+        {
+            base.OnLoad(node);
+            MCE_DataStorage mceData = new MCE_DataStorage();
+            ConfigNode CN = node.GetNode(mceData.GetType().Name);
+            if (CN != null)
+                ConfigNode.LoadObjectFromConfig(mceData, CN);
+        }
+
+        void OnDestroy()
+        {
+            foreach (Component c in mcechildren)
+            {
+                Destroy(c);
+            }
+            mcechildren.Clear();
+        }
+    }
+    [KSPAddon(KSPAddon.Startup.MainMenu, true)]
     public partial class MissionControllerEC : MonoBehaviour
     {
         private static Texture2D texture;
@@ -123,17 +164,16 @@ namespace MissionControllerEC
 
     void Start()
     {
-
             ProtoScenarioModule scenario = HighLogic.CurrentGame.scenarios.Find(s => s.moduleName == typeof(MissionControllerData).Name);
-            DictCount = settings.SupplyResourceList.Count();
+            DictCount = settings.SupplyResourceList.Count();          
             if (scenario == null)
         {
             try
             {
                 HighLogic.CurrentGame.AddProtoScenarioModule(typeof(MissionControllerData), new GameScenes[] { GameScenes.FLIGHT, GameScenes.SPACECENTER, GameScenes.EDITOR, GameScenes.TRACKSTATION });
-                Debug.LogWarning("[MCE] Adding InternalModule scenario to game '" + HighLogic.CurrentGame.Title + "'");
-                // the game will add this scenario to the appropriate persistent file on save from now on
-            }
+                Debug.LogWarning("[MCE] Adding InternalModule scenario to game '" + HighLogic.CurrentGame.Title + "'");                  
+                    // the game will add this scenario to the appropriate persistent file on save from now on
+                }
             catch (ArgumentException ae)
             {
                 Debug.LogException(ae);
@@ -161,29 +201,33 @@ namespace MissionControllerEC
         {
             assemblyName = Assembly.GetExecutingAssembly().GetName();
             versionCode = assemblyName.Version.Major.ToString() + "." + assemblyName.Version.Minor.ToString() + "." + assemblyName.Version.Build.ToString();
-            DontDestroyOnLoad(this);
-            loadTextures();
-            loadFiles();
-            CreateButtons();          
+            loadFiles();                
             GameEvents.Contract.onContractsLoaded.Add(this.onContractLoaded);
             GameEvents.onGameSceneLoadRequested.Add(this.CheckRepairContractTypes);
-            GameEvents.OnVesselRollout.Add(this.onvesselRoll);      
-            //Debug.Log("MCE Awake");
+            GameEvents.OnVesselRollout.Add(this.onvesselRoll);
+            Debug.Log("MCE Awake Called");
             getSupplyList(false);
             // create popup dialog and hide it
             Main_popup_dialog = PopupDialog.SpawnPopupDialog(Mainmulti_dialog, true, HighLogic.UISkin, false, "");
-            Hide();
+            Hide();           
+            loadTextures();
+            Debug.LogWarning("[MCE] Textrues called OnAwake");           
+            CreateButtons();         
+            Debug.LogWarning("[MCE] Buttons called OnAwake");
         }    
-                           
+                     
         void OnDestroy()
         {
-            DestroyButtons();
-            //Debug.Log("MCE OnDestroy");
-            GameEvents.Contract.onContractsLoaded.Remove(this.onContractLoaded);
-            //GameEvents.onGameSceneLoadRequested.Remove(this.CheckRepairContractTypes);
-            //Debug.Log("Game All values removed for MCE");
-            instance = null;
-
+            if (this.MCEButton != null)
+            {
+                ApplicationLauncher.Instance.RemoveModApplication(this.MCEButton);
+                Debug.LogError("[MCE] Button OnDestroyed called");
+            }
+            if (this.MCERevert != null)
+            {
+                ApplicationLauncher.Instance.RemoveModApplication(this.MCERevert);
+                Debug.LogError("[MCE] Revert OnDestroyed called");
+            }           
             if (Main_popup_dialog = null)
             {
                 SaveInfo.MainGUIWindowPos = new Vector2(
@@ -191,19 +235,12 @@ namespace MissionControllerEC
                     ((Screen.height / 2) + Main_popup_dialog.RTrf.position.y) / Screen.height);
             }
 
-            Main_popup_dialog.Dismiss();
-            //customSatPop_dialg.Dismiss();
-            //customCrewPop_Dialg.Dismiss();
-            //customDebug_Dialg.Dismiss();
-            //customLandOrbit_dialg.Dismiss();
-            //customSupPop_dialg.Dismiss();
-
-            Main_popup_dialog = null;
-            //customSatPop_dialg = null;
-            //customCrewPop_Dialg = null;
-            //customDebug_Dialg = null;
-            //customLandOrbit_dialg = null;
-            //customSupPop_dialg = null;
+            GameEvents.Contract.onContractsLoaded.Remove(this.onContractLoaded);
+            GameEvents.onGameSceneLoadRequested.Remove(this.CheckRepairContractTypes);
+            Debug.Log("Game All values removed for MCE");
+            instance = null;
+            Main_popup_dialog.Dismiss();           
+            Main_popup_dialog = null;         
         }
         private void Update()
         {
@@ -257,6 +294,7 @@ namespace MissionControllerEC
             Main_Exit_button = new DialogGUIButton(Localizer.Format("#autoLOC_MCE_Button_Exit_Label"), delegate
             {
                 SaveInfo.GUIEnabled = false;
+                onContractLoaded();
             }, button_width, button_height, false);
 
             Mainmulti_dialog = new MultiOptionDialog(
@@ -289,47 +327,7 @@ namespace MissionControllerEC
             }
         }
                  
-    }
-    public class MissionControllerData : ScenarioModule
-    {
-        // used TacLife Support by Taranis Elsu way of loading Components for the MissionControllerEC Component 
-        private readonly List<Component> mcechildren = new List<Component>();
-
-        public override void OnAwake()
-        {
-
-            if (HighLogic.LoadedScene == GameScenes.SPACECENTER || HighLogic.LoadedScene == GameScenes.FLIGHT || HighLogic.LoadedScene == GameScenes.EDITOR)
-            {
-                var c = gameObject.AddComponent<MissionControllerEC>();
-                mcechildren.Add(c);
-            }
-            else { }
-        }
-
-        public override void OnSave(ConfigNode node)
-        {
-            base.OnSave(node);
-            MCE_DataStorage mceData = new MCE_DataStorage();
-            node.AddNode(mceData.AsConfigNode());
-        }
-        public override void OnLoad(ConfigNode node)
-        {
-            base.OnLoad(node);
-            MCE_DataStorage mceData = new MCE_DataStorage();
-            ConfigNode CN = node.GetNode(mceData.GetType().Name);
-            if (CN != null)
-                ConfigNode.LoadObjectFromConfig(mceData, CN);
-        }
-
-        void OnDestroy()
-        {
-            foreach (Component c in mcechildren)
-            {
-                Destroy(c);
-            }
-            mcechildren.Clear();
-        }
-    }
+    }  
     public class MCE_DataStorage : ConfigNodeStorage
     {        
         [Persistent]public bool ComSatOn = false;

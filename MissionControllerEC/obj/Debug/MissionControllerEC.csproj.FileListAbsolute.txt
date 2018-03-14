@@ -24,3 +24,11 @@ C:\Users\malku\Documents\GitHub\MissionController2\MissionControllerEC\obj\Debug
 C:\Users\malku\Documents\GitHub\MissionController2\MissionControllerEC\obj\Debug\MissionControllerEC.csprojResolveAssemblyReference.cache
 C:\Kerbal\Kerbal Space Program(Testing)\GameData\MissionControllerEC\MissionControllerEC.dll
 C:\Kerbal\Kerbal Space Program(Testing)\GameData\MissionControllerEC\MissionControllerEC.pdb
+C:\KSPFolder\Kerbal Space Program\GameData\MissionControllerEC\MissionControllerEC.dll
+C:\KSPFolder\Kerbal Space Program\GameData\MissionControllerEC\MissionControllerEC.pdb
+C:\KSPFolder\MissionController2\MissionControllerEC\obj\Debug\MissionControllerEC.csprojResolveAssemblyReference.cache
+C:\KSPFolder\MissionController2\MissionControllerEC\obj\Debug\MissionControllerEC.csproj.CoreCompileInputs.cache
+C:\KSPFolder\MissionController2\MissionControllerEC\obj\Debug\MissionControllerEC.dll
+C:\KSPFolder\MissionController2\MissionControllerEC\obj\Debug\MissionControllerEC.pdb
+C:\Steam\steamapps\common\Kerbal Space Program\GameData\MissionControllerEC\MissionControllerEC.dll
+C:\Steam\steamapps\common\Kerbal Space Program\GameData\MissionControllerEC\MissionControllerEC.pdb
