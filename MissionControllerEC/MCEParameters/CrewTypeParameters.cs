@@ -3,6 +3,7 @@ using UnityEngine;
 using Contracts;
 using KSP;
 using KSPAchievements;
+using KSP.Localization;
 
 namespace MissionControllerEC.MCEParameters
 {
@@ -24,11 +25,11 @@ namespace MissionControllerEC.MCEParameters
         }
         protected override string GetHashString()
         {
-            return "Amount crew " + seatCount + this.Root.MissionSeed.ToString();
+            return Localizer.Format("#autoLOC_MissionController2_1000192") + " " + seatCount + this.Root.MissionSeed.ToString();		// #autoLOC_MissionController2_1000192 = Amount crew 
         }
         protected override string GetTitle()
         {
-            return title + " " + seatCount + " Plus Crew.";
+            return title + " " + seatCount + " " + Localizer.Format("#autoLOC_MissionController2_1000193");		// #autoLOC_MissionController2_1000193 =  Plus Crew.
         }
 
         protected override void OnRegister()
@@ -114,11 +115,11 @@ namespace MissionControllerEC.MCEParameters
         }
         protected override string GetHashString()
         {
-            return "Amount crew " + this.Root.MissionSeed;
+            return Localizer.Format("#autoLOC_MissionController2_1000194") + " " + this.Root.MissionSeed;		// #autoLOC_MissionController2_1000194 = Amount crew 
         }
         protected override string GetTitle()
         {
-            return title + "Must Have This Many Seats: " + seatCount;
+            return title + Localizer.Format("#autoLOC_MissionController2_1000195") + " " + seatCount;		// #autoLOC_MissionController2_1000195 = Must Have This Many Seats: 
         }
 
         protected override void OnRegister()
@@ -200,16 +201,16 @@ namespace MissionControllerEC.MCEParameters
         protected override string GetHashString()
         {
             if (crewCount > 0)
-                return "Amount crew " + this.Root.MissionSeed.ToString();
+                return Localizer.Format("#autoLOC_MissionController2_1000196") + " " + this.Root.MissionSeed.ToString();		// #autoLOC_MissionController2_1000196 = Amount crew 
             else
-                return "Vessel is automated: (nocrew)" + this.Root.MissionSeed.ToString();
+                return Localizer.Format("#autoLOC_MissionController2_1000197") + " " + this.Root.MissionSeed.ToString();		// #autoLOC_MissionController2_1000197 = Vessel is automated: (nocrew)
         }
         protected override string GetTitle()
         {
             if (crewCount > 0)
-                return "Vessel Must Have This Amount Of crew " + crewCount;
+                return Localizer.Format("#autoLOC_MissionController2_1000198") + " " + crewCount;		// #autoLOC_MissionController2_1000198 = Vessel Must Have This Amount Of crew 
             else
-                return "Vessel is automated: (nocrew)";
+                return Localizer.Format("#autoLOC_MissionController2_1000199");		// #autoLOC_MissionController2_1000199 = Vessel is automated: (nocrew)
         }
 
         protected override void OnRegister()
@@ -296,11 +297,11 @@ namespace MissionControllerEC.MCEParameters
         }
         protected override string GetHashString()
         {
-            return "EVA outside of your vessel" + this.Root.MissionSeed.ToString();
+            return Localizer.Format("#autoLOC_MissionController2_1000200") + " " + this.Root.MissionSeed.ToString();		// #autoLOC_MissionController2_1000200 = EVA outside of your vessel
         }
         protected override string GetTitle()
         {
-            return "Exit your vessel and conduct an EVA";
+            return Localizer.Format("#autoLOC_MissionController2_1000201");		// #autoLOC_MissionController2_1000201 = Exit your vessel and conduct an EVA
         }
 
         protected override void OnUpdate()

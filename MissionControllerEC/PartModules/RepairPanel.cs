@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using System.Collections.Generic;
+using KSP.Localization;
 
 namespace MissionControllerEC.PartModules
 {
@@ -64,13 +65,13 @@ namespace MissionControllerEC.PartModules
                     vesselId = this.part.vessel.id.ToString();
                     vesselName = this.part.vessel.name;
                     Debug.LogError("Vessel Id For PartModule is " + vesselId + " Name is " + vesselName);
-                    ScreenMessages.PostScreenMessage("Your engineer has Prepared the vessel for Repair Open the panel, Then conduct the repair", 5f);  
+                    ScreenMessages.PostScreenMessage(Localizer.Format("#autoLOC_MissionController2_1000250"), 5f);  		// #autoLOC_MissionController2_1000250 = Your engineer has Prepared the vessel for Repair Open the panel, Then conduct the repair
                     
                 }
                 else
                 {
                     Debug.Log("Current kerbal is NOT an Engineer you don't pass... Bad boy!");
-                    ScreenMessages.PostScreenMessage("You need an Engineer to fix this Vessel!", 5f);
+                    ScreenMessages.PostScreenMessage(Localizer.Format("#autoLOC_MissionController2_1000251"), 5f);		// #autoLOC_MissionController2_1000251 = You need an Engineer to fix this Vessel!
                 }
             }                                    
         }
@@ -82,30 +83,30 @@ namespace MissionControllerEC.PartModules
             {
                 repair = true;
                 Debug.Log("repairEnabled");
-                ScreenMessages.PostScreenMessage("Your engineer has repaired this vessel.  Good job!", 5f);
+                ScreenMessages.PostScreenMessage(Localizer.Format("#autoLOC_MissionController2_1000252"), 5f);		// #autoLOC_MissionController2_1000252 = Your engineer has repaired this vessel.  Good job!
                 readyRep = false;
             }
-            else { ScreenMessages.PostScreenMessage("You need an Engineer class kerbal to conduct this repair!", 5f); }
+            else { ScreenMessages.PostScreenMessage(Localizer.Format("#autoLOC_MissionController2_1000253"), 5f); }		// #autoLOC_MissionController2_1000253 = You need an Engineer class kerbal to conduct this repair!
         }
 
         [KSPEvent(externalToEVAOnly = true, unfocusedRange = 4f, guiActiveUnfocused = true, guiName = "Open Door", active = true, guiActiveEditor = true)]
         public void OpenDoor()
         {
             PlayOpenAnimation(1,0);
-            Events["OpenDoor"].active = false;
-            Events["EnableRepair"].active = true;
-            Events["closeDoor"].active = true;
-            Events["CheckSystems"].active = true;
+            Events[Localizer.Format("#autoLOC_MissionController2_1000255")].active = false;		// #autoLOC_MissionController2_1000255 = OpenDoor
+            Events[Localizer.Format("#autoLOC_MissionController2_1000256")].active = true;		// #autoLOC_MissionController2_1000256 = EnableRepair
+            Events[Localizer.Format("#autoLOC_MissionController2_1000257")].active = true;		// #autoLOC_MissionController2_1000257 = closeDoor
+            Events[Localizer.Format("#autoLOC_MissionController2_1000258")].active = true;		// #autoLOC_MissionController2_1000258 = CheckSystems
         }
 
         [KSPEvent(externalToEVAOnly = true, unfocusedRange = 4f, guiActiveUnfocused = true, guiName = "Close Door", active = false, guiActiveEditor = true)]
         public void closeDoor()
         {
             PlayOpenAnimation(-1, 1);
-            Events["OpenDoor"].active = true;
-            Events["EnableRepair"].active = false;
-            Events["closeDoor"].active = false;
-            Events["CheckSystems"].active = false;
+            Events[Localizer.Format("#autoLOC_MissionController2_1000259")].active = true;		// #autoLOC_MissionController2_1000259 = OpenDoor
+            Events[Localizer.Format("#autoLOC_MissionController2_1000260")].active = false;		// #autoLOC_MissionController2_1000260 = EnableRepair
+            Events[Localizer.Format("#autoLOC_MissionController2_1000261")].active = false;		// #autoLOC_MissionController2_1000261 = closeDoor
+            Events[Localizer.Format("#autoLOC_MissionController2_1000262")].active = false;		// #autoLOC_MissionController2_1000262 = CheckSystems
         }       
 
         [KSPAction("Start repair")]

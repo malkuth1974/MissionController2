@@ -9,6 +9,8 @@ using System.Text;
 using KSPAchievements;
 using MissionControllerEC.MCEParameters;
 using MissionControllerEC.PartModules;
+using KSP.Localization;
+
 namespace MissionControllerEC.MCEContracts
 {
     #region Repair Goal Contract
@@ -165,17 +167,17 @@ namespace MissionControllerEC.MCEContracts
 
             if (maxApA <= 120000)
             {
-                base.SetFunds(45000f * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 71000f * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 150000f * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
+                base.SetFunds(20000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 71000f * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 150000f * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
                 base.SetReputation(20f, 25f, targetBody);
             }
             if (maxApA > 120000 && maxApA <= 1000000)
             {
-                base.SetFunds(70000f * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 95000f * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 210000f * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
+                base.SetFunds(25000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 95000f * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 210000f * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
                 base.SetReputation(20f, 25f, targetBody);
             }
-            if (maxApA > 1000001)
+            if (maxApA > 30000)
             {
-                base.SetFunds(120000f * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 130000f * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 300000f * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
+                base.SetFunds(2500 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 35000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 35000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
                 base.SetReputation(20f, 25f, targetBody);
             }
 
@@ -222,18 +224,11 @@ namespace MissionControllerEC.MCEContracts
         protected override string GetDescription()
         {
             //those 3 strings appear to do nothing
-            return "An issue has arisen with one of our satellites in orbit, we would like to contract your agency to launch and fix this issue.\n\n" +
-                "How To conduct repairs:\n\n" +
-                "1. You need An Engineer Kerbal to conduct the repairs.\n 2. Launch and intercept the target satellite (no need to dock unless you want to). \n" +
-                "3. Conduct an EVA with an enginerr kerbal.\n" +
-                "4. Go to the nearest Repair Panel and Open the Repair Panel and select Test System.\n6. Once system is tested and passes, select Repair.  All done!";
+            return Localizer.Format("#autoLOC_MissionController2_1000188");		// #autoLOC_MissionController2_1000188 = An issue has arisen with one of our satellites in orbit, we would like to contract your agency to launch and fix this issue.\n\n How To conduct repairs:\n\n 1. You need An Engineer Kerbal to conduct the repairs.\n 2. Launch and intercept the target satellite (no need to dock unless you want to). \n 3. Conduct an EVA with an enginerr kerbal.\n 4. Go to the nearest Repair Panel and Open the Repair Panel and select Test System.\n6. Once system is tested and passes, select Repair.  All done!
         }
         protected override string GetNotes()
         {
-            return "How To conduct repairs:\n\n" +
-                "1. You need an Engineer kerbal.\n 2. Launch and intercept the target satellite (no need to dock unless you want to). \n" +
-                "3. Conduct an EVA with a Kerbal.\n" +
-                "4. Go to the nearest Repair Panel and Open the Repair Panel and select Test System.\n6. Once system is tested and passes, select Repair.  All done!";
+            return Localizer.Format("#autoLOC_MissionController2_1000189");		// #autoLOC_MissionController2_1000189 = How To conduct repairs:\n\n 1. You need an Engineer kerbal.\n 2. Launch and intercept the target satellite (no need to dock unless you want to). \n 3. Conduct an EVA with a Kerbal.\n 4. Go to the nearest Repair Panel and Open the Repair Panel and select Test System.\n6. Once system is tested and passes, select Repair.  All done!
         }
         protected override string GetSynopsys()
         {
@@ -243,7 +238,7 @@ namespace MissionControllerEC.MCEContracts
         {
             NoVessel = false;
             RepairPanel.repair = false;
-            return "You have successfully repaired our satellite " + vesselName + ".  Thank you very much!";
+            return Localizer.Format("#autoLOC_MissionController2_1000190") + " " + vesselName + " " + Localizer.Format("#autoLOC_MissionController2_1000191");		// #autoLOC_MissionController2_1000190 = You have successfully repaired our satellite 		// #autoLOC_MissionController2_1000191 = .  Thank you very much!
         }
 
         protected override void OnLoad(ConfigNode node)

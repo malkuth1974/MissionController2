@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LocalizerProjectSettings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <TagAutoLocPortion>#autoLOC</TagAutoLocPortion>
+  <TagProjectPortion>MissionController2</TagProjectPortion>
+  <IDType>ProjectBased</IDType>
+  <NextProjectID>1000771</NextProjectID>
+  <BaseCfgFile>C:\KSPFolder\Kerbal Space Program\GameData\MissionControllerEC\Resources\Localization\refactor.cfg</BaseCfgFile>
+  <LanguageCodes>en-us,es-es,ja,ru,zh-cn,de-de,fr-fr,it-it,pt-br</LanguageCodes>
+  <UseMultiCfgFiles>false</UseMultiCfgFiles>
+  <UseMultiAndBaseCfgFiles>false</UseMultiAndBaseCfgFiles>
+  <MultiCfgFile>refactor_{LANGCODE}.cfg</MultiCfgFile>
+  <AddLanguageCodePrefixToMultiFiles>true</AddLanguageCodePrefixToMultiFiles>
+  <Templates>
+    <LocalizerTemplateSettings>
+      <name>Default</name>
+      <UseMultiCfgFiles>false</UseMultiCfgFiles>
+      <UseMultiAndBaseCfgFiles>false</UseMultiAndBaseCfgFiles>
+      <AddLanguageCodePrefixToMultiFiles>true</AddLanguageCodePrefixToMultiFiles>
+      <BaseCfgFile>C:\KSPFolder\Kerbal Space Program\GameData\MissionControllerEC\Resources\Localization\refactor.cfg</BaseCfgFile>
+      <MultiCfgFile>refactor_{LANGCODE}.cfg</MultiCfgFile>
+      <LanguageCodes>en-us,es-es,ja,ru,zh-cn,de-de,fr-fr,it-it,pt-br</LanguageCodes>
+    </LocalizerTemplateSettings>
+  </Templates>
+</LocalizerProjectSettings>

@@ -8,6 +8,8 @@ using KSP;
 using System.Text;
 using KSPAchievements;
 using MissionControllerEC.MCEParameters;
+using KSP.Localization;
+
 namespace MissionControllerEC.MCEContracts
 {
     public class SatelliteContracts : Contract
@@ -27,7 +29,7 @@ namespace MissionControllerEC.MCEContracts
         public string SatTypeName = "Communications";
         public int scipartamount = 1;
         public int scipartcount = 1;
-        public string TOSName = "We need this amount of time to conduct our studies\n ";              
+        public string TOSName = Localizer.Format("#autoLOC_MissionController2_1000095");              		// #autoLOC_MissionController2_1000095 = We need this amount of time to conduct our studies\n 
         public int totalContracts;
         public int TotalFinished;
         private int trackStationNumber = 0;
@@ -45,68 +47,68 @@ namespace MissionControllerEC.MCEContracts
             {
                 case 0:
                     satType = "Communications";
-                    TOSName = "Communications link up will need this amount of time to Be established\n ";
-                    satStoryDef = "Communications satellites provide a worldwide linkup of radio, telephone, and television. The first (Earth) communications satellite was Echo 1 ; launched in 1960, it was a large metallized " +
-                              "balloon that reflected radio signals striking it. This passive mode of operation quickly gave way to the active or repeater mode, in which complex electronic equipment aboard the satellite " +
-                              "receives a signal from the earth, amplifies it, and transmits it to another point on the earth, in this case Kerbin.";
-                    contractNotes ="You can set both the frequency and module type in the editor with Tweak Sliders. Set these values before takeoff, They cannot be changed after the vessel is launched!\n\n";
-                    contractSynops = "You must bring the satellite to the specified orbit(Below The ApA, And Above The PeA) with Module type And Frequency. Set your satellite values in the Editor before taking Off, " + 
-                               "Once you get to your assigned orbital height transmit the Data packet to customers to complete the objectives. Be warned, you only have 1 shot to send the packet. If it's incorrect, you will have to " + 
-                               "launch a new vessel";
+                    TOSName = Localizer.Format("#autoLOC_MissionController2_1000096");		// #autoLOC_MissionController2_1000096 = Communications link up will need this amount of time to Be established\n 
+                    satStoryDef = Localizer.Format("#autoLOC_MissionController2_1000097") +		// #autoLOC_MissionController2_1000097 = Communications satellites provide a worldwide linkup of radio, telephone, and television. The first (Earth) communications satellite was Echo 1 ; launched in 1960, it was a large metallized 
+                              Localizer.Format("#autoLOC_MissionController2_1000098") +		// #autoLOC_MissionController2_1000098 = balloon that reflected radio signals striking it. This passive mode of operation quickly gave way to the active or repeater mode, in which complex electronic equipment aboard the satellite 
+                              Localizer.Format("#autoLOC_MissionController2_1000099");		// #autoLOC_MissionController2_1000099 = receives a signal from the earth, amplifies it, and transmits it to another point on the earth, in this case Kerbin.
+                    contractNotes = Localizer.Format("#autoLOC_MissionController2_1000100");		// #autoLOC_MissionController2_1000100 = You can set both the frequency and module type in the editor with Tweak Sliders. Set these values before takeoff, They cannot be changed after the vessel is launched!\n\n
+                    contractSynops = Localizer.Format("#autoLOC_MissionController2_1000101") + 		// #autoLOC_MissionController2_1000101 = You must bring the satellite to the specified orbit(Below The ApA, And Above The PeA) with Module type And Frequency. Set your satellite values in the Editor before taking Off, 
+                               Localizer.Format("#autoLOC_MissionController2_1000102") + 		// #autoLOC_MissionController2_1000102 = Once you get to your assigned orbital height transmit the Data packet to customers to complete the objectives. Be warned, you only have 1 shot to send the packet. If it's incorrect, you will have to 
+                               Localizer.Format("#autoLOC_MissionController2_1000103");		// #autoLOC_MissionController2_1000103 = launch a new vessel
                     break;
                 case 1:
                     satType = "Weather";
-                    TOSName = "To study our target weather patterns we need this amount of Obital time\n ";
-                    satStoryDef = "Weather satellites, or meteorological satellites, provide kerbin scientist continuous, up-to-date information about large-scale atmospheric conditions such as cloud cover and temperature profiles. " +
-                              "Tiros 1, the first such (Earth) satellite, was launched in 1960; it transmitted infrared television pictures of the earth's cloud cover and was able to detect the development of hurricanes and to chart " +
+                    TOSName = Localizer.Format("#autoLOC_MissionController2_1000104");		// #autoLOC_MissionController2_1000104 = To study our target weather patterns we need this amount of Obital time\n 
+                    satStoryDef = Localizer.Format("#autoLOC_MissionController2_1000105") +		// #autoLOC_MissionController2_1000105 = Weather satellites, or meteorological satellites, provide kerbin scientist continuous, up-to-date information about large-scale atmospheric conditions such as cloud cover and temperature profiles. 
+                              Localizer.Format("#autoLOC_MissionController2_1000106") +		// #autoLOC_MissionController2_1000106 = Tiros 1, the first such (Earth) satellite, was launched in 1960; it transmitted infrared television pictures of the earth's cloud cover and was able to detect the development of hurricanes and to chart 
                               "their paths.";
-                    contractNotes = "You can set both the frequency and module type in the editor with Tweak Sliders. Set these values before takeoff, They cannot be changed after the vessel is launched!\n\n";
-                    contractSynops = "You must bring the  satellite to the specified orbit (Below The ApA, And Above The PeA) with Module type And Frequency. Set your satellite values in the Editor before taking Off, " +
-                               "Once you get to your assigned orbital height transmit the Data packet to customers to complete the objectives. Be warned, you only have 1 shot to send the packet. If it's incorrect, you will have to " +
-                               "launch a new vessel";
+                    contractNotes = Localizer.Format("#autoLOC_MissionController2_1000107");		// #autoLOC_MissionController2_1000107 = You can set both the frequency and module type in the editor with Tweak Sliders. Set these values before takeoff, They cannot be changed after the vessel is launched!\n\n
+                    contractSynops = Localizer.Format("#autoLOC_MissionController2_1000108") +		// #autoLOC_MissionController2_1000108 = You must bring the  satellite to the specified orbit (Below The ApA, And Above The PeA) with Module type And Frequency. Set your satellite values in the Editor before taking Off, 
+                               Localizer.Format("#autoLOC_MissionController2_1000109") +		// #autoLOC_MissionController2_1000109 = Once you get to your assigned orbital height transmit the Data packet to customers to complete the objectives. Be warned, you only have 1 shot to send the packet. If it's incorrect, you will have to 
+                               Localizer.Format("#autoLOC_MissionController2_1000110");		// #autoLOC_MissionController2_1000110 = launch a new vessel
                     break;
                 case 2:
                     satType = "Navigational";
-                    TOSName = "To establish Naviagational aids we need this amount of time\n ";
-                    satStoryDef = "Navigation satellites were developed primarily to satisfy the need for a navigation system that nuclear submarines could use to update their inertial navigation system. This led " +
-                                "the (Earth) U.S. navy to establish the Transit program in 1958; the system was declared operational in 1962 after the launch of Transit 5A. Transit satellites provided a constant signal by which " +
-                                "aircraft and ships could determine their positions with great accuracy.\n\n" +
-                                "In kerbin society these satellites help with the day to day needs of most travel options for kerbin Land, Sea, Air Based navigation.";
-                    contractNotes = "You can set both the frequency and module type in the editor with Tweak Sliders. Set these values before takeoff, They cannot be changed after the vessel is launched!\n\n";
-                    contractSynops = "You must bring the satellite to the specified orbit (Below The ApA, And Above The PeA) with Module type And Frequency. Set your satellite values in the Editor before taking Off, " +
-                               "Once you get to your assigned orbital height transmit the Data packet to customers to complete the objectives. Be warned, you only have 1 shot to send the packet. If it's incorrect, you will have to " +
-                               "launch a new vessel";
+                    TOSName = Localizer.Format("#autoLOC_MissionController2_1000111");		// #autoLOC_MissionController2_1000111 = To establish Naviagational aids we need this amount of time\n 
+                    satStoryDef = Localizer.Format("#autoLOC_MissionController2_1000112") +		// #autoLOC_MissionController2_1000112 = Navigation satellites were developed primarily to satisfy the need for a navigation system that nuclear submarines could use to update their inertial navigation system. This led 
+                                Localizer.Format("#autoLOC_MissionController2_1000113") +		// #autoLOC_MissionController2_1000113 = the (Earth) U.S. navy to establish the Transit program in 1958; the system was declared operational in 1962 after the launch of Transit 5A. Transit satellites provided a constant signal by which 
+                                Localizer.Format("#autoLOC_MissionController2_1000114") +		// #autoLOC_MissionController2_1000114 = aircraft and ships could determine their positions with great accuracy.\n\n
+                                Localizer.Format("#autoLOC_MissionController2_1000115");		// #autoLOC_MissionController2_1000115 = In kerbin society these satellites help with the day to day needs of most travel options for kerbin Land, Sea, Air Based navigation.
+                    contractNotes = Localizer.Format("#autoLOC_MissionController2_1000117");		// #autoLOC_MissionController2_1000117 = You can set both the frequency and module type in the editor with Tweak Sliders. Set these values before takeoff, They cannot be changed after the vessel is launched!\n\n
+                    contractSynops = Localizer.Format("#autoLOC_MissionController2_1000118") +		// #autoLOC_MissionController2_1000118 = You must bring the satellite to the specified orbit (Below The ApA, And Above The PeA) with Module type And Frequency. Set your satellite values in the Editor before taking Off, 
+                               Localizer.Format("#autoLOC_MissionController2_1000119") +		// #autoLOC_MissionController2_1000119 = Once you get to your assigned orbital height transmit the Data packet to customers to complete the objectives. Be warned, you only have 1 shot to send the packet. If it's incorrect, you will have to 
+                               Localizer.Format("#autoLOC_MissionController2_1000120");		// #autoLOC_MissionController2_1000120 = launch a new vessel
                     break;
                 case 3:
                     satType = "Research";
-                    TOSName = "Our research, test will take about this amount of time to complete\n ";
-                    satStoryDef = "Research satellites are designed to test different scientific studies while in the freedom of space. Away for the problems of Kerbin Ground studies";
-                    contractNotes = "You can set both the frequency and module type in the editor with Tweak Sliders. Set these values before takeoff, They cannot be changed after the vessel is launched!\n\n";
-                    contractSynops = "You must bring the satellite to the specified orbit (Below The ApA, And Above The PeA) with Module type And Frequency. Set your satellite values in the Editor before taking Off, " +
-                               "Once you get to your assigned orbital height transmit the Data packet to customers to complete the objectives. Be warned, you only have 1 shot to send the packet. If it's incorrect, you will have to " +
-                               "launch a new vessel";
+                    TOSName = Localizer.Format("#autoLOC_MissionController2_1000121");		// #autoLOC_MissionController2_1000121 = Our research, test will take about this amount of time to complete\n 
+                    satStoryDef = Localizer.Format("#autoLOC_MissionController2_1000122");		// #autoLOC_MissionController2_1000122 = Research satellites are designed to test different scientific studies while in the freedom of space. Away for the problems of Kerbin Ground studies
+                    contractNotes = Localizer.Format("#autoLOC_MissionController2_1000123");		// #autoLOC_MissionController2_1000123 = You can set both the frequency and module type in the editor with Tweak Sliders. Set these values before takeoff, They cannot be changed after the vessel is launched!\n\n
+                    contractSynops = Localizer.Format("#autoLOC_MissionController2_1000124") +		// #autoLOC_MissionController2_1000124 = You must bring the satellite to the specified orbit (Below The ApA, And Above The PeA) with Module type And Frequency. Set your satellite values in the Editor before taking Off, 
+                               Localizer.Format("#autoLOC_MissionController2_1000125") +		// #autoLOC_MissionController2_1000125 = Once you get to your assigned orbital height transmit the Data packet to customers to complete the objectives. Be warned, you only have 1 shot to send the packet. If it's incorrect, you will have to 
+                               Localizer.Format("#autoLOC_MissionController2_1000126");		// #autoLOC_MissionController2_1000126 = launch a new vessel
                     break;
                 case 4:
                     satType = "Network Communications";
-                    TOSName = "Establish communications network around Kerbin";
-                    satStoryDef = "Launch 6 Communication satellites to orbit and build a satellite network that connects all the Ground stations around Kerbin. All 6 satellites have to be pointed at a certain Ground station to be counted " +
-                        "as part of the network.\n\n It's possible to launch multiple satellites with one vessel. If you do this, be sure to not use Symmetry mode when adding the Satellite cores. If you use Symmetry mode the frequencies will all be set to the same thing when adjusting them!";
-                    contractNotes ="You have to launch 6 different satellites.  All 6 satellites have different frequencies.  But all other settings in the Satellite Cores are the same.  The Ground stations are connected by \n" +
-                                "individual frequencies, and have been placed in order for easy access and completion\n\n"+
-                                "PLEASE NOTE: There is no such thing as a KeoStationary Orbit around the polar regions, you won't be able to Keep  the lines of sight at all times with polar stations.  You can still connect to them \n" +
-                                "to finish the polar objectives.  Those objectives will remain locked and won't disconnect. Like the Equatorial Ground stations will.\n\n";
-                    contractSynops = "Set up all satellite cores with right frequencies.  All cores have a different set of frequencies to adjust in each vessel.  Failure to do this will result in having to launch more vessels.";
+                    TOSName = Localizer.Format("#autoLOC_MissionController2_1000127");		// #autoLOC_MissionController2_1000127 = Establish communications network around Kerbin
+                    satStoryDef = Localizer.Format("#autoLOC_MissionController2_1000128") +		// #autoLOC_MissionController2_1000128 = Launch 6 Communication satellites to orbit and build a satellite network that connects all the Ground stations around Kerbin. All 6 satellites have to be pointed at a certain Ground station to be counted 
+                        Localizer.Format("#autoLOC_MissionController2_1000129");		// #autoLOC_MissionController2_1000129 = as part of the network.\n\n It's possible to launch multiple satellites with one vessel. If you do this, be sure to not use Symmetry mode when adding the Satellite cores. If you use Symmetry mode the frequencies will all be set to the same thing when adjusting them!
+                    contractNotes = Localizer.Format("#autoLOC_MissionController2_1000130") +		// #autoLOC_MissionController2_1000130 = You have to launch 6 different satellites.  All 6 satellites have different frequencies.  But all other settings in the Satellite Cores are the same.  The Ground stations are connected by \n
+                                Localizer.Format("#autoLOC_MissionController2_1000131") +		// #autoLOC_MissionController2_1000131 = individual frequencies, and have been placed in order for easy access and completion\n\n
+                                Localizer.Format("#autoLOC_MissionController2_1000132") +		// #autoLOC_MissionController2_1000132 = PLEASE NOTE: There is no such thing as a KeoStationary Orbit around the polar regions, you won't be able to Keep  the lines of sight at all times with polar stations.  You can still connect to them \n
+                                Localizer.Format("#autoLOC_MissionController2_1000133");		// #autoLOC_MissionController2_1000133 = to finish the polar objectives.  Those objectives will remain locked and won't disconnect. Like the Equatorial Ground stations will.\n\n
+                    contractSynops = Localizer.Format("#autoLOC_MissionController2_1000134");		// #autoLOC_MissionController2_1000134 = Set up all satellite cores with right frequencies.  All cores have a different set of frequencies to adjust in each vessel.  Failure to do this will result in having to launch more vessels.
                     break;
                 case 5:
                     satType = "Network Navigation System";
-                    TOSName = "Establish navigation network around Kerbin";
-                    satStoryDef = "Launch 6 Communication satellites to orbit and build a satellite network that connects all the Ground stations around Kerbin. All 6 satellites have to be pointed at a certain Ground station to be counted " +
-                        "as part of the network.\n\n It's possible to launch multiple satellites with one vessel. If you do this, be sure to not use Symmetry mode when adding the Satellite cores. If you use Symmetry mode the frequencies will all be set to the same thing when adjusting them!";
-                    contractNotes = "You have to launch 6 different satellites.  All 6 satellites have different frequencies.  But all other settings in the Satellite Cores are the same.  The Ground stations are connected by \n" +
-                                "individual frequencies, and have been placed in order for easy access and completion\n\n" +
-                                "PLEASE NOTE: There is no such thing as a KeoStationary Orbit around the polar regions, you won't be able to Keep  the lines of sight at all times with polar stations.  You can still connect to them \n" +
-                                "to finish the polar objectives.  Those objectives will remain locked and won't disconnect. Like the Equatorial Ground stations will.\n\n";
-                    contractSynops = "Set up all satellite cores with right frequencies.  All cores have a different set of frequencies to adjust in each vessel.  Failure to do this will result in having to launch more vessels.";
+                    TOSName = Localizer.Format("#autoLOC_MissionController2_1000135");		// #autoLOC_MissionController2_1000135 = Establish navigation network around Kerbin
+                    satStoryDef = Localizer.Format("#autoLOC_MissionController2_1000136") +		// #autoLOC_MissionController2_1000136 = Launch 6 Communication satellites to orbit and build a satellite network that connects all the Ground stations around Kerbin. All 6 satellites have to be pointed at a certain Ground station to be counted 
+                        Localizer.Format("#autoLOC_MissionController2_1000137");		// #autoLOC_MissionController2_1000137 = as part of the network.\n\n It's possible to launch multiple satellites with one vessel. If you do this, be sure to not use Symmetry mode when adding the Satellite cores. If you use Symmetry mode the frequencies will all be set to the same thing when adjusting them!
+                    contractNotes = Localizer.Format("#autoLOC_MissionController2_1000138") +		// #autoLOC_MissionController2_1000138 = You have to launch 6 different satellites.  All 6 satellites have different frequencies.  But all other settings in the Satellite Cores are the same.  The Ground stations are connected by \n
+                                Localizer.Format("#autoLOC_MissionController2_1000139") +		// #autoLOC_MissionController2_1000139 = individual frequencies, and have been placed in order for easy access and completion\n\n
+                                Localizer.Format("#autoLOC_MissionController2_1000140") +		// #autoLOC_MissionController2_1000140 = PLEASE NOTE: There is no such thing as a KeoStationary Orbit around the polar regions, you won't be able to Keep  the lines of sight at all times with polar stations.  You can still connect to them \n
+                                Localizer.Format("#autoLOC_MissionController2_1000141");		// #autoLOC_MissionController2_1000141 = to finish the polar objectives.  Those objectives will remain locked and won't disconnect. Like the Equatorial Ground stations will.\n\n
+                    contractSynops = Localizer.Format("#autoLOC_MissionController2_1000142");		// #autoLOC_MissionController2_1000142 = Set up all satellite cores with right frequencies.  All cores have a different set of frequencies to adjust in each vessel.  Failure to do this will result in having to launch more vessels.
                     break;
             }
             Debug.Log("MCE satType Mission Is " + satType);
@@ -281,22 +283,22 @@ namespace MissionControllerEC.MCEContracts
                     frequency = -10;
                 }
                 ContractParameter Network1 = this.AddParameter(new satelliteCoreCheck(SatTypeName, frequency, moduletype, targetBody), null);
-                Network1.SetFunds(50000, 50000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
+                Network1.SetFunds(32000, 32000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
                 this.AddParameter(new GroundStationPostion("Kerbal Space Center", -74, 0, frequency, false), null);
                 ContractParameter Network2 = this.AddParameter(new satelliteCoreCheck(SatTypeName, frequency + 1, moduletype, targetBody), null);
-                Network2.SetFunds(50000, 50000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
+                Network2.SetFunds(32000, 32000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
                 this.AddParameter(new GroundStationPostion("East Shore Station", 16, 0, frequency + 1, false), null);
                 ContractParameter Network3 = this.AddParameter(new satelliteCoreCheck(SatTypeName, frequency + 2, moduletype, targetBody), null);
-                Network3.SetFunds(50000, 50000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
+                Network3.SetFunds(32000, 32000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
                 this.AddParameter(new GroundStationPostion("Heart Station", 106, 0, frequency + 2, false), null);
                 ContractParameter Network4 = this.AddParameter(new satelliteCoreCheck(SatTypeName, frequency + 3, moduletype, targetBody), null);
-                Network4.SetFunds(50000, 50000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
+                Network4.SetFunds(32000, 32000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
                 this.AddParameter(new GroundStationPostion("Crator Station", -164, 0, frequency + 3, false), null);
                 ContractParameter Network5 = this.AddParameter(new satelliteCoreCheck(SatTypeName, frequency + 4, moduletype, targetBody), null);
-                Network5.SetFunds(50000, 50000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
+                Network5.SetFunds(32000, 32000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
                 this.AddParameter(new GroundStationPostion("North Pole Station", 0, 89, frequency + 4, true), null);
                 ContractParameter Network6 = this.AddParameter(new satelliteCoreCheck(SatTypeName, frequency + 5, moduletype, targetBody), null);
-                Network6.SetFunds(50000, 50000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
+                Network6.SetFunds(32000, 32000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
                 this.AddParameter(new GroundStationPostion("South Pole Station", 0, -89, frequency + 5, true), null);
             }
             else if (SaveInfo.SatelliteTypeChoice == 5)
@@ -311,22 +313,22 @@ namespace MissionControllerEC.MCEContracts
                     frequency = -10;
                 }
                 ContractParameter Network1 = this.AddParameter(new satelliteCoreCheck(SatTypeName, frequency, moduletype, targetBody), null);
-                Network1.SetFunds(500000, 50000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
+                Network1.SetFunds(32000, 32000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
                 this.AddParameter(new GroundStationPostion("Kerbal Space Center", -74, 0, frequency, false), null);
                 ContractParameter Network2 = this.AddParameter(new satelliteCoreCheck(SatTypeName, frequency + 1, moduletype, targetBody), null);
-                Network2.SetFunds(50000, 50000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
+                Network2.SetFunds(32000, 32000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
                 this.AddParameter(new GroundStationPostion("East Shore Station", 16, 0, frequency + 1, false), null);
                 ContractParameter Network3 = this.AddParameter(new satelliteCoreCheck(SatTypeName, frequency + 2, moduletype, targetBody), null);
-                Network3.SetFunds(50000, 50000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
+                Network3.SetFunds(32000, 32000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
                 this.AddParameter(new GroundStationPostion("Heart Station", 106, 0, frequency + 2, false), null);
                 ContractParameter Network4 = this.AddParameter(new satelliteCoreCheck(SatTypeName, frequency + 3, moduletype, targetBody), null);
-                Network4.SetFunds(50000, 50000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
+                Network4.SetFunds(32000, 32000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
                 this.AddParameter(new GroundStationPostion("Crator Station", -164, 0, frequency + 3,false), null);
                 ContractParameter Network5 = this.AddParameter(new satelliteCoreCheck(SatTypeName, frequency + 4, moduletype, targetBody), null);
-                Network5.SetFunds(50000, 50000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
+                Network5.SetFunds(32000, 32000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
                 this.AddParameter(new GroundStationPostion("North Pole Station", 0, 89, frequency + 4, true), null);
                 ContractParameter Network6 = this.AddParameter(new satelliteCoreCheck(SatTypeName, frequency + 5, moduletype, targetBody), null);
-                Network6.SetFunds(50000, 50000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
+                Network6.SetFunds(32000, 32000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
                 this.AddParameter(new GroundStationPostion("South Pole Station", 0, -89, frequency + 5,true), null);
             }
 
@@ -349,8 +351,8 @@ namespace MissionControllerEC.MCEContracts
 
             base.SetExpiry(3f, 10f);
             base.SetDeadlineYears(3f, targetBody);
-            base.SetFunds(5000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 70000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 90000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
-            base.SetReputation(25, 50, targetBody);
+            base.SetFunds(2500 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 40000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 40000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
+            base.SetReputation(15, 30, targetBody);
             return true;
         }
 
@@ -370,11 +372,11 @@ namespace MissionControllerEC.MCEContracts
 
         protected override string GetHashString()
         {
-            return targetBody.bodyName + " For specified Orbit " + " - Total Done: " + TotalFinished + this.MissionSeed.ToString();
+            return targetBody.bodyName + Localizer.Format("#autoLOC_MissionController2_1000143") + " " + Localizer.Format("#autoLOC_MissionController2_1000144") + TotalFinished + this.MissionSeed.ToString();		// #autoLOC_MissionController2_1000143 =  For specified Orbit 		// #autoLOC_MissionController2_1000144 =  - Total Done: 
         }
         protected override string GetTitle()
         {
-            return "Launch new " + satType + " Satellite " + targetBody.bodyName;
+            return Localizer.Format("#autoLOC_MissionController2_1000145") + " " + satType + " " + Localizer.Format("#autoLOC_MissionController2_1000146") + " " + targetBody.bodyName;		// #autoLOC_MissionController2_1000145 = Launch new 		// #autoLOC_MissionController2_1000146 =  Satellite 
         }
         protected override string GetDescription()
         {
@@ -390,7 +392,7 @@ namespace MissionControllerEC.MCEContracts
             SaveInfo.SatelliteContractModule = 0;
             SaveInfo.SatelliteContractFrequency = -1;
             Debug.Log("values for satellites have been reset");
-            return "You have successfully delivered our " + satType + " satellite to orbit around " + targetBody.bodyName;
+            return Localizer.Format("#autoLOC_MissionController2_1000147") + " " + satType + " " + Localizer.Format("#autoLOC_MissionController2_1000148") + " " + targetBody.bodyName;		// #autoLOC_MissionController2_1000147 = You have successfully delivered our 		// #autoLOC_MissionController2_1000148 =  satellite to orbit around 
         }
 
         protected override void OnLoad(ConfigNode node)
@@ -556,24 +558,24 @@ namespace MissionControllerEC.MCEContracts
       
         protected override string GetHashString()
         {
-            return "Launch and land on Biomes of " + targetBody + this.MissionSeed.ToString();
+            return Localizer.Format("#autoLOC_MissionController2_1000149") + " " + targetBody + this.MissionSeed.ToString();		// #autoLOC_MissionController2_1000149 = Launch and land on Biomes of 
         }
         protected override string GetTitle()
         {
-            return "Land on specific Biome on " + targetBody.bodyName + ", Then collect science";
+            return Localizer.Format("#autoLOC_MissionController2_1000150") + " " + targetBody.bodyName + Localizer.Format("#autoLOC_MissionController2_1000151");		// #autoLOC_MissionController2_1000150 = Land on specific Biome on 		// #autoLOC_MissionController2_1000151 = , Then collect science
         }
         protected override string GetDescription()
         {
-            return "Land a vessel on " + targetBody.bodyName + " in the biome called " + BiomeName + ". Then collect science to complete the contract. You must have at least " + crew + " crew member on your vessel";
+            return Localizer.Format("#autoLOC_MissionController2_1000152") + " " + targetBody.bodyName + Localizer.Format("#autoLOC_MissionController2_1000153") + " " + BiomeName + Localizer.Format("#autoLOC_MissionController2_1000154") + " " + crew + " " + Localizer.Format("#autoLOC_MissionController2_1000155");		// #autoLOC_MissionController2_1000152 = Land a vessel on 		// #autoLOC_MissionController2_1000153 =  in the biome called 		// #autoLOC_MissionController2_1000154 = . Then collect science to complete the contract. You must have at least 		// #autoLOC_MissionController2_1000155 =  crew member on your vessel
         }
         protected override string GetSynopsys()
         {
-            return "Land at specific Body and Biome we Request " + targetBody.bodyName + ". " + BiomeName + " Then collect science.";
+            return Localizer.Format("#autoLOC_MissionController2_1000156") + " " + targetBody.bodyName + ". " + BiomeName + " " + Localizer.Format("#autoLOC_MissionController2_1000157");		// #autoLOC_MissionController2_1000156 = Land at specific Body and Biome we Request 		// #autoLOC_MissionController2_1000157 =  Then collect science.
         }
         protected override string MessageCompleted()
         {
             SaveInfo.Luna16Done = true;
-            return "Great job landing at the biome we specified.  The science we have gathered will help us in the future to bring kerbals deeper into our solar system!";
+            return Localizer.Format("#autoLOC_MissionController2_1000158");		// #autoLOC_MissionController2_1000158 = Great job landing at the biome we specified.  The science we have gathered will help us in the future to bring kerbals deeper into our solar system!
         }
 
         protected override void OnLoad(ConfigNode node)

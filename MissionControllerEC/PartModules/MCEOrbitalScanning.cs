@@ -1,4 +1,4 @@
-﻿
+﻿using KSP.Localization;
 
 namespace MissionControllerEC.PartModules
 {
@@ -32,13 +32,13 @@ namespace MissionControllerEC.PartModules
             if (probeOrbitResearch == true)
             {
                 doOrbitResearch = true;
-                ScreenMessages.PostScreenMessage("Ionization Chamber Filling, Please Stand By...");
+                ScreenMessages.PostScreenMessage(Localizer.Format("#autoLOC_MissionController2_1000248"));		// #autoLOC_MissionController2_1000248 = Ionization Chamber Filling, Please Stand By...
             }
             else
             {
                 doOrbitResearch = false;
                 scanStart = false;
-                ScreenMessages.PostScreenMessage("Vessel Needs to be In Orbit to Conduct Ionization Scan");
+                ScreenMessages.PostScreenMessage(Localizer.Format("#autoLOC_MissionController2_1000249"));		// #autoLOC_MissionController2_1000249 = Vessel Needs to be In Orbit to Conduct Ionization Scan
             }
         }
 

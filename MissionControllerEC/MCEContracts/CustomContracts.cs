@@ -59,7 +59,7 @@ namespace MissionControllerEC.MCEContracts
             base.SetExpiry(3f, 15f);
             base.SetDeadlineYears(1f, targetBody);
             base.SetReputation(25f, 40f, targetBody);
-            base.SetFunds(39000f * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 52000f * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 100000f * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
+            base.SetFunds(12000f * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 41000f * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 45000f * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
 
             return true;
         }
@@ -84,21 +84,20 @@ namespace MissionControllerEC.MCEContracts
         protected override string GetDescription()
         {
 
-            return "This is a ComSat Network contract, you have control over when these missions are available and what their orbital periods are, you can set this up in the MCE Infomation icon tab located top right \n" +
-                "corner of the screen while in Space Center View.  Please note that settings will not take effect until at least 1 cycle of contracts has passed.  If you don't see your settings cancel out the offered contract! \n\n" +
-                "All ComSat Information is stored inside the Mission Controller Config File and will pass on to other save files";
+            return Localizer.Format("#autoLOC_MissionController2_1000267");		// #autoLOC_MissionController2_1000267 = This is a ComSat Network contract, you have control over when these missions are available and what their orbital periods are, you can set this up in the MCE Infomation icon tab located top right \n corner of the screen while in Space Center View.  Please note that settings will not take effect until at least 1 cycle of contracts has passed.  If you don't see your settings cancel out the offered contract! \n\n All ComSat Information is stored inside the Mission Controller Config File and will pass on to other save files
         }
         protected override string GetNotes()
         {
-            return "Vessel must be a new vessel launched after accepting this contract!";
+            return Localizer.Format("#autoLOC_MissionController2_1000268");		// #autoLOC_MissionController2_1000268 = Vessel must be a new vessel launched after accepting this contract!
         }
         protected override string GetSynopsys()
         {
-            return "Launch your ComSat Network " + targetBody.bodyName;
+            return SaveInfo.SatelliteConDesc;
         }
         protected override string MessageCompleted()
         {
-            return "You have delivered your ComSat to its assigned height around " + targetBody.bodyName + " Continue to build you network.  When you're done you can turn off ComSat Contracts in the MCE Information Window.  Please note it will take a few contract cycles for them to disappear! ";
+            SaveInfo.ComSateContractOn = false;
+            return Localizer.Format("#autoLOC_MissionController2_1000270") + " " + targetBody.bodyName + " " + Localizer.Format("#autoLOC_MissionController2_1000271");		// #autoLOC_MissionController2_1000270 = You have delivered your ComSat to its assigned height around 		// #autoLOC_MissionController2_1000271 =  Continue to build you network.  When you're done you can turn off ComSat Contracts in the MCE Information Window.  Please note it will take a few contract cycles for them to disappear! 
         }
 
         protected override void OnLoad(ConfigNode node)
@@ -151,6 +150,7 @@ namespace MissionControllerEC.MCEContracts
         public string CTitle = Localizer.Format("#autoLOC_MCE_Supply_your_Station_Or_Base_with");
         ContractParameter suppy1;
         ContractParameter suppy2;
+        
 
         protected override bool Generate()
         {
@@ -189,7 +189,7 @@ namespace MissionControllerEC.MCEContracts
             base.SetExpiry(1f, 10f);
             base.SetDeadlineYears(.3f, targetBody);
             base.SetReputation(20f, 40f, targetBody);
-            base.SetFunds(20000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 90000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 150000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
+            base.SetFunds(8000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 35000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 40000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
 
             return true;
         }
@@ -205,7 +205,7 @@ namespace MissionControllerEC.MCEContracts
 
         protected override string GetHashString()
         {
-            return "Supply your base or station (" + vesselName + ") with supplies. Location is " + targetBody + " - Total Done: " + TotalFinished + this.MissionSeed.ToString();
+            return Localizer.Format("#autoLOC_MissionController2_1000272") + " " + vesselName + " " + Localizer.Format("#autoLOC_MissionController2_1000273") + " " + targetBody + " " + Localizer.Format("#autoLOC_MissionController2_1000274") + TotalFinished + this.MissionSeed.ToString();		// #autoLOC_MissionController2_1000272 = Supply your base or station (		// #autoLOC_MissionController2_1000273 = ) with supplies. Location is 		// #autoLOC_MissionController2_1000274 =  - Total Done: 
         }
         protected override string GetTitle()
         {
@@ -222,10 +222,11 @@ namespace MissionControllerEC.MCEContracts
         }
         protected override string GetSynopsys()
         {
-            return Localizer.Format("#autoLOC_MCE_Supply_Your_Station_Location") + " " +  targetBody.bodyName;
+            return SaveInfo.ResourceTransferConDesc;
         }
         protected override string MessageCompleted()
         {
+            SaveInfo.supplyContractOn = false;
             return Localizer.Format("#autoLOC_MCE_Custom_Supply_Contract_FinishedContract");
         }
 
@@ -262,7 +263,7 @@ namespace MissionControllerEC.MCEContracts
         }
     }
     #endregion
-    #region Custom Crew Transfer Contract
+    #region Custom Landing/Orbit Contract
     public class CustomLandingOrbit : Contract
     {
         CelestialBody targetBody = null;      
@@ -274,7 +275,7 @@ namespace MissionControllerEC.MCEContracts
         public bool StartOrbitLand = false;
         ContractParameter Orbit1;
         ContractParameter Land2;
-        ContractParameter crew1;
+        ContractParameter crew1;       
 
         protected override bool Generate()
         {
@@ -304,26 +305,63 @@ namespace MissionControllerEC.MCEContracts
             crewAmount = SaveInfo.LandingOrbitCrew;
             if (SaveInfo.IsOrbitOrLanding)
             {
-                this.Orbit1 = this.AddParameter(new Contracts.Parameters.EnterOrbit(targetBody), null);
-                Orbit1.SetFunds(4000 * crewAmount, 4000, targetBody);
+                this.Orbit1 = this.AddParameter(new Contracts.Parameters.EnterOrbit(targetBody));
+                Orbit1.SetFunds(2000 * crewAmount, 2000, targetBody);
                 Orbit1.SetReputation(3 * crewAmount, targetBody);
             }
 
             else
             {
-                this.Land2 = this.AddParameter(new Contracts.Parameters.LandOnBody(targetBody), null);
-                Land2.SetFunds(2500 * crewAmount, targetBody);
-                Land2.SetReputation(3 * crewAmount, targetBody);
+                this.Land2 = this.AddParameter(new Contracts.Parameters.LandOnBody(targetBody));
+                Land2.SetFunds(1200 * crewAmount, targetBody);
+                Land2.SetReputation(1 * crewAmount, targetBody);
             }
             crew1 = this.AddParameter(new GetCrewCount(crewAmount), null);
-            crew1.SetFunds(1000 * crewAmount);
-            crew1.SetReputation(3 * crewAmount);
+            crew1.SetFunds(1000 * crewAmount,targetBody);
+            crew1.SetReputation(1 * crewAmount, targetBody);
             this.AddParameter(new Contracts.Parameters.KerbalDeaths(0));
 
+            if (SaveInfo.OrbitAllowCivs == true)
+            {
+                SaveInfo.TourisNames.Clear();
+                Tools.CivilianName();
+                int test = 1;
+
+                foreach (string name in SaveInfo.TourisNames)
+                {
+
+                    if (SaveInfo.IsOrbitOrLanding)
+                    {
+                        if (test <= SaveInfo.LandingOrbitCivilians)
+                        {
+                            FinePrint.Contracts.Parameters.KerbalTourParameter Kerbaltour = new FinePrint.Contracts.Parameters.KerbalTourParameter(name, ProtoCrewMember.Gender.Male);
+                            this.AddParameter(Kerbaltour);
+                            Kerbaltour.AddParameter(new FinePrint.Contracts.Parameters.KerbalDestinationParameter(targetBody, FlightLog.EntryType.Orbit, name));
+                            Kerbaltour.SetFunds(Tools.FloatRandomNumber(7000, 17000), targetBody);
+                            Kerbaltour.AddParameter(new LandOnBody(Planetarium.fetch.Home));
+                            test++;
+                        }
+                    }
+                    else
+                    {
+                        if (test <= SaveInfo.LandingOrbitCivilians)
+                        {
+                            FinePrint.Contracts.Parameters.KerbalTourParameter Kerbaltour = new FinePrint.Contracts.Parameters.KerbalTourParameter(name, ProtoCrewMember.Gender.Male);
+                            this.AddParameter(Kerbaltour);
+                            Kerbaltour.AddParameter(new FinePrint.Contracts.Parameters.KerbalDestinationParameter(targetBody, FlightLog.EntryType.Land, name));
+                            Kerbaltour.SetFunds(Tools.FloatRandomNumber(7000, 17000), targetBody);
+                            Kerbaltour.AddParameter(new LandOnBody(Planetarium.fetch.Home));
+                            test++;
+                        }
+                    }
+                }
+
+            }
+            
             base.SetExpiry(15f, 40f);
             base.SetDeadlineYears(700, targetBody);
             base.SetReputation(25f, 50f, targetBody);
-            base.SetFunds(5000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 80000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 160000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
+            base.SetFunds(2500 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 45000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 55000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
 
             return true;
         }
@@ -336,10 +374,28 @@ namespace MissionControllerEC.MCEContracts
         {
             return true;
         }
+        protected override void OnAccepted()
+        {
+            Tools.SpawnCivilianKerbMCE(SaveInfo.LandingOrbitCivilians);
+        }
+        protected override void OnCancelled()
+        {
+            Tools.CivilianGoHome();
+        }
+
+        protected override void OnFailed()
+        {
+            Tools.CivilianGoHome();
+        }
+
+        protected override void OnOfferExpired()
+        {
+            Tools.CivilianGoHome();
+        }
 
         protected override string GetHashString()
         {
-            return "Land Or Orbit " + crewAmount + " Over " + targetBody.bodyName + this.MissionSeed.ToString();
+            return Localizer.Format("#autoLOC_MissionController2_1000265") + " " + crewAmount + " " + Localizer.Format("#autoLOC_MissionController2_1000266") + targetBody.bodyName + this.MissionSeed.ToString();		// #autoLOC_MissionController2_1000265 = Land Or Orbit 		// #autoLOC_MissionController2_1000266 =  Over 
         }
         protected override string GetTitle()
         {
@@ -347,7 +403,7 @@ namespace MissionControllerEC.MCEContracts
         }
         protected override string GetDescription()
         {
-            return Localizer.Format("#autoLOC_MCE2_Custom_Land_Orbit_Contract_ContractDescription_Set");
+            return SaveInfo.LandingOrbitDesc;
         }
         protected override string GetNotes()
         {
@@ -355,11 +411,14 @@ namespace MissionControllerEC.MCEContracts
         }
         protected override string GetSynopsys()
         {
-            return Localizer.Format("#autoLOC_MCE2_Custom_Land_Orbit_Contract_Synopsis_set") + " " + targetBody.bodyName;
+            return Localizer.Format("#autoLOC_MCE2_Custom_Land_Orbit_Contract_ContractDescription_Set");
         }
         protected override string MessageCompleted()
         {
-            return Localizer.Format("#autoLOC_MCE2_Custom_Land_Orbit_Contract_ContractCompleted_Victory") ;
+            Tools.CivilianGoHome();
+            SaveInfo.OrbitAllowCivs = false;
+            SaveInfo.IsOrbitOrLanding = false;
+            return Localizer.Format("#autoLOC_MCE2_Custom_Land_Orbit_Contract_ContractCompleted_Victory");
         }
 
         protected override void OnLoad(ConfigNode node)
@@ -390,7 +449,7 @@ namespace MissionControllerEC.MCEContracts
         }
     }
     #endregion
-
+    #region Custom Crew Transfer Contract
     public class CustomCrewTransfer : Contract
     {
         Settings st = new Settings("Config.cfg");
@@ -434,6 +493,7 @@ namespace MissionControllerEC.MCEContracts
             vesselId = SaveInfo.crewVesid;
             crewAmount = SaveInfo.crewAmount;
             crewTime = SaveInfo.crewTime;
+            double timemultiplier = Tools.ConvertDays(crewTime);
 
             ContractPlayerName = SaveInfo.crewTransferName;
 
@@ -441,16 +501,40 @@ namespace MissionControllerEC.MCEContracts
             ctrans1.SetFunds(2000, 2000, targetBody);
             ctrans1.SetReputation(3, targetBody);
             this.ctrans2 = this.AddParameter(new TimeCountdownDocking(targetBody, crewTime, "Crew will Stay For This Amount Of Time ", vesselId, vesselName), null);
-            ctrans2.SetFunds(2000, 2000, targetBody);
+            ctrans2.SetFunds(Tools.RandomNumber(600,900) * (float)timemultiplier, targetBody);
             ctrans2.SetReputation(3, targetBody);
+            this.AddParameter(new GetCrewCount(crewAmount), null);
+
+            if (SaveInfo.transferTouristTrue == true)
+            {
+                SaveInfo.TourisNames2.Clear();
+                Tools.CivilianName2();
+                int test = 1;
+
+                foreach (string name in SaveInfo.TourisNames2)
+                {
+
+                    if (test <= SaveInfo.transferTouristAmount)
+                    {
+                        FinePrint.Contracts.Parameters.KerbalTourParameter Kerbaltour2 = new FinePrint.Contracts.Parameters.KerbalTourParameter(name, ProtoCrewMember.Gender.Female);
+                        this.AddParameter(Kerbaltour2);
+                        Kerbaltour2.SetFunds(Tools.RandomNumber(800, 1900) * (float)timemultiplier, targetBody);
+                        Kerbaltour2.AddParameter(new TargetDockingGoal(vesselId, vesselName));
+                        Kerbaltour2.AddParameter(new LandOnBody(Planetarium.fetch.Home));                     
+                        test++;
+                    }
+
+                }
+
+            }
+
             this.ctrans3 = this.AddParameter(new LandingParameters(Planetarium.fetch.Home, true), null);
             ctrans3.SetFunds(2000, 2000, Planetarium.fetch.Home);
-            ctrans3.SetReputation(3, Planetarium.fetch.Home);
-            this.AddParameter(new GetCrewCount(crewAmount), null);
+            ctrans3.SetReputation(3, Planetarium.fetch.Home);           
             base.SetExpiry(15f, 40f);
             base.SetDeadlineYears(700, targetBody);
             base.SetReputation(25f, 50f, targetBody);
-            base.SetFunds(15000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 100000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 130000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
+            base.SetFunds(8000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 62000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 72000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
 
             return true;
         }
@@ -463,7 +547,28 @@ namespace MissionControllerEC.MCEContracts
         {
             return true;
         }
+        protected override void OnAccepted()
+        {
+            Tools.SpawnCivilianKerbMCE2(SaveInfo.transferTouristAmount);
+        }
+        protected override void OnCancelled()
+        {
+            Tools.CivilianGoHome2();
+        }
 
+        protected override void OnFailed()
+        {
+            Tools.CivilianGoHome2();
+        }
+
+        protected override void OnOfferExpired()
+        {
+            Tools.CivilianGoHome2();
+        }
+        protected override void OnCompleted()
+        {
+            Tools.CivilianGoHome2();
+        }
         protected override string GetHashString()
         {
             return "Transfer " + crewAmount + " Crew To (" + vesselName + ") for " + Tools.formatTime(crewTime) + " Over " + targetBody.bodyName + this.MissionSeed.ToString();
@@ -475,22 +580,22 @@ namespace MissionControllerEC.MCEContracts
         protected override string GetDescription()
         {
 
-            return "This is a custom Crew Transfer mission.  Use these contracts to supply your land bases and orbital stations with crew and select the Time Spent in station or base. You must dock with the Vessel you selected to finish contract! " +
-                "You can edit this contract by going to the Space Center screen and selecting the Mission Controller Icon.  In the GUI choose the Custom Contract Button to start editing this contract. \n\n" +
-                "All Crew Transfer contract information is stored in your Persistent Save File. The location of the Station or Base you will Transfer crew is " + targetBody.bodyName + "." + " Payments are adjusted for Travel Time to Body";
+            return Localizer.Format("#autoLOC_MissionController2_1000275") + targetBody.bodyName + "." + " Payments are adjusted for Travel Time to Body";		// #autoLOC_MissionController2_1000275 = This is a custom Crew Transfer mission.  Use these contracts to supply your land bases and orbital stations with crew and select the Time Spent in station or base. You must dock with the Vessel you selected to finish contract! You can edit this contract by going to the Space Center screen and selecting the Mission Controller Icon.  In the GUI choose the Custom Contract Button to start editing this contract. \n\n All Crew Transfer contract information is stored in your Persistent Save File. The location of the Station or Base you will Transfer crew is 
         }
         protected override string GetNotes()
         {
-            return "Vessel must be a new vessel launched after accepting this contract!";
+            return Localizer.Format("#autoLOC_MissionController2_1000276");		// #autoLOC_MissionController2_1000276 = Vessel must be a new vessel launched after accepting this contract!
         }
         protected override string GetSynopsys()
         {
-            return "Transfer crew to Station/Base over " + targetBody.bodyName;
+            return SaveInfo.TransferCrewDesc;
         }
         protected override string MessageCompleted()
         {
-            return "You have Delivered your Crew to " + vesselName + "And spent " + Tools.formatTime(crewTime) + " at your Station/Base\n\n" +
-                " If you're done, you can turn off Crew Contracts in the MCE Information Window.  Please note it will take a few contract cycles for them to disappear! ";
+            Tools.CivilianGoHome2();
+            SaveInfo.crewContractOn = false;
+            return Localizer.Format("#autoLOC_MissionController2_1000278") + " " + vesselName + " " + Localizer.Format("#autoLOC_MissionController2_1000279") + " " + Tools.formatTime(crewTime) + " " + Localizer.Format("#autoLOC_MissionController2_1000280") +		// #autoLOC_MissionController2_1000278 = You have Delivered your Crew to 		// #autoLOC_MissionController2_1000279 = And spent 		// #autoLOC_MissionController2_1000280 =  at your Station/Base\n\n
+                Localizer.Format("#autoLOC_MissionController2_1000281");		// #autoLOC_MissionController2_1000281 =  If you're done, you can turn off Crew Contracts in the MCE Information Window.  Please note it will take a few contract cycles for them to disappear! 
         }
 
         protected override void OnLoad(ConfigNode node)
@@ -526,4 +631,5 @@ namespace MissionControllerEC.MCEContracts
                 return false;
         }
     }
+    #endregion
 }

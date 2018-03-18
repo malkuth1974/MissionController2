@@ -3,6 +3,7 @@ using UnityEngine;
 using Contracts;
 using KSP;
 using KSPAchievements;
+using KSP.Localization;
 
 namespace MissionControllerEC.MCEParameters
 {
@@ -17,11 +18,11 @@ namespace MissionControllerEC.MCEParameters
 
         protected override string GetHashString()
         {
-            return "Dock with another Vessel" + this.Root.MissionSeed.ToString();
+            return Localizer.Format("#autoLOC_MissionController2_1000202") + " " + this.Root.MissionSeed.ToString();		// #autoLOC_MissionController2_1000202 = Dock with another Vessel
         }
         protected override string GetTitle()
         {
-            return "Dock with another Vessel";
+            return Localizer.Format("#autoLOC_MissionController2_1000203");		// #autoLOC_MissionController2_1000203 = Dock with another Vessel
         }
 
         protected override void OnRegister()
@@ -119,11 +120,11 @@ namespace MissionControllerEC.MCEParameters
 
         protected override string GetHashString()
         {
-            return "Dock with Vessel:\n " + targetDockingName + this.Root.MissionSeed.ToString();
+            return Localizer.Format("#autoLOC_MissionController2_1000204") + " " + targetDockingName + this.Root.MissionSeed.ToString();		// #autoLOC_MissionController2_1000204 = Dock with Vessel:\n 
         }
         protected override string GetTitle()
         {
-            return "Dock with Vessel: \n" + targetDockingName;
+            return Localizer.Format("#autoLOC_MissionController2_1000205") + " " + targetDockingName;		// #autoLOC_MissionController2_1000205 = Dock with Vessel: \n
         }
 
         protected override void OnRegister()

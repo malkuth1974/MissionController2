@@ -8,6 +8,7 @@ using KSP;
 using System.Text;
 using KSPAchievements;
 using MissionControllerEC.MCEParameters;
+using KSP.Localization;
 
 namespace MissionControllerEC.MCEContracts
 {
@@ -65,14 +66,14 @@ namespace MissionControllerEC.MCEContracts
             {
                 return false;
             }
-            this.AddParameter(new RoverLandingPositionCheck(targetBody, "Land a rover on ", RcLongitude, RcLatitude, 125, false), null);
+            this.AddParameter(new RoverLandingPositionCheck(targetBody, Localizer.Format("#autoLOC_MissionController2_1000177"), RcLongitude, RcLatitude, 125, false), null);		// #autoLOC_MissionController2_1000177 = Land a rover on 
             this.AddParameter(new ModuleGoal(WheelModule, "Wheels"), null);
             this.AddParameter(new GetCrewCount(0), null);
             base.SetExpiry(3f, 10f);
             base.SetDeadlineYears(3f, targetBody);
-            base.SetFunds(5000, 70000, 90000, targetBody);
-            base.SetReputation(25, 50, targetBody);
-            base.SetScience(5, targetBody);
+            base.SetFunds(1500, 40000, 50000, targetBody);
+            base.SetReputation(10, 20, targetBody);
+            base.SetScience(2, targetBody);
             return true;
         }
         public override bool CanBeCancelled()
@@ -86,26 +87,25 @@ namespace MissionControllerEC.MCEContracts
 
         protected override string GetNotes()
         {
-            return "Your Landing Zone is Longitude " + RcLongitude + " Latitude " + RcLatitude + " You will see a landing marker on the Map for " + targetBody.name;
+            return Localizer.Format("#autoLOC_MissionController2_1000178") + " " + RcLongitude + " Latitude " + RcLatitude + " " + Localizer.Format("#autoLOC_MissionController2_1000179") + targetBody.name;		// #autoLOC_MissionController2_1000178 = Your Landing Zone is Longitude 		// #autoLOC_MissionController2_1000179 =  You will see a landing marker on the Map for 
         }
 
         protected override string GetHashString()
         {
-            return targetBody.bodyName + " Land rover " + " - Total Done: " + TotalFinished + this.MissionSeed.ToString();
+            return targetBody.bodyName + "#autoLOC_MissionController2_1000180" + " - Total Done: " + TotalFinished + this.MissionSeed.ToString();		// #autoLOC_MissionController2_1000180 =  Land rover 
         }
         protected override string GetTitle()
         {
-            return "Launch Rover To " + targetBody.bodyName + " And Land";
+            return Localizer.Format("#autoLOC_MissionController2_1000181") + " " + targetBody.bodyName + " " + Localizer.Format("#autoLOC_MissionController2_1000182");		// #autoLOC_MissionController2_1000181 = Launch Rover To 		// #autoLOC_MissionController2_1000182 =  And Land
         }
         protected override string GetDescription()
         {
-            return "Land on duna with a rover";
+            return Localizer.Format("#autoLOC_MissionController2_1000183");		// #autoLOC_MissionController2_1000183 = Land on duna with a rover
         }
         protected override string GetSynopsys()
         {
-            return "You must land on " + targetBody.name + " with a rover. If you check " + targetBody.name + " on the map screen you will see the landing site represented by a waypoint marker.  You must get as close " +
-                " to this landing site as possible for the mission to be a success.  After you land we will periodically send you new contracts for this rover.  These contracts will require you to travel with " +
-                " the rover to the new waypoint, or possibly multiple waypoints to conduct science.  Good luck.";
+            return Localizer.Format("#autoLOC_MissionController2_1000184") + " " + targetBody.name + " " + Localizer.Format("#autoLOC_MissionController2_1000185") + targetBody.name + " " + Localizer.Format("#autoLOC_MissionController2_1000186") +		// #autoLOC_MissionController2_1000184 = You must land on 		// #autoLOC_MissionController2_1000185 =  with a rover. If you check 		// #autoLOC_MissionController2_1000186 =  on the map screen you will see the landing site represented by a waypoint marker.  You must get as close 
+                Localizer.Format("#autoLOC_MissionController2_1000187");		// #autoLOC_MissionController2_1000187 =  to this landing site as possible for the mission to be a success.  After you land we will periodically send you new contracts for this rover.  These contracts will require you to travel with the rover to the new waypoint, or possibly multiple waypoints to conduct science.  Good luck.
         }
         protected override string MessageCompleted()
         {

@@ -17,10 +17,11 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\Steam\steamapps\common\Kerbal Space Program\GameData\MissionControllerEC\</OutputPath>
+    <OutputPath>..\..\Kerbal Space Program\GameData\MissionControllerEC\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -56,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConfigNodeStorage.cs" />
+    <Compile Include="MCEGuiElements.cs" />
     <Compile Include="IntergratedSettings.cs" />
     <Compile Include="MCEContracts\CustomContracts.cs" />
     <Compile Include="MCEContracts\RepairContracts.cs" />

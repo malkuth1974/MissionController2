@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using KSP.Localization;
 
 namespace MissionControllerEC.PartModules
 {
@@ -38,13 +39,13 @@ namespace MissionControllerEC.PartModules
             if (roverlanded != false || roverlandedWet != false)
             {
                 doLanderResearch = true;
-                ScreenMessages.PostScreenMessage("Starting Mass spectrometry Analysis of Ground Level, Please Stand By...");
+                ScreenMessages.PostScreenMessage(Localizer.Format("#autoLOC_MissionController2_1000246"));		// #autoLOC_MissionController2_1000246 = Starting Mass spectrometry Analysis of Ground Level, Please Stand By...
             }
             else
             {
                 doLanderResearch = false;
                 scanStart = false;
-                ScreenMessages.PostScreenMessage("Vessel needs to be landed to start Mass spectrometry Analysis");
+                ScreenMessages.PostScreenMessage(Localizer.Format("#autoLOC_MissionController2_1000247"));		// #autoLOC_MissionController2_1000247 = Vessel needs to be landed to start Mass spectrometry Analysis
             }
         }
 

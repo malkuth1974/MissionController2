@@ -3,6 +3,7 @@ using UnityEngine;
 using Contracts;
 using KSP;
 using KSPAchievements;
+using KSP.Localization;
 
 namespace MissionControllerEC.MCEParameters
 {
@@ -24,14 +25,14 @@ namespace MissionControllerEC.MCEParameters
         }
         protected override string GetHashString()
         {
-            return "Land Vessel" + this.Root.MissionSeed.ToString();
+            return Localizer.Format("#autoLOC_MissionController2_1000209") + " " + this.Root.MissionSeed.ToString();		// #autoLOC_MissionController2_1000209 = Land Vessel
         }
         protected override string GetTitle()
         {
             if (AllowLandedWet)
-                return "Land Your Vessel on " + targetBody.bodyName;
+                return Localizer.Format("#autoLOC_MissionController2_1000210") + " " + targetBody.bodyName;		// #autoLOC_MissionController2_1000210 = Land Your Vessel on 
             else
-                return "Land Your Vessel on " + targetBody.bodyName + ".  You must also only land on dry land, landing Wet will not count!";
+                return Localizer.Format("#autoLOC_MissionController2_1000211") + " " + targetBody.bodyName + " " + Localizer.Format("#autoLOC_MissionController2_1000212");		// #autoLOC_MissionController2_1000211 = Land Your Vessel on 		// #autoLOC_MissionController2_1000212 = .  You must also only land on dry land, landing Wet will not count!
         }
 
         protected override void OnRegister()

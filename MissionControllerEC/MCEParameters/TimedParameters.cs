@@ -3,6 +3,7 @@ using UnityEngine;
 using Contracts;
 using KSP;
 using KSPAchievements;
+using KSP.Localization;
 
 namespace MissionControllerEC.MCEParameters
 {
@@ -152,7 +153,7 @@ namespace MissionControllerEC.MCEParameters
         private double diff;
         private double savedTime;
         private double missionTime;
-        private string contractTimeTitle = "Land Vessel and stay for amount of Time Specified: ";
+        private string contractTimeTitle = Localizer.Format("#autoLOC_MissionController2_1000235");		// #autoLOC_MissionController2_1000235 = Land Vessel and stay for amount of Time Specified: 
         private string vesselID = "none";
         private bool hasToBeNewVessel = true;
 
@@ -179,7 +180,7 @@ namespace MissionControllerEC.MCEParameters
 
         protected override string GetHashString()
         {
-            return "Orbit " + targetBody.bodyName + " and conduct research." + this.Root.MissionSeed.ToString();
+            return Localizer.Format("#autoLOC_MissionController2_1000236") + " " + targetBody.bodyName + Localizer.Format("#autoLOC_MissionController2_1000237") + " " + this.Root.MissionSeed.ToString();		// #autoLOC_MissionController2_1000236 = Orbit 		// #autoLOC_MissionController2_1000237 =  and conduct research.
         }
         protected override string GetTitle()
         {
@@ -234,7 +235,7 @@ namespace MissionControllerEC.MCEParameters
                 diff = Planetarium.GetUniversalTime() - savedTime;
                 if (HighLogic.LoadedSceneIsFlight && vessel.id.ToString() == vesselID)
                 {
-                    ScreenMessages.PostScreenMessage("Time Left To Complete: " + Tools.formatTime(missionTime - diff), .001f);
+                    ScreenMessages.PostScreenMessage(Localizer.Format("#autoLOC_MissionController2_1000238") + " " + Tools.formatTime(missionTime - diff), .001f);		// #autoLOC_MissionController2_1000238 = Time Left To Complete: 
                 }
 
                 if (diff > missionTime)

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
+using KSP.Localization;
 
 namespace MissionControllerEC.PartModules
 {
@@ -51,7 +52,7 @@ namespace MissionControllerEC.PartModules
         {
             if (!dataLocked && FlightGlobals.ActiveVessel.situation == Vessel.Situations.ORBITING)
             {
-                ScreenMessages.PostScreenMessage("Sending Data Package, This Part core is now disabled and can't be used again");
+                ScreenMessages.PostScreenMessage(Localizer.Format("#autoLOC_MissionController2_1000241"));		// #autoLOC_MissionController2_1000241 = Sending Data Package, This Part core is now disabled and can't be used again
                 Debug.Log("current sattype is: " + satTypeDisplay + " Current frequency is: " + frequencyDisplay + " Current module type is: " + moduleName);
                 dataStartup();
                 if (haveAnimation)
@@ -63,12 +64,12 @@ namespace MissionControllerEC.PartModules
             }
             else if (dataLocked)
             {
-                ScreenMessages.PostScreenMessage("This data package has already been sent.  Only 1 data package can be activated per Module");
+                ScreenMessages.PostScreenMessage(Localizer.Format("#autoLOC_MissionController2_1000242"));		// #autoLOC_MissionController2_1000242 = This data package has already been sent.  Only 1 data package can be activated per Module
                 Debug.Log("current sattype is: " + satTypeDisplay + " Current frequency is: " + frequencyDisplay + " Current module type is: " + moduleName);
             }
             else
             {
-                ScreenMessages.PostScreenMessage("You have to be in orbit to Do a Data Startup");
+                ScreenMessages.PostScreenMessage(Localizer.Format("#autoLOC_MissionController2_1000243"));		// #autoLOC_MissionController2_1000243 = You have to be in orbit to Do a Data Startup
                 Debug.Log("current sattype is: " + satTypeDisplay + " Current frequency is: " + frequencyDisplay + " Current module type is: " + moduleName);
             }
         }

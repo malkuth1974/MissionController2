@@ -3,6 +3,7 @@ using UnityEngine;
 using Contracts;
 using KSP;
 using KSPAchievements;
+using KSP.Localization;
 
 namespace MissionControllerEC.MCEParameters
 {
@@ -16,11 +17,11 @@ namespace MissionControllerEC.MCEParameters
         }       
         protected override string GetHashString()
         {
-            return "vessel must survive or contract fail" + this.Root.MissionSeed.ToString();
+            return Localizer.Format("#autoLOC_MissionController2_1000264") + " " + this.Root.MissionSeed.ToString();		// #autoLOC_MissionController2_1000264 = vessel must survive or contract fail
         }
         protected override string GetTitle()
         {
-            return "Vessel Must Survive While Contract Is Active!";
+            return Localizer.Format("#autoLOC_MissionController2_1000263");		// #autoLOC_MissionController2_1000263 = Vessel Must Survive While Contract Is Active!
         }
 
         protected override void OnRegister()

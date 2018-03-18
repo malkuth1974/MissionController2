@@ -4,6 +4,7 @@ using Contracts;
 using KSP;
 using KSPAchievements;
 using MissionControllerEC.PartModules;
+using KSP.Localization;
 
 namespace MissionControllerEC.MCEParameters
 {
@@ -53,13 +54,13 @@ namespace MissionControllerEC.MCEParameters
         protected override string GetHashString()
         {
             if (twoPartsTrue)
-                return "You Must Have " + maxPartCount + " Part Type " + partName + " On your vessel"+ this.Root.MissionSeed.ToString();
+                return Localizer.Format("#autoLOC_MissionController2_1000227") + " " + maxPartCount + " " + Localizer.Format("#autoLOC_MissionController2_1000228") + " " + partName + " " + Localizer.Format("#autoLOC_MissionController2_1000229") + this.Root.MissionSeed.ToString();		// #autoLOC_MissionController2_1000227 = You Must Have 		// #autoLOC_MissionController2_1000228 =  Part Type 		// #autoLOC_MissionController2_1000229 =  On your vessel
             else
-                return "You Must Have " + maxPartCount + " Part Type " + partName + " or " + partName2 + " On your vessel" + this.Root.MissionSeed.ToString();
+                return Localizer.Format("#autoLOC_MissionController2_1000230") + " " + maxPartCount + " " + Localizer.Format("#autoLOC_MissionController2_1000231") + " " + partName + " " + Localizer.Format("#autoLOC_MissionController2_1000232") + " " + partName2 + " " + Localizer.Format("#autoLOC_MissionController2_1000233") + " " + this.Root.MissionSeed.ToString();		// #autoLOC_MissionController2_1000230 = You Must Have 		// #autoLOC_MissionController2_1000231 =  Part Type 		// #autoLOC_MissionController2_1000232 =  or 		// #autoLOC_MissionController2_1000233 =  On your vessel
         }
         protected override string GetTitle()
         {
-            return "Have part type " + partName;
+            return Localizer.Format("#autoLOC_MissionController2_1000234") + " " + partName;		// #autoLOC_MissionController2_1000234 = Have part type 
         }
 
         protected override void OnRegister()
@@ -308,15 +309,15 @@ namespace MissionControllerEC.MCEParameters
         
         protected override string GetHashString()
         {
-            return "Set module frequency and Module types and complete contract" + this.Root.MissionSeed.ToString();
+            return Localizer.Format("#autoLOC_MissionController2_1000222") + " " + this.Root.MissionSeed.ToString();		// #autoLOC_MissionController2_1000222 = Set module frequency and Module types and complete contract
         }
         protected override string GetTitle()
         {
-            return "Send Data Stream and Connect Satellite to Customers";
+            return Localizer.Format("#autoLOC_MissionController2_1000223");		// #autoLOC_MissionController2_1000223 = Send Data Stream and Connect Satellite to Customers
         }
         protected override string GetNotes()
         {
-            return "Set Module type In editor to: " + Moduletype + "\nFrequency to: " + frequency + ".\nUse Core Type: " + satType + ".\n\n";
+            return Localizer.Format("#autoLOC_MissionController2_1000224") + " " + Moduletype + " " + Localizer.Format("#autoLOC_MissionController2_1000225") + " " + frequency + " " + Localizer.Format("#autoLOC_MissionController2_1000226") + " " + satType + ".\n\n";		// #autoLOC_MissionController2_1000224 = Set Module type In editor to: 		// #autoLOC_MissionController2_1000225 = \n Frequency to: 		// #autoLOC_MissionController2_1000226 = .\n Use Core Type: 
         }
 
         protected override void OnUpdate()
@@ -479,11 +480,11 @@ namespace MissionControllerEC.MCEParameters
 
         protected override string GetHashString()
         {
-            return "Orbit " + targetBody.bodyName + " and conduct Ionization Scan." + this.Root.MissionSeed.ToString();
+            return Localizer.Format("#autoLOC_MissionController2_1000219") + " " + targetBody.bodyName + Localizer.Format("#autoLOC_MissionController2_1000220") + " " + this.Root.MissionSeed.ToString();		// #autoLOC_MissionController2_1000219 = Orbit 		// #autoLOC_MissionController2_1000220 =  and conduct Ionization Scan.
         }
         protected override string GetTitle()
         {
-            return "Conduct Ionization Scan. Time For Completion: " + Tools.formatTime(missionTime);
+            return Localizer.Format("#autoLOC_MissionController2_1000221") + " " + Tools.formatTime(missionTime);		// #autoLOC_MissionController2_1000221 = Conduct Ionization Scan. Time For Completion: 
         }
 
         protected override void OnRegister()
@@ -612,11 +613,11 @@ namespace MissionControllerEC.MCEParameters
 
         protected override string GetHashString()
         {
-            return "Land Vessel And Conduct Research" + this.Root.MissionSeed.ToString();
+            return Localizer.Format("#autoLOC_MissionController2_1000217") + " " + this.Root.MissionSeed.ToString();		// #autoLOC_MissionController2_1000217 = Land Vessel And Conduct Research
         }
         protected override string GetTitle()
         {
-            return "Conduct Research. Time For Completion: " + Tools.formatTime(missionTime);
+            return Localizer.Format("#autoLOC_MissionController2_1000218") + " " + Tools.formatTime(missionTime);		// #autoLOC_MissionController2_1000218 = Conduct Research. Time For Completion: 
         }
 
         protected override void OnRegister()
@@ -742,11 +743,11 @@ namespace MissionControllerEC.MCEParameters
 
         protected override string GetHashString()
         {
-            return "Must Have  " + ModuleGoalname + " On your vessel" + this.Root.MissionSeed.ToString();
+            return Localizer.Format("#autoLOC_MissionController2_1000213") + " " + ModuleGoalname + " " + Localizer.Format("#autoLOC_MissionController2_1000214") + this.Root.MissionSeed.ToString();		// #autoLOC_MissionController2_1000213 = Must Have  		// #autoLOC_MissionController2_1000214 =  On your vessel
         }
         protected override string GetTitle()
         {
-            return "Must Have  " + ModuleGoalname + " On your vessel";
+            return Localizer.Format("#autoLOC_MissionController2_1000215") + " " + ModuleGoalname + " " + Localizer.Format("#autoLOC_MissionController2_1000216");		// #autoLOC_MissionController2_1000215 = Must Have  		// #autoLOC_MissionController2_1000216 =  On your vessel
         }
 
         

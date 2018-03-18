@@ -69,10 +69,10 @@ namespace MissionControllerEC
         // Special thanks to Magico13 Of Kerbal Construction Time for showing me how to Get Scenario Persistance.
         // Some of New GUI Elements learned from Kerbal Forum and piezPiedPy - KSP Trajectories https://github.com/PiezPiedPy/KSPTrajectories/blob/NewGui-Test/Plugin/MainGUI.cs
         // constants
-        private const float width = 210;
-        private const float height = 110;
-        private const float button_width = 200.0f;
-        private const float button_height = 25.0f;
+        private const float width = 400f;
+        private const float height = 350f;
+        private const float button_width = 390.0f;
+        private const float button_height = 50.0f;
 
         private const float Contract_Button_Large_W = 300;
         private const float Contract_Button_Large_H = 30;
@@ -104,6 +104,7 @@ namespace MissionControllerEC
         private static PopupDialog customDebug_Dialg;
         private static PopupDialog customLandOrbit_dialg;
 
+        private static DialogGUILabel label_1;
 
         private static DialogGUIBase Debug_button;
         private static DialogGUIBase CustomCrew_button;
@@ -123,6 +124,8 @@ namespace MissionControllerEC
         private static DialogGUIBase Custom_Contract_Button9;
         private static DialogGUIBase Custom_Contract_Button10;
         private static DialogGUIBase Custom_Contract_Button11;
+        private static DialogGUIBase Custom_Contract_Button12;
+        private static DialogGUIBase Custom_Contract_Button13;
 
         private static DialogGUIToggleButton Custom_Contract_Toggle1;
         private static DialogGUIToggleButton Custom_Contract_Toggle2;
@@ -143,9 +146,12 @@ namespace MissionControllerEC
         private static DialogGUIBox Custom_Contract_GuiBox8;
         private static DialogGUIBox Custom_Contract_GuiBox9;
         private static DialogGUIBox Custom_Contract_GuiBox10;
+        private static DialogGUIBox Custom_Contract_GuiBox11;
+        private static DialogGUIBox Custom_Contract_GuiBox12;
 
-        private static DialogGUIBase Custom_Contract_Input;      
-
+        private static DialogGUIBase Custom_Contract_Input;
+        private static DialogGUIBase Custom_Contract_Input2;
+     
         Settings settings = new Settings("Config.cfg");
 
         public static MissionControllerEC Instance
@@ -200,7 +206,7 @@ namespace MissionControllerEC
         public void Awake()
         {
             assemblyName = Assembly.GetExecutingAssembly().GetName();
-            versionCode = assemblyName.Version.Major.ToString() + "." + assemblyName.Version.Minor.ToString() + "." + assemblyName.Version.Build.ToString();
+            versionCode = assemblyName.Version.Major.ToString() + assemblyName.Version.Minor.ToString();
             loadFiles();                
             GameEvents.Contract.onContractsLoaded.Add(this.onContractLoaded);
             GameEvents.onGameSceneLoadRequested.Add(this.CheckRepairContractTypes);
@@ -260,52 +266,53 @@ namespace MissionControllerEC
             if (SaveInfo.MainGUIWindowPos.x <= 0 || SaveInfo.MainGUIWindowPos.y <= 0)
                 SaveInfo.MainGUIWindowPos = new Vector2(0.5f, 0.5f);
 
-            Debug_button = new DialogGUIButton(Localizer.Format("#autoLOC_MCE_DebugButton"), delegate
+            Debug_button = new DialogGUIButton(Localizer.Format(""), delegate
             {
                 DebugMenuMce();
                 SaveInfo.GUIEnabled = false;
-            }, button_width, button_height, false);
+            }, 10f, 10f, false);
 
-            CustomSat_button = new DialogGUIButton(Localizer.Format("#autoLOC_MCE_CustomComSat"), delegate
+            CustomSat_button = new DialogGUIButton(Localizer.Format("Build Satellite Orbital Period Contract"), delegate
             {
                 ComSatContract();
                 SaveInfo.GUIEnabled = false;
-            }, button_width, button_height, false);
+            }, delegate { return true; }, button_width, button_height, false, MCEGuiElements.ButtonMenuMainSyle);
 
-            CustomLandOrbit_button = new DialogGUIButton(Localizer.Format("#autoLOC_MCE2_ButtonMain_Custom_LandingOrbit_Contract_Set"), delegate
+            CustomLandOrbit_button = new DialogGUIButton(Localizer.Format("Build Orbit/Landing Contract"), delegate
             {
                 LandingOrbitCustomContract();
                 SaveInfo.GUIEnabled = false;
-            }, button_width, button_height, false);
+            }, delegate { return true; }, button_width, button_height, false, MCEGuiElements.ButtonMenuMainSyle);
 
-            CustomCrew_button = new DialogGUIButton(Localizer.Format("#autoLOC_MCE_CustomCrew"), delegate
+            CustomCrew_button = new DialogGUIButton(Localizer.Format("Build Crew Transfer Contract"), delegate
             {
                 CrewTransferContract();
                 SaveInfo.GUIEnabled = false;
-            }, button_width, button_height, false);
+            }, delegate { return true; }, button_width, button_height, false, MCEGuiElements.ButtonMenuMainSyle);
            
-            CustomSupply_button = new DialogGUIButton(Localizer.Format("#autoLOC_MCE_CustomSupply"), delegate
+            CustomSupply_button = new DialogGUIButton(Localizer.Format("Build Resource Suppy Contract"), delegate
             {
                 TransferContract();
                 SaveInfo.GUIEnabled = false;
               
-            }, button_width, button_height, false);
+            }, delegate { return true; }, button_width, button_height, false, MCEGuiElements.ButtonMenuMainSyle);
 
-            Main_Exit_button = new DialogGUIButton(Localizer.Format("#autoLOC_MCE_Button_Exit_Label"), delegate
+            Main_Exit_button = new DialogGUIButton(Localizer.Format("Exit Contract Builder"), delegate
             {
                 SaveInfo.GUIEnabled = false;
                 onContractLoaded();
-            }, button_width, button_height, false);
+            }, delegate { return true; }, button_width, button_height, false, MCEGuiElements.ButtonMenuMainSyle);
 
             Mainmulti_dialog = new MultiOptionDialog(
                "MissionControllerMain",
                "",
-               Localizer.Format("#autoLOC_MCE_MCETitle") + "Developer Version",
-               HighLogic.UISkin,
+               "Contract Builder Main Menu",
+               MCEGuiElements.MissionControllerSkin,
                new Rect(SaveInfo.MainGUIWindowPos.x, SaveInfo.MainGUIWindowPos.y, width, height),
                new DialogGUIBase[]
                {
-                   new DialogGUIVerticalLayout(Debug_button, CustomSat_button,CustomLandOrbit_button ,CustomCrew_button ,CustomSupply_button, Main_Exit_button),
+                   new DialogGUIVerticalLayout(CustomSat_button,CustomLandOrbit_button ,CustomCrew_button ,CustomSupply_button, new DialogGUISpace(5),
+                    Main_Exit_button), new DialogGUISpace(12),Debug_button
                });
         }
 
@@ -358,6 +365,15 @@ namespace MissionControllerEC
         [Persistent]public bool supplyContractOn = false;
         [Persistent]public double supplyResAmount = 0;
 
+        [Persistent] public int LandingOrbitCrew;
+        [Persistent] public string LandingOrbitDescription = "Place Title Here";
+        [Persistent] public int LandingOrbitIDX;
+        [Persistent] public string LandingOrbitName = "Title Here";
+        [Persistent] public bool isOrbitLanding = false;
+        [Persistent] public bool OrbitLandingOn = false;
+        [Persistent] public bool OrbitCiviliansOn = false;
+        [Persistent] public int LandingOrbitCivilians = 0;
+
         [Persistent]public string crewtransfername = "crew transfer";
         [Persistent]public string crewvesname = "none";
         [Persistent]public string crewvesId = "none";
@@ -365,6 +381,9 @@ namespace MissionControllerEC
         [Persistent]public double crewtime = 0;
         [Persistent]public int crewbodyIDX = 0;
         [Persistent]public bool crewcontracton = false;
+        [Persistent]public bool crewCiviliansOn = false;
+        [Persistent] public string transfercrewDesc = "Place Description Here";
+        [Persistent] public int transferTouristAmount = 0;
 
         [Persistent]public bool noOrbitalContract = false;
         [Persistent]public bool noLandingContract = false;
@@ -395,8 +414,13 @@ namespace MissionControllerEC
         [Persistent]internal string roversName = "Rover Name";
         [Persistent]internal int roverBody = 6;
 
+        [Persistent] internal string satConDescript = "Place Contract Description Here";
+        [Persistent] internal string ResourceTransferConDescript = "Place Contract Description Here";
+
         public override void OnDecodeFromConfigNode()
-        {           
+        {
+            SaveInfo.SatelliteConDesc = satConDescript;
+            SaveInfo.ResourceTransferConDesc = ResourceTransferConDescript;
             SaveInfo.apolloDunaStation = apolloStationStatus;
             SaveInfo.apolloLandingLat = apolldunLat;
             SaveInfo.apolloLandingLon = apolldunLon;
@@ -432,6 +456,9 @@ namespace MissionControllerEC
             SaveInfo.crewTransferName = crewtransfername;
             SaveInfo.crewVesid = crewvesId;
             SaveInfo.crewVesName = crewvesname;
+            SaveInfo.TransferCrewDesc = transfercrewDesc;
+            SaveInfo.transferTouristTrue = crewCiviliansOn;
+            SaveInfo.transferTouristAmount = transferTouristAmount;
 
             SaveInfo.skyLabName = skylabname;
             SaveInfo.skyLabVesID = skylabID;
@@ -443,6 +470,15 @@ namespace MissionControllerEC
             SaveInfo.SupplyBodyIDX = supplybodyIDX;
             SaveInfo.supplyContractOn = supplyContractOn;
             SaveInfo.supplyAmount = supplyResAmount;
+
+            SaveInfo.LandingOrbitCrew = LandingOrbitCrew;
+            SaveInfo.LandingOrbitDesc = LandingOrbitDescription;
+            SaveInfo.LandingOrbitIDX = LandingOrbitIDX;
+            SaveInfo.LandingOrbitName = LandingOrbitName;
+            SaveInfo.IsOrbitOrLanding = isOrbitLanding;
+            SaveInfo.OrbitLandingOn = OrbitLandingOn;
+            SaveInfo.OrbitAllowCivs = OrbitCiviliansOn;
+            SaveInfo.LandingOrbitCivilians = LandingOrbitCivilians;
                      
             SaveInfo.SavedRoverLat = savedroverLat;
             SaveInfo.savedRoverLong = savedroverlong;
@@ -452,7 +488,9 @@ namespace MissionControllerEC
         }
 
         public override void OnEncodeToConfigNode()
-        {         
+        {
+            satConDescript = SaveInfo.SatelliteConDesc;
+            ResourceTransferConDescript = SaveInfo.ResourceTransferConDesc;
             apolloStationStatus = SaveInfo.apolloDunaStation;
             apolldunLat = SaveInfo.apolloLandingLat;
             apolldunLon = SaveInfo.apolloLandingLon;
@@ -488,6 +526,9 @@ namespace MissionControllerEC
             crewtransfername = SaveInfo.crewTransferName;
             crewvesId = SaveInfo.crewVesid;
             crewvesname = SaveInfo.crewVesName;
+            crewCiviliansOn = SaveInfo.transferTouristTrue;
+            transfercrewDesc = SaveInfo.TransferCrewDesc;
+            transferTouristAmount = SaveInfo.transferTouristAmount;
 
             skylabname = SaveInfo.skyLabName;
             skylabID = SaveInfo.skyLabVesID;
@@ -499,7 +540,17 @@ namespace MissionControllerEC
             supplybodyIDX = SaveInfo.SupplyBodyIDX;
             supplyContractOn = SaveInfo.supplyContractOn;
             supplyResAmount = SaveInfo.supplyAmount;
-                    
+
+            LandingOrbitCrew = SaveInfo.LandingOrbitCrew;
+            LandingOrbitDescription = SaveInfo.LandingOrbitDesc;
+            LandingOrbitIDX = SaveInfo.LandingOrbitIDX;
+            LandingOrbitName = SaveInfo.LandingOrbitName;
+            isOrbitLanding = SaveInfo.IsOrbitOrLanding;
+            OrbitLandingOn = SaveInfo.OrbitLandingOn;
+            OrbitCiviliansOn = SaveInfo.OrbitAllowCivs;
+            LandingOrbitCivilians = SaveInfo.LandingOrbitCivilians;
+
+
             savedroverLat = SaveInfo.SavedRoverLat;
             savedroverlong = SaveInfo.savedRoverLong;
             roverislanded = SaveInfo.RoverLanded;

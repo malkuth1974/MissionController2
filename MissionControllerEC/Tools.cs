@@ -28,6 +28,12 @@ namespace MissionControllerEC
 
             return value;
         }
+        public static float FloatRandomNumber(float range1, float range2)
+        {
+            float value = UnityEngine.Random.Range(range1, range2);
+
+            return value;
+        }
 
         public static double GetRandomLongOrLat(double BaseLatitude, int MaxDistance)
         {
@@ -72,7 +78,7 @@ namespace MissionControllerEC
         public static double ConvertDays(double seconds)
         {
             double newValue;
-            newValue = seconds / (24.0 * 60.0 * 60.0);
+            newValue = seconds / 86400;
             return newValue;
         }
         public static String ConvertMinsHours(double seconds)
@@ -192,6 +198,122 @@ namespace MissionControllerEC
             double DeltaVCal = 0;
             DeltaVCal = Math.Round(isp * GravityCon * Math.Log(Fmass / Emass));
             return DeltaVCal;
+        }
+
+        /// <summary>
+        /// Males for the Orbit and Landing Contracts.
+        /// </summary>
+        /// <param name="KerbNumbers"></param>
+        public static void SpawnCivilianKerbMCE(int KerbNumbers)
+        {
+            int TestCivs = 1;                
+            foreach (string name2 in SaveInfo.TourisNames)
+            {
+                if (TestCivs <= KerbNumbers)
+                {
+                    ProtoCrewMember newKerb = HighLogic.CurrentGame.CrewRoster.GetNewKerbal(ProtoCrewMember.KerbalType.Tourist);
+                    newKerb.rosterStatus = ProtoCrewMember.RosterStatus.Available;
+                    newKerb.ChangeName(name2);
+                    TestCivs++;
+                    Debug.Log("MCE Created Civilian " + newKerb.name + " " + newKerb.gender);
+                }
+            }
+
+        }
+        /// <summary>
+        /// Females for the Station Transfers Contracts
+        /// </summary>
+        /// <param name="KerbNumbers"></param>
+        public static void SpawnCivilianKerbMCE2(int KerbNumbers)
+        {
+            int TestCivs = 1;            
+            foreach (string name2 in SaveInfo.TourisNames2)
+            {
+                if (TestCivs <= KerbNumbers)
+                {
+                    ProtoCrewMember newKerb = HighLogic.CurrentGame.CrewRoster.GetNewKerbal(ProtoCrewMember.KerbalType.Tourist);
+                    newKerb.rosterStatus = ProtoCrewMember.RosterStatus.Available;
+                    newKerb.ChangeName(name2);
+                    TestCivs++;
+                    Debug.Log("MCE Created Civilian " + newKerb.name + " " + newKerb.gender);
+                }
+            }
+
+        }
+        /// <summary>
+        /// Both males and females are stored in sepeate list.
+        /// </summary>
+        public static void CivilianGoHome()
+        {
+            SaveInfo.TourisNames.Clear();
+            CivilianName();         
+            foreach (string name2 in SaveInfo.TourisNames)
+            {
+                HighLogic.CurrentGame.CrewRoster.Remove(name2);
+                Debug.Log("MCE Removed Civilian " + name2);
+            }
+        }
+        public static void CivilianGoHome2()
+        {
+            SaveInfo.TourisNames2.Clear();
+            CivilianName2();
+            foreach (string name2 in SaveInfo.TourisNames2)
+            {               
+                HighLogic.CurrentGame.CrewRoster.Remove(name2);
+                Debug.Log("MCE Removed Civilian " + name2);
+            }
+        }
+
+        public static void DebugCivilianGoHome(string name)
+        {           
+                HighLogic.CurrentGame.CrewRoster.Remove(name);
+                Debug.Log("MCE Removed Civilian " + name);           
+        }
+        public static void CivilianName()
+        {
+            SaveInfo.TourisNames.Add("Sam Kerbman");
+            SaveInfo.TourisNames.Add("Tim Kerbman");
+            SaveInfo.TourisNames.Add("Jean Kerbman");
+            SaveInfo.TourisNames.Add("Frank Kerbman");
+            SaveInfo.TourisNames.Add("Jackson Kerbman");
+            SaveInfo.TourisNames.Add("Hoogan Kerbman");
+            SaveInfo.TourisNames.Add("Dean Kerbman");
+            SaveInfo.TourisNames.Add("John Kerbman");
+            SaveInfo.TourisNames.Add("Fredrick Kerbman");
+            SaveInfo.TourisNames.Add("Hillbilly Kerbman");
+            SaveInfo.TourisNames.Add("Sampson Kerbman");
+            SaveInfo.TourisNames.Add("Dick Kerbman");
+            SaveInfo.TourisNames.Add("Eliot Kerbman");
+            SaveInfo.TourisNames.Add("Father Kerbman");
+            SaveInfo.TourisNames.Add("George Kerbman");
+            SaveInfo.TourisNames.Add("Obama Kerbman");
+            SaveInfo.TourisNames.Add("Hick Kerbman");
+            SaveInfo.TourisNames.Add("Rude Kerbman");
+
+           
+        }
+        public static void CivilianName2()
+        {
+            SaveInfo.TourisNames2.Add("Lisa Kerbet");
+            SaveInfo.TourisNames2.Add("Kara Kerbet");
+            SaveInfo.TourisNames2.Add("Wendy Kerbet");
+            SaveInfo.TourisNames2.Add("Frita Kerbet");
+            SaveInfo.TourisNames2.Add("Janet Kerbet");
+            SaveInfo.TourisNames2.Add("Kitty Kerbet");
+            SaveInfo.TourisNames2.Add("Frienda Kerbet");
+            SaveInfo.TourisNames2.Add("Jill Kerbet");
+            SaveInfo.TourisNames2.Add("Jane Kerbet");
+            SaveInfo.TourisNames2.Add("Gloria Kerbet");
+            SaveInfo.TourisNames2.Add("Glop Kerbet");
+            SaveInfo.TourisNames2.Add("Hotstuff Kerbet");
+            SaveInfo.TourisNames2.Add("Elizabeth Kerbet");
+            SaveInfo.TourisNames2.Add("Michelle Kerbet");
+            SaveInfo.TourisNames2.Add("Brenda Kerbet");
+            SaveInfo.TourisNames2.Add("Orana Kerbet");
+            SaveInfo.TourisNames2.Add("Hiedi Kerbet");
+            SaveInfo.TourisNames2.Add("Kat Kerbet");
+
+            
         }
 
         public static void ObitalPeriodHelper(Vessel v)
@@ -370,6 +492,7 @@ namespace MissionControllerEC
                 return p_itens[p_itens.Length - 1].value;
 
             }
+
             
         }      
     }

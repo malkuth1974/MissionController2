@@ -54,8 +54,9 @@ namespace MissionControllerEC
                 texture2 = new Texture2D(36, 36, TextureFormat.RGBA32, false);
                 texture2.LoadImage(File.ReadAllBytes(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "MCERevert.png")));
                 Debug.LogError("MCE Textures2 Loaded");
-            }
-            else { Debug.Log("MCE LoadTexture Already Loaded"); }            
+            }           
+            else { Debug.Log("MCE Textures Already Loaded"); }
+           
         }
 
         public void loadFiles()
@@ -470,5 +471,5 @@ namespace MissionControllerEC
             this.ContractDisabled = ContDisabled;
         }
         
-    }
+    }    
 }

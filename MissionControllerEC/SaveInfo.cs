@@ -56,12 +56,18 @@ namespace MissionControllerEC
         public static int crewAmount = 0;
         public static double crewTime = 0;
         public static string crewTransferName = "Place Contract Name Here";
+        public static int transferTouristAmount = 0;
+        public static bool transferTouristTrue = false;
+        public static string TransferCrewDesc = "Place Contract Description Here.";
 
-        public static string LandingOrbitName = "Place Contract Name Here";
+        public static string LandingOrbitName = "Contract Name";
+        public static string LandingOrbitDesc = "Place Contract Description Here";
         public static int LandingOrbitIDX = 1;
         public static bool IsOrbitOrLanding = false;
         public static bool OrbitLandingOn = false;
-        public static int LandingOrbitCrew;
+        public static bool OrbitAllowCivs = false;
+        public static int LandingOrbitCrew = 0;
+        public static int LandingOrbitCivilians =0;
 
 
         public static bool RepairContractGeneratedOn = false;
@@ -87,5 +93,10 @@ namespace MissionControllerEC
         public static bool RoverLanded = false;
         public static string RoverName = "Rover Name";
         public static int RoverBody = 6;
+        public static string SatelliteConDesc = "Place Contract Description Here";
+        public static string ResourceTransferConDesc = "Place Contract Description Here";
+
+        public static List<string> TourisNames = new List<string>();
+        public static List<string> TourisNames2 = new List<string>();
     }   
 }

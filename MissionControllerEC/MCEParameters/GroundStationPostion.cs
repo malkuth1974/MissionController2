@@ -3,6 +3,7 @@ using UnityEngine;
 using Contracts;
 using KSP;
 using KSPAchievements;
+using KSP.Localization;
 
 namespace MissionControllerEC.MCEParameters
 {
@@ -42,11 +43,11 @@ namespace MissionControllerEC.MCEParameters
 
         protected override string GetHashString()
         {
-            return "Must be in Line of sight of " + stationName + this.Root.MissionSeed.ToString();
+            return Localizer.Format("#autoLOC_MissionController2_1000206") + " " + stationName + this.Root.MissionSeed.ToString();		// #autoLOC_MissionController2_1000206 = Must be in Line of sight of 
         }
         protected override string GetTitle()
         {
-            return "Have line of sight of " + stationName + ". With Frequency: " + frequency;
+            return Localizer.Format("#autoLOC_MissionController2_1000207") + " " + stationName + " " + Localizer.Format("#autoLOC_MissionController2_1000208") + " " + frequency;		// #autoLOC_MissionController2_1000207 = Have line of sight of 		// #autoLOC_MissionController2_1000208 = . With Frequency: 
         }
 
         protected override void OnRegister()
