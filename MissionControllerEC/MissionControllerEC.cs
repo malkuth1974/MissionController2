@@ -209,7 +209,7 @@ namespace MissionControllerEC
             versionCode = assemblyName.Version.Major.ToString() + assemblyName.Version.Minor.ToString();
             loadFiles();                
             GameEvents.Contract.onContractsLoaded.Add(this.onContractLoaded);
-            GameEvents.onGameSceneLoadRequested.Add(this.CheckRepairContractTypes);
+            //GameEvents.onGameSceneLoadRequested.Add(this.CheckRepairContractTypes);
             GameEvents.OnVesselRollout.Add(this.onvesselRoll);
             Debug.Log("MCE Awake Called");
             getSupplyList(false);
@@ -220,6 +220,7 @@ namespace MissionControllerEC
             Debug.LogWarning("[MCE] Textrues called OnAwake");           
             CreateButtons();         
             Debug.LogWarning("[MCE] Buttons called OnAwake");
+            setOrbitLandNodes();
         }    
                      
         void OnDestroy()
@@ -242,10 +243,13 @@ namespace MissionControllerEC
             }
 
             GameEvents.Contract.onContractsLoaded.Remove(this.onContractLoaded);
-            GameEvents.onGameSceneLoadRequested.Remove(this.CheckRepairContractTypes);
+            //GameEvents.onGameSceneLoadRequested.Remove(this.CheckRepairContractTypes);
             Debug.Log("Game All values removed for MCE");
             instance = null;
-            Main_popup_dialog.Dismiss();           
+            if (Main_popup_dialog != null)
+            {
+                Main_popup_dialog.Dismiss();
+            }          
             Main_popup_dialog = null;         
         }
         private void Update()

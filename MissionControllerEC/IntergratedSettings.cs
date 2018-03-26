@@ -86,7 +86,7 @@ namespace MissionControllerEC
         [GameParameters.CustomParameterUI("MCE Vessel Must Surviv Enabled?", toolTip = "If vessel is destroyed in MCE contract you will fail?")]
         public bool VesselMustSurvive = true;
         [GameParameters.CustomParameterUI("MCE Flight Help Readout?", toolTip = "This is very simple APA,PEA, Readout, not needed if you have Another Mod that gives you these readouts?")]
-        public bool MCEReadoutHelpAllow = true;
+        public bool MCEReadoutHelpAllow = false;
         [GameParameters.CustomParameterUI("MCE Debug Mode Enabled?", toolTip = "Debug mode becomes available in MCE Menu Icon (Cheats)?")]
         public bool MCEDebugMode = false;
         [GameParameters.CustomIntParameterUI("Max Number Satellite Contracts At Time", maxValue = 5)]

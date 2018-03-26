@@ -98,5 +98,9 @@ namespace MissionControllerEC
 
         public static List<string> TourisNames = new List<string>();
         public static List<string> TourisNames2 = new List<string>();
+        public static List<string> OrbitNamesList = new List<string>();        
+
+        public static Dictionary<int, string> CustOrbLnd =
+            new Dictionary<int, string>();
     }   
 }
