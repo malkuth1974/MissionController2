@@ -36,7 +36,7 @@ namespace MissionControllerEC.MCEParameters
             this.longitude = longitudeValue;
             this.latitude = latitudeValue;
             this.frequency = coreFreq;
-            Debug.LogError("frequency is now set to " + frequency + " from " + coreFreq);
+            //Debug.LogError("frequency is now set to " + frequency + " from " + coreFreq);
             this.PolarRegionLock = polarLock;
             wp = new FinePrint.Waypoint();
         }

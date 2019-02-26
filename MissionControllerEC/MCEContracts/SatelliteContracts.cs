@@ -51,7 +51,7 @@ namespace MissionControllerEC.MCEContracts
                     satStoryDef = Localizer.Format("#autoLOC_MissionController2_1000097") +		// #autoLOC_MissionController2_1000097 = Communications satellites provide a worldwide linkup of radio, telephone, and television. The first (Earth) communications satellite was Echo 1 ; launched in 1960, it was a large metallized 
                               Localizer.Format("#autoLOC_MissionController2_1000098") +		// #autoLOC_MissionController2_1000098 = balloon that reflected radio signals striking it. This passive mode of operation quickly gave way to the active or repeater mode, in which complex electronic equipment aboard the satellite 
                               Localizer.Format("#autoLOC_MissionController2_1000099");		// #autoLOC_MissionController2_1000099 = receives a signal from the earth, amplifies it, and transmits it to another point on the earth, in this case Kerbin.
-                    contractNotes = Localizer.Format("#autoLOC_MissionController2_1000100");		// #autoLOC_MissionController2_1000100 = You can set both the frequency and module type in the editor with Tweak Sliders. Set these values before takeoff, They cannot be changed after the vessel is launched!\n\n
+                    contractNotes = Localizer.Format("#autoLOC_MissionController2_1000100");		// #autoLOC_MissionController2_1000100 = You can set Satellite Type the frequency and module type in the editor with Tweak Sliders. Set these values before takeoff, They cannot be changed after the vessel is launched!\n\n
                     contractSynops = Localizer.Format("#autoLOC_MissionController2_1000101") + 		// #autoLOC_MissionController2_1000101 = You must bring the satellite to the specified orbit(Below The ApA, And Above The PeA) with Module type And Frequency. Set your satellite values in the Editor before taking Off, 
                                Localizer.Format("#autoLOC_MissionController2_1000102") + 		// #autoLOC_MissionController2_1000102 = Once you get to your assigned orbital height transmit the Data packet to customers to complete the objectives. Be warned, you only have 1 shot to send the packet. If it's incorrect, you will have to 
                                Localizer.Format("#autoLOC_MissionController2_1000103");		// #autoLOC_MissionController2_1000103 = launch a new vessel
@@ -62,7 +62,7 @@ namespace MissionControllerEC.MCEContracts
                     satStoryDef = Localizer.Format("#autoLOC_MissionController2_1000105") +		// #autoLOC_MissionController2_1000105 = Weather satellites, or meteorological satellites, provide kerbin scientist continuous, up-to-date information about large-scale atmospheric conditions such as cloud cover and temperature profiles. 
                               Localizer.Format("#autoLOC_MissionController2_1000106") +		// #autoLOC_MissionController2_1000106 = Tiros 1, the first such (Earth) satellite, was launched in 1960; it transmitted infrared television pictures of the earth's cloud cover and was able to detect the development of hurricanes and to chart 
                               "their paths.";
-                    contractNotes = Localizer.Format("#autoLOC_MissionController2_1000107");		// #autoLOC_MissionController2_1000107 = You can set both the frequency and module type in the editor with Tweak Sliders. Set these values before takeoff, They cannot be changed after the vessel is launched!\n\n
+                    contractNotes = Localizer.Format("#autoLOC_MissionController2_1000107");		// #autoLOC_MissionController2_1000107 = You can set set Satellite Type the frequency and module type in the editor with Tweak Sliders. Set these values before takeoff, They cannot be changed after the vessel is launched!\n\n
                     contractSynops = Localizer.Format("#autoLOC_MissionController2_1000108") +		// #autoLOC_MissionController2_1000108 = You must bring the  satellite to the specified orbit (Below The ApA, And Above The PeA) with Module type And Frequency. Set your satellite values in the Editor before taking Off, 
                                Localizer.Format("#autoLOC_MissionController2_1000109") +		// #autoLOC_MissionController2_1000109 = Once you get to your assigned orbital height transmit the Data packet to customers to complete the objectives. Be warned, you only have 1 shot to send the packet. If it's incorrect, you will have to 
                                Localizer.Format("#autoLOC_MissionController2_1000110");		// #autoLOC_MissionController2_1000110 = launch a new vessel
@@ -74,7 +74,7 @@ namespace MissionControllerEC.MCEContracts
                                 Localizer.Format("#autoLOC_MissionController2_1000113") +		// #autoLOC_MissionController2_1000113 = the (Earth) U.S. navy to establish the Transit program in 1958; the system was declared operational in 1962 after the launch of Transit 5A. Transit satellites provided a constant signal by which 
                                 Localizer.Format("#autoLOC_MissionController2_1000114") +		// #autoLOC_MissionController2_1000114 = aircraft and ships could determine their positions with great accuracy.\n\n
                                 Localizer.Format("#autoLOC_MissionController2_1000115");		// #autoLOC_MissionController2_1000115 = In kerbin society these satellites help with the day to day needs of most travel options for kerbin Land, Sea, Air Based navigation.
-                    contractNotes = Localizer.Format("#autoLOC_MissionController2_1000117");		// #autoLOC_MissionController2_1000117 = You can set both the frequency and module type in the editor with Tweak Sliders. Set these values before takeoff, They cannot be changed after the vessel is launched!\n\n
+                    contractNotes = Localizer.Format("#autoLOC_MissionController2_1000117");		// #autoLOC_MissionController2_1000117 = You can set set Satellite Type the frequency and module type in the editor with Tweak Sliders. Set these values before takeoff, They cannot be changed after the vessel is launched!\n\n
                     contractSynops = Localizer.Format("#autoLOC_MissionController2_1000118") +		// #autoLOC_MissionController2_1000118 = You must bring the satellite to the specified orbit (Below The ApA, And Above The PeA) with Module type And Frequency. Set your satellite values in the Editor before taking Off, 
                                Localizer.Format("#autoLOC_MissionController2_1000119") +		// #autoLOC_MissionController2_1000119 = Once you get to your assigned orbital height transmit the Data packet to customers to complete the objectives. Be warned, you only have 1 shot to send the packet. If it's incorrect, you will have to 
                                Localizer.Format("#autoLOC_MissionController2_1000120");		// #autoLOC_MissionController2_1000120 = launch a new vessel
@@ -83,7 +83,7 @@ namespace MissionControllerEC.MCEContracts
                     satType = "Research";
                     TOSName = Localizer.Format("#autoLOC_MissionController2_1000121");		// #autoLOC_MissionController2_1000121 = Our research, test will take about this amount of time to complete\n 
                     satStoryDef = Localizer.Format("#autoLOC_MissionController2_1000122");		// #autoLOC_MissionController2_1000122 = Research satellites are designed to test different scientific studies while in the freedom of space. Away for the problems of Kerbin Ground studies
-                    contractNotes = Localizer.Format("#autoLOC_MissionController2_1000123");		// #autoLOC_MissionController2_1000123 = You can set both the frequency and module type in the editor with Tweak Sliders. Set these values before takeoff, They cannot be changed after the vessel is launched!\n\n
+                    contractNotes = Localizer.Format("#autoLOC_MissionController2_1000123");		// #autoLOC_MissionController2_1000123 = You can set set Satellite Type the frequency and module type in the editor with Tweak Sliders. Set these values before takeoff, They cannot be changed after the vessel is launched!\n\n
                     contractSynops = Localizer.Format("#autoLOC_MissionController2_1000124") +		// #autoLOC_MissionController2_1000124 = You must bring the satellite to the specified orbit (Below The ApA, And Above The PeA) with Module type And Frequency. Set your satellite values in the Editor before taking Off, 
                                Localizer.Format("#autoLOC_MissionController2_1000125") +		// #autoLOC_MissionController2_1000125 = Once you get to your assigned orbital height transmit the Data packet to customers to complete the objectives. Be warned, you only have 1 shot to send the packet. If it's incorrect, you will have to 
                                Localizer.Format("#autoLOC_MissionController2_1000126");		// #autoLOC_MissionController2_1000126 = launch a new vessel
@@ -111,7 +111,7 @@ namespace MissionControllerEC.MCEContracts
                     contractSynops = Localizer.Format("#autoLOC_MissionController2_1000142");		// #autoLOC_MissionController2_1000142 = Set up all satellite cores with right frequencies.  All cores have a different set of frequencies to adjust in each vessel.  Failure to do this will result in having to launch more vessels.
                     break;
             }
-            Debug.Log("MCE satType Mission Is " + satType);
+            //Debug.Log("MCE satType Mission Is " + satType);
         }
         public void SetTrackStationNumber(int value)
         {
@@ -391,7 +391,7 @@ namespace MissionControllerEC.MCEContracts
             SaveInfo.SatelliteContractType = "None";
             SaveInfo.SatelliteContractModule = 0;
             SaveInfo.SatelliteContractFrequency = -1;
-            Debug.Log("values for satellites have been reset");
+            //Debug.Log("values for satellites have been reset");
             return Localizer.Format("#autoLOC_MissionController2_1000147") + " " + satType + " " + Localizer.Format("#autoLOC_MissionController2_1000148") + " " + targetBody.bodyName;		// #autoLOC_MissionController2_1000147 = You have successfully delivered our 		// #autoLOC_MissionController2_1000148 =  satellite to orbit around 
         }
 

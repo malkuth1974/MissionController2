@@ -144,40 +144,40 @@ namespace MissionControllerEC
             //popupinfo = null;
         }
                
-        public void CheckRepairContractTypes(GameScenes gs)
-        {
-            randomContractsCheck();
-            currentContractType = Tools.MC2RandomWieghtSystem.PickOne<int>(RandomRepairContractsCheck);
-            Debug.LogWarning("Checking for Random Contracts Now MCE");
-            if (currentContractType == 0)
-            {
-                SaveInfo.RepairContractGeneratedOn = false;               
-                SaveInfo.RepairStationContractGeneratedOn = false;
-                Debug.Log("No Repair Type contracts at this time");
-            }            
-            else if (currentContractType == 1)
-            {
-                SaveInfo.RepairContractGeneratedOn = true;             
-                SaveInfo.RepairStationContractGeneratedOn = false;
-                Debug.Log("Repair Contract Selected");
-            }
-            else if (currentContractType == 2)
-            {
-                SaveInfo.RepairContractGeneratedOn = false;
-                SaveInfo.RepairStationContractGeneratedOn = true;
-                Debug.Log("RepairStation Contract Selected");
-            }           
-            else
-            {
-                Debug.LogWarning("MCE failed to load random contract Check, defaulting");
-            }
-        }
+        //public void CheckRepairContractTypes(GameScenes gs)
+        //{
+        //    randomContractsCheck();
+        //    currentContractType = Tools.MC2RandomWieghtSystem.PickOne<int>(RandomRepairContractsCheck);
+        //    Debug.LogWarning("Checking for Random Contracts Now MCE");
+        //    if (currentContractType == 0)
+        //    {
+        //        SaveInfo.RepairContractGeneratedOn = false;               
+        //        SaveInfo.RepairStationContractGeneratedOn = false;
+        //        Debug.Log("No Repair Type contracts at this time");
+        //    }            
+        //    else if (currentContractType == 1)
+        //    {
+        //        SaveInfo.RepairContractGeneratedOn = true;             
+        //        SaveInfo.RepairStationContractGeneratedOn = false;
+        //        Debug.Log("Repair Contract Selected");
+        //    }
+        //    else if (currentContractType == 2)
+        //    {
+        //        SaveInfo.RepairContractGeneratedOn = false;
+        //        SaveInfo.RepairStationContractGeneratedOn = true;
+        //        Debug.Log("RepairStation Contract Selected");
+        //    }           
+        //    else
+        //    {
+        //        Debug.LogWarning("MCE failed to load random contract Check, defaulting");
+        //    }
+        //}
 
         public void CheckRandomSatelliteContractTypes()
         {
             randomSatelliteContractsCheck();
             SaveInfo.SatelliteTypeChoice = Tools.MC2RandomWieghtSystem.PickOne<int>(RandomSatelliteContractsCheck); 
-            Debug.LogWarning("Satellite Type Chosen Is Number " + SaveInfo.SatelliteTypeChoice);         
+            //Debug.LogWarning("Satellite Type Chosen Is Number " + SaveInfo.SatelliteTypeChoice);         
         }
 
         public void randomContractsCheck()
@@ -320,7 +320,8 @@ namespace MissionControllerEC
                 }
 
                 catch { Debug.LogError("could not run NoPartTest Returned Null"); }
-            }            
+            }
+            
             Debug.Log("MCE Remove Contracts loaded"); 
         }    
                                    
@@ -421,6 +422,14 @@ namespace MissionControllerEC
             longitude = v.longitude;
             latitude = v.latitude;
             Debug.LogError("Current longitude is " + longitude + " Current latitude is " + latitude);
+        }
+        public void setOrbitLandNodes()
+        {
+            SaveInfo.OrbitNamesList.Add("Landing");
+            SaveInfo.OrbitNamesList.Add("Orbit");
+            SaveInfo.OrbitNamesList.Add("SubTraject");
+            SaveInfo.OrbitNamesList.Add("Flyby");
+            
         }
         
     }

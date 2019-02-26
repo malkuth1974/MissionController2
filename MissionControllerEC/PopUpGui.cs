@@ -1,10 +1,17 @@
 ﻿using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.Diagnostics;
-using KSP.Localization;
-using UnityEngine;
 using System.Text.RegularExpressions;
+using UnityEngine;
+using System.Linq;
+using MissionControllerEC;
+using System.Collections.Generic;
+using KSP.Localization;
+using System.Reflection;
+using KSP.UI.Screens;
+using System.Text;
+using System.IO;
+using KSP;
+
+
 
 namespace MissionControllerEC
 {
@@ -15,6 +22,8 @@ namespace MissionControllerEC
         public static bool comSatwin = false;
         public static bool supplywin = false;
         public static bool crewwin = false;
+        public static int tempOrbitNumber = 0;
+        public static String tempOrbitLand = "Test";
         public int count = 0;
         public int prCount = 0;
         private int DictCount;
@@ -843,8 +852,8 @@ namespace MissionControllerEC
             Custom_Contract_Toggle8= new DialogGUIToggleButton(false, Localizer.Format("Test Button"/*"#autoLOC_MCE_Toggle_MCERepair_True"*/),
                               delegate (bool b)
                               {
-
-                                  Tools.TestNumbers1();
+                                  
+                                  
                                   //SaveInfo.RepairContractGeneratedOn = true; SaveInfo.RepairStationContractGeneratedOn = true;
                                   //SaveInfo.DebugWindowPos = new Vector2(
                                   //((Screen.width / 2) + customDebug_Dialg.RTrf.position.x) / Screen.width,
@@ -1044,17 +1053,17 @@ namespace MissionControllerEC
             {
                 tempOrbitLand = (Localizer.Format("#autoLOC_MCE_label_for_LandingOrbitContract_Landing"));
             }
-            
-            Custom_Contract_GuiBox1 = new DialogGUIBox("How Many Tourist = " + SaveInfo.LandingOrbitCivilians,MCEGuiElements.DescripStyle, Contract_Button_Large_W, Contract_Button_Med_H);
-            Custom_Contract_GuiBox7 = new DialogGUIBox("Contract Transmitted = " + SaveInfo.OrbitLandingOn.ToString(), MCEGuiElements.DescripStyle,Contract_Button_Large_W, Contract_Button_Med_H);
+
+            Custom_Contract_GuiBox1 = new DialogGUIBox("How Many Tourist = " + SaveInfo.LandingOrbitCivilians, MCEGuiElements.DescripStyle, Contract_Button_Large_W, Contract_Button_Med_H);
+            Custom_Contract_GuiBox7 = new DialogGUIBox("Contract Transmitted = " + SaveInfo.OrbitLandingOn.ToString(), MCEGuiElements.DescripStyle, Contract_Button_Large_W, Contract_Button_Med_H);
             Custom_Contract_GuiBox2 = new DialogGUIBox("Planet You Want To Travel Too = ", MCEGuiElements.DescripStyle, Contract_Button_Large_W, Contract_Button_Med_H);
-            Custom_Contract_GuiBox6 = new DialogGUIBox(" "+ targetbody.bodyName, MCEGuiElements.DescripStyle2, Contract_Button_Large_W, Contract_Button_Med_H);
-            Custom_Contract_GuiBox3 = new DialogGUIBox("How Many KSC Crew On Mission" + " = " + SaveInfo.LandingOrbitCrew.ToString(), MCEGuiElements.DescripStyle, Contract_Button_Large_W, Contract_Button_Med_H);        
+            Custom_Contract_GuiBox6 = new DialogGUIBox(" " + targetbody.bodyName, MCEGuiElements.DescripStyle2, Contract_Button_Large_W, Contract_Button_Med_H);
+            Custom_Contract_GuiBox3 = new DialogGUIBox("How Many KSC Crew On Mission" + " = " + SaveInfo.LandingOrbitCrew.ToString(), MCEGuiElements.DescripStyle, Contract_Button_Large_W, Contract_Button_Med_H);
             Custom_Contract_GuiBox4 = new DialogGUIBox("Type Orbit Or Landing = ", MCEGuiElements.DescripStyle, Contract_Button_Large_W, Contract_Button_Med_H);
             Custom_Contract_GuiBox8 = new DialogGUIBox(" " + tempOrbitLand, MCEGuiElements.DescripStyle2, Contract_Button_Large_W, Contract_Button_Med_H);
             Custom_Contract_GuiBox5 = new DialogGUIBox("Contract Description", MCEGuiElements.DescripStyle, Contract_Button_Large_W, Contract_Button_Med_H);
-            Custom_Contract_GuiBox9 = new DialogGUIBox("Contract Title", MCEGuiElements.DescripStyle,Contract_Button_Large_W, Contract_Button_Med_H);
-            Custom_Contract_GuiBox12 = new DialogGUIBox("Kerbal Tourist Allowed = " + SaveInfo.OrbitAllowCivs.ToString(), MCEGuiElements.DescripStyle, Contract_Button_Large_W, Contract_Button_Med_H);           
+            Custom_Contract_GuiBox9 = new DialogGUIBox("Contract Title", MCEGuiElements.DescripStyle, Contract_Button_Large_W, Contract_Button_Med_H);
+            Custom_Contract_GuiBox12 = new DialogGUIBox("Kerbal Tourist Allowed = " + SaveInfo.OrbitAllowCivs.ToString(), MCEGuiElements.DescripStyle, Contract_Button_Large_W, Contract_Button_Med_H);
 
             Custom_Contract_Input = new DialogGUITextInput(SaveInfo.LandingOrbitName,
                                 false,
@@ -1069,15 +1078,15 @@ namespace MissionControllerEC
                                 (string s) => {
                                     SaveInfo.LandingOrbitDesc = s;
                                     return s;
-                                }, 120f);            
+                                }, 120f);
 
             if (SaveInfo.CustomLandingOrbitWinPos.x <= 0 || SaveInfo.CustomLandingOrbitWinPos.y <= 0)
                 SaveInfo.CustomLandingOrbitWinPos = new Vector2(0.5f, 0.5f);
 
-            LandOrbitMulti_Dialg = new MultiOptionDialog("CustomLandOrbit", "", Localizer.Format("Contract Builder Orbits Or Landing"),MCEGuiElements.MissionControllerSkin,
+            LandOrbitMulti_Dialg = new MultiOptionDialog("CustomLandOrbit", "", Localizer.Format("Contract Builder Orbits Or Landing"), MCEGuiElements.MissionControllerSkin,
                 new Rect(SaveInfo.CustomLandingOrbitWinPos.x, SaveInfo.CustomLandingOrbitWinPos.y, 315f, 500f),
                 new DialogGUIBase[]
-                {                  
+                {
                     new DialogGUISpace(4f),
                     new DialogGUIHorizontalLayout(Custom_Contract_GuiBox2),
                     new DialogGUIHorizontalLayout(Custom_Contract_GuiBox6),
@@ -1089,7 +1098,7 @@ namespace MissionControllerEC
                     new DialogGUIHorizontalLayout(Custom_Contract_GuiBox4),
                     new DialogGUIHorizontalLayout(Custom_Contract_GuiBox8),
                     new DialogGUIHorizontalLayout(Custom_Contract_Button6,Custom_Contract_Button7),
-                    new DialogGUISpace(4f),                    
+                    new DialogGUISpace(4f),
                     new DialogGUIHorizontalLayout(Custom_Contract_GuiBox12),
                     new DialogGUIVerticalLayout(Custom_Contract_Toggle2),
                     new DialogGUIHorizontalLayout(Custom_Contract_GuiBox1),
@@ -1101,12 +1110,12 @@ namespace MissionControllerEC
                     new DialogGUIHorizontalLayout(Custom_Contract_GuiBox9),
                     new DialogGUIVerticalLayout(Custom_Contract_Input),
                     new DialogGUISpace(4f),
-                    new DialogGUIHorizontalLayout(Custom_Contract_GuiBox7),                   
+                    new DialogGUIHorizontalLayout(Custom_Contract_GuiBox7),
                     new DialogGUISpace(4f),
                     new DialogGUIVerticalLayout(Custom_Contract_Button10),
                     new DialogGUISpace(4f),
                     new DialogGUIVerticalLayout(Custom_Contract_Button1)
-                
+
                 });
 
             customLandOrbit_dialg = PopupDialog.SpawnPopupDialog(LandOrbitMulti_Dialg, true, HighLogic.UISkin, false);

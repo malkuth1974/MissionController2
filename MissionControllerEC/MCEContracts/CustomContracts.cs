@@ -266,16 +266,16 @@ namespace MissionControllerEC.MCEContracts
     #region Custom Landing/Orbit Contract
     public class CustomLandingOrbit : Contract
     {
-        CelestialBody targetBody = null;      
+        CelestialBody targetBody = null;
         public string ContractPlayerName;
-        public int crewAmount;        
+        public int crewAmount;
         public int totalContracts;
         public int TotalFinished;
         public string CTitle = Localizer.Format("#autoLOC_MCE2_Custom_Land_Orbit_Contract_Title_Set" + " ");
         public bool StartOrbitLand = false;
         ContractParameter Orbit1;
         ContractParameter Land2;
-        ContractParameter crew1;       
+        ContractParameter crew1;
 
         protected override bool Generate()
         {
@@ -285,12 +285,12 @@ namespace MissionControllerEC.MCEContracts
             bool parttechUnlock = ResearchAndDevelopment.GetTechnologyState("advConstruction") == RDTech.State.Available;
 
             if (totalContracts >= 1)
-            {               
+            {
                 return false;
             }
             StartOrbitLand = SaveInfo.OrbitLandingOn;
             if (!StartOrbitLand)
-            {               
+            {
                 return false;
             }
 
@@ -298,9 +298,9 @@ namespace MissionControllerEC.MCEContracts
             if (targetBody == null)
             {
                 Debug.LogError("Could not find TargetBody for Custom Landing Orbit contract!!");
-                return false;              
+                return false;
             }
-           
+
             ContractPlayerName = SaveInfo.LandingOrbitName;
             crewAmount = SaveInfo.LandingOrbitCrew;
             if (SaveInfo.IsOrbitOrLanding)
@@ -317,7 +317,7 @@ namespace MissionControllerEC.MCEContracts
                 Land2.SetReputation(1 * crewAmount, targetBody);
             }
             crew1 = this.AddParameter(new GetCrewCount(crewAmount), null);
-            crew1.SetFunds(1000 * crewAmount,targetBody);
+            crew1.SetFunds(1000 * crewAmount, targetBody);
             crew1.SetReputation(1 * crewAmount, targetBody);
             this.AddParameter(new Contracts.Parameters.KerbalDeaths(0));
 
@@ -357,7 +357,7 @@ namespace MissionControllerEC.MCEContracts
                 }
 
             }
-            
+
             base.SetExpiry(15f, 40f);
             base.SetDeadlineYears(700, targetBody);
             base.SetReputation(25f, 50f, targetBody);

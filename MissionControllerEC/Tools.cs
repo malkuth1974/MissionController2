@@ -320,8 +320,7 @@ namespace MissionControllerEC
         {
             ScreenMessages.PostScreenMessage("Current Orbital Period is: " + Tools.formatTime(FlightGlobals.ActiveVessel.orbit.period) + "\n" +
                 "ApA Is: " + (int)v.orbit.ApA + " PeA Is: " + (int)v.orbit.PeA + "\n" +
-                "Current eccentricity is: " + FlightGlobals.ActiveVessel.orbit.eccentricity.ToString("F2") + "\n" +
-            "Current Biome Is: " + FlightGlobals.ActiveVessel.mainBody.BiomeMap.GetAtt(FlightGlobals.ActiveVessel.latitude * Math.PI / 180d, FlightGlobals.ActiveVessel.longitude * Math.PI / 180d), .001f);
+                "Current eccentricity is: " + FlightGlobals.ActiveVessel.orbit.eccentricity.ToString("F2") + "\n");            
         }
         public static void GroundStationRangeHelper(Vessel v, string GstationName, bool inRangeTF)
         {

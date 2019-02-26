@@ -31,4 +31,5 @@ C:\KSPFolder\MissionController2\MissionControllerEC\obj\Debug\MissionControllerE
 C:\KSPFolder\MissionController2\MissionControllerEC\obj\Debug\MissionControllerEC.pdb
 C:\Steam\steamapps\common\Kerbal Space Program\GameData\MissionControllerEC\MissionControllerEC.dll
 C:\Steam\steamapps\common\Kerbal Space Program\GameData\MissionControllerEC\MissionControllerEC.pdb
-C:\KSPFolder\MissionController2\MissionControllerEC\obj\Debug\MissionControllerEC.csprojResolveAssemblyReference.cache
+C:\KSPFolder\Kerbal Space ProgramTest\GameData\MissionControllerEC\MissionControllerEC.dll
+C:\KSPFolder\Kerbal Space ProgramTest\GameData\MissionControllerEC\MissionControllerEC.pdb
