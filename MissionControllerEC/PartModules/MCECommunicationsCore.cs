@@ -8,7 +8,8 @@ using KSP.Localization;
 namespace MissionControllerEC.PartModules
 {
     class MCESatelliteCore : PartModule
-    {       
+    {
+        public static string[] SattypeList = { "Communication", "Navigation", "Weather", "Research" };
         [KSPField(isPersistant = true,guiActive = true,guiName = "PartLocked")]
         private bool dataLocked = false;
         [KSPField]
@@ -31,9 +32,15 @@ namespace MissionControllerEC.PartModules
             GetSatelliteCoreAnimation[animationName].normalizedTime = time;
             GetSatelliteCoreAnimation.Play(animationName);
         }
-      
-        [KSPField(isPersistant = true, guiActive = true, guiActiveEditor = true, guiName = "Satellite Type: ")]
-        public string satTypeDisplay = "Not Loaded";
+        
+        [KSPField(isPersistant = true, guiActive = true, guiActiveEditor = false, guiName = "Satellite Type: ")]
+        public string satTypeDisplay = "Communications";
+
+        [KSPField(isPersistant = true, guiActive = false, guiActiveEditor = true, guiName = "Satellite Types: ")]
+        public string satTypeDisplay2 = "Com=0,Nav=1,Weather=2,Research=3";
+
+        [KSPField(isPersistant = true, guiActiveEditor = true, guiName = "Choose Satellite Type"), UI_FloatRange(minValue = 0f, maxValue = 3f, stepIncrement = 1f)]
+        public float SatTypeListNumber = 0;
 
         [KSPField(isPersistant = true, guiActive = true, guiName = "Module Type: ")]
         public string satModuleType = "Communications";
@@ -53,7 +60,7 @@ namespace MissionControllerEC.PartModules
             if (!dataLocked && FlightGlobals.ActiveVessel.situation == Vessel.Situations.ORBITING)
             {
                 ScreenMessages.PostScreenMessage(Localizer.Format("#autoLOC_MissionController2_1000241"));		// #autoLOC_MissionController2_1000241 = Sending Data Package, This Part core is now disabled and can't be used again
-                Debug.Log("current sattype is: " + satTypeDisplay + " Current frequency is: " + frequencyDisplay + " Current module type is: " + moduleName);
+                //Debug.Log("current sattype is: " + satTypeDisplay + " Current frequency is: " + frequencyDisplay + " Current module type is: " + moduleName);
                 dataStartup();
                 if (haveAnimation)
                 {
@@ -65,12 +72,12 @@ namespace MissionControllerEC.PartModules
             else if (dataLocked)
             {
                 ScreenMessages.PostScreenMessage(Localizer.Format("#autoLOC_MissionController2_1000242"));		// #autoLOC_MissionController2_1000242 = This data package has already been sent.  Only 1 data package can be activated per Module
-                Debug.Log("current sattype is: " + satTypeDisplay + " Current frequency is: " + frequencyDisplay + " Current module type is: " + moduleName);
+                //Debug.Log("current sattype is: " + satTypeDisplay + " Current frequency is: " + frequencyDisplay + " Current module type is: " + moduleName);
             }
             else
             {
                 ScreenMessages.PostScreenMessage(Localizer.Format("#autoLOC_MissionController2_1000243"));		// #autoLOC_MissionController2_1000243 = You have to be in orbit to Do a Data Startup
-                Debug.Log("current sattype is: " + satTypeDisplay + " Current frequency is: " + frequencyDisplay + " Current module type is: " + moduleName);
+                //Debug.Log("current sattype is: " + satTypeDisplay + " Current frequency is: " + frequencyDisplay + " Current module type is: " + moduleName);
             }
         }
         
@@ -80,7 +87,7 @@ namespace MissionControllerEC.PartModules
             sc.SetBoolSatelliteCoreValue(true);
             sc.SetSatelliteCoreCheck(satTypeDisplay, moduleType, frequencyDisplay);           
             dataLocked = true;
-            Debug.Log("DataStartup Fired in PartModule");
+            //Debug.Log("DataStartup Fired in PartModule");
         }
         private void ModuleTypeSwitch()
         {
@@ -187,13 +194,16 @@ namespace MissionControllerEC.PartModules
                 ModuleTypeSwitch4();
             }
             frequencyDisplay = frequencyModulation;
-            gs.SetGroundStationCheck(frequencyDisplay);
+            satTypeDisplay = SattypeList[(int)SatTypeListNumber];
+            gs.SetGroundStationCheck(frequencyDisplay);            
         }
         public override void OnFixedUpdate()
-        {
+        {         
             MCEParameters.GroundStationPostion gs = new MCEParameters.GroundStationPostion(0);
             frequencyDisplay = frequencyModulation;
+            satTypeDisplay = SattypeList[(int)SatTypeListNumber];
             gs.SetGroundStationCheck(frequencyDisplay);
-        }
+        }        
+        
     }
 }

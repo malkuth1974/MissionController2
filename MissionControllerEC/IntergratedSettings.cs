@@ -11,9 +11,9 @@ namespace MissionControllerEC
 {
     public class MCE_IntergratedSettings : GameParameters.CustomParameterNode
     {
-
-        public override string Title { get { return "Mission Controller Contracts"; } }
+        
         public override GameParameters.GameMode GameMode { get { return GameParameters.GameMode.CAREER; } }
+        public override string Title { get { return "Mission Controller Contracts"; } }
         public override string Section { get { return "MissionControllerEC"; } }
         public override string DisplaySection { get { return "MissionControllerEC"; } }
         public override int SectionOrder { get { return 1; } }
@@ -34,15 +34,14 @@ namespace MissionControllerEC
         [GameParameters.CustomParameterUI("MCE Early Mission Enabled?", toolTip = "These are missions that come early in career and are biome based around kerbin.")]
         public bool EarlyMCEContracts = true;
         [GameParameters.CustomParameterUI("MCE Rover Contracts Eanbled?", toolTip = "These are rover random rover missions that MCE will send you on.")]
-        public bool MCERoverContracts = true;
+        public bool MCERoverContracts = true; 
 
         
     }
     public class MCE_IntergratedSettings2 : GameParameters.CustomParameterNode
     {
-
-        public override string Title { get { return "Stock Game Contracts"; } }
         public override GameParameters.GameMode GameMode { get { return GameParameters.GameMode.CAREER; } }
+        public override string Title { get { return "Stock Game Contracts"; } }
         public override string Section { get { return "MissionControllerEC"; } }
         public override string DisplaySection { get { return "MissionControllerEC"; } }
         public override int SectionOrder { get { return 2; } }
@@ -71,9 +70,8 @@ namespace MissionControllerEC
     }
     public class MCE_IntergratedSettings3 : GameParameters.CustomParameterNode
     {
-
-        public override string Title { get { return "MCE Diffuculty Options"; } }
         public override GameParameters.GameMode GameMode { get { return GameParameters.GameMode.CAREER; } }
+        public override string Title { get { return "MCE Diffuculty Options"; } }        
         public override string Section { get { return "MissionControllerEC"; } }
         public override string DisplaySection { get { return "MissionControllerEC"; } }
         public override int SectionOrder { get { return 3; } }
@@ -85,8 +83,8 @@ namespace MissionControllerEC
         public int MCERevertCost = 10;
         [GameParameters.CustomParameterUI("MCE Vessel Must Surviv Enabled?", toolTip = "If vessel is destroyed in MCE contract you will fail?")]
         public bool VesselMustSurvive = true;
-        [GameParameters.CustomParameterUI("MCE Flight Help Readout?", toolTip = "This is very simple APA,PEA, Readout, not needed if you have Another Mod that gives you these readouts?")]
-        public bool MCEReadoutHelpAllow = false;
+        //[GameParameters.CustomParameterUI("MCE Flight Help Readout?", toolTip = "This is very simple APA,PEA, Readout, not needed if you have Another Mod that gives you these readouts?")]
+        //public bool MCEReadoutHelpAllow = false;
         [GameParameters.CustomParameterUI("MCE Debug Mode Enabled?", toolTip = "Debug mode becomes available in MCE Menu Icon (Cheats)?")]
         public bool MCEDebugMode = false;
         [GameParameters.CustomIntParameterUI("Max Number Satellite Contracts At Time", maxValue = 5)]

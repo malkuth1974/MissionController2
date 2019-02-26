@@ -302,100 +302,61 @@ namespace MissionControllerEC.MCEContracts
             }
 
             ContractPlayerName = SaveInfo.LandingOrbitName;
+            crewAmount = SaveInfo.LandingOrbitCrew;
+            if (SaveInfo.IsOrbitOrLanding)
+            {
+                this.Orbit1 = this.AddParameter(new Contracts.Parameters.EnterOrbit(targetBody));
+                Orbit1.SetFunds(2000 * crewAmount, 2000, targetBody);
+                Orbit1.SetReputation(3 * crewAmount, targetBody);
+            }
+
+            else
+            {
+                this.Land2 = this.AddParameter(new Contracts.Parameters.LandOnBody(targetBody));
+                Land2.SetFunds(1200 * crewAmount, targetBody);
+                Land2.SetReputation(1 * crewAmount, targetBody);
+            }
+            crew1 = this.AddParameter(new GetCrewCount(crewAmount), null);
+            crew1.SetFunds(1000 * crewAmount, targetBody);
+            crew1.SetReputation(1 * crewAmount, targetBody);
+            this.AddParameter(new Contracts.Parameters.KerbalDeaths(0));
 
             if (SaveInfo.OrbitAllowCivs == true)
             {
                 SaveInfo.TourisNames.Clear();
                 Tools.CivilianName();
-                int Civcount = 0;
-                int Civcount2 = 1;
+                int test = 1;
 
                 foreach (string name in SaveInfo.TourisNames)
                 {
-                    if (Civcount <= SaveInfo.LandingOrbitCivilians)
+
+                    if (SaveInfo.IsOrbitOrLanding)
                     {
-                        foreach (KeyValuePair<int, string> orb in SaveInfo.CustOrbLnd)
+                        if (test <= SaveInfo.LandingOrbitCivilians)
                         {
-                            Debug.Log(Civcount + " <= " + SaveInfo.LandingOrbitCivilians);
-
                             FinePrint.Contracts.Parameters.KerbalTourParameter Kerbaltour = new FinePrint.Contracts.Parameters.KerbalTourParameter(name, ProtoCrewMember.Gender.Male);
-                            string Temp2 = orb.Value;
-                            if (Civcount2 == 1)
-                            {
-                                this.AddParameter(Kerbaltour);
-                            }
-                            if (Temp2 == "Orbit")
-                            {
-                                targetBody = FlightGlobals.Bodies[orb.Key];                                
-                                Kerbaltour.AddParameter(new FinePrint.Contracts.Parameters.KerbalDestinationParameter(targetBody, FlightLog.EntryType.Orbit, name));
-                                Kerbaltour.SetFunds(Tools.FloatRandomNumber(2000, 7000), targetBody);
-                            }
-                            if (Temp2 == "Landing")
-                            {
-                                targetBody = FlightGlobals.Bodies[orb.Key];
-                                Kerbaltour.AddParameter(new FinePrint.Contracts.Parameters.KerbalDestinationParameter(targetBody, FlightLog.EntryType.Land, name));
-                                Kerbaltour.SetFunds(Tools.FloatRandomNumber(4000, 12000), targetBody);
-                            }
-                            if (Temp2 == "SubTraject")
-                            {
-                                targetBody = FlightGlobals.Bodies[orb.Key];
-                                Kerbaltour.AddParameter(new FinePrint.Contracts.Parameters.KerbalDestinationParameter(targetBody, FlightLog.EntryType.Suborbit, name));
-                                Kerbaltour.SetFunds(Tools.FloatRandomNumber(500, 2000), targetBody);
-                            }
-                            if (Temp2 == "Flyby")
-                            {
-                                targetBody = FlightGlobals.Bodies[orb.Key];
-                                Kerbaltour.AddParameter(new FinePrint.Contracts.Parameters.KerbalDestinationParameter(targetBody, FlightLog.EntryType.Flyby, name));
-                                Kerbaltour.SetFunds(Tools.FloatRandomNumber(1000, 4000), targetBody);
-                            }
-                            Civcount2++;
-                        }                       
-                        Civcount++;
-                        Civcount2 = 1;
+                            this.AddParameter(Kerbaltour);
+                            Kerbaltour.AddParameter(new FinePrint.Contracts.Parameters.KerbalDestinationParameter(targetBody, FlightLog.EntryType.Orbit, name));
+                            Kerbaltour.SetFunds(Tools.FloatRandomNumber(7000, 17000), targetBody);
+                            Kerbaltour.AddParameter(new LandOnBody(Planetarium.fetch.Home));
+                            test++;
+                        }
                     }
-                    
-
-                }
-            }
-
-
-            else
-            {
-                foreach (KeyValuePair<int, string> orb in SaveInfo.CustOrbLnd)
-                {
-
-                    string Temp2 = orb.Value;
-                    if (Temp2 == "Orbit")
+                    else
                     {
-                        targetBody = FlightGlobals.Bodies[orb.Key];
-                        EnterOrbit CustOrbitLand = new EnterOrbit(targetBody);
-                        this.AddParameter(CustOrbitLand);
-                        CustOrbitLand.SetFunds(Tools.FloatRandomNumber(2000, 8000), targetBody);
-                    }
-                    if (Temp2 == "Landing")
-                    {
-                        targetBody = FlightGlobals.Bodies[orb.Key];
-                        LandOnBody CustOrbitLand2 = new LandOnBody(targetBody);
-                        this.AddParameter(CustOrbitLand2);
-                        CustOrbitLand2.SetFunds(Tools.FloatRandomNumber(4000, 12000), targetBody);
-                    }
-                    if (Temp2 == "SubTraject")
-                    {
-                        targetBody = FlightGlobals.Bodies[orb.Key];
-                        this.AddParameter(new ReachSituation(Vessel.Situations.SUB_ORBITAL, targetBody.name));
-                    }
-                    if (Temp2 == "Flyby")
-                    {
-                        targetBody = FlightGlobals.Bodies[orb.Key];
-                        this.AddParameter(new Contracts.Parameters.EnterSOI(targetBody));
+                        if (test <= SaveInfo.LandingOrbitCivilians)
+                        {
+                            FinePrint.Contracts.Parameters.KerbalTourParameter Kerbaltour = new FinePrint.Contracts.Parameters.KerbalTourParameter(name, ProtoCrewMember.Gender.Male);
+                            this.AddParameter(Kerbaltour);
+                            Kerbaltour.AddParameter(new FinePrint.Contracts.Parameters.KerbalDestinationParameter(targetBody, FlightLog.EntryType.Land, name));
+                            Kerbaltour.SetFunds(Tools.FloatRandomNumber(7000, 17000), targetBody);
+                            Kerbaltour.AddParameter(new LandOnBody(Planetarium.fetch.Home));
+                            test++;
+                        }
                     }
                 }
+
             }
-            crewAmount = SaveInfo.LandingOrbitCrew;
-            crew1 = this.AddParameter(new GetCrewCount(crewAmount), null);
-            crew1.SetFunds(1000 * crewAmount, targetBody);
-            crew1.SetReputation(1 * crewAmount, targetBody);
-            this.AddParameter(new Contracts.Parameters.KerbalDeaths(0));
 
             base.SetExpiry(15f, 40f);
             base.SetDeadlineYears(700, targetBody);

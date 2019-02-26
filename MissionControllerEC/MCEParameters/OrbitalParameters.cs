@@ -435,10 +435,10 @@ namespace MissionControllerEC.MCEParameters
                 }
             }
 
-            if (HighLogic.LoadedSceneIsFlight && HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEReadoutHelpAllow == true)
-            {
-                Tools.ObitalPeriodHelper(FlightGlobals.ActiveVessel);
-            }
+            //if (HighLogic.LoadedSceneIsFlight && HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEReadoutHelpAllow == true)
+            //{
+            //    Tools.ObitalPeriodHelper(FlightGlobals.ActiveVessel);
+            //}
         }
 
         protected override void OnLoad(ConfigNode node)
@@ -580,10 +580,10 @@ namespace MissionControllerEC.MCEParameters
                 }
             }
 
-            if (HighLogic.LoadedSceneIsFlight && HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEReadoutHelpAllow == true)
-            {
-                Tools.ObitalPeriodHelper(FlightGlobals.ActiveVessel);
-            }
+            //if (HighLogic.LoadedSceneIsFlight && HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEReadoutHelpAllow == true)
+            //{
+            //    Tools.ObitalPeriodHelper(FlightGlobals.ActiveVessel);
+            //}
         }
 
         protected override void OnLoad(ConfigNode node)
@@ -970,10 +970,10 @@ namespace MissionControllerEC.MCEParameters
                         {
                             OffCheckOrbitalPeriod(FlightGlobals.ActiveVessel);
                         }
-                        if (HighLogic.LoadedSceneIsFlight && HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEReadoutHelpAllow == true)
-                        {
-                            Tools.ObitalPeriodHelper(FlightGlobals.ActiveVessel);
-                        }
+                        //if (HighLogic.LoadedSceneIsFlight && HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEReadoutHelpAllow == true)
+                        //{
+                        //    Tools.ObitalPeriodHelper(FlightGlobals.ActiveVessel);
+                        //}
                     }             
             }
         }
@@ -1367,7 +1367,7 @@ namespace MissionControllerEC.MCEParameters
         protected override string GetTitle()
         {
             return "FlyBy: " + targetBody.bodyName + "  Between an altitude of: " + maxheight + "  And: " + minheight;
-        }       
+        }
 
         protected override void OnUpdate()
         {
@@ -1387,13 +1387,7 @@ namespace MissionControllerEC.MCEParameters
                 }
                 else { }
             }
-            else { }
-
-            if (HighLogic.LoadedSceneIsFlight && HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEReadoutHelpAllow == true)
-            {
-                Tools.ObitalPeriodHelper(FlightGlobals.ActiveVessel);
-            }
-            else { }
+            else { }                 
         }
 
         protected override void OnLoad(ConfigNode node)

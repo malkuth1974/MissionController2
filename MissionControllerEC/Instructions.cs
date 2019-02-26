@@ -177,7 +177,7 @@ namespace MissionControllerEC
         {
             randomSatelliteContractsCheck();
             SaveInfo.SatelliteTypeChoice = Tools.MC2RandomWieghtSystem.PickOne<int>(RandomSatelliteContractsCheck); 
-            Debug.LogWarning("Satellite Type Chosen Is Number " + SaveInfo.SatelliteTypeChoice);         
+            //Debug.LogWarning("Satellite Type Chosen Is Number " + SaveInfo.SatelliteTypeChoice);         
         }
 
         public void randomContractsCheck()

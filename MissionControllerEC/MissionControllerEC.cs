@@ -246,10 +246,13 @@ namespace MissionControllerEC
             //GameEvents.onGameSceneLoadRequested.Remove(this.CheckRepairContractTypes);
             Debug.Log("Game All values removed for MCE");
             instance = null;
-            if (Main_popup_dialog != null)
+
+            try
             {
                 Main_popup_dialog.Dismiss();
-            }          
+            }
+            catch { Debug.Log("MCE Main_Popup_dialog already loaded"); }
+                     
             Main_popup_dialog = null;         
         }
         private void Update()
