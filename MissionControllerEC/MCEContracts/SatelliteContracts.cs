@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -181,12 +181,15 @@ namespace MissionControllerEC.MCEContracts
             int frequencyTest = rnd.Next(12, 40);
             frequency = (float)frequencyTest - .5f;
             moduletype = rnd.Next(1, 4);
-            int AtmoDepth = Tools.RandomNumber(1, 8);
-            contractAMA = FinePrint.Utilities.CelestialUtilities.GetMinimumOrbitalDistance(targetBody, (float)AtmoDepth);
+
+            Double AtmoDepth = targetBody.atmosphereDepth;
+            Double radius = targetBody.Radius;
+            double eccentricity = .01;
+            double minSMA = (radius + AtmoDepth) / (1 - eccentricity) + 10000; //10km buffer so we arent scraping the atmo
             if (SaveInfo.SatelliteTypeChoice == 0)
-            {
-                //contractAMA = Tools.RandomNumber((int)AtmoDepth, (int)AtmoDepth + 25000) *10 ;
-                //contractAMA = FinePrint.Utilities.CelestialUtilities.GetMinimumOrbitalDistance(targetBody, 2f);
+            {               
+                contractAMA = Tools.RandomNumber((int)minSMA, (int)minSMA + 25000);// *10 ;
+
                 contractINC = 0;
                 contractAOP = Tools.getAOPCalc(contractAMA, 2.1);
                 SatTypeName = "Communication";               
@@ -198,13 +201,13 @@ namespace MissionControllerEC.MCEContracts
                 {
                     stationNumber = Tools.RandomNumber(5, 6);
                     SetTrackStationNumber(stationNumber);                    
-                    this.AddParameter(new FinePrint.Contracts.Parameters.SpecificOrbitParameter(FinePrint.Utilities.OrbitType.EQUATORIAL, 90, .01, contractAMA, 99, contractAOP, 1, 0, targetBody, 3), null);
+                    this.AddParameter(new FinePrint.Contracts.Parameters.SpecificOrbitParameter(FinePrint.Utilities.OrbitType.EQUATORIAL, 90, eccentricity, contractAMA, 99, contractAOP, 1, 0, targetBody, 3), null);
                     this.AddParameter(new GroundStationPostion(StationName, trackStationNumber, PolarStationNumber, frequency,true), null);
                     base.prestige = ContractPrestige.Exceptional;
                 }
                 else
                 {                  
-                    this.AddParameter(new FinePrint.Contracts.Parameters.SpecificOrbitParameter(FinePrint.Utilities.OrbitType.EQUATORIAL, contractINC, .01, contractAMA, 99, contractAOP, 1, 0, targetBody, 4), null);
+                    this.AddParameter(new FinePrint.Contracts.Parameters.SpecificOrbitParameter(FinePrint.Utilities.OrbitType.EQUATORIAL, contractINC, eccentricity, contractAMA, 99, contractAOP, 1, 0, targetBody, 4), null);
                     this.AddParameter(new GroundStationPostion(StationName, trackStationNumber, PolarStationNumber, frequency, false), null);
                 }
                 this.AddParameter(new satelliteCoreCheck(SatTypeName, frequency, moduletype, targetBody), null);                
@@ -212,23 +215,25 @@ namespace MissionControllerEC.MCEContracts
             else if (SaveInfo.SatelliteTypeChoice == 1)
             {
                 SatTypeName = "Weather";
-                //contractAMA = Tools.RandomNumber((int)AtmoDepth, (int)AtmoDepth + 10000) * 10;
-                //contractAMA = FinePrint.Utilities.CelestialUtilities.GetMinimumOrbitalDistance(targetBody, 2f);
+
+                contractAMA = Tools.RandomNumber((int)minSMA, (int)minSMA + 10000);// *10 ;
+
                 contractINC = Tools.RandomNumber(-8, 8);
                 contractAOP = Tools.getAOPCalc(contractAMA, 2.1);
                 int randomPolar;
                 randomPolar = Tools.RandomNumber(1, 100);
                 if (randomPolar > 70)
                 {
-                    //contractAMA = Tools.RandomNumber((int)AtmoDepth, (int)AtmoDepth + 10000) * 10;
-                    //contractAMA = FinePrint.Utilities.CelestialUtilities.GetMinimumOrbitalDistance(targetBody, 2f);
+
+                    contractAMA = Tools.RandomNumber((int)minSMA, (int)minSMA + 10000);// *10 ;
+
                     contractINC = 90;                  
-                    this.AddParameter(new FinePrint.Contracts.Parameters.SpecificOrbitParameter(FinePrint.Utilities.OrbitType.EQUATORIAL, 90, .01, contractAMA, 99, contractAOP, 1, 0, targetBody, 3), null);
+                    this.AddParameter(new FinePrint.Contracts.Parameters.SpecificOrbitParameter(FinePrint.Utilities.OrbitType.EQUATORIAL, 90, eccentricity, contractAMA, 99, contractAOP, 1, 0, targetBody, 3), null);
                     this.AddParameter(new satelliteCoreCheck(SatTypeName, frequency, moduletype, targetBody), null);
                 }
                 else
                 {                  
-                    this.AddParameter(new FinePrint.Contracts.Parameters.SpecificOrbitParameter(FinePrint.Utilities.OrbitType.EQUATORIAL, contractINC, .01, contractAMA, 99, contractAOP, 1, 0, targetBody, 6), null);
+                    this.AddParameter(new FinePrint.Contracts.Parameters.SpecificOrbitParameter(FinePrint.Utilities.OrbitType.EQUATORIAL, contractINC, eccentricity, contractAMA, 99, contractAOP, 1, 0, targetBody, 6), null);
                     this.AddParameter(new satelliteCoreCheck(SatTypeName, frequency, moduletype, targetBody), null);
                 }
             }
@@ -236,8 +241,9 @@ namespace MissionControllerEC.MCEContracts
             else if (SaveInfo.SatelliteTypeChoice == 2)
             {
                 SatTypeName = "Navigation";
-                /*contractAMA = Tools.RandomNumber((int)AtmoDepth, (int)AtmoDepth + 17000) * 10*/;
-                //contractAMA = FinePrint.Utilities.CelestialUtilities.GetMinimumOrbitalDistance(targetBody, 2f);
+
+                contractAMA = Tools.RandomNumber((int)minSMA, (int)minSMA + 17000);// *10 ;
+
                 contractINC = 0;
                 contractAOP = Tools.getAOPCalc(contractAMA, 2.1);
                 int randomPolar;
@@ -246,13 +252,13 @@ namespace MissionControllerEC.MCEContracts
                 {
                     stationNumber = Tools.RandomNumber(5, 6);
                     SetTrackStationNumber(stationNumber);                  
-                    this.AddParameter(new FinePrint.Contracts.Parameters.SpecificOrbitParameter(FinePrint.Utilities.OrbitType.EQUATORIAL, 90, .01, contractAMA, 99, contractAOP, 1, 0, targetBody, 3), null);                    
+                    this.AddParameter(new FinePrint.Contracts.Parameters.SpecificOrbitParameter(FinePrint.Utilities.OrbitType.EQUATORIAL, 90, eccentricity, contractAMA, 99, contractAOP, 1, 0, targetBody, 3), null);                    
                     this.AddParameter(new GroundStationPostion(StationName, trackStationNumber, PolarStationNumber, frequency, true), null);
                     base.prestige = ContractPrestige.Exceptional;
                 }
                 else
                 {                  
-                    this.AddParameter(new FinePrint.Contracts.Parameters.SpecificOrbitParameter(FinePrint.Utilities.OrbitType.EQUATORIAL, contractINC, .01, contractAMA, 99, contractAOP, 1, 0, targetBody, 3), null);
+                    this.AddParameter(new FinePrint.Contracts.Parameters.SpecificOrbitParameter(FinePrint.Utilities.OrbitType.EQUATORIAL, contractINC, eccentricity, contractAMA, 99, contractAOP, 1, 0, targetBody, 3), null);
                     this.AddParameter(new GroundStationPostion(StationName, trackStationNumber, PolarStationNumber, frequency, false), null);
                 }
                 this.AddParameter(new satelliteCoreCheck(SatTypeName, frequency, moduletype, targetBody), null);
@@ -262,30 +268,32 @@ namespace MissionControllerEC.MCEContracts
             else if (SaveInfo.SatelliteTypeChoice == 3)
             {
                 SatTypeName = "Research";
-                //contractAMA = Tools.RandomNumber((int)AtmoDepth, (int)AtmoDepth + 17000) * 10;
-                //contractAMA = FinePrint.Utilities.CelestialUtilities.GetMinimumOrbitalDistance(targetBody, 2f);
+
+                contractAMA = Tools.RandomNumber((int)minSMA, (int)minSMA + 17000);// *10 ;
+
                 contractINC = Tools.RandomNumber(-10, 10);
                 contractAOP = Tools.getAOPCalc(contractAMA, 2.3);
                 int randomPolar;
                 randomPolar = Tools.RandomNumber(1, 100);
                 if (randomPolar > 90)
                 {
-                    this.AddParameter(new FinePrint.Contracts.Parameters.SpecificOrbitParameter(FinePrint.Utilities.OrbitType.EQUATORIAL, 90, .01, contractAMA, 99, contractAOP, 1, 0, targetBody, 3), null);
+                    this.AddParameter(new FinePrint.Contracts.Parameters.SpecificOrbitParameter(FinePrint.Utilities.OrbitType.EQUATORIAL, 90, eccentricity, contractAMA, 99, contractAOP, 1, 0, targetBody, 3), null);
                 }
                 else
                 {
-                    this.AddParameter(new FinePrint.Contracts.Parameters.SpecificOrbitParameter(FinePrint.Utilities.OrbitType.EQUATORIAL, contractINC, .01, contractAMA, 99, contractAOP, 1, 0, targetBody, 3), null);
+                    this.AddParameter(new FinePrint.Contracts.Parameters.SpecificOrbitParameter(FinePrint.Utilities.OrbitType.EQUATORIAL, contractINC, eccentricity, contractAMA, 99, contractAOP, 1, 0, targetBody, 3), null);
                 }
                 this.AddParameter(new satelliteCoreCheck(SatTypeName, frequency, moduletype, targetBody), null);
             }
             else if (SaveInfo.SatelliteTypeChoice == 4)
             {
-                //contractAMA = Tools.RandomNumber((int)AtmoDepth, (int)AtmoDepth + 120000) * 10; ;  //Needs Fixing
-                //contractAMA = FinePrint.Utilities.CelestialUtilities.GetMinimumOrbitalDistance(targetBody, 2f);
+
+                contractAMA = Tools.RandomNumber((int)minSMA, (int)minSMA + 120000);// *10 ; ;  //Needs Fixing
+
                 contractINC = 0;
                 contractAOP = Tools.getAOPCalc(contractAMA, 2);
                 SatTypeName = "Communication";
-                this.AddParameter(new FinePrint.Contracts.Parameters.SpecificOrbitParameter(FinePrint.Utilities.OrbitType.EQUATORIAL, contractINC, .01, contractAMA, 99, contractAOP, 1, 0, targetBody, 3), null);
+                this.AddParameter(new FinePrint.Contracts.Parameters.SpecificOrbitParameter(FinePrint.Utilities.OrbitType.EQUATORIAL, contractINC, eccentricity, contractAMA, 99, contractAOP, 1, 0, targetBody, 3), null);
                 if (frequency >= 50)
                 {
                     frequency = -10;
@@ -311,12 +319,13 @@ namespace MissionControllerEC.MCEContracts
             }
             else if (SaveInfo.SatelliteTypeChoice == 5)
             {
-                //contractAMA = Tools.RandomNumber((int)AtmoDepth, (int)AtmoDepth + 120000) * 10; ;  //Needs Fixing
-                //contractAMA = FinePrint.Utilities.CelestialUtilities.GetMinimumOrbitalDistance(targetBody, 2f);
+
+                contractAMA = Tools.RandomNumber((int)minSMA, (int)minSMA + 120000);// *10 ; ;  //Needs Fixing
+
                 contractINC = 0;
                 contractAOP = Tools.getAOPCalc(contractAMA, 2);
                 SatTypeName = "Navigation";
-                this.AddParameter(new FinePrint.Contracts.Parameters.SpecificOrbitParameter(FinePrint.Utilities.OrbitType.EQUATORIAL, contractINC, .01, contractAMA, 99, contractAOP, 1, 0, targetBody, 3), null);
+                this.AddParameter(new FinePrint.Contracts.Parameters.SpecificOrbitParameter(FinePrint.Utilities.OrbitType.EQUATORIAL, contractINC, eccentricity, contractAMA, 99, contractAOP, 1, 0, targetBody, 3), null);
                 if (frequency >= 50)
                 {
                     frequency = -10;
