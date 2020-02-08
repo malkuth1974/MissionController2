@@ -14,33 +14,18 @@ namespace MissionControllerEC
         public static Vector2 CustomCrewTransWindowPos;
         public static Vector2 DebugWindowPos;
         public static Vector2 CustomLandingOrbitWinPos;
+        public static Vector2 CustomBuildStationWinPos;
 
         public static bool GUIEnabled;
 
-        public static bool SatContractReady = false;
-        public static string AgenaTargetVesselID = "none";
-        public static string AgenaTargetVesselName = "none";
-        public static bool Agena1Done = false;
-        public static bool Agena2Done = false;
-        public static bool Vostok1Done = false;
-        public static bool Vostok2Done = false;
-        public static bool Voskhod2Done = false;
-        public static bool Luna2Done = false;
-        public static bool Luna16Done = false;
-        public static bool skylab1done = false;
-        public static bool skylab2done = false;
-        public static bool skylab3done = false;
-        public static bool skylab4done = false;
+        public static bool SatContractReady = false;      
 
         public static bool ComSateContractOn = false;
         public static double comSatmaxOrbital = 0;
         public static double comSatminOrbital = 0;
         public static string ComSatContractName = "None";
         public static int comSatBodyName = 1;
-
-        public static string skyLabName = "none";
-        public static string skyLabVesID = "none";
-
+       
         public static bool supplyContractOn = false;
         public static int SupplyBodyIDX;
         public static string SupplyVesName = "None Loaded";
@@ -69,21 +54,18 @@ namespace MissionControllerEC
         public static int LandingOrbitCrew = 0;
         public static int LandingOrbitCivilians =0;
 
+        public static string BuildSpaceStationName = "Fill In Name Of Station";
+        public static int BuildSpaceStationIDX = 1;
+        public static string BuildSpaceStationDesc = "Description of Mission";
+        public static bool BuildSpaceStationOn = false;
+        public static int BuildSpaceStationCrewAmount = 1;
+
 
         public static bool RepairContractGeneratedOn = false;
         public static bool RepairStationContractGeneratedOn = false;
         public static int SatelliteTypeChoice = 0;
 
-        public static bool spResourceSet = false;
-
-        public static int tirosCurrentNumber = 1;
-        public static int marinerCurrentNumber = 1;
-        public static int apolloCurrentNumber = 1;
-        public static int apolloDunaCurrentNumber = 1;
-        public static bool apolloDunaStation = false;
-
-        public static double apolloLandingLat = 0;
-        public static double apolloLandingLon = 0;
+        public static bool spResourceSet = false;      
 
         public static string SatelliteContractType = "none";
         public static float SatelliteContractFrequency = -1;

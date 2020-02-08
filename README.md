@@ -1,25 +1,26 @@
-# MissionController2
+##MissionController2
+==================
 
 MissionController 2 is the successor to the original Mission Controller.  Once Kerbal Space Program released its own contracts I decided to drop development of the original mission controller and develop a system based off the KSP contract system.  The following code is a complete Rewrite and original work of Malkuth.  The only thing Mission Controller and MissionController 2 share is the name.
 
 
-## New Contract Types:
+##New Contract Types:
 
-* NEW 1.07 Civilian tours, bring civilian Kerbals on low Orbit tour of Kerbin.
-* Deliver Satellite for A company (build your own)
-* Repair Missions using the repair partts and dedicated repair panel.
-* Lander Research Mission
-* Orbital Research Mission
-* Custom ComSat contract that you can change the values to help suit your Remote Tech Needs.
-* Custom supply contract that you can use to supply your stations with fuel, food, oxygen, etc. your choice, your contracts!
-* NEW 1.06 Custom Crew Supply Contract. Supply those stations and bases with crew. Allows choice of station and amount of crew and the time on station for contract.
-* 8 Historical contracts based on the United States and Soviet space race. (More to come)
-* New 1.06 New SkyLab 4 new contracts covering the launch and operation of Americas first Space Station SkyLab.
+*NEW 1.07 Civilian tours, bring civilian Kerbals on low Orbit tour of Kerbin.
+*Deliver Satellite for A company (build your own)
+*Repair Missions using the repair partts and dedicated repair panel.
+*Lander Research Mission
+*Orbital Research Mission
+*Custom ComSat contract that you can change the values to help suit your Remote Tech Needs.
+*Custom supply contract that you can use to supply your stations with fuel, food, oxygen, etc. your choice, your contracts!
+*NEW 1.06 Custom Crew Supply Contract. Supply those stations and bases with crew. Allows choice of station and amount of crew and the time on station for contract.
+*8 Historical contracts based on the United States and Soviet space race. (More to come)
+*New 1.06 New SkyLab 4 new contracts covering the launch and operation of Americas first Space Station SkyLab.
 
-## Hire kerbals and Death Insurance. 
+##Hire kerbals and Death Insurance. 
 Kerbals cost money now.  And if they die on duty you must pay a Insurance fee for that death.
 
-## Mission Controller Non Cheat Revert Button
+##Mission Controller Non Cheat Revert Button
 
 During flight if you look up at the Default tool bar you will see a big red button. This button is the Mission Controller
 Revert button. Unlike the cheaty pumpkin eatin KSP revert button, press this and you will get a revert option back
@@ -30,10 +31,9 @@ your TEST button. And don't feel ashamed!
 Pretty much everything in MissionController 2 has a setting you can adjust.  You can turn on and off any contract type in the
 Mod.  And also can turn off and on some of Kerbal Space Programs Contracts you might not like.
 
-## Installation
+##Installation
 
 When installing new version I highly suggest you do these steps to reset your contracts. 
-
 1. Alt-F12
 2. Select Contracts tab.
 3. Select Tools.

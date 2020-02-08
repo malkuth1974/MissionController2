@@ -14,7 +14,7 @@ using KSP.Localization;
 namespace MissionControllerEC.MCEContracts
 {
     #region Repair Goal Contract
-    public class RepairGoal : Contract
+    public class MCE_Repair_Goal : Contract
     {
         Settings st = new Settings("Config.cfg");
         CelestialBody targetBody = null;
@@ -138,8 +138,8 @@ namespace MissionControllerEC.MCEContracts
             {
                 return false;
             }
-            totalContracts = ContractSystem.Instance.GetCurrentContracts<RepairGoal>().Count();
-            TotalFinished = ContractSystem.Instance.GetCompletedContracts<RepairGoal>().Count();
+            totalContracts = ContractSystem.Instance.GetCurrentContracts<MCE_Repair_Goal>().Count();
+            TotalFinished = ContractSystem.Instance.GetCompletedContracts<MCE_Repair_Goal>().Count();
             //Debug.Log(" Repair Contract Totalcontracts " + totalContracts + " - " + " Total Finsihed " + TotalFinished);           
             if (totalContracts >= 1 || !HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings>().RepairContracts)
             {
@@ -282,7 +282,7 @@ namespace MissionControllerEC.MCEContracts
     }
     #endregion  
     #region Repair Station Contract
-    public class RepairStation : Contract
+    public class MCE_Repair_Station : Contract
     {
         Settings st = new Settings("Config.cfg");
         CelestialBody targetBody = null;
@@ -382,8 +382,8 @@ namespace MissionControllerEC.MCEContracts
             {
                 return false;
             }
-            totalContracts = ContractSystem.Instance.GetCurrentContracts<RepairStation>().Count();
-            TotalFinished = ContractSystem.Instance.GetCompletedContracts<RepairStation>().Count();
+            totalContracts = ContractSystem.Instance.GetCurrentContracts<MCE_Repair_Station>().Count();
+            TotalFinished = ContractSystem.Instance.GetCompletedContracts<MCE_Repair_Station>().Count();
             if (totalContracts >= 1 || !HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings>().RepairContracts)
             {
                 Debug.LogWarning("Total Repair station Contracts is greater then one Repair Contract Not Generated");

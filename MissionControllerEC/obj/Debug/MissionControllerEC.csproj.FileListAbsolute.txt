@@ -33,3 +33,5 @@ C:\Steam\steamapps\common\Kerbal Space Program\GameData\MissionControllerEC\Miss
 C:\Steam\steamapps\common\Kerbal Space Program\GameData\MissionControllerEC\MissionControllerEC.pdb
 C:\KSPFolder\Kerbal Space ProgramTest\GameData\MissionControllerEC\MissionControllerEC.dll
 C:\KSPFolder\Kerbal Space ProgramTest\GameData\MissionControllerEC\MissionControllerEC.pdb
+C:\KSPFolder\MissionController2\MissionControllerEC\obj\Debug\MissionControllerEC.csprojAssemblyReference.cache
+C:\KSPFolder\MissionController2\MissionControllerEC\obj\Debug\MissionControllerEC.csproj.CopyComplete

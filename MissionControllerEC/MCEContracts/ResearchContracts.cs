@@ -14,10 +14,12 @@ using KSP.Localization;
 namespace MissionControllerEC.MCEContracts
 {      
     #region OrbitalScan Contract
-    public class OrbitalScanContract : Contract
+    public class MCE_orbital_Scan_Contract : Contract
     {
         Settings st = new Settings("Config.cfg");
         CelestialBody targetBody = null;
+        public double contractAMA = 0;
+        public double contractAOP = 0;
         int crewCount = 0;
         public double testpos = 0;
         string partName = "Ionization Chamber";
@@ -25,8 +27,7 @@ namespace MissionControllerEC.MCEContracts
         double missionTime = 0;
         public int totalContracts = 0;
         public int TotalFinished = 0;
-        ContractParameter orbitresearch1;
-        ContractParameter orbitresearch2;
+        public ContractParameter orbitresearch2;
 
         protected override bool Generate()
         {           
@@ -43,18 +44,18 @@ namespace MissionControllerEC.MCEContracts
                 Debug.LogWarning("Orbit Research Random Selection is false, contract not Generated.");
                 return false;
             }
-            totalContracts = ContractSystem.Instance.GetCurrentContracts<OrbitalScanContract>().Count();
-            TotalFinished = ContractSystem.Instance.GetCompletedContracts<OrbitalScanContract>().Count();
+            totalContracts = ContractSystem.Instance.GetCurrentContracts<MCE_orbital_Scan_Contract>().Count();
+            TotalFinished = ContractSystem.Instance.GetCompletedContracts<MCE_orbital_Scan_Contract>().Count();
             if (totalContracts >= HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().ScienceContractNumbers)
             {
                 Debug.LogWarning("Orbit Research Already Generated, only 1 contract at time please.");
                 return false;
             }
+            int AtmoDepth = Tools.RandomNumber(1, 8);
+            contractAMA = FinePrint.Utilities.CelestialUtilities.GetMinimumOrbitalDistance(targetBody, (float)AtmoDepth);
+            contractAOP = Tools.getAOPCalc(contractAMA, 2.1);
             missionTime = Tools.RandomNumber(200, 1500);
-            this.orbitresearch1 = this.AddParameter(new InOrbitGoal(targetBody), null);
-            orbitresearch1.SetFunds(4000, targetBody);
-            orbitresearch1.SetReputation(3, targetBody);
-            orbitresearch1.SetScience(2, targetBody);
+            this.AddParameter(new FinePrint.Contracts.Parameters.SpecificOrbitParameter(FinePrint.Utilities.OrbitType.EQUATORIAL, 90, .01, contractAMA, 99, contractAOP, 1, 0, targetBody, 3), null);           
             this.orbitresearch2 = this.AddParameter(new OrbialResearchPartCheck(targetBody, missionTime), null);
             orbitresearch2.SetFunds(5000, targetBody);
             orbitresearch2.SetReputation(5, targetBody);
@@ -120,6 +121,8 @@ namespace MissionControllerEC.MCEContracts
             Tools.ContractLoadCheck(node, ref partName, "Orbital Research Scanner", partName, "partname");
             Tools.ContractLoadCheck(node, ref partNumber, 1, partNumber, "maxcount");
             Tools.ContractLoadCheck(node, ref missionTime, 10000, missionTime, "missiontime");
+            Tools.ContractLoadCheck(node, ref contractAMA, 71000, contractAMA, "ApA");
+            Tools.ContractLoadCheck(node, ref contractAOP, 99, contractAOP, "contractAOP");
 
         }
         protected override void OnSave(ConfigNode node)
@@ -130,6 +133,8 @@ namespace MissionControllerEC.MCEContracts
             node.AddValue("partname", partName);
             node.AddValue("maxcount", partNumber);
             node.AddValue("missiontime", missionTime);
+            node.AddValue("ApA", contractAMA);
+            node.AddValue("contractAOP", contractAOP);
         }
 
         public override bool MeetRequirements()
@@ -161,7 +166,7 @@ namespace MissionControllerEC.MCEContracts
     }
     #endregion
     #region Lander Scanning Contract
-    public class LanderResearchScan : Contract
+    public class MCE_Lander_Research_Scan : Contract
     {
         Settings st = new Settings("Config.cfg");
         CelestialBody targetBody = null;
@@ -183,8 +188,8 @@ namespace MissionControllerEC.MCEContracts
                 Debug.LogWarning("Lander Research Contracts random set to false No contract generated.");
                 return false;
             }
-            totalContracts = ContractSystem.Instance.GetCurrentContracts<LanderResearchScan>().Count();
-            TotalFinished = ContractSystem.Instance.GetCompletedContracts<LanderResearchScan>().Count();
+            totalContracts = ContractSystem.Instance.GetCurrentContracts<MCE_Lander_Research_Scan>().Count();
+            TotalFinished = ContractSystem.Instance.GetCompletedContracts<MCE_Lander_Research_Scan>().Count();
             if (totalContracts >= HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().ScienceContractNumbers)
             {
                 Debug.LogWarning("Lander Research Already Generated, only 1 contract at time please.");
