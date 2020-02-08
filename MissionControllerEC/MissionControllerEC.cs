@@ -94,21 +94,22 @@ namespace MissionControllerEC
         private static MultiOptionDialog CSatmulti_dialog;
         private static MultiOptionDialog CSupplyMulti_Dialog;
         private static MultiOptionDialog CCrewMulti_Dialog;
-        private static MultiOptionDialog DebugMulti_Dialg;
         private static MultiOptionDialog LandOrbitMulti_Dialg;
+        private static MultiOptionDialog BuildSpaceStation_Dialg;
 
         private static PopupDialog Main_popup_dialog;
         private static PopupDialog customSatPop_dialg;
         private static PopupDialog customSupPop_dialg;
         private static PopupDialog customCrewPop_Dialg;
-        private static PopupDialog customDebug_Dialg;
         private static PopupDialog customLandOrbit_dialg;
+        private static PopupDialog BuildSpaceStatPop_dialg;
 
-        private static DialogGUILabel label_1;
 
-        private static DialogGUIBase Debug_button;
+
         private static DialogGUIBase CustomCrew_button;
         private static DialogGUIBase CustomSat_button;
+        private static DialogGUIBase BuildBase_button;
+        private static DialogGUIBase BuildStation_button;
         private static DialogGUIBase CustomSupply_button;
         private static DialogGUIBase CustomLandOrbit_button;
         private static DialogGUIBase Main_Exit_button;
@@ -127,14 +128,8 @@ namespace MissionControllerEC
         private static DialogGUIBase Custom_Contract_Button12;
         private static DialogGUIBase Custom_Contract_Button13;
 
-        private static DialogGUIToggleButton Custom_Contract_Toggle1;
         private static DialogGUIToggleButton Custom_Contract_Toggle2;
-        private static DialogGUIToggleButton Custom_Contract_Toggle3;
-        private static DialogGUIToggleButton Custom_Contract_Toggle4;
-        private static DialogGUIToggleButton Custom_Contract_Toggle5;
-        private static DialogGUIToggleButton Custom_Contract_Toggle6;
-        private static DialogGUIToggleButton Custom_Contract_Toggle7;
-        private static DialogGUIToggleButton Custom_Contract_Toggle8;       
+          
 
         private static DialogGUIBox Custom_Contract_GuiBox1;
         private static DialogGUIBox Custom_Contract_GuiBox2;
@@ -191,7 +186,6 @@ namespace MissionControllerEC
         }
         else
         {
-            //Debug.LogWarning("[MCE] Scenario is not null.");
             if (!scenario.targetScenes.Contains(GameScenes.SPACECENTER))
                 scenario.targetScenes.Add(GameScenes.SPACECENTER);
             if (!scenario.targetScenes.Contains(GameScenes.FLIGHT))
@@ -208,9 +202,7 @@ namespace MissionControllerEC
             assemblyName = Assembly.GetExecutingAssembly().GetName();
             versionCode = assemblyName.Version.Major.ToString() + assemblyName.Version.Minor.ToString();
             loadFiles();                
-            GameEvents.Contract.onContractsLoaded.Add(this.onContractLoaded);
-            //GameEvents.onGameSceneLoadRequested.Add(this.CheckRepairContractTypes);
-            GameEvents.OnVesselRollout.Add(this.onvesselRoll);
+            GameEvents.Contract.onContractsLoaded.Add(this.onContractLoaded);          
             Debug.Log("MCE Awake Called");
             getSupplyList(false);
             // create popup dialog and hide it
@@ -220,7 +212,7 @@ namespace MissionControllerEC
             Debug.LogWarning("[MCE] Textrues called OnAwake");           
             CreateButtons();         
             Debug.LogWarning("[MCE] Buttons called OnAwake");
-            setOrbitLandNodes();
+            //setOrbitLandNodes();
         }    
                      
         void OnDestroy()
@@ -271,40 +263,49 @@ namespace MissionControllerEC
         private void Allocate()
         {
             if (SaveInfo.MainGUIWindowPos.x <= 0 || SaveInfo.MainGUIWindowPos.y <= 0)
-                SaveInfo.MainGUIWindowPos = new Vector2(0.5f, 0.5f);
+                SaveInfo.MainGUIWindowPos = new Vector2(0.5f, 0.5f);           
 
-            Debug_button = new DialogGUIButton(Localizer.Format(""), delegate
-            {
-                DebugMenuMce();
-                SaveInfo.GUIEnabled = false;
-            }, 10f, 10f, false);
-
-            CustomSat_button = new DialogGUIButton(Localizer.Format("Build Satellite Orbital Period Contract"), delegate
+            CustomSat_button = new DialogGUIButton(Localizer.Format("Lets Put Satellite In Space"), delegate
             {
                 ComSatContract();
                 SaveInfo.GUIEnabled = false;
             }, delegate { return true; }, button_width, button_height, false, MCEGuiElements.ButtonMenuMainSyle);
 
-            CustomLandOrbit_button = new DialogGUIButton(Localizer.Format("Build Orbit/Landing Contract"), delegate
+            CustomLandOrbit_button = new DialogGUIButton(Localizer.Format("Crewed Orbit And Landing"), delegate
             {
                 LandingOrbitCustomContract();
                 SaveInfo.GUIEnabled = false;
             }, delegate { return true; }, button_width, button_height, false, MCEGuiElements.ButtonMenuMainSyle);
 
-            CustomCrew_button = new DialogGUIButton(Localizer.Format("Build Crew Transfer Contract"), delegate
+            CustomCrew_button = new DialogGUIButton(Localizer.Format("Transfer Crew To Station"), delegate
             {
                 CrewTransferContract();
                 SaveInfo.GUIEnabled = false;
             }, delegate { return true; }, button_width, button_height, false, MCEGuiElements.ButtonMenuMainSyle);
            
-            CustomSupply_button = new DialogGUIButton(Localizer.Format("Build Resource Suppy Contract"), delegate
+            CustomSupply_button = new DialogGUIButton(Localizer.Format("Transfer Resources To Station"), delegate
             {
                 TransferContract();
                 SaveInfo.GUIEnabled = false;
               
             }, delegate { return true; }, button_width, button_height, false, MCEGuiElements.ButtonMenuMainSyle);
+            BuildStation_button = new DialogGUIButton(Localizer.Format("Lets Build A Space Station"), delegate
+            {
+                BuildSpaceStation()
+;
+                SaveInfo.GUIEnabled = false;
+            }, delegate { return true; }, button_width, button_height, false, MCEGuiElements.ButtonMenuMainSyle);
+            BuildBase_button = new DialogGUIButton(Localizer.Format("WithDraw Contract Offers (ALL)"), delegate
+            {
+                SaveInfo.OrbitLandingOn = false;
+                SaveInfo.BuildSpaceStationOn = false;
+                SaveInfo.ComSateContractOn = false;
+                SaveInfo.crewContractOn = false;
+                SaveInfo.supplyContractOn = false;
+                SaveInfo.GUIEnabled = false;
+            }, delegate { return true; }, button_width, button_height, false, MCEGuiElements.ButtonMenuMainSyle);
 
-            Main_Exit_button = new DialogGUIButton(Localizer.Format("Exit Contract Builder"), delegate
+            Main_Exit_button = new DialogGUIButton(Localizer.Format("Exit Finance Contract Builder"), delegate
             {
                 SaveInfo.GUIEnabled = false;
                 onContractLoaded();
@@ -313,13 +314,13 @@ namespace MissionControllerEC
             Mainmulti_dialog = new MultiOptionDialog(
                "MissionControllerMain",
                "",
-               "Contract Builder Main Menu",
+               "Finance Contract Builder Menu",
                MCEGuiElements.MissionControllerSkin,
                new Rect(SaveInfo.MainGUIWindowPos.x, SaveInfo.MainGUIWindowPos.y, width, height),
                new DialogGUIBase[]
                {
-                   new DialogGUIVerticalLayout(CustomSat_button,CustomLandOrbit_button ,CustomCrew_button ,CustomSupply_button, new DialogGUISpace(5),
-                    Main_Exit_button), new DialogGUISpace(12),Debug_button
+                   new DialogGUIVerticalLayout(CustomSat_button,CustomLandOrbit_button ,CustomCrew_button ,CustomSupply_button,BuildStation_button,BuildBase_button, new DialogGUISpace(5),
+                    Main_Exit_button), new DialogGUISpace(12)
                });
         }
 
@@ -344,26 +345,8 @@ namespace MissionControllerEC
     }  
     public class MCE_DataStorage : ConfigNodeStorage
     {        
-        [Persistent]public bool ComSatOn = false;
-        [Persistent]public string agenaTargetVesselID = "none";
-        [Persistent]public string agenaTargetVesselName = "none";
-        [Persistent]public bool agena1done = false;
-        [Persistent]public bool agena2done = false;
-        [Persistent]public bool vostok1done = false;
-        [Persistent]public bool vostok2done = false;
-        [Persistent]public bool voskhod2done = false;
-        [Persistent]public bool luna2done = false;
-        [Persistent]public bool luna16done = false;
-        [Persistent]public bool skylab1done = false;
-        [Persistent]public bool skylab2done = false;
-        [Persistent]public bool skylab3done = false;
-        [Persistent]public bool skylab4done = false;
-        [Persistent]public bool messagehelpers = false;
-
-        [Persistent]public string skylabname = "none";
-        [Persistent]public string skylabID = "none";
-
-        
+        [Persistent]public bool ComSatOn = false;        
+              
         [Persistent]public string supplyVesselName = "None";
         [Persistent]public string supplyVesselId = "none";
         [Persistent]public string supplyResource = "none";
@@ -401,20 +384,12 @@ namespace MissionControllerEC
         [Persistent]public bool noCivilianContracts = false;
 
         [Persistent]internal bool com_Sat_Start_Building = false;
-        [Persistent]internal double com_Sat_maxOrbP = 10860;
-        [Persistent]internal double com_Sat_minOrbP = 10680;
+        [Persistent]internal double com_Sat_maxOrbP = 70000;
+        [Persistent]internal double com_Sat_minOrbP = 0;
         [Persistent]internal string com_Sat_contractName = "Deliever COMSAT Satellite";
         [Persistent]internal int com_Sat_bodyNumber = 1;
         [Persistent]internal bool hardcoreOn = true;
-
-        [Persistent]internal int tirosNumber = 1;
-        [Persistent]internal int marinerNumber = 1;
-        [Persistent]internal int apolloNumber = 1;
-        [Persistent]internal int apolloDunaNumber = 1;
-        [Persistent]internal bool apolloStationStatus = false;
-
-        [Persistent]internal double apolldunLat = 1;
-        [Persistent]internal double apolldunLon = 1;
+        
         [Persistent]internal double savedroverLat = 0;
         [Persistent]internal double savedroverlong = 0;
         [Persistent]internal bool roverislanded = false;
@@ -427,29 +402,8 @@ namespace MissionControllerEC
         public override void OnDecodeFromConfigNode()
         {
             SaveInfo.SatelliteConDesc = satConDescript;
-            SaveInfo.ResourceTransferConDesc = ResourceTransferConDescript;
-            SaveInfo.apolloDunaStation = apolloStationStatus;
-            SaveInfo.apolloLandingLat = apolldunLat;
-            SaveInfo.apolloLandingLon = apolldunLon;
-            SaveInfo.tirosCurrentNumber = tirosNumber;
-            SaveInfo.marinerCurrentNumber = marinerNumber;
-            SaveInfo.apolloCurrentNumber = apolloNumber;
-            SaveInfo.apolloDunaCurrentNumber = apolloDunaNumber;          
-            SaveInfo.SatContractReady = ComSatOn;
-            SaveInfo.AgenaTargetVesselID = agenaTargetVesselID;
-            SaveInfo.AgenaTargetVesselName = agenaTargetVesselName;
-            SaveInfo.Agena1Done = agena1done;
-            SaveInfo.Agena2Done = agena2done;
-            SaveInfo.Vostok1Done = vostok1done;
-            SaveInfo.Vostok2Done = vostok2done;
-            SaveInfo.Voskhod2Done = voskhod2done;
-            SaveInfo.Luna2Done = luna2done;
-            SaveInfo.Luna16Done = luna16done;
-            SaveInfo.skylab1done = skylab1done;
-            SaveInfo.skylab2done = skylab2done;
-            SaveInfo.skylab3done = skylab3done;
-            SaveInfo.skylab4done = skylab4done;
-
+            SaveInfo.ResourceTransferConDesc = ResourceTransferConDescript;                 
+            SaveInfo.SatContractReady = ComSatOn;          
             SaveInfo.ComSateContractOn = com_Sat_Start_Building;
             SaveInfo.comSatmaxOrbital = com_Sat_maxOrbP;
             SaveInfo.comSatminOrbital = com_Sat_minOrbP;
@@ -466,10 +420,7 @@ namespace MissionControllerEC
             SaveInfo.TransferCrewDesc = transfercrewDesc;
             SaveInfo.transferTouristTrue = crewCiviliansOn;
             SaveInfo.transferTouristAmount = transferTouristAmount;
-
-            SaveInfo.skyLabName = skylabname;
-            SaveInfo.skyLabVesID = skylabID;
-
+           
             SaveInfo.SupplyVesName = supplyVesselName;
             SaveInfo.SupplyVesId = supplyVesselId;
             SaveInfo.ResourceName = supplyResource;
@@ -497,28 +448,8 @@ namespace MissionControllerEC
         public override void OnEncodeToConfigNode()
         {
             satConDescript = SaveInfo.SatelliteConDesc;
-            ResourceTransferConDescript = SaveInfo.ResourceTransferConDesc;
-            apolloStationStatus = SaveInfo.apolloDunaStation;
-            apolldunLat = SaveInfo.apolloLandingLat;
-            apolldunLon = SaveInfo.apolloLandingLon;
-            tirosNumber = SaveInfo.tirosCurrentNumber;
-            marinerNumber = SaveInfo.marinerCurrentNumber;
-            apolloNumber = SaveInfo.apolloCurrentNumber;
-            apolloDunaNumber = SaveInfo.apolloDunaCurrentNumber;       
-            ComSatOn = SaveInfo.SatContractReady;
-            agenaTargetVesselID = SaveInfo.AgenaTargetVesselID;
-            agenaTargetVesselName = SaveInfo.AgenaTargetVesselName;
-            agena1done = SaveInfo.Agena1Done;
-            agena2done = SaveInfo.Agena2Done;
-            vostok1done = SaveInfo.Vostok1Done;
-            vostok2done = SaveInfo.Vostok2Done;
-            voskhod2done = SaveInfo.Voskhod2Done;
-            luna2done = SaveInfo.Luna2Done;
-            luna16done = SaveInfo.Luna16Done;
-            skylab1done = SaveInfo.skylab1done;
-            skylab2done = SaveInfo.skylab2done;
-            skylab3done = SaveInfo.skylab3done;
-            skylab4done = SaveInfo.skylab4done;
+            ResourceTransferConDescript = SaveInfo.ResourceTransferConDesc;              
+            ComSatOn = SaveInfo.SatContractReady;            
 
             com_Sat_Start_Building = SaveInfo.ComSateContractOn;
             com_Sat_maxOrbP = SaveInfo.comSatmaxOrbital;
@@ -536,9 +467,7 @@ namespace MissionControllerEC
             crewCiviliansOn = SaveInfo.transferTouristTrue;
             transfercrewDesc = SaveInfo.TransferCrewDesc;
             transferTouristAmount = SaveInfo.transferTouristAmount;
-
-            skylabname = SaveInfo.skyLabName;
-            skylabID = SaveInfo.skyLabVesID;
+           
 
             supplyVesselName = SaveInfo.SupplyVesName;
             supplyVesselId = SaveInfo.SupplyVesId;

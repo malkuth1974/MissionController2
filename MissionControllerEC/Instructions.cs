@@ -8,7 +8,6 @@ using System.Reflection;
 using Contracts;
 using KSP.UI.Screens;
 using Contracts.Parameters;
-//using MissionControllerEC.MCEContracts;
 
 
 namespace MissionControllerEC
@@ -38,7 +37,6 @@ namespace MissionControllerEC
 
         public static List<string> CivName = new List<string>();
 
-        Tools.MC2RandomWieghtSystem.Item<int>[] RandomRepairContractsCheck;
         Tools.MC2RandomWieghtSystem.Item<int>[] RandomSatelliteContractsCheck;
         
         public void loadTextures()
@@ -111,16 +109,6 @@ namespace MissionControllerEC
             SaveInfo.GUIEnabled = false;
         }
 
-        //private void revertOff()
-        //{
-        //    MCE_ScenarioStartup.ShowPopUpWindow3 = false;
-        //    RevertPress();
-        //}
-        //private void revertOn()
-        //{
-        //    //MCE_ScenarioStartup.ShowPopUpWindow3 = true;
-        //    RevertPress();
-        //}
         public void DestroyButtons()
         {
             if (this.MCEButton != null)
@@ -140,63 +128,16 @@ namespace MissionControllerEC
                 ((Screen.width / 2) + popupinfo.RTrf.position.x) / Screen.width,
                 ((Screen.height / 2) + popupinfo.RTrf.position.y) / Screen.height);
             Debug.LogError("GuiDestroy Info Save as is:  " + value.ToString());
-            //popupinfo.Dismiss();
-            //popupinfo = null;
+           
         }
-               
-        //public void CheckRepairContractTypes(GameScenes gs)
-        //{
-        //    randomContractsCheck();
-        //    currentContractType = Tools.MC2RandomWieghtSystem.PickOne<int>(RandomRepairContractsCheck);
-        //    Debug.LogWarning("Checking for Random Contracts Now MCE");
-        //    if (currentContractType == 0)
-        //    {
-        //        SaveInfo.RepairContractGeneratedOn = false;               
-        //        SaveInfo.RepairStationContractGeneratedOn = false;
-        //        Debug.Log("No Repair Type contracts at this time");
-        //    }            
-        //    else if (currentContractType == 1)
-        //    {
-        //        SaveInfo.RepairContractGeneratedOn = true;             
-        //        SaveInfo.RepairStationContractGeneratedOn = false;
-        //        Debug.Log("Repair Contract Selected");
-        //    }
-        //    else if (currentContractType == 2)
-        //    {
-        //        SaveInfo.RepairContractGeneratedOn = false;
-        //        SaveInfo.RepairStationContractGeneratedOn = true;
-        //        Debug.Log("RepairStation Contract Selected");
-        //    }           
-        //    else
-        //    {
-        //        Debug.LogWarning("MCE failed to load random contract Check, defaulting");
-        //    }
-        //}
 
         public void CheckRandomSatelliteContractTypes()
         {
             randomSatelliteContractsCheck();
-            SaveInfo.SatelliteTypeChoice = Tools.MC2RandomWieghtSystem.PickOne<int>(RandomSatelliteContractsCheck); 
+            SaveInfo.SatelliteTypeChoice = Tools.MC2RandomWieghtSystem.PickOne<int>(RandomSatelliteContractsCheck);
             //Debug.LogWarning("Satellite Type Chosen Is Number " + SaveInfo.SatelliteTypeChoice);         
         }
-
-        public void randomContractsCheck()
-        {
-            RandomRepairContractsCheck = new Tools.MC2RandomWieghtSystem.Item<int>[3];
-            RandomRepairContractsCheck[0] = new Tools.MC2RandomWieghtSystem.Item<int>();
-            RandomRepairContractsCheck[0].weight = 10;
-            RandomRepairContractsCheck[0].value = 0;
-
-            RandomRepairContractsCheck[1] = new Tools.MC2RandomWieghtSystem.Item<int>();
-            RandomRepairContractsCheck[1].weight = 55;
-            RandomRepairContractsCheck[1].value = 1;
-
-            RandomRepairContractsCheck[2] = new Tools.MC2RandomWieghtSystem.Item<int>();
-            RandomRepairContractsCheck[2].weight = 35;
-            RandomRepairContractsCheck[2].value = 2;
-           
-        }
-
+      
         public void randomSatelliteContractsCheck()
         {
             RandomSatelliteContractsCheck = new Tools.MC2RandomWieghtSystem.Item<int>[6];
@@ -222,12 +163,8 @@ namespace MissionControllerEC
 
             RandomSatelliteContractsCheck[5] = new Tools.MC2RandomWieghtSystem.Item<int>();
             RandomSatelliteContractsCheck[5].weight = 5;
-            RandomSatelliteContractsCheck[5].value = 5; 
-        } 
-        public void onvesselRoll(ShipConstruct sc)
-        {
-            sc.GetShipCosts(out temp, out temp2);
-        }          
+            RandomSatelliteContractsCheck[5].value = 5;
+        }        
 
         public void onContractLoaded()
         {           
@@ -359,39 +296,29 @@ namespace MissionControllerEC
             }
         }
               
-        public void GetLatandLonDefault(Vessel vessel)
-        {
-            double LatValue;
-            LatValue = vessel.latitude;
-            double LonValue;
-            LonValue = vessel.longitude;
-
-            SaveInfo.apolloLandingLat = LatValue;
-
-            SaveInfo.apolloLandingLon = LonValue;
-        }
-        public void GetEvaTypeKerbal()
-        {
-            List<ProtoCrewMember> protoCrewMembers = FlightGlobals.ActiveVessel.GetVesselCrew();
-            foreach (Experience.ExperienceEffect exp in protoCrewMembers[0].experienceTrait.Effects)
-            {
-                if (exp.ToString() == "Experience.Effects.RepairSkill")
-                {
-                    Debug.Log("Current kerbal is a Engineer you have passed");
-                }
-                else
-                {
-                    Debug.Log("Current kerbal is NOT an Engineer you don't pass... Bad boy!");
-                }
-            }
-        }
-        public void SetVesselLaunchCurrentTime()
-        {
-            Debug.Log("Old LaunchTime was: " + Tools.ConvertDays(FlightGlobals.ActiveVessel.launchTime));
-            double currentTime = Planetarium.GetUniversalTime();
-            FlightGlobals.ActiveVessel.launchTime = currentTime;
-            Debug.Log("New LaunchTime Is: " + Tools.ConvertDays(FlightGlobals.ActiveVessel.launchTime));
-        }
+       
+        //public void GetEvaTypeKerbal()
+        //{
+        //    List<ProtoCrewMember> protoCrewMembers = FlightGlobals.ActiveVessel.GetVesselCrew();
+        //    foreach (Experience.ExperienceEffect exp in protoCrewMembers[0].experienceTrait.Effects)
+        //    {
+        //        if (exp.ToString() == "Experience.Effects.RepairSkill")
+        //        {
+        //            Debug.Log("Current kerbal is a Engineer you have passed");
+        //        }
+        //        else
+        //        {
+        //            Debug.Log("Current kerbal is NOT an Engineer you don't pass... Bad boy!");
+        //        }
+        //    }
+        //}
+        //public void SetVesselLaunchCurrentTime()
+        //{
+        //    Debug.Log("Old LaunchTime was: " + Tools.ConvertDays(FlightGlobals.ActiveVessel.launchTime));
+        //    double currentTime = Planetarium.GetUniversalTime();
+        //    FlightGlobals.ActiveVessel.launchTime = currentTime;
+        //    Debug.Log("New LaunchTime Is: " + Tools.ConvertDays(FlightGlobals.ActiveVessel.launchTime));
+        //}
         public void GetContractList()
         {
             if (ContractSystem.Instance != null)
@@ -415,22 +342,22 @@ namespace MissionControllerEC
                 
             }         
         }
-        public void GetLongAndLat(Vessel v)
-        {
-            double longitude;
-            double latitude;
-            longitude = v.longitude;
-            latitude = v.latitude;
-            Debug.LogError("Current longitude is " + longitude + " Current latitude is " + latitude);
-        }
-        public void setOrbitLandNodes()
-        {
-            SaveInfo.OrbitNamesList.Add("Landing");
-            SaveInfo.OrbitNamesList.Add("Orbit");
-            SaveInfo.OrbitNamesList.Add("SubTraject");
-            SaveInfo.OrbitNamesList.Add("Flyby");
+        //public void GetLongAndLat(Vessel v)
+        //{
+        //    double longitude;
+        //    double latitude;
+        //    longitude = v.longitude;
+        //    latitude = v.latitude;
+        //    Debug.LogError("Current longitude is " + longitude + " Current latitude is " + latitude);
+        //}
+        //public void setOrbitLandNodes()
+        //{
+        //    SaveInfo.OrbitNamesList.Add("Landing");
+        //    SaveInfo.OrbitNamesList.Add("Orbit");
+        //    SaveInfo.OrbitNamesList.Add("SubTraject");
+        //    SaveInfo.OrbitNamesList.Add("Flyby");
             
-        }
+        //}
         
     }
    
@@ -480,5 +407,5 @@ namespace MissionControllerEC
             this.ContractDisabled = ContDisabled;
         }
         
-    }    
+    }   
 }

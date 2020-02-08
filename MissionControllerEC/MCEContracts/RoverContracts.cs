@@ -12,7 +12,7 @@ using KSP.Localization;
 
 namespace MissionControllerEC.MCEContracts
 {
-    public class RoverContracts : Contract
+    public class MCE_Rover_Contracts : Contract
     {
         private double RcLatitude = 0;
         private double RcLongitude = 0;
@@ -43,8 +43,8 @@ namespace MissionControllerEC.MCEContracts
         protected override bool Generate()
         {
             if (HighLogic.LoadedSceneIsFlight) { return false; }
-            totalContracts = ContractSystem.Instance.GetCurrentContracts<RoverContracts>().Count();
-            TotalFinished = ContractSystem.Instance.GetCompletedContracts<RoverContracts>().Count();
+            totalContracts = ContractSystem.Instance.GetCurrentContracts<MCE_Rover_Contracts>().Count();
+            TotalFinished = ContractSystem.Instance.GetCompletedContracts<MCE_Rover_Contracts>().Count();
 
             if (totalContracts >= 1)
             {

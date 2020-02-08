@@ -6,26 +6,12 @@ namespace MissionControllerEC
 {
     class Tools
     {
-        public static bool RandomBool(int randomvalue)
-        {
-            int test = 0;
-            test = UnityEngine.Random.Range(0, 100);
-            if (test > randomvalue)
-            {
-                Debug.Log("MCE Random Check for " + randomvalue + " is TRUE");
-                return true;
-            }
-            else
-            {
-                Debug.Log("MCE Random Check for " + randomvalue + " is FALSE");
-                return false;
-            }
-        }
-
         public static int RandomNumber(int range1, int range2)
         {
+            range1 = Math.Abs(range1);
+            range2 = Math.Abs(range2);
             int value = UnityEngine.Random.Range(range1, range2);
-
+            Debug.LogError("range 1 Is = " + range1 + "Range 2 is = " + range2 + "Total Value is = " + value);            
             return value;
         }
         public static float FloatRandomNumber(float range1, float range2)
@@ -43,38 +29,7 @@ namespace MissionControllerEC
             Debug.Log("Base Latitude is: " + NLatitude + "New Value is: " + BaseLatitude);
             return BaseLatitude;
         }
-
-        public static double ReturnOrbitValues(CelestialBody targetBody, bool RandomChance, float multiplier)
-        {
-            if (targetBody != null)
-            {
-                double TempOrbitMin = targetBody.atmosphereDepth;
-                Debug.LogWarning("TempOrbitMin is = " + TempOrbitMin);
-                double Temporbitmax = TempOrbitMin * multiplier;
-                Debug.LogWarning("MaxOrbit Multiplier is " + Temporbitmax);
-                double TempOrbitRandom = Tools.RandomNumber((int)TempOrbitMin, (int)Temporbitmax);
-                if (RandomChance == false)
-                {
-                    double TempOrbitRandom2 = TempOrbitMin * multiplier;
-                    return TempOrbitRandom2;
-                }
-                else
-                {
-                    return TempOrbitRandom + 5000;
-                }
-            }
-            else
-            {
-                Debug.LogWarning("Failed to load celestialbody for ReturnOrbitValues in Mission Controller defaulting to 300000");
-                return 300000;
-            }
-
-        }
-        public static double ReturnMinOrbit(CelestialBody targetbody, float multipier)
-        {
-            return targetbody.atmosphereDepth * multipier;
-        }
-
+       
         public static double ConvertDays(double seconds)
         {
             double newValue;
@@ -115,12 +70,7 @@ namespace MissionControllerEC
             }
 
         }
-        public static double DivisionBy2Numbers(double val, double val2)
-        {
-            double divnum;
-            divnum = val / val2;
-            return divnum;
-        }
+        
         public static String formatTime(double seconds)
         {
             int y = (int)(seconds / (6.0 * 60.0 * 60.0 * 426.08));
@@ -168,25 +118,7 @@ namespace MissionControllerEC
                 return "0s";
             }
         }
-
-        public static double getBodyAltitude(CelestialBody body)
-        {
-            double atmosphere = 0.0;
-
-            if (!body.atmosphere)
-            {
-                atmosphere = body.Radius + 40000;
-                Debug.Log("Body radius is " + body.Radius);
-            }
-            else
-            {
-                atmosphere = body.atmosphereDepth;
-
-                Debug.Log("Body and AtmoshpereDepth is " + atmosphere);
-            }
-
-            return Math.Round(atmosphere);
-        }
+        
         public static double getAOPCalc(double a, double b)
         {
             double result = a / b;
@@ -263,12 +195,7 @@ namespace MissionControllerEC
                 Debug.Log("MCE Removed Civilian " + name2);
             }
         }
-
-        public static void DebugCivilianGoHome(string name)
-        {           
-                HighLogic.CurrentGame.CrewRoster.Remove(name);
-                Debug.Log("MCE Removed Civilian " + name);           
-        }
+      
         public static void CivilianName()
         {
             SaveInfo.TourisNames.Add("Sam Kerbman");
@@ -315,13 +242,7 @@ namespace MissionControllerEC
 
             
         }
-
-        public static void ObitalPeriodHelper(Vessel v)
-        {
-            ScreenMessages.PostScreenMessage("Current Orbital Period is: " + Tools.formatTime(FlightGlobals.ActiveVessel.orbit.period) + "\n" +
-                "ApA Is: " + (int)v.orbit.ApA + " PeA Is: " + (int)v.orbit.PeA + "\n" +
-                "Current eccentricity is: " + FlightGlobals.ActiveVessel.orbit.eccentricity.ToString("F2") + "\n");            
-        }
+       
         public static void GroundStationRangeHelper(Vessel v, string GstationName, bool inRangeTF)
         {
             ScreenMessages.PostScreenMessage("Ground Station " + GstationName + "In range? " + inRangeTF, .001f);
@@ -343,12 +264,7 @@ namespace MissionControllerEC
 
             }
         }
-        public static void TestNumbers1()
-        {
-            CelestialBody targetbody = Planetarium.fetch.Home;
-            double Test = targetbody.atmosphereDepth;
-            Debug.LogWarning("CelestialBody Is : " + targetbody.displayName + " Value Testing = :" + Test);
-        }
+      
         public static void ContractLoadCheck<t>(ConfigNode node, ref t value, t backupDefault, float valueName, string savedFile)
         {
             try

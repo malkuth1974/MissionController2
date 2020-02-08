@@ -27,7 +27,7 @@ namespace MissionControllerEC
         public int count = 0;
         public int prCount = 0;
         private int DictCount;
-        string KerbalName = "PlaceNameHere";
+        //string KerbalName = "PlaceNameHere";
 
         double revertcost = HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCERevertCost;
         #region Revert Gui                
@@ -97,93 +97,115 @@ namespace MissionControllerEC
         /// </summary>
         internal void ComSatContract()
         {
+            int targetbodyNum = FlightGlobals.Bodies.Count();
             targetbody = FlightGlobals.Bodies[SaveInfo.comSatBodyName];
            
             Custom_Contract_Button1 = new DialogGUIButton(Localizer.Format("#autoLOC_MCE_Button_Exit_Label"), () => { SaveInfo.GUIEnabled = true;}, Contract_Button_Large_W, Contract_Button_Large_H, true);
-            Custom_Contract_Button12 = new DialogGUIButton(Localizer.Format("Transmit Contract To Mission Control"),
+            Custom_Contract_Button12 = new DialogGUIButton(Localizer.Format("Transmit Contract To Finance Committee"),
                                delegate
                                {
+                                   if (SaveInfo.ComSateContractOn == true) { SaveInfo.ComSateContractOn = false; }
                                    SaveInfo.ComSateContractOn = !SaveInfo.ComSateContractOn;
                                    SaveInfo.CustomSatWindowPos = new Vector2(
                                    ((Screen.width / 2) + customSatPop_dialg.RTrf.position.x) / Screen.width,
                                    ((Screen.height / 2) + customSatPop_dialg.RTrf.position.y) / Screen.height);
+                                   MessageSystem.Message m = new MessageSystem.Message("Contract Bid Has Been Entered", "Hello your contract "+ SaveInfo.ComSatContractName + " has been given to the finance Committee.  We will get back to you as soon as possible.", MessageSystemButton.MessageButtonColor.BLUE, MessageSystemButton.ButtonIcons.ALERT);
+                                   MessageSystem.Instance.AddMessage(m);
                                    ComSatContract();
+                                   
 
                                }, delegate { return true; }, Contract_Button_Large_W, Contract_Button_Large_H, false, MCEGuiElements.ButtonPressMeToWorkStyle);
-            Custom_Contract_Button2 = new DialogGUIButton(Localizer.Format("#autoLOC_MCE_Button_Hour-"),
+            Custom_Contract_Button2 = new DialogGUIButton(Localizer.Format("-10000 Meters"),
                 delegate
                 {
-                    SaveInfo.comSatmaxOrbital -= 3600;
+                    SaveInfo.comSatmaxOrbital -= 10000;
                     SaveInfo.CustomSatWindowPos = new Vector2(
                                    ((Screen.width / 2) + customSatPop_dialg.RTrf.position.x) / Screen.width,
                                    ((Screen.height / 2) + customSatPop_dialg.RTrf.position.y) / Screen.height);
                     ComSatContract();
                 },
                 Contract_Button_Small_W, Contract_Button_Small_H, true);
-            Custom_Contract_Button3 = new DialogGUIButton(Localizer.Format("#autoLOC_MCE_Button_Hour+"),
+            Custom_Contract_Button3 = new DialogGUIButton(Localizer.Format("+10000 Meters"),
                 delegate
                 {
-                    SaveInfo.comSatmaxOrbital += 3600;
+                    SaveInfo.comSatmaxOrbital += 10000;
                     SaveInfo.CustomSatWindowPos = new Vector2(
                                    ((Screen.width / 2) + customSatPop_dialg.RTrf.position.x) / Screen.width,
                                    ((Screen.height / 2) + customSatPop_dialg.RTrf.position.y) / Screen.height);
                     ComSatContract();
                 },
             Contract_Button_Small_W, Contract_Button_Small_H, true);
-            Custom_Contract_Button4 = new DialogGUIButton(Localizer.Format("#autoLOC_MCE_Button_Min-"),
+            Custom_Contract_Button4 = new DialogGUIButton(Localizer.Format("-1000 Meters"),
                delegate
                {
-                   SaveInfo.comSatmaxOrbital -= 60;
+                   SaveInfo.comSatmaxOrbital -= 1000;
                    SaveInfo.CustomSatWindowPos = new Vector2(
                                    ((Screen.width / 2) + customSatPop_dialg.RTrf.position.x) / Screen.width,
                                    ((Screen.height / 2) + customSatPop_dialg.RTrf.position.y) / Screen.height);
                    ComSatContract();
                },
                Contract_Button_Small_W, Contract_Button_Small_H, true);
-            Custom_Contract_Button5 = new DialogGUIButton(Localizer.Format("#autoLOC_MCE_Button_Min+"),
+            Custom_Contract_Button5 = new DialogGUIButton(Localizer.Format("+1000 Meters"),
               delegate
               {
-                  SaveInfo.comSatmaxOrbital += 60;
+                  SaveInfo.comSatmaxOrbital += 1000;
                   SaveInfo.CustomSatWindowPos = new Vector2(
                                    ((Screen.width / 2) + customSatPop_dialg.RTrf.position.x) / Screen.width,
                                    ((Screen.height / 2) + customSatPop_dialg.RTrf.position.y) / Screen.height);
                   ComSatContract();
               },
               Contract_Button_Small_W, Contract_Button_Small_H, true);
-            Custom_Contract_Button6 = new DialogGUIButton(Localizer.Format("#autoLOC_MCE_Button_Hour-"),
+            Custom_Contract_Button6 = new DialogGUIButton(Localizer.Format("+10 Inclination"),
               delegate
               {
-                  SaveInfo.comSatminOrbital -= 3600;
+                  SaveInfo.comSatminOrbital -= 10;
+                  if (SaveInfo.comSatminOrbital > 90)
+                  { SaveInfo.comSatminOrbital = 90; }
+                  if (SaveInfo.comSatminOrbital < -90)
+                  { SaveInfo.comSatminOrbital = -90; }
                   SaveInfo.CustomSatWindowPos = new Vector2(
                                    ((Screen.width / 2) + customSatPop_dialg.RTrf.position.x) / Screen.width,
                                    ((Screen.height / 2) + customSatPop_dialg.RTrf.position.y) / Screen.height);
                   ComSatContract();
               },
               Contract_Button_Small_W, Contract_Button_Small_H, true);
-            Custom_Contract_Button7 = new DialogGUIButton(Localizer.Format("#autoLOC_MCE_Button_Hour+"),
+            Custom_Contract_Button7 = new DialogGUIButton(Localizer.Format("+10 Inclination"),
               delegate
               {
-                  SaveInfo.comSatminOrbital += 3600;
+                  SaveInfo.comSatminOrbital += 10;
+                  if (SaveInfo.comSatminOrbital > 90)
+                  { SaveInfo.comSatminOrbital = 90; }
+                  if (SaveInfo.comSatminOrbital < -90)
+                  { SaveInfo.comSatminOrbital = -90; }
                   SaveInfo.CustomSatWindowPos = new Vector2(
                                    ((Screen.width / 2) + customSatPop_dialg.RTrf.position.x) / Screen.width,
                                    ((Screen.height / 2) + customSatPop_dialg.RTrf.position.y) / Screen.height);
                   ComSatContract();
               },
               Contract_Button_Small_W, Contract_Button_Small_H, true);
-            Custom_Contract_Button8 = new DialogGUIButton(Localizer.Format("#autoLOC_MCE_Button_Min-"),
+            Custom_Contract_Button8 = new DialogGUIButton(Localizer.Format("-1 Inclination"),
               delegate
               {
-                  SaveInfo.comSatminOrbital -= 60;
+                  SaveInfo.comSatminOrbital -= 1;
+                  if (SaveInfo.comSatminOrbital > 90)
+                  { SaveInfo.comSatminOrbital = 90; }
+                  if (SaveInfo.comSatminOrbital < -90)
+                  { SaveInfo.comSatminOrbital = -90; }
+
                   SaveInfo.CustomSatWindowPos = new Vector2(
                                    ((Screen.width / 2) + customSatPop_dialg.RTrf.position.x) / Screen.width,
                                    ((Screen.height / 2) + customSatPop_dialg.RTrf.position.y) / Screen.height);
                   ComSatContract();
               },
               Contract_Button_Small_W, Contract_Button_Small_H, true);
-            Custom_Contract_Button9 = new DialogGUIButton(Localizer.Format("#autoLOC_MCE_Button_Min+"),
+            Custom_Contract_Button9 = new DialogGUIButton(Localizer.Format("+1 Inclination"),
               delegate
               {
-                  SaveInfo.comSatminOrbital += 60;
+                  SaveInfo.comSatminOrbital += 1;
+                   if (SaveInfo.comSatminOrbital > 90)
+                  { SaveInfo.comSatminOrbital = 90; }
+                  if (SaveInfo.comSatminOrbital < -90)
+                  { SaveInfo.comSatminOrbital = -90; };
                   SaveInfo.CustomSatWindowPos = new Vector2(
                                    ((Screen.width / 2) + customSatPop_dialg.RTrf.position.x) / Screen.width,
                                    ((Screen.height / 2) + customSatPop_dialg.RTrf.position.y) / Screen.height);
@@ -194,7 +216,7 @@ namespace MissionControllerEC
               delegate
               {
                   SaveInfo.comSatBodyName--;
-                  if (SaveInfo.comSatBodyName < 1 || SaveInfo.comSatBodyName > 16)
+                  if (SaveInfo.comSatBodyName < 0 || SaveInfo.comSatBodyName > targetbodyNum)
                   {
                       SaveInfo.comSatBodyName = 1;
                   }
@@ -208,7 +230,7 @@ namespace MissionControllerEC
               delegate
               {
                   SaveInfo.comSatBodyName++;
-                  if (SaveInfo.comSatBodyName < 1 || SaveInfo.comSatBodyName > 16)
+                  if (SaveInfo.comSatBodyName < 0 || SaveInfo.comSatBodyName > targetbodyNum)
                   {
                       SaveInfo.comSatBodyName = 1;
                   }
@@ -219,10 +241,10 @@ namespace MissionControllerEC
               },
               Contract_Button_Med_W, Contract_Button_Med_H, true);
 
-            Custom_Contract_GuiBox1 = new DialogGUIBox("Select Your Max Orbital Period", MCEGuiElements.DescripStyle, Contract_Button_Large_W, Contract_Button_Med_H);
-            Custom_Contract_GuiBox7 = new DialogGUIBox(Tools.ConvertMinsHours(SaveInfo.comSatmaxOrbital), MCEGuiElements.DescripStyle2, Contract_Button_Large_W, Contract_Button_Med_H);
-            Custom_Contract_GuiBox2 = new DialogGUIBox("Select Your Min Orbital Period", MCEGuiElements.DescripStyle, Contract_Button_Large_W, Contract_Button_Med_H);
-            Custom_Contract_GuiBox8 = new DialogGUIBox(Tools.ConvertMinsHours(SaveInfo.comSatminOrbital), MCEGuiElements.DescripStyle2, Contract_Button_Large_W, Contract_Button_Med_H);
+            Custom_Contract_GuiBox1 = new DialogGUIBox("Select Your Orbital Height", MCEGuiElements.DescripStyle, Contract_Button_Large_W, Contract_Button_Med_H);
+            Custom_Contract_GuiBox7 = new DialogGUIBox(SaveInfo.comSatmaxOrbital.ToString(), MCEGuiElements.DescripStyle2, Contract_Button_Large_W, Contract_Button_Med_H);
+            Custom_Contract_GuiBox2 = new DialogGUIBox("Select Your Inclination", MCEGuiElements.DescripStyle, Contract_Button_Large_W, Contract_Button_Med_H);
+            Custom_Contract_GuiBox8 = new DialogGUIBox(SaveInfo.comSatminOrbital.ToString(), MCEGuiElements.DescripStyle2, Contract_Button_Large_W, Contract_Button_Med_H);
             Custom_Contract_GuiBox3 = new DialogGUIBox("Target Body Location: ", MCEGuiElements.DescripStyle, Contract_Button_Large_W, Contract_Button_Med_H);
             Custom_Contract_GuiBox9 = new DialogGUIBox(" " + targetbody.bodyName, MCEGuiElements.DescripStyle2, Contract_Button_Large_W, Contract_Button_Med_H);           
             Custom_Contract_GuiBox4 = new DialogGUIBox("Contract Been Transmitted         " + SaveInfo.ComSateContractOn.ToString(), MCEGuiElements.DescripStyle, Contract_Button_Large_W, Contract_Button_Med_H);
@@ -270,7 +292,7 @@ namespace MissionControllerEC
                     new DialogGUIHorizontalLayout(Custom_Contract_GuiBox6),
                     new DialogGUIHorizontalLayout(Custom_Contract_Input),                   
                     new DialogGUISpace(4f),
-                    new DialogGUIHorizontalLayout(Custom_Contract_GuiBox4),
+                    //new DialogGUIHorizontalLayout(Custom_Contract_GuiBox4),
                     new DialogGUIVerticalLayout(Custom_Contract_Button12),
                     new DialogGUISpace(4f),
                     new DialogGUIVerticalLayout(Custom_Contract_Button1)
@@ -291,7 +313,7 @@ namespace MissionControllerEC
             SaveInfo.ResourceName = settings.SupplyResourceList[prCount];
             targetbody = FlightGlobals.Bodies[SaveInfo.comSatBodyName];
             Custom_Contract_Button1 = new DialogGUIButton(Localizer.Format("#autoLOC_MCE_Button_Exit_Label"), () => { SaveInfo.GUIEnabled = true;}, Contract_Button_Large_W, Contract_Button_Large_H, true);
-            Custom_Contract_Button10 = new DialogGUIButton("Transmit Contract To Mission Control",
+            Custom_Contract_Button10 = new DialogGUIButton("Transmit Contract To Finance Committee",
                                delegate
                                {
                                    SaveInfo.supplyContractOn = !SaveInfo.supplyContractOn;
@@ -299,6 +321,8 @@ namespace MissionControllerEC
                                    SaveInfo.CustomTransWindowPos = new Vector2(
                                    ((Screen.width / 2) + customSupPop_dialg.RTrf.position.x) / Screen.width,
                                    ((Screen.height / 2) + customSupPop_dialg.RTrf.position.y) / Screen.height);
+                                   MessageSystem.Message m = new MessageSystem.Message("Contract Bid Has Been Entered", "Hello your contract " + SaveInfo.SupplyContractName + " has been given to the finance Committee.  We will get back to you as soon as possible.", MessageSystemButton.MessageButtonColor.BLUE, MessageSystemButton.ButtonIcons.ALERT);
+                                   MessageSystem.Instance.AddMessage(m);
                                    TransferContract();
 
                                }, delegate { return true; }, Contract_Button_Large_W, Contract_Button_Large_H, false, MCEGuiElements.ButtonPressMeToWorkStyle);
@@ -451,7 +475,7 @@ namespace MissionControllerEC
                     new DialogGUIHorizontalLayout(Custom_Contract_GuiBox6),
                     new DialogGUIHorizontalLayout(Custom_Contract_Input),
                     new DialogGUISpace(4f),
-                    new DialogGUIHorizontalLayout(Custom_Contract_GuiBox1),                   
+                    //new DialogGUIHorizontalLayout(Custom_Contract_GuiBox1),                   
                     new DialogGUIVerticalLayout(Custom_Contract_Button10),
                     new DialogGUISpace(4f),
                     new DialogGUIVerticalLayout(Custom_Contract_Button1)                   
@@ -472,7 +496,7 @@ namespace MissionControllerEC
             SaveInfo.crewBodyIDX = SupVes[count].body.flightGlobalsIndex;
             targetbody = FlightGlobals.Bodies[SaveInfo.comSatBodyName];
             Custom_Contract_Button1 = new DialogGUIButton(Localizer.Format("#autoLOC_MCE_Button_Exit_Label"), () => { SaveInfo.GUIEnabled = true;}, Contract_Button_Large_W, Contract_Button_Large_H, true);
-            Custom_Contract_Button10 = new DialogGUIButton(Localizer.Format("Transfer Contract To Mission Control"),
+            Custom_Contract_Button10 = new DialogGUIButton(Localizer.Format("Transmit Contract To Finance Committee"),
                                delegate
                                {
 
@@ -480,6 +504,8 @@ namespace MissionControllerEC
                                    SaveInfo.CustomCrewTransWindowPos = new Vector2(
                                    ((Screen.width / 2) + customCrewPop_Dialg.RTrf.position.x) / Screen.width,
                                    ((Screen.height / 2) + customCrewPop_Dialg.RTrf.position.y) / Screen.height);
+                                   MessageSystem.Message m = new MessageSystem.Message("Contract Bid Has Been Entered", "Hello your contract d" + SaveInfo.crewTransferName + " has been given to the finance Committee.  We will get back to you as soon as possible.", MessageSystemButton.MessageButtonColor.BLUE, MessageSystemButton.ButtonIcons.ALERT);
+                                   MessageSystem.Instance.AddMessage(m);
                                    CrewTransferContract();
 
                                }, delegate { return true; }, Contract_Button_Large_W, Contract_Button_Large_H, false, MCEGuiElements.ButtonPressMeToWorkStyle);
@@ -669,7 +695,6 @@ namespace MissionControllerEC
                     new DialogGUIHorizontalLayout(Custom_Contract_GuiBox6),
                     new DialogGUIHorizontalLayout(Custom_Contract_Input),
                     new DialogGUISpace(4f),
-                    new DialogGUIHorizontalLayout(Custom_Contract_GuiBox1),
                     new DialogGUIHorizontalLayout(Custom_Contract_Button10),
                     new DialogGUISpace(4f),
                     new DialogGUIHorizontalLayout(Custom_Contract_Button1))
@@ -677,249 +702,7 @@ namespace MissionControllerEC
 
             customCrewPop_Dialg = PopupDialog.SpawnPopupDialog(CCrewMulti_Dialog, true, HighLogic.UISkin, false);
         }
-        #endregion
-
-        #region Bebug Gui
-        internal void DebugMenuMce()
-        {          
-            Custom_Contract_Button1 = new DialogGUIButton(Localizer.Format("#autoLOC_MCE_Button_Exit_Label"), () => { SaveInfo.GUIEnabled = true;}, Contract_Button_Large_W, Contract_Button_Large_H, true);
-            Custom_Contract_Button2 = new DialogGUIButton(Localizer.Format("#autoLOC_MCE_Button_Cheat_Money"),
-                delegate
-                {
-                    Funding.Instance.AddFunds(500000, TransactionReasons.Cheating);
-                    SaveInfo.DebugWindowPos = new Vector2(
-                                 ((Screen.width / 2) + customDebug_Dialg.RTrf.position.x) / Screen.width,
-                                 ((Screen.height / 2) + customDebug_Dialg.RTrf.position.y) / Screen.height);
-                    DebugMenuMce();
-                },
-                Contract_Button_Med_W, Contract_Button_Med_H, true);
-            Custom_Contract_Button3 = new DialogGUIButton(Localizer.Format("#autoLOC_MCE_Button_Cheat_Science"),
-                delegate
-                {
-                    ResearchAndDevelopment.Instance.AddScience(1000, TransactionReasons.Cheating);
-                    SaveInfo.DebugWindowPos = new Vector2(
-                                 ((Screen.width / 2) + customDebug_Dialg.RTrf.position.x) / Screen.width,
-                                 ((Screen.height / 2) + customDebug_Dialg.RTrf.position.y) / Screen.height);
-                    DebugMenuMce();
-                },
-                Contract_Button_Med_W, Contract_Button_Med_H, true);
-            Custom_Contract_Button4 = new DialogGUIButton(Localizer.Format("#autoLOC_MCE_Button_SetAgena_Vessel_Current"),
-                delegate
-                {
-                    SaveInfo.AgenaTargetVesselName = FlightGlobals.ActiveVessel.vesselName;
-                    SaveInfo.AgenaTargetVesselID = FlightGlobals.ActiveVessel.id.ToString();
-                    SaveInfo.DebugWindowPos = new Vector2(
-                                 ((Screen.width / 2) + customDebug_Dialg.RTrf.position.x) / Screen.width,
-                                 ((Screen.height / 2) + customDebug_Dialg.RTrf.position.y) / Screen.height);
-                    DebugMenuMce();
-                },
-                Contract_Button_Med_W, Contract_Button_Med_H, true);
-            Custom_Contract_Button5 = new DialogGUIButton(Localizer.Format("#autoLOC_MCE_Button_Set_SkyLab_Current_Selected_Vessel"),
-               delegate
-               {
-                   SaveInfo.skyLabName = FlightGlobals.ActiveVessel.vesselName;
-                   SaveInfo.skyLabVesID = FlightGlobals.ActiveVessel.id.ToString();
-                   SaveInfo.DebugWindowPos = new Vector2(
-                                ((Screen.width / 2) + customDebug_Dialg.RTrf.position.x) / Screen.width,
-                                ((Screen.height / 2) + customDebug_Dialg.RTrf.position.y) / Screen.height);
-                   DebugMenuMce();
-               },
-               Contract_Button_Med_W, Contract_Button_Med_H, true);
-            Custom_Contract_Button6 = new DialogGUIButton(Localizer.Format("#autoLOC_MCE_ButtonCrew_Set_Landing_Site_for_Apollo_Missions"),
-               delegate
-               {
-                   GetLatandLonDefault(FlightGlobals.ActiveVessel);
-                   SaveInfo.DebugWindowPos = new Vector2(
-                                ((Screen.width / 2) + customDebug_Dialg.RTrf.position.x) / Screen.width,
-                                ((Screen.height / 2) + customDebug_Dialg.RTrf.position.y) / Screen.height);
-                   DebugMenuMce();
-               },
-               Contract_Button_Med_W, Contract_Button_Med_H, true);
-            Custom_Contract_Button7 = new DialogGUIButton(Localizer.Format("Tiros = " + SaveInfo.tirosCurrentNumber),
-               delegate
-               {
-                   SaveInfo.tirosCurrentNumber++;
-                   SaveInfo.DebugWindowPos = new Vector2(
-                                ((Screen.width / 2) + customDebug_Dialg.RTrf.position.x) / Screen.width,
-                                ((Screen.height / 2) + customDebug_Dialg.RTrf.position.y) / Screen.height);
-                   DebugMenuMce();
-               },
-               Contract_Button_Med_W, Contract_Button_Med_H, true);
-            Custom_Contract_Button8 = new DialogGUIButton(Localizer.Format("Tiros = " + SaveInfo.tirosCurrentNumber),
-               delegate
-               {
-                   SaveInfo.tirosCurrentNumber--;
-                   SaveInfo.DebugWindowPos = new Vector2(
-                                ((Screen.width / 2) + customDebug_Dialg.RTrf.position.x) / Screen.width,
-                                ((Screen.height / 2) + customDebug_Dialg.RTrf.position.y) / Screen.height);
-                   DebugMenuMce();
-               },
-               Contract_Button_Med_W, Contract_Button_Med_H, true);
-            Custom_Contract_Button9 = new DialogGUIButton(Localizer.Format("Delete All MCE Named Tourist"),
-               delegate
-               {
-                   Tools.CivilianGoHome();
-                   Tools.CivilianGoHome2();
-                   SaveInfo.DebugWindowPos = new Vector2(
-                                ((Screen.width / 2) + customDebug_Dialg.RTrf.position.x) / Screen.width,
-                                ((Screen.height / 2) + customDebug_Dialg.RTrf.position.y) / Screen.height);
-                   DebugMenuMce();
-               },
-               Contract_Button_Med_W, Contract_Button_Med_H, true);
-            label_1 = new DialogGUILabel(assemblyName + versionCode);
-
-
-            Custom_Contract_Toggle1 = new DialogGUIToggleButton(false, Localizer.Format("Remove All Civilian Kerbals"/*"#autoLOC_MCE_Toggle_SetAgena_False"*/) + " 1",
-                              delegate (bool b)
-                              {
-                                  Tools.DebugCivilianGoHome(KerbalName);
-                                  //SaveInfo.Agena1Done = !SaveInfo.Agena1Done;
-                                  SaveInfo.DebugWindowPos = new Vector2(
-                                  ((Screen.width / 2) + customDebug_Dialg.RTrf.position.x) / Screen.width,
-                                  ((Screen.height / 2) + customDebug_Dialg.RTrf.position.y) / Screen.height);
-                                  DebugMenuMce();
-
-                              }, Contract_Button_Med_W, Contract_Button_Med_H);
-
-            Custom_Contract_Input = new DialogGUITextInput("",
-                               false,
-                               180,
-                               (string s) => {
-                                   KerbalName = s;
-                                   return s;
-                               }, 30f);
-
-            Custom_Contract_Toggle2 = new DialogGUIToggleButton(false, Localizer.Format("#autoLOC_MCE_Toggle_SetAgena_False") + " 2",
-                              delegate (bool b)
-                              {
-                                  SaveInfo.Agena2Done = !SaveInfo.Agena2Done;
-                                  SaveInfo.DebugWindowPos = new Vector2(
-                                  ((Screen.width / 2) + customDebug_Dialg.RTrf.position.x) / Screen.width,
-                                  ((Screen.height / 2) + customDebug_Dialg.RTrf.position.y) / Screen.height);
-                                  DebugMenuMce();
-
-                              }, Contract_Button_Med_W, Contract_Button_Med_H);
-            Custom_Contract_Toggle3 = new DialogGUIToggleButton(false, Localizer.Format("#autoLOC_MCE_Toggle_SetVoskov_False") + "1",
-                              delegate (bool b)
-                              {
-                                  SaveInfo.Vostok1Done = !SaveInfo.Vostok1Done;
-                                  SaveInfo.DebugWindowPos = new Vector2(
-                                  ((Screen.width / 2) + customDebug_Dialg.RTrf.position.x) / Screen.width,
-                                  ((Screen.height / 2) + customDebug_Dialg.RTrf.position.y) / Screen.height);
-                                  DebugMenuMce();
-
-                              }, Contract_Button_Med_W, Contract_Button_Med_H);
-            Custom_Contract_Toggle4 = new DialogGUIToggleButton(false, Localizer.Format("#autoLOC_MCE_Toggle_SetVoskov_False") + "2",
-                              delegate (bool b)
-                              {
-                                  SaveInfo.Vostok2Done = !SaveInfo.Vostok2Done;
-                                  SaveInfo.DebugWindowPos = new Vector2(
-                                  ((Screen.width / 2) + customDebug_Dialg.RTrf.position.x) / Screen.width,
-                                  ((Screen.height / 2) + customDebug_Dialg.RTrf.position.y) / Screen.height);
-                                  DebugMenuMce();
-
-                              }, Contract_Button_Med_W, Contract_Button_Med_H);
-            Custom_Contract_Toggle5 = new DialogGUIToggleButton(false, Localizer.Format("#autoLOC_MCE_Toggle_SetVoskHod_False"),
-                              delegate (bool b)
-                              {
-                                  SaveInfo.Voskhod2Done = !SaveInfo.Voskhod2Done;
-                                  SaveInfo.DebugWindowPos = new Vector2(
-                                  ((Screen.width / 2) + customDebug_Dialg.RTrf.position.x) / Screen.width,
-                                  ((Screen.height / 2) + customDebug_Dialg.RTrf.position.y) / Screen.height);
-                                  DebugMenuMce();
-
-                              }, Contract_Button_Med_W, Contract_Button_Med_H);
-            Custom_Contract_Toggle6 = new DialogGUIToggleButton(false, Localizer.Format("#autoLOC_MCE_Toggle_SetLuna_False") + "2",
-                              delegate (bool b)
-                              {
-                                  SaveInfo.Luna2Done = !SaveInfo.Luna2Done;
-                                  SaveInfo.DebugWindowPos = new Vector2(
-                                  ((Screen.width / 2) + customDebug_Dialg.RTrf.position.x) / Screen.width,
-                                  ((Screen.height / 2) + customDebug_Dialg.RTrf.position.y) / Screen.height);
-                                  DebugMenuMce();
-
-                              }, Contract_Button_Med_W, Contract_Button_Med_H);
-            Custom_Contract_Toggle7= new DialogGUIToggleButton(false, Localizer.Format("#autoLOC_MCE_Toggle_SetLuna_False") + "3",
-                              delegate (bool b)
-                              {
-                                  SaveInfo.Luna16Done = !SaveInfo.Luna16Done;
-                                  SaveInfo.DebugWindowPos = new Vector2(
-                                  ((Screen.width / 2) + customDebug_Dialg.RTrf.position.x) / Screen.width,
-                                  ((Screen.height / 2) + customDebug_Dialg.RTrf.position.y) / Screen.height);
-                                  DebugMenuMce();
-
-                              }, Contract_Button_Med_W, Contract_Button_Med_H);
-            Custom_Contract_Toggle8= new DialogGUIToggleButton(false, Localizer.Format("Test Button"/*"#autoLOC_MCE_Toggle_MCERepair_True"*/),
-                              delegate (bool b)
-                              {
-                                  
-                                  
-                                  //SaveInfo.RepairContractGeneratedOn = true; SaveInfo.RepairStationContractGeneratedOn = true;
-                                  //SaveInfo.DebugWindowPos = new Vector2(
-                                  //((Screen.width / 2) + customDebug_Dialg.RTrf.position.x) / Screen.width,
-                                  //((Screen.height / 2) + customDebug_Dialg.RTrf.position.y) / Screen.height);
-                                  //DebugMenuMce();
-
-                              }, Contract_Button_Med_W, Contract_Button_Med_H);
-
-            //Custom_Contract_Input = new DialogGUITextInput(SaveInfo.SupplyContractName,
-            //                    false,
-            //                    200,
-            //                    (string s) => {
-            //                        SaveInfo.tirosCurrentNumber = s;
-            //                        return s;
-            //                    }, 30f);
-            //Custom_Contract_Input2 = new DialogGUITextInput(SaveInfo.SupplyContractName,
-            //                    false,
-            //                    200,
-            //                    (string s) => {
-            //                        SaveInfo.marinerCurrentNumber = s;
-            //                        return s;
-            //                    }, 30f);
-            //Custom_Contract_Input3 = new DialogGUITextInput(SaveInfo.SupplyContractName,
-            //                    false,
-            //                    200,
-            //                    (string s) => {
-            //                        SaveInfo.apolloCurrentNumber = s;
-            //                        return s;
-            //                    }, 30f);
-            //Custom_Contract_Input4 = new DialogGUITextInput(SaveInfo.SupplyContractName,
-            //                    false,
-            //                    200,
-            //                    (string s) => 
-            //                    {
-            //                        apolloNumber = SaveInfo.apolloCurrentNumber.ToString();
-            //                        SaveInfo.apolloDunaCurrentNumber =  
-            //                        return s;
-            //                    }, 30f);
-
-            Custom_Contract_GuiBox1 = new DialogGUIBox(Localizer.Format("#autoLOC_MCE_Label_Tiros_Number_1-3"), Contract_Button_Med_W, Contract_Button_Med_H);
-            Custom_Contract_GuiBox2 = new DialogGUIBox(Localizer.Format("#autoLOC_MCE_Label_Mariner_Number_1-4"), Contract_Button_Med_W, Contract_Button_Med_H);
-            Custom_Contract_GuiBox3 = new DialogGUIBox(Localizer.Format("#autoLOC_MCE_Label_Apollo_Number_1-6"), Contract_Button_Med_W, Contract_Button_Med_H);
-            Custom_Contract_GuiBox4 = new DialogGUIBox(Localizer.Format("#autoLOC_MCE_Label_Apollo_Duna_Number_1-9"), Contract_Button_Med_W, Contract_Button_Med_H);
-
-            if (SaveInfo.DebugWindowPos.x <= 0 || SaveInfo.DebugWindowPos.y <= 0)
-                SaveInfo.DebugWindowPos = new Vector2(0.5f, 0.5f);
-
-            DebugMulti_Dialg = new MultiOptionDialog("DebugM", "", Localizer.Format("#autoLOC_MCE_Label_BegugMenu_Window_Title"), HighLogic.UISkin,
-                new Rect(SaveInfo.DebugWindowPos.x, SaveInfo.DebugWindowPos.y, 310f, 60f),
-                new DialogGUIBase[]
-                {
-                   new DialogGUIHorizontalLayout(Custom_Contract_Button2,Custom_Contract_Button3),
-                   new DialogGUIHorizontalLayout(Custom_Contract_Button4,Custom_Contract_Button5),
-                   new DialogGUIHorizontalLayout(Custom_Contract_Button6,Custom_Contract_Button7),
-                   new DialogGUIHorizontalLayout(Custom_Contract_Button8,Custom_Contract_Button9),
-                   new DialogGUIHorizontalLayout(Custom_Contract_Toggle1,Custom_Contract_Toggle2),
-                   new DialogGUIHorizontalLayout(Custom_Contract_Input),
-                   new DialogGUIHorizontalLayout(Custom_Contract_Toggle3,Custom_Contract_Toggle4),
-                   new DialogGUIHorizontalLayout(Custom_Contract_Toggle5,Custom_Contract_Toggle6),
-                   new DialogGUIHorizontalLayout(Custom_Contract_Toggle7,Custom_Contract_Toggle8),                  
-                   new DialogGUIVerticalLayout(Custom_Contract_Button1,label_1)
-                });
-
-            customDebug_Dialg = PopupDialog.SpawnPopupDialog(DebugMulti_Dialg, true, HighLogic.UISkin, false);
-        }
-        #endregion
+        #endregion       
 
         #region Landing or Orbit Custom Contract
         internal void LandingOrbitCustomContract()
@@ -930,13 +713,15 @@ namespace MissionControllerEC
             targetbody = FlightGlobals.Bodies[SaveInfo.LandingOrbitIDX];
 
             Custom_Contract_Button1 = new DialogGUIButton(Localizer.Format("#autoLOC_MCE_Button_Exit_Label"), () => { SaveInfo.GUIEnabled = true; }, Contract_Button_Large_W, Contract_Button_Large_H, true);
-            Custom_Contract_Button10 = new DialogGUIButton(Localizer.Format("Transmit Contract To Mission Control"),
+            Custom_Contract_Button10 = new DialogGUIButton(Localizer.Format("Transmit Contract To Finance Committee"),
                                delegate
                                {
                                    SaveInfo.OrbitLandingOn = !SaveInfo.OrbitLandingOn;
                                    SaveInfo.CustomLandingOrbitWinPos = new Vector2(
                                    ((Screen.width / 2) + customLandOrbit_dialg.RTrf.position.x) / Screen.width,
                                    ((Screen.height / 2) + customLandOrbit_dialg.RTrf.position.y) / Screen.height);
+                                   MessageSystem.Message m = new MessageSystem.Message("Contract Bid Has Been Entered", "Hello your contract " + SaveInfo.LandingOrbitName + " has been given to the finance Committee.  We will get back to you as soon as possible.", MessageSystemButton.MessageButtonColor.BLUE, MessageSystemButton.ButtonIcons.ALERT);
+                                   MessageSystem.Instance.AddMessage(m);
                                    LandingOrbitCustomContract();
 
                                }, delegate { return true; }, Contract_Button_Large_W, Contract_Button_Large_H, false, MCEGuiElements.ButtonPressMeToWorkStyle);
@@ -1110,7 +895,6 @@ namespace MissionControllerEC
                     new DialogGUIHorizontalLayout(Custom_Contract_GuiBox9),
                     new DialogGUIVerticalLayout(Custom_Contract_Input),
                     new DialogGUISpace(4f),
-                    new DialogGUIHorizontalLayout(Custom_Contract_GuiBox7),
                     new DialogGUISpace(4f),
                     new DialogGUIVerticalLayout(Custom_Contract_Button10),
                     new DialogGUISpace(4f),
@@ -1122,6 +906,130 @@ namespace MissionControllerEC
 
         }
         #endregion
+        #region Lets Build Space Station
+        internal void BuildSpaceStation()
+        {
+            targetbody = FlightGlobals.Bodies[SaveInfo.BuildSpaceStationIDX];
+
+            Custom_Contract_Button1 = new DialogGUIButton(Localizer.Format("#autoLOC_MCE_Button_Exit_Label"), () => { SaveInfo.GUIEnabled = true; }, Contract_Button_Large_W, Contract_Button_Large_H, true);
+            Custom_Contract_Button10 = new DialogGUIButton(Localizer.Format("Transmit Contract To Finance Committee"),
+                               delegate
+                               {
+                                   SaveInfo.BuildSpaceStationOn = !SaveInfo.BuildSpaceStationOn;
+                                   SaveInfo.CustomBuildStationWinPos = new Vector2(
+                                   ((Screen.width / 2) + BuildSpaceStatPop_dialg.RTrf.position.x) / Screen.width,
+                                   ((Screen.height / 2) + BuildSpaceStatPop_dialg.RTrf.position.y) / Screen.height);
+                                   MessageSystem.Message m = new MessageSystem.Message("Contract Bid Has Been Entered", "Hello your contract " + SaveInfo.BuildSpaceStationName + " has been given to the finance Committee.  We will get back to you as soon as possible.", MessageSystemButton.MessageButtonColor.BLUE, MessageSystemButton.ButtonIcons.ALERT);
+                                   MessageSystem.Instance.AddMessage(m);
+                                   BuildSpaceStation();
+
+                               }, delegate { return true; }, Contract_Button_Large_W, Contract_Button_Large_H, false, MCEGuiElements.ButtonPressMeToWorkStyle);
+            
+            Custom_Contract_Button2 = new DialogGUIButton(Localizer.Format("#autoLOC_MCE_Button_Previous"),
+                delegate
+                {
+                    SaveInfo.BuildSpaceStationIDX--;
+                    if (SaveInfo.BuildSpaceStationIDX < 1 || SaveInfo.BuildSpaceStationIDX > 16)
+                    {
+                        SaveInfo.BuildSpaceStationIDX = 1;
+                    }
+                    SaveInfo.CustomBuildStationWinPos = new Vector2(
+                    ((Screen.width / 2) + BuildSpaceStatPop_dialg.RTrf.position.x) / Screen.width,
+                    ((Screen.height / 2) + BuildSpaceStatPop_dialg.RTrf.position.y) / Screen.height);
+                    BuildSpaceStation();
+                },
+                Contract_Button_Med_W, Contract_Button_Med_H, true);
+            Custom_Contract_Button3 = new DialogGUIButton(Localizer.Format("#autoLOC_MCE_Button_Next"),
+                delegate
+                {
+                    SaveInfo.BuildSpaceStationIDX++;
+                    if (SaveInfo.BuildSpaceStationIDX < 1 || SaveInfo.BuildSpaceStationIDX > 16)
+                    {
+                        SaveInfo.BuildSpaceStationIDX = 1;
+                    }
+                    SaveInfo.CustomBuildStationWinPos = new Vector2(
+                    ((Screen.width / 2) + BuildSpaceStatPop_dialg.RTrf.position.x) / Screen.width,
+                    ((Screen.height / 2) + BuildSpaceStatPop_dialg.RTrf.position.y) / Screen.height);
+                    BuildSpaceStation();
+                },
+            Contract_Button_Med_W, Contract_Button_Med_H, true);
+            Custom_Contract_Button4 = new DialogGUIButton(Localizer.Format("++"),
+               delegate
+               {
+                   SaveInfo.BuildSpaceStationCrewAmount++;
+                   SaveInfo.CustomBuildStationWinPos = new Vector2(
+                    ((Screen.width / 2) + BuildSpaceStatPop_dialg.RTrf.position.x) / Screen.width,
+                    ((Screen.height / 2) + BuildSpaceStatPop_dialg.RTrf.position.y) / Screen.height);
+                   BuildSpaceStation();
+               },
+               Contract_Button_Med_W, Contract_Button_Med_H, true);
+            Custom_Contract_Button5 = new DialogGUIButton(Localizer.Format("--"),
+              delegate
+              {
+                  SaveInfo.BuildSpaceStationCrewAmount--;
+                  SaveInfo.CustomBuildStationWinPos = new Vector2(
+                    ((Screen.width / 2) + BuildSpaceStatPop_dialg.RTrf.position.x) / Screen.width,
+                    ((Screen.height / 2) + BuildSpaceStatPop_dialg.RTrf.position.y) / Screen.height);
+                  BuildSpaceStation();
+              },
+              Contract_Button_Med_W, Contract_Button_Med_H, true);          
+
+            
+            Custom_Contract_GuiBox7 = new DialogGUIBox("Contract Transmitted = " + SaveInfo.BuildSpaceStationOn.ToString(), MCEGuiElements.DescripStyle, Contract_Button_Large_W, Contract_Button_Med_H);
+            Custom_Contract_GuiBox2 = new DialogGUIBox("Planet Station Will Be Located At? ", MCEGuiElements.DescripStyle, Contract_Button_Large_W, Contract_Button_Med_H);
+            Custom_Contract_GuiBox6 = new DialogGUIBox(" " + targetbody.bodyName, MCEGuiElements.DescripStyle2, Contract_Button_Large_W, Contract_Button_Med_H);
+            Custom_Contract_GuiBox3 = new DialogGUIBox("How Many Crew will Station Hold?" + " = " + SaveInfo.BuildSpaceStationCrewAmount.ToString(), MCEGuiElements.DescripStyle, Contract_Button_Large_W, Contract_Button_Med_H);
+            Custom_Contract_GuiBox5 = new DialogGUIBox("Contract Description", MCEGuiElements.DescripStyle, Contract_Button_Large_W, Contract_Button_Med_H);
+            Custom_Contract_GuiBox9 = new DialogGUIBox("Contract Title", MCEGuiElements.DescripStyle, Contract_Button_Large_W, Contract_Button_Med_H);
+
+            Custom_Contract_Input = new DialogGUITextInput(SaveInfo.BuildSpaceStationName,
+                                false,
+                                260,
+                                (string s) => {
+                                    SaveInfo.BuildSpaceStationName = s;
+                                    return s;
+                                }, 30f);
+            Custom_Contract_Input2 = new DialogGUITextInput(SaveInfo.BuildSpaceStationDesc,
+                                true,
+                                350,
+                                (string s) => {
+                                    SaveInfo.BuildSpaceStationDesc = s;
+                                    return s;
+                                }, 120f);
+
+            if (SaveInfo.CustomBuildStationWinPos.x <= 0 || SaveInfo.CustomBuildStationWinPos.y <= 0)
+                SaveInfo.CustomBuildStationWinPos = new Vector2(0.5f, 0.5f);
+
+            BuildSpaceStation_Dialg = new MultiOptionDialog("Lets Build Space Station", "", Localizer.Format("Lets Build A Space Station"), MCEGuiElements.MissionControllerSkin,
+                new Rect(SaveInfo.CustomBuildStationWinPos.x, SaveInfo.CustomBuildStationWinPos.y, 315f, 500f),
+                new DialogGUIBase[]
+                {
+                    new DialogGUISpace(4f),
+                    new DialogGUIHorizontalLayout(Custom_Contract_GuiBox2),
+                    new DialogGUIHorizontalLayout(Custom_Contract_GuiBox6),
+                    new DialogGUIHorizontalLayout(Custom_Contract_Button2,Custom_Contract_Button3),
+                    new DialogGUISpace(4f),
+                    new DialogGUIHorizontalLayout(Custom_Contract_GuiBox3),
+                    new DialogGUIHorizontalLayout(Custom_Contract_Button4,Custom_Contract_Button5),
+                    new DialogGUISpace(4f),                                       
+                    new DialogGUISpace(4f),
+                    new DialogGUIHorizontalLayout(Custom_Contract_GuiBox5),
+                    new DialogGUIVerticalLayout(Custom_Contract_Input2),
+                    new DialogGUISpace(4f),
+                    new DialogGUIHorizontalLayout(Custom_Contract_GuiBox9),
+                    new DialogGUIVerticalLayout(Custom_Contract_Input),
+                    new DialogGUISpace(4f),
+                    new DialogGUISpace(4f),
+                    new DialogGUIVerticalLayout(Custom_Contract_Button10),
+                    new DialogGUISpace(4f),
+                    new DialogGUIVerticalLayout(Custom_Contract_Button1)
+
+                });
+
+            BuildSpaceStatPop_dialg = PopupDialog.SpawnPopupDialog(BuildSpaceStation_Dialg, true, HighLogic.UISkin, false);
+
+        }
+#endregion
         internal void KillMCePopups()
         {
             PopupDialog.ClearPopUps();

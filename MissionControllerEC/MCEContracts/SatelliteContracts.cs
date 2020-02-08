@@ -12,7 +12,7 @@ using KSP.Localization;
 
 namespace MissionControllerEC.MCEContracts
 {
-    public class SatelliteContracts : Contract
+    public class MCE_Satellite_Contracts : Contract
     {
         Settings st = new Settings("Config.cfg");
         MissionControllerEC mc = new MissionControllerEC();
@@ -162,8 +162,8 @@ namespace MissionControllerEC.MCEContracts
             {              
                 return false;
             }
-            totalContracts = ContractSystem.Instance.GetCurrentContracts<SatelliteContracts>().Count();
-            TotalFinished = ContractSystem.Instance.GetCompletedContracts<SatelliteContracts>().Count();
+            totalContracts = ContractSystem.Instance.GetCurrentContracts<MCE_Satellite_Contracts>().Count();
+            TotalFinished = ContractSystem.Instance.GetCompletedContracts<MCE_Satellite_Contracts>().Count();
 
             if (totalContracts >= HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().SatelliteContractNumbers)
             {
@@ -181,6 +181,7 @@ namespace MissionControllerEC.MCEContracts
             int frequencyTest = rnd.Next(12, 40);
             frequency = (float)frequencyTest - .5f;
             moduletype = rnd.Next(1, 4);
+
             Double AtmoDepth = targetBody.atmosphereDepth;
             Double radius = targetBody.Radius;
             double eccentricity = .01;
@@ -188,12 +189,14 @@ namespace MissionControllerEC.MCEContracts
             if (SaveInfo.SatelliteTypeChoice == 0)
             {               
                 contractAMA = Tools.RandomNumber((int)minSMA, (int)minSMA + 25000);// *10 ;
+
                 contractINC = 0;
                 contractAOP = Tools.getAOPCalc(contractAMA, 2.1);
                 SatTypeName = "Communication";               
 
                 int randomPolar;
                 randomPolar = Tools.RandomNumber(1, 100);
+                contractAMA = FinePrint.Utilities.CelestialUtilities.GetMinimumOrbitalDistance(targetBody, 2f);
                 if (randomPolar > 75)
                 {
                     stationNumber = Tools.RandomNumber(5, 6);
@@ -212,14 +215,18 @@ namespace MissionControllerEC.MCEContracts
             else if (SaveInfo.SatelliteTypeChoice == 1)
             {
                 SatTypeName = "Weather";
+
                 contractAMA = Tools.RandomNumber((int)minSMA, (int)minSMA + 10000);// *10 ;
+
                 contractINC = Tools.RandomNumber(-8, 8);
                 contractAOP = Tools.getAOPCalc(contractAMA, 2.1);
                 int randomPolar;
                 randomPolar = Tools.RandomNumber(1, 100);
                 if (randomPolar > 70)
                 {
+
                     contractAMA = Tools.RandomNumber((int)minSMA, (int)minSMA + 10000);// *10 ;
+
                     contractINC = 90;                  
                     this.AddParameter(new FinePrint.Contracts.Parameters.SpecificOrbitParameter(FinePrint.Utilities.OrbitType.EQUATORIAL, 90, eccentricity, contractAMA, 99, contractAOP, 1, 0, targetBody, 3), null);
                     this.AddParameter(new satelliteCoreCheck(SatTypeName, frequency, moduletype, targetBody), null);
@@ -234,7 +241,9 @@ namespace MissionControllerEC.MCEContracts
             else if (SaveInfo.SatelliteTypeChoice == 2)
             {
                 SatTypeName = "Navigation";
+
                 contractAMA = Tools.RandomNumber((int)minSMA, (int)minSMA + 17000);// *10 ;
+
                 contractINC = 0;
                 contractAOP = Tools.getAOPCalc(contractAMA, 2.1);
                 int randomPolar;
@@ -259,7 +268,9 @@ namespace MissionControllerEC.MCEContracts
             else if (SaveInfo.SatelliteTypeChoice == 3)
             {
                 SatTypeName = "Research";
+
                 contractAMA = Tools.RandomNumber((int)minSMA, (int)minSMA + 17000);// *10 ;
+
                 contractINC = Tools.RandomNumber(-10, 10);
                 contractAOP = Tools.getAOPCalc(contractAMA, 2.3);
                 int randomPolar;
@@ -276,7 +287,9 @@ namespace MissionControllerEC.MCEContracts
             }
             else if (SaveInfo.SatelliteTypeChoice == 4)
             {
+
                 contractAMA = Tools.RandomNumber((int)minSMA, (int)minSMA + 120000);// *10 ; ;  //Needs Fixing
+
                 contractINC = 0;
                 contractAOP = Tools.getAOPCalc(contractAMA, 2);
                 SatTypeName = "Communication";
@@ -306,7 +319,9 @@ namespace MissionControllerEC.MCEContracts
             }
             else if (SaveInfo.SatelliteTypeChoice == 5)
             {
+
                 contractAMA = Tools.RandomNumber((int)minSMA, (int)minSMA + 120000);// *10 ; ;  //Needs Fixing
+
                 contractINC = 0;
                 contractAOP = Tools.getAOPCalc(contractAMA, 2);
                 SatTypeName = "Navigation";
@@ -576,8 +591,7 @@ namespace MissionControllerEC.MCEContracts
             return Localizer.Format("#autoLOC_MissionController2_1000156") + " " + targetBody.bodyName + ". " + BiomeName + " " + Localizer.Format("#autoLOC_MissionController2_1000157");		// #autoLOC_MissionController2_1000156 = Land at specific Body and Biome we Request 		// #autoLOC_MissionController2_1000157 =  Then collect science.
         }
         protected override string MessageCompleted()
-        {
-            SaveInfo.Luna16Done = true;
+        {          
             return Localizer.Format("#autoLOC_MissionController2_1000158");		// #autoLOC_MissionController2_1000158 = Great job landing at the biome we specified.  The science we have gathered will help us in the future to bring kerbals deeper into our solar system!
         }
 

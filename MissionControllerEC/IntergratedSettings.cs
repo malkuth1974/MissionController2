@@ -18,11 +18,7 @@ namespace MissionControllerEC
         public override string DisplaySection { get { return "MissionControllerEC"; } }
         public override int SectionOrder { get { return 1; } }
         public override bool HasPresets { get { return true; } }
-
-        [GameParameters.CustomParameterUI("Historic Mission Enabled?", toolTip = "Do you want to play historical Missions?")]
-        public bool HistoricalContracts = true;
-        [GameParameters.CustomParameterUI("Apollo Extra Mission Enabled?", toolTip = "If playing apollo Historical Contracts Do you want Fictional Missions after 17?")]
-        public bool ApolloExtraContent = true;
+       
         [GameParameters.CustomParameterUI("MCE Satellite Contracts Enabled?", toolTip = "Do you want to play MCE Satellite Missions These use the MCE Part Cores.")]
         public bool SatelliteContracts = true;
         [GameParameters.CustomParameterUI("MCE Orbital Science Contracts Enabled?", toolTip = "These are contracts that use the MCE part Ionization Chamber.")]
@@ -82,9 +78,7 @@ namespace MissionControllerEC
         [GameParameters.CustomIntParameterUI("Revert Cost",maxValue =100)]
         public int MCERevertCost = 10;
         [GameParameters.CustomParameterUI("MCE Vessel Must Surviv Enabled?", toolTip = "If vessel is destroyed in MCE contract you will fail?")]
-        public bool VesselMustSurvive = true;
-        //[GameParameters.CustomParameterUI("MCE Flight Help Readout?", toolTip = "This is very simple APA,PEA, Readout, not needed if you have Another Mod that gives you these readouts?")]
-        //public bool MCEReadoutHelpAllow = false;
+        public bool VesselMustSurvive = true;       
         [GameParameters.CustomParameterUI("MCE Debug Mode Enabled?", toolTip = "Debug mode becomes available in MCE Menu Icon (Cheats)?")]
         public bool MCEDebugMode = false;
         [GameParameters.CustomIntParameterUI("Max Number Satellite Contracts At Time", maxValue = 5)]
