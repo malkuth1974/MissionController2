@@ -1,0 +1,13 @@
+Mission Controller 3.1.1.0
+
+1. Added First Stages of A Manual To KSP you can find it in the Mission Controller Folder called "Mission Controller Manual"  This is first stage of maybe adding
+in game manual.  If someone wants to help with this it be great!  Added Directions for How To Do Mission Controller Satellite Contracts, How To Change Module + Satellie + Frequencies in VAB for Satellite Contracts and how to Finish Mission Controller Satellite Contracts in Game!  More to come soon.
+
+2. Redid the UI for Changing Module Types, Satellite Types when Doing Mission Controller Satellite Contracts.  Much easier now to select and read what your chaning when selecting Satellite Types and Module Type in the VAB when Setting up for these types of contracts!  Module and Satellite types are now Push Buttons when you right click on any Non Manned Probes.  All probes are in vanilla game are Populated with Mission Controller Modules using Module Manager.  You can add your own Modded probes via Module Manage by using the "MCESatelliteCore".  Example located in MCEProbePatch.cfg in Parts Menu of Mission Controller.
+
+Mission Controller 3.1
+
+Updated For KSP 1.10.
+
+Changes:
+1. Bug fixes etc.

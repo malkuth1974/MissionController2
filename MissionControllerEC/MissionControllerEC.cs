@@ -201,8 +201,8 @@ namespace MissionControllerEC
         {
             assemblyName = Assembly.GetExecutingAssembly().GetName();
             versionCode = assemblyName.Version.Major.ToString() + assemblyName.Version.Minor.ToString();
-            loadFiles();                
-            GameEvents.Contract.onContractsLoaded.Add(this.onContractLoaded);          
+            loadFiles();
+            GameEvents.Contract.onContractsLoaded.Add(this.onContractLoaded);
             Debug.Log("MCE Awake Called");
             getSupplyList(false);
             // create popup dialog and hide it
@@ -220,12 +220,12 @@ namespace MissionControllerEC
             if (this.MCEButton != null)
             {
                 ApplicationLauncher.Instance.RemoveModApplication(this.MCEButton);
-                Debug.LogError("[MCE] Button OnDestroyed called");
+                //Debug.LogError("[MCE] Button OnDestroyed called");
             }
             if (this.MCERevert != null)
             {
                 ApplicationLauncher.Instance.RemoveModApplication(this.MCERevert);
-                Debug.LogError("[MCE] Revert OnDestroyed called");
+                //Debug.LogError("[MCE] Revert OnDestroyed called");
             }           
             if (Main_popup_dialog = null)
             {
@@ -235,15 +235,15 @@ namespace MissionControllerEC
             }
 
             GameEvents.Contract.onContractsLoaded.Remove(this.onContractLoaded);
-            //GameEvents.onGameSceneLoadRequested.Remove(this.CheckRepairContractTypes);
-            Debug.Log("Game All values removed for MCE");
-            instance = null;
+           //GameEvents.onGameSceneLoadRequested.Remove(this.CheckRepairContractTypes);
+           //Debug.Log("Game All values removed for MCE");
+           instance = null;
 
             try
             {
                 Main_popup_dialog.Dismiss();
             }
-            catch { Debug.Log("MCE Main_Popup_dialog already loaded"); }
+            catch { /*Debug.Log("MCE Main_Popup_dialog already loaded");*/ }
                      
             Main_popup_dialog = null;         
         }
@@ -265,37 +265,37 @@ namespace MissionControllerEC
             if (SaveInfo.MainGUIWindowPos.x <= 0 || SaveInfo.MainGUIWindowPos.y <= 0)
                 SaveInfo.MainGUIWindowPos = new Vector2(0.5f, 0.5f);           
 
-            CustomSat_button = new DialogGUIButton(Localizer.Format("Lets Put Satellite In Space"), delegate
+            CustomSat_button = new DialogGUIButton(Localizer.Format("Send Satellite To Space"), delegate
             {
                 ComSatContract();
                 SaveInfo.GUIEnabled = false;
             }, delegate { return true; }, button_width, button_height, false, MCEGuiElements.ButtonMenuMainSyle);
 
-            CustomLandOrbit_button = new DialogGUIButton(Localizer.Format("Crewed Orbit And Landing"), delegate
+            CustomLandOrbit_button = new DialogGUIButton(Localizer.Format("Send A Crew To Orbit Or Landing"), delegate
             {
                 LandingOrbitCustomContract();
                 SaveInfo.GUIEnabled = false;
             }, delegate { return true; }, button_width, button_height, false, MCEGuiElements.ButtonMenuMainSyle);
 
-            CustomCrew_button = new DialogGUIButton(Localizer.Format("Transfer Crew To Station"), delegate
+            CustomCrew_button = new DialogGUIButton(Localizer.Format("Launch Crew To A Station"), delegate
             {
                 CrewTransferContract();
                 SaveInfo.GUIEnabled = false;
             }, delegate { return true; }, button_width, button_height, false, MCEGuiElements.ButtonMenuMainSyle);
            
-            CustomSupply_button = new DialogGUIButton(Localizer.Format("Transfer Resources To Station"), delegate
+            CustomSupply_button = new DialogGUIButton(Localizer.Format("Resupply Resources To A Station"), delegate
             {
                 TransferContract();
                 SaveInfo.GUIEnabled = false;
               
             }, delegate { return true; }, button_width, button_height, false, MCEGuiElements.ButtonMenuMainSyle);
-            BuildStation_button = new DialogGUIButton(Localizer.Format("Lets Build A Space Station"), delegate
+            BuildStation_button = new DialogGUIButton(Localizer.Format("Build A Space Station"), delegate
             {
                 BuildSpaceStation()
 ;
                 SaveInfo.GUIEnabled = false;
             }, delegate { return true; }, button_width, button_height, false, MCEGuiElements.ButtonMenuMainSyle);
-            BuildBase_button = new DialogGUIButton(Localizer.Format("WithDraw Contract Offers (ALL)"), delegate
+            BuildBase_button = new DialogGUIButton(Localizer.Format("WithDraw Contract Offers (ALL) Clears Current Contracts"), delegate
             {
                 SaveInfo.OrbitLandingOn = false;
                 SaveInfo.BuildSpaceStationOn = false;

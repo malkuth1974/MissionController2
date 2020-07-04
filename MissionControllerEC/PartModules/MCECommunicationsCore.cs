@@ -9,12 +9,19 @@ namespace MissionControllerEC.PartModules
 {
     class MCESatelliteCore : PartModule
     {
+        [KSPField(isPersistant = true, guiActive = true)]
         public static string[] SattypeList = { "Communication", "Navigation", "Weather", "Research" };
-        [KSPField(isPersistant = true,guiActive = true,guiName = "PartLocked")]
+
+        [KSPField(isPersistant = true, guiActive = true)]
+        public static int sattypenumber = 0;
+
+        [KSPField(isPersistant = true,guiActive = true,guiName = "MC PartLocked")]
         private bool dataLocked = false;
+
         [KSPField]
         public bool haveAnimation = false;
         [KSPField]
+
         public string animationName = "None";
         
         public Animation GetSatelliteCoreAnimation
@@ -33,28 +40,90 @@ namespace MissionControllerEC.PartModules
             GetSatelliteCoreAnimation.Play(animationName);
         }
         
-        [KSPField(isPersistant = true, guiActive = true, guiActiveEditor = false, guiName = "Satellite Type: ")]
-        public string satTypeDisplay = "Communications";
+        [KSPField(isPersistant = true, guiActive = true, guiActiveEditor = false, guiName = " MC Satellite Type: ")]
+        public string satTypeDisplay = SattypeList[sattypenumber];
 
-        [KSPField(isPersistant = true, guiActive = false, guiActiveEditor = true, guiName = "Satellite Types: ")]
-        public string satTypeDisplay2 = "Com=0,Nav=1,Weather=2,Research=3";
+        [KSPField(isPersistant = true, guiActive = false, guiActiveEditor = true, guiName = "MC Satellite Types: ")]
+        public string satTypeDisplay2 = SattypeList[sattypenumber];
 
-        [KSPField(isPersistant = true, guiActiveEditor = true, guiName = "Choose Satellite Type"), UI_FloatRange(minValue = 0f, maxValue = 3f, stepIncrement = 1f)]
-        public float SatTypeListNumber = 0;
+        [KSPEvent(guiActive =false,guiActiveEditor =true,guiName = "MC Satellite Type",active = true)]
+        public void SatTypeSwitch()
+        {
+            if (sattypenumber > 2)
+            {
+                sattypenumber = 0;
+                satTypeDisplay2 = SattypeList[sattypenumber];
+                satTypeDisplay = SattypeList[sattypenumber];
+            }
+            else
+            {
+                sattypenumber++;
+                Debug.Log("MCE Sat Number Now " + sattypenumber + "  " + SattypeList[sattypenumber]);
+                satTypeDisplay2 = SattypeList[sattypenumber];
+                satTypeDisplay = SattypeList[sattypenumber];
+            }          
+        }
 
-        [KSPField(isPersistant = true, guiActive = true, guiName = "Module Type: ")]
-        public string satModuleType = "Communications";
+        [KSPField(isPersistant = true, guiActive = true,guiActiveEditor = true, guiName = "MC Module Type: ")]
+        public string satModuleType = "Select Module Type";
 
         [KSPField(isPersistant = true, guiActive = true, guiName = "Frequency: ")]
         public float frequencyDisplay = 1;
 
-        [KSPField(isPersistant = true, guiActiveEditor = true, guiName = "Module Type"), UI_FloatRange(minValue = 1f, maxValue = 4f, stepIncrement = 1f)]
+        [KSPField(isPersistant = true, guiActiveEditor = true, guiName = "MC Module Type: ")]
         public float moduleType = 1;
+
+        [KSPEvent(guiActive = false, guiActiveEditor = true, guiName = "MC Module Type", active = true)]
+        public void SatModSwitch()
+        {
+            if (moduleType > 3)
+            {
+                moduleType = 0;
+                if (satTypeDisplay == "Communication")
+                {
+                    ModuleTypeSwitch();
+                }
+                if (satTypeDisplay == "Navigation")
+                {
+                    ModuleTypeSwitch2();
+                }
+                if (satTypeDisplay == "Weather")
+                {
+                    ModuleTypeSwitch3();
+                }
+                if (satTypeDisplay == "Research")
+                {
+                    ModuleTypeSwitch4();
+                }
+            }
+            else
+            {
+                moduleType++;
+                Debug.Log("MCE Module Number Now " + moduleType + "  " + satModuleType[(int)moduleType]);
+                if (satTypeDisplay == "Communication")
+                {
+                    ModuleTypeSwitch();
+                }
+                if (satTypeDisplay == "Navigation")
+                {
+                    ModuleTypeSwitch2();
+                }
+                if (satTypeDisplay == "Weather")
+                {
+                    ModuleTypeSwitch3();
+                }
+                if (satTypeDisplay == "Research")
+                {
+                    ModuleTypeSwitch4();
+                }
+            }
+            
+        }
 
         [KSPField(isPersistant = true, guiActiveEditor = true, guiName = "Set Frequency"), UI_FloatRange(minValue = 1f, maxValue = 50f, stepIncrement = .5f)]
         public float frequencyModulation = 1;
 
-        [KSPEvent(guiActive = true, guiIcon = "Start Data Linkup", guiName = "Start Data Linkup", active = true)]
+        [KSPEvent(guiActive = true, guiIcon = "MC Start Data Linkup", guiName = "Start Data Linkup (MC Contracts)", active = true)]
         public void StartDataMCE()
         {
             if (!dataLocked && FlightGlobals.ActiveVessel.situation == Vessel.Situations.ORBITING)
@@ -194,14 +263,32 @@ namespace MissionControllerEC.PartModules
                 ModuleTypeSwitch4();
             }
             frequencyDisplay = frequencyModulation;
-            satTypeDisplay = SattypeList[(int)SatTypeListNumber];
+            satTypeDisplay = SattypeList[sattypenumber];
+            satTypeDisplay2 = SattypeList[sattypenumber];
             gs.SetGroundStationCheck(frequencyDisplay);            
         }
         public override void OnFixedUpdate()
         {         
             MCEParameters.GroundStationPostion gs = new MCEParameters.GroundStationPostion(0);
+            if (satTypeDisplay == "Communication")
+            {
+                ModuleTypeSwitch();
+            }
+            else if (satTypeDisplay == "Navigation")
+            {
+                ModuleTypeSwitch2();
+            }
+            else if (satTypeDisplay == "Weather")
+            {
+                ModuleTypeSwitch3();
+            }
+            else if (satTypeDisplay == "Research")
+            {
+                ModuleTypeSwitch4();
+            }
             frequencyDisplay = frequencyModulation;
-            satTypeDisplay = SattypeList[(int)SatTypeListNumber];
+            satTypeDisplay = SattypeList[sattypenumber];
+            satTypeDisplay2 = SattypeList[sattypenumber];
             gs.SetGroundStationCheck(frequencyDisplay);
         }        
         

@@ -45,7 +45,7 @@ namespace MissionControllerEC
             {
                 texture = new Texture2D(36, 36, TextureFormat.RGBA32, false);
                 texture.LoadImage(File.ReadAllBytes(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "MCEStockToolbar.png")));
-                Debug.LogError("MCE Textures Loaded");
+                //Debug.LogError("MCE Textures Loaded");
             }
             if (texture2 == null)
             {
@@ -53,7 +53,7 @@ namespace MissionControllerEC
                 texture2.LoadImage(File.ReadAllBytes(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "MCERevert.png")));
                 Debug.LogError("MCE Textures2 Loaded");
             }           
-            else { Debug.Log("MCE Textures Already Loaded"); }
+            else { /*Debug.Log("MCE Textures Already Loaded"); */}
            
         }
 
@@ -61,7 +61,7 @@ namespace MissionControllerEC
         {           
             if (settings.FileExists) { settings.Load(); settings.Save(); }
             else { settings.Save(); settings.Load(); }
-            Debug.LogError("MCE Settings Loaded");
+            //Debug.LogError("MCE Settings Loaded");
         }       
 
         public void CreateButtons()
@@ -79,7 +79,7 @@ namespace MissionControllerEC
                     ApplicationLauncher.AppScenes.SPACECENTER,
                     texture
                     );
-                Debug.LogError("Creating MCEButton Buttons");
+                //Debug.LogError("Creating MCEButton Buttons");
             }
             
             if (HighLogic.LoadedScene == GameScenes.FLIGHT && this.MCERevert == null && HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCERevertAllow)
@@ -94,9 +94,9 @@ namespace MissionControllerEC
                     ApplicationLauncher.AppScenes.FLIGHT,
                     texture2
                     );
-                Debug.LogError("creating MCERevert Buttons");
+                //Debug.LogError("creating MCERevert Buttons");
             }
-            else { Debug.LogError("MCE2 CreateButtons Already Loaded"); }
+            else { /*Debug.LogError("MCE2 CreateButtons Already Loaded");*/ }
         }
 
         private void MCEOn()
@@ -119,7 +119,7 @@ namespace MissionControllerEC
             {
                 ApplicationLauncher.Instance.RemoveModApplication(this.MCERevert);
             }
-            else { Debug.Log("MCE destroy buttons failed"); }
+            else { /*Debug.Log("MCE destroy buttons failed"); */}
         }
         
         public void GuiDestroy(Vector2 value, PopupDialog popupinfo)
@@ -127,7 +127,7 @@ namespace MissionControllerEC
             value = new Vector2(
                 ((Screen.width / 2) + popupinfo.RTrf.position.x) / Screen.width,
                 ((Screen.height / 2) + popupinfo.RTrf.position.y) / Screen.height);
-            Debug.LogError("GuiDestroy Info Save as is:  " + value.ToString());
+            //Debug.LogError("GuiDestroy Info Save as is:  " + value.ToString());
            
         }
 
@@ -164,104 +164,109 @@ namespace MissionControllerEC
             RandomSatelliteContractsCheck[5] = new Tools.MC2RandomWieghtSystem.Item<int>();
             RandomSatelliteContractsCheck[5].weight = 5;
             RandomSatelliteContractsCheck[5].value = 5;
-        }        
+        }
 
         public void onContractLoaded()
-        {           
-            if (!HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings2>().RescueKerbalContracts && ContractSystem.ContractTypes.Contains(typeof(Contracts.Templates.RecoverAsset)))          
+        {
+            if (HighLogic.LoadedScene == GameScenes.SPACECENTER)
             {
-                try
+                if (!HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings2>().RescueKerbalContracts && ContractSystem.ContractTypes.Contains(typeof(Contracts.Templates.RecoverAsset)))
                 {
-                    ContractSystem.ContractTypes.Remove(typeof(Contracts.Templates.RecoverAsset));
-                    Debug.Log("Removed RescueKerbal Type Contracts from Gererating");
-                }
+                    try
+                    {
+                        ContractSystem.ContractTypes.Remove(typeof(Contracts.Templates.RecoverAsset));
+                        Debug.Log("Removed RescueKerbal Type Contracts from Gererating");
+                    }
 
-                catch { Debug.LogError("could not run NoRescueKerbalContracts Returned Null");}
+                    catch { Debug.LogError("could not run NoRescueKerbalContracts Returned Null"); }
+                }
+                if (!HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings2>().FPSatelliteContracts && ContractSystem.ContractTypes.Contains(typeof(FinePrint.Contracts.SatelliteContract)))
+                {
+                    try
+                    {
+                        ContractSystem.ContractTypes.Remove(typeof(FinePrint.Contracts.SatelliteContract));
+                        Debug.Log("Removed FinePrint Satellite Type Contracts from Gererating");
+                    }
+
+                    catch { Debug.LogError("could not run FinePrint Satellite Returned Null"); }
+                }
+                if (!HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings2>().FPBaseContracts && ContractSystem.ContractTypes.Contains(typeof(FinePrint.Contracts.BaseContract)))
+                {
+                    try
+                    {
+                        ContractSystem.ContractTypes.Remove(typeof(FinePrint.Contracts.BaseContract));
+                        Debug.Log("Removed FinePrint Satellite Type Contracts from Gererating");
+                    }
+
+                    catch { Debug.LogError("could not run FinePrint Satellite Returned Null"); }
+                }
+                if (!HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings2>().FPStationContracts && ContractSystem.ContractTypes.Contains(typeof(FinePrint.Contracts.StationContract)))
+                {
+                    try
+                    {
+                        ContractSystem.ContractTypes.Remove(typeof(FinePrint.Contracts.StationContract));
+                        Debug.Log("Removed FinePrint Satellite Type Contracts from Gererating");
+                    }
+
+                    catch { Debug.LogError("could not run FinePrint Satellite Returned Null"); }
+                }
+                if (!HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings2>().FPISRUContracts && ContractSystem.ContractTypes.Contains(typeof(FinePrint.Contracts.ISRUContract)))
+                {
+                    try
+                    {
+                        ContractSystem.ContractTypes.Remove(typeof(FinePrint.Contracts.ISRUContract));
+                        Debug.Log("Removed FinePrint Satellite Type Contracts from Gererating");
+                    }
+
+                    catch { Debug.LogError("could not run FinePrint Satellite Returned Null"); }
+                }
+                if (!HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings2>().FPTouricsmContracts && ContractSystem.ContractTypes.Contains(typeof(FinePrint.Contracts.TourismContract)))
+                {
+                    try
+                    {
+                        ContractSystem.ContractTypes.Remove(typeof(FinePrint.Contracts.TourismContract));
+                        Debug.Log("Removed FinePrint Satellite Type Contracts from Gererating");
+                    }
+
+                    catch { Debug.LogError("could not run FinePrint Satellite Returned Null"); }
+                }
+                if (!HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings2>().FPSurveyContracts && ContractSystem.ContractTypes.Contains(typeof(FinePrint.Contracts.SurveyContract)))
+                {
+                    try
+                    {
+                        ContractSystem.ContractTypes.Remove(typeof(FinePrint.Contracts.SurveyContract));
+                        Debug.Log("Removed FinePrint Survey Type Contracts from Gererating");
+                    }
+
+                    catch { Debug.LogError("could not run FinePrint Survey Contracts Returned Null"); }
+                }
+                if (!HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings2>().PartTestContracts && ContractSystem.ContractTypes.Contains(typeof(Contracts.Templates.PartTest)))
+                {
+                    try
+                    {
+                        ContractSystem.ContractTypes.Remove(typeof(Contracts.Templates.PartTest));
+                        Debug.Log("Removed PartTest Type Contracts from Gererating");
+                    }
+
+                    catch { Debug.LogError("could not run NoPartTest Returned Null"); }
+                }
+                if (!HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings2>().FPGrandTourContracts && ContractSystem.ContractTypes.Contains(typeof(Contracts.Templates.GrandTour)))
+                {
+                    try
+                    {
+                        ContractSystem.ContractTypes.Remove(typeof(Contracts.Templates.GrandTour));
+                        Debug.Log("Removed PartTest Type Contracts from Gererating");
+                    }
+
+                    catch { Debug.LogError("could not run NoPartTest Returned Null"); }
+                }
+                Debug.Log("MCE Remove Contracts loaded");
             }
-            if (!HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings2>().FPSatelliteContracts && ContractSystem.ContractTypes.Contains(typeof(FinePrint.Contracts.SatelliteContract)))
-            {
-                try
-                {
-                    ContractSystem.ContractTypes.Remove(typeof(FinePrint.Contracts.SatelliteContract));
-                    Debug.Log("Removed FinePrint Satellite Type Contracts from Gererating");
-                }
+            else { Debug.Log("MCE Debug Log, No Contracts Loaded at this time, need Game Save Loaded"); }
 
-                catch { Debug.LogError("could not run FinePrint Satellite Returned Null"); }
-            }
-            if (!HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings2>().FPBaseContracts && ContractSystem.ContractTypes.Contains(typeof(FinePrint.Contracts.BaseContract)))
-            {
-                try
-                {
-                    ContractSystem.ContractTypes.Remove(typeof(FinePrint.Contracts.BaseContract));
-                    Debug.Log("Removed FinePrint Satellite Type Contracts from Gererating");
-                }
-
-                catch { Debug.LogError("could not run FinePrint Satellite Returned Null"); }
-            }
-            if (!HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings2>().FPStationContracts && ContractSystem.ContractTypes.Contains(typeof(FinePrint.Contracts.StationContract)))
-            {
-                try
-                {
-                    ContractSystem.ContractTypes.Remove(typeof(FinePrint.Contracts.StationContract));
-                    Debug.Log("Removed FinePrint Satellite Type Contracts from Gererating");
-                }
-
-                catch { Debug.LogError("could not run FinePrint Satellite Returned Null"); }
-            }
-            if (!HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings2>().FPISRUContracts && ContractSystem.ContractTypes.Contains(typeof(FinePrint.Contracts.ISRUContract)))
-            {
-                try
-                {
-                    ContractSystem.ContractTypes.Remove(typeof(FinePrint.Contracts.ISRUContract));
-                    Debug.Log("Removed FinePrint Satellite Type Contracts from Gererating");
-                }
-
-                catch { Debug.LogError("could not run FinePrint Satellite Returned Null"); }
-            }
-            if (!HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings2>().FPTouricsmContracts && ContractSystem.ContractTypes.Contains(typeof(FinePrint.Contracts.TourismContract)))
-            {
-                try
-                {
-                    ContractSystem.ContractTypes.Remove(typeof(FinePrint.Contracts.TourismContract));
-                    Debug.Log("Removed FinePrint Satellite Type Contracts from Gererating");
-                }
-
-                catch { Debug.LogError("could not run FinePrint Satellite Returned Null"); }
-            }
-            if (!HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings2>().FPSurveyContracts && ContractSystem.ContractTypes.Contains(typeof(FinePrint.Contracts.SurveyContract)))
-            {
-                try
-                {
-                    ContractSystem.ContractTypes.Remove(typeof(FinePrint.Contracts.SurveyContract));
-                    Debug.Log("Removed FinePrint Survey Type Contracts from Gererating");
-                }
-
-                catch { Debug.LogError("could not run FinePrint Survey Contracts Returned Null"); }
-            }            
-            if (!HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings2>().PartTestContracts && ContractSystem.ContractTypes.Contains(typeof(Contracts.Templates.PartTest)))
-            {
-                try
-                {
-                    ContractSystem.ContractTypes.Remove(typeof(Contracts.Templates.PartTest));
-                    Debug.Log("Removed PartTest Type Contracts from Gererating");
-                }
-
-                catch { Debug.LogError("could not run NoPartTest Returned Null"); }
-            }
-            if (!HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings2>().FPGrandTourContracts && ContractSystem.ContractTypes.Contains(typeof(Contracts.Templates.GrandTour)))
-            {
-                try
-                {
-                    ContractSystem.ContractTypes.Remove(typeof(Contracts.Templates.GrandTour));
-                    Debug.Log("Removed PartTest Type Contracts from Gererating");
-                }
-
-                catch { Debug.LogError("could not run NoPartTest Returned Null"); }
-            }
             
-            Debug.Log("MCE Remove Contracts loaded"); 
-        }    
-                                   
+        }
+
         public void getSupplyList(bool stationOnly)
         {
             bool boolStation = stationOnly;
@@ -335,7 +340,7 @@ namespace MissionControllerEC
             }
             else
             {
-                Debug.Log("Contract Instance Not found, list not loading");
+                //Debug.Log("Contract Instance Not found, list not loading");
             }  
             if (ProgressTracking.Instance != null)
             {

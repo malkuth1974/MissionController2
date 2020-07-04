@@ -26,7 +26,7 @@ namespace MissionControllerEC
             double NLatitude = BaseLatitude;
             int NegMaxDistance = 0 - MaxDistance;
             BaseLatitude = NLatitude + UnityEngine.Random.Range(MaxDistance, NegMaxDistance);
-            Debug.Log("Base Latitude is: " + NLatitude + "New Value is: " + BaseLatitude);
+            //Debug.Log("Base Latitude is: " + NLatitude + "New Value is: " + BaseLatitude);
             return BaseLatitude;
         }
        
@@ -147,7 +147,7 @@ namespace MissionControllerEC
                     newKerb.rosterStatus = ProtoCrewMember.RosterStatus.Available;
                     newKerb.ChangeName(name2);
                     TestCivs++;
-                    Debug.Log("MCE Created Civilian " + newKerb.name + " " + newKerb.gender);
+                    //Debug.Log("MCE Created Civilian " + newKerb.name + " " + newKerb.gender);
                 }
             }
 
@@ -167,7 +167,7 @@ namespace MissionControllerEC
                     newKerb.rosterStatus = ProtoCrewMember.RosterStatus.Available;
                     newKerb.ChangeName(name2);
                     TestCivs++;
-                    Debug.Log("MCE Created Civilian " + newKerb.name + " " + newKerb.gender);
+                    //Debug.Log("MCE Created Civilian " + newKerb.name + " " + newKerb.gender);
                 }
             }
 
@@ -182,7 +182,7 @@ namespace MissionControllerEC
             foreach (string name2 in SaveInfo.TourisNames)
             {
                 HighLogic.CurrentGame.CrewRoster.Remove(name2);
-                Debug.Log("MCE Removed Civilian " + name2);
+                //Debug.Log("MCE Removed Civilian " + name2);
             }
         }
         public static void CivilianGoHome2()
@@ -192,7 +192,7 @@ namespace MissionControllerEC
             foreach (string name2 in SaveInfo.TourisNames2)
             {               
                 HighLogic.CurrentGame.CrewRoster.Remove(name2);
-                Debug.Log("MCE Removed Civilian " + name2);
+                //Debug.Log("MCE Removed Civilian " + name2);
             }
         }
       
@@ -335,7 +335,7 @@ namespace MissionControllerEC
                 cb = FlightGlobals.Bodies[bodyID];
                 if (cb == null)
                     {
-                        Debug.LogError("Celestrial Body is null from Node Load have to load Backup Value " + backupDefault);
+                        //Debug.LogError("Celestrial Body is null from Node Load have to load Backup Value " + backupDefault);
                         value = backupDefault;
                     }
                     else

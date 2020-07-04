@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Text;
 using UnityEngine;
 using System;
+using KSP.UI.Screens;
 
 namespace MissionControllerEC
 {
@@ -18,7 +19,7 @@ namespace MissionControllerEC
         public override string DisplaySection { get { return "MissionControllerEC"; } }
         public override int SectionOrder { get { return 1; } }
         public override bool HasPresets { get { return true; } }
-       
+
         [GameParameters.CustomParameterUI("MCE Satellite Contracts Enabled?", toolTip = "Do you want to play MCE Satellite Missions These use the MCE Part Cores.")]
         public bool SatelliteContracts = true;
         [GameParameters.CustomParameterUI("MCE Orbital Science Contracts Enabled?", toolTip = "These are contracts that use the MCE part Ionization Chamber.")]
@@ -61,8 +62,8 @@ namespace MissionControllerEC
         public bool FPTouricsmContracts = true;
         [GameParameters.CustomParameterUI("Grand Tour Contracts", toolTip = "Do you want to play the default Grand Tour contracts?")]
         public bool FPGrandTourContracts = true;
-       
-      
+
+
     }
     public class MCE_IntergratedSettings3 : GameParameters.CustomParameterNode
     {
