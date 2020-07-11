@@ -22,14 +22,9 @@ namespace MissionControllerEC
         public bool showMiniTons = false;
         public float vesselResourceTons;
         public int currentContractType = 0;
-
         public int kerbalNumbers;
-        public float kerbCost;
-        public float KerbalFlatrate;
-        public float kerbalMultiplier;
-
-        public float temp;
-        public float temp2;
+        public float kerbCost, KerbalFlatrate, kerbalMultiplier, RevertTotal;      
+        public Vessel vessel;
 
         public static int supplyCount;
 
@@ -98,7 +93,6 @@ namespace MissionControllerEC
             }
             else { /*Debug.LogError("MCE2 CreateButtons Already Loaded");*/ }
         }
-
         private void MCEOn()
         {
             SaveInfo.GUIEnabled = true;
@@ -265,7 +259,28 @@ namespace MissionControllerEC
             else { Debug.Log("MCE Debug Log, No Contracts Loaded at this time, need Game Save Loaded"); }
 
             
+        }         
+
+        public void GetRefundCost()
+        {
+            vessel = FlightGlobals.ActiveVessel;
+            if (vessel == null) { Debug.Log("No Active vessel for Part Calculation"); }
+            else
+            {
+                foreach (ProtoPartSnapshot pps in vessel.protoVessel.protoPartSnapshots)
+                {
+                    float dryCost, fuelCost;
+                    ShipConstruction.GetPartCosts(pps, pps.partInfo, out dryCost, out fuelCost);
+                    dryCost = dryCost < 0 ? 0 : dryCost;
+                    fuelCost = fuelCost < 0 ? 0 : fuelCost;
+                    RevertTotal += dryCost + fuelCost;
+                    
+                }
+            }
+            Debug.Log("Revert Cost Of Vessel Is " + RevertTotal);
         }
+
+
 
         public void getSupplyList(bool stationOnly)
         {

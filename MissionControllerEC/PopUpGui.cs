@@ -36,23 +36,24 @@ namespace MissionControllerEC
         /// If your GUI is not too complicated than this is easiest way to write a short GUI popup.
         /// </summary>
         internal void RevertPress()
-        {                             
+        {
             if (HighLogic.LoadedScene == GameScenes.FLIGHT)
             {
+                GetRefundCost();
                 PopupDialog.SpawnPopupDialog(new Vector2(0.5f, 0.5f),
                     new Vector2(0.5f, 0.5f),
                    new MultiOptionDialog("MCERevert", "",Localizer.Format("#autoLOC_MCE_MissionControllerRevertLabel"), HighLogic.UISkin, new Rect(0.5f, 0.5f, 210f, 60f),
                         new DialogGUIFlexibleSpace(),
                         new DialogGUIVerticalLayout(
                             new DialogGUIFlexibleSpace(),
-                            new DialogGUIButton(Localizer.Format("#autoLOC_MCE_RevertToVABCost:$") + Math.Round(revertcost * temp / 100, 0),
+                            new DialogGUIButton(Localizer.Format("#autoLOC_MCE_RevertToVABCost:$") + Math.Round(revertcost * RevertTotal / 100, 0),
                                 delegate
                                 {                                   
                                     FlightDriver.RevertToPrelaunch(EditorFacility.VAB);
                                     //RevertHalt = true;
-                                    RevertHaultSet();                                
+                                    RevertHaultSet();                                  
                                 }, 200f, 30.0f, true),
-                            new DialogGUIButton(Localizer.Format("#autoLOC_MCE_RRevertToSPHCost:$") + Math.Round(revertcost * temp / 100,0),
+                            new DialogGUIButton(Localizer.Format("#autoLOC_MCE_RRevertToSPHCost:$") + Math.Round(revertcost * RevertTotal / 100,0),
                                 delegate
                                 {
                                     FlightDriver.RevertToPrelaunch(EditorFacility.SPH);
@@ -76,9 +77,9 @@ namespace MissionControllerEC
                            new DialogGUIFlexibleSpace(),
                            new DialogGUIVerticalLayout(
                                new DialogGUIFlexibleSpace(),
-                               new DialogGUIButton(Localizer.Format("#autoLOC_MCE_Revert_Total_Cost_Final_Window") + Math.Round(revertcost * temp / 100, 0), delegate
+                               new DialogGUIButton(Localizer.Format("#autoLOC_MCE_Revert_Total_Cost_Final_Window") + Math.Round(revertcost * RevertTotal / 100, 0), delegate
                                {
-                                   Funding.Instance.AddFunds(- Math.Round(revertcost * temp / 100, 0), TransactionReasons.Progression);
+                                   Funding.Instance.AddFunds(- Math.Round(revertcost * RevertTotal / 100, 0), TransactionReasons.Progression);
                                    RevertHalt = false;
                                }, 200f, 30.0f, true)
                                )),

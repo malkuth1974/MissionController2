@@ -9,6 +9,7 @@ namespace MissionControllerEC.PartModules
 {
     class MCESatelliteCore : PartModule
     {
+         
         [KSPField(isPersistant = true, guiActive = true)]
         public static string[] SattypeList = { "Communication", "Navigation", "Weather", "Research" };
 
@@ -39,14 +40,13 @@ namespace MissionControllerEC.PartModules
             GetSatelliteCoreAnimation[animationName].normalizedTime = time;
             GetSatelliteCoreAnimation.Play(animationName);
         }
-        
-        [KSPField(isPersistant = true, guiActive = true, guiActiveEditor = false, guiName = " MC Satellite Type: ")]
+        [KSPField(isPersistant = true, guiActive = false, guiActiveEditor = false, guiName = " MC Satellite Type: ")]
         public string satTypeDisplay = SattypeList[sattypenumber];
 
-        [KSPField(isPersistant = true, guiActive = false, guiActiveEditor = true, guiName = "MC Satellite Types: ")]
+        [KSPField(isPersistant = true, guiActive = true, guiActiveEditor = true, guiName = "MC Satellite Types: ")]
         public string satTypeDisplay2 = SattypeList[sattypenumber];
 
-        [KSPEvent(guiActive =false,guiActiveEditor =true,guiName = "MC Satellite Type",active = true)]
+        [KSPEvent(guiActive = true,guiActiveEditor = true,guiName = "MC Satellite Type(Choose First)",active = true)]
         public void SatTypeSwitch()
         {
             if (sattypenumber > 2)
@@ -67,13 +67,22 @@ namespace MissionControllerEC.PartModules
         [KSPField(isPersistant = true, guiActive = true,guiActiveEditor = true, guiName = "MC Module Type: ")]
         public string satModuleType = "Select Module Type";
 
+        [KSPField(isPersistant = true, guiActive = true, guiActiveEditor = true, guiName = "Set Frequency"), UI_FloatRange(minValue = 1f, maxValue = 50f, stepIncrement = .5f)]
+        public float frequencyModulation = 1;
+
         [KSPField(isPersistant = true, guiActive = true, guiName = "Frequency: ")]
         public float frequencyDisplay = 1;
 
         [KSPField(isPersistant = true, guiActiveEditor = true, guiName = "MC Module Type: ")]
         public float moduleType = 1;
 
-        [KSPEvent(guiActive = false, guiActiveEditor = true, guiName = "MC Module Type", active = true)]
+        [KSPEvent(guiActive = true, guiActiveEditor = false, guiName = "MC Push Set Frequency!", active = true)]
+        public void FreqModSwitch()
+        {
+            frequencyDisplay = frequencyModulation;
+        }
+
+        [KSPEvent(guiActive = true, guiActiveEditor = true, guiName = "MC Module Type(Choose Second)", active = true)]
         public void SatModSwitch()
         {
             if (moduleType > 3)
@@ -119,10 +128,7 @@ namespace MissionControllerEC.PartModules
             }
             
         }
-
-        [KSPField(isPersistant = true, guiActiveEditor = true, guiName = "Set Frequency"), UI_FloatRange(minValue = 1f, maxValue = 50f, stepIncrement = .5f)]
-        public float frequencyModulation = 1;
-
+      
         [KSPEvent(guiActive = true, guiIcon = "MC Start Data Linkup", guiName = "Start Data Linkup (MC Contracts)", active = true)]
         public void StartDataMCE()
         {

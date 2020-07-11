@@ -86,7 +86,7 @@ namespace MissionControllerEC
         public int SatelliteContractNumbers = 2;
         [GameParameters.CustomIntParameterUI("Max Number Science Contracts At Time", maxValue = 5)]
         public int ScienceContractNumbers= 1;
-        [GameParameters.CustomFloatParameterUI("MCE Contract Payout Multiplier", maxValue = 3)]
+        [GameParameters.CustomFloatParameterUI("MCE Contract Payout Multiplier", maxValue = 10)]
         public float MCEContractPayoutMult = 1;
         [GameParameters.CustomIntParameterUI("Orbit Margin Error Contracts", maxValue = 10000)]
         public int MCEErrorOrbits = 5000;

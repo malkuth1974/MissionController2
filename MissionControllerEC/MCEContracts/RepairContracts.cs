@@ -165,20 +165,20 @@ namespace MissionControllerEC.MCEContracts
                 targetBody = Planetarium.fetch.Home;
             }
 
-            if (maxApA <= 120000)
+            if (maxApA < 120000)
             {
                 base.SetFunds(20000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 71000f * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 150000f * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
                 base.SetReputation(20f, 25f, targetBody);
             }
-            if (maxApA > 120000 && maxApA <= 1000000)
+            if (maxApA > 120000 && maxApA < 1000000)
             {
                 base.SetFunds(25000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 95000f * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 210000f * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
-                base.SetReputation(20f, 25f, targetBody);
+                base.SetReputation(24f, 28f, targetBody);
             }
-            if (maxApA > 30000)
+            if (maxApA > 1000000)
             {
-                base.SetFunds(2500 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 35000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 35000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
-                base.SetReputation(20f, 25f, targetBody);
+                base.SetFunds(35000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 125000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 350000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
+                base.SetReputation(26f, 30f, targetBody);
             }
 
             this.repairgoal2 = this.AddParameter(new RepairPanelPartCheck(titleName, vesselID, vesselName), null);
