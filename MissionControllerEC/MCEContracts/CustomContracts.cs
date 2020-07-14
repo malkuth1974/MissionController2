@@ -18,16 +18,11 @@ namespace MissionControllerEC.MCEContracts
     {
         CelestialBody targetBody = null;
         Settings settings = new Settings("Config.cfg");
-        public double MinOrb;
-        public double MaxOrb;
-        public int crewCount = 0;
+        public double MinOrb, MaxOrb, contractAOP;
         public string ContractPlayerName;
-        public int partAmount = 1;
         public string partName = "Repair Panel";
         public bool StartNetwork;
-        public int totalContracts;
-        public int TotalFinished;
-        public double contractAOP;
+        public int totalContracts, TotalFinished, crewCount = 0, partAmount= 1;
 
 
         protected override bool Generate()
@@ -65,7 +60,7 @@ namespace MissionControllerEC.MCEContracts
             base.SetExpiry(3f, 15f);
             base.SetDeadlineYears(1f, targetBody);
             base.SetReputation(25f, 40f, targetBody);
-            base.SetFunds(12000f * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 41000f * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 45000f * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
+            base.SetFunds(12000f * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 75000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 75000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
 
             return true;
         }
@@ -157,18 +152,12 @@ namespace MissionControllerEC.MCEContracts
     {
         Settings st = new Settings("Config.cfg");
         CelestialBody targetBody = null;
-        public string vesselName;
-        public string vesselId;
-        public string ResourceName;
-        public string ContractPlayerName;
+        public string vesselName, vesselId, ResourceName, ContractPlayerName;
         public bool StartSupply;
         public double resourcesAmount;
-        public int totalContracts;
-        public int TotalFinished;
+        public int totalContracts, TotalFinished;
         public string CTitle = Localizer.Format("#autoLOC_MCE_Supply_your_Station_Or_Base_with");
-        ContractParameter suppy1;
-        ContractParameter suppy2;
-        
+        ContractParameter suppy1, suppy2;        
 
         protected override bool Generate()
         {
@@ -207,7 +196,7 @@ namespace MissionControllerEC.MCEContracts
             base.SetExpiry(1f, 10f);
             base.SetDeadlineYears(.3f, targetBody);
             base.SetReputation(20f, 40f, targetBody);
-            base.SetFunds(8000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 35000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 40000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
+            base.SetFunds(8000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 55000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 55000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
 
             return true;
         }
@@ -291,14 +280,10 @@ namespace MissionControllerEC.MCEContracts
     {
         CelestialBody targetBody = null;
         public string ContractPlayerName;
-        public int crewAmount;
-        public int totalContracts;
-        public int TotalFinished;
+        public int crewAmount, totalContracts, TotalFinished;
         public string CTitle = Localizer.Format("#autoLOC_MCE2_Custom_Land_Orbit_Contract_Title_Set" + " ");
         public bool StartOrbitLand = false;
-        ContractParameter Orbit1;
-        ContractParameter Land2;
-        ContractParameter crew1;
+        ContractParameter Orbit1, Land2, crew1;
 
         protected override bool Generate()
         {
@@ -389,7 +374,7 @@ namespace MissionControllerEC.MCEContracts
             base.SetExpiry(15f, 40f);
             base.SetDeadlineYears(700, targetBody);
             base.SetReputation(25f, 50f, targetBody);
-            base.SetFunds(2500 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 45000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 55000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
+            base.SetFunds(12000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 100000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 100000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
 
             return true;
         }
@@ -487,18 +472,12 @@ namespace MissionControllerEC.MCEContracts
     {
         Settings st = new Settings("Config.cfg");
         CelestialBody targetBody = null;
-        public string vesselName;
-        public string vesselId;
+        public string vesselName, vesselId, ContractPlayerName;
         public bool Startcrewtrans;
-        public int crewAmount;
-        public string ContractPlayerName;
+        public int crewAmount, totalContracts, TotalFinished;
         public double crewTime;
-        public int totalContracts;
-        public int TotalFinished;
         public string CTitle = "Supply your Station Or Base with ";
-        ContractParameter ctrans1;
-        ContractParameter ctrans2;
-        ContractParameter ctrans3;
+        ContractParameter ctrans1, ctrans2, ctrans3;
 
         protected override bool Generate()
         {
@@ -567,7 +546,7 @@ namespace MissionControllerEC.MCEContracts
             base.SetExpiry(15f, 40f);
             base.SetDeadlineYears(700, targetBody);
             base.SetReputation(25f, 50f, targetBody);
-            base.SetFunds(8000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 62000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 72000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
+            base.SetFunds(12000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 85000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 85000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
 
             return true;
         }
@@ -675,13 +654,10 @@ namespace MissionControllerEC.MCEContracts
     {
         CelestialBody targetBody = null;
         public string ContractPlayerName;
-        public int EmptycrewAmount;
-        public int totalContracts;
-        public int TotalFinished;
+        public int EmptycrewAmount, totalContracts, TotalFinished;
         public string CTitle = Localizer.Format("Build Space Station");
         public bool StartSpaceBuild = false;
-        ContractParameter Orbit1;
-        ContractParameter crew1;
+        ContractParameter Orbit1, crew1;
 
         protected override bool Generate()
         {
@@ -721,7 +697,7 @@ namespace MissionControllerEC.MCEContracts
             base.SetExpiry(15f, 40f);
             base.SetDeadlineYears(700, targetBody);
             base.SetReputation(25f, 50f, targetBody);
-            base.SetFunds(2500 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 45000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 55000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
+            base.SetFunds(25000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 120000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 120000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
 
             return true;
         }

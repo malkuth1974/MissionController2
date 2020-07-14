@@ -79,7 +79,9 @@ namespace MissionControllerEC.PartModules
         [KSPEvent(guiActive = true, guiActiveEditor = false, guiName = "MC Push Set Frequency!", active = true)]
         public void FreqModSwitch()
         {
+            MCEParameters.GroundStationPostion gs = new MCEParameters.GroundStationPostion(0);
             frequencyDisplay = frequencyModulation;
+            gs.SetGroundStationCheck(frequencyDisplay);
         }
 
         [KSPEvent(guiActive = true, guiActiveEditor = true, guiName = "MC Module Type(Choose Second)", active = true)]

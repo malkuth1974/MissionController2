@@ -174,6 +174,30 @@ namespace MissionControllerEC
 
                     catch { Debug.LogError("could not run NoRescueKerbalContracts Returned Null"); }
                 }
+
+                if (!HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings2>().FPExplorationContracts && ContractSystem.ContractTypes.Contains(typeof(FinePrint.Contracts.ExplorationContract)))
+                {
+                    try
+                    {
+                        ContractSystem.ContractTypes.Remove(typeof(FinePrint.Contracts.ExplorationContract));
+                        Debug.Log("Removed Exploration Type Contracts");
+                    }
+
+                    catch { Debug.LogError("could not run Exploration Contracts Returned Null"); }
+                }
+
+                if (!HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings2>().FPCometGo && ContractSystem.ContractTypes.Contains(typeof(FinePrint.Contracts.CometSampleContract)))
+                {
+                    try
+                    {
+                        ContractSystem.ContractTypes.Remove(typeof(FinePrint.Contracts.CometSampleContract));
+                        Debug.Log("Removed Comet Type Contracts");
+                    }
+
+                    catch { Debug.LogError("could not run Comet Contracts Returned Null"); }
+                }
+
+
                 if (!HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings2>().FPSatelliteContracts && ContractSystem.ContractTypes.Contains(typeof(FinePrint.Contracts.SatelliteContract)))
                 {
                     try
@@ -259,8 +283,8 @@ namespace MissionControllerEC
             else { Debug.Log("MCE Debug Log, No Contracts Loaded at this time, need Game Save Loaded"); }
 
             
-        }         
-
+        }
+        
         public void GetRefundCost()
         {
             vessel = FlightGlobals.ActiveVessel;
@@ -279,8 +303,6 @@ namespace MissionControllerEC
             }
             Debug.Log("Revert Cost Of Vessel Is " + RevertTotal);
         }
-
-
 
         public void getSupplyList(bool stationOnly)
         {
