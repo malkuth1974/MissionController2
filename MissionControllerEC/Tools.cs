@@ -241,8 +241,8 @@ namespace MissionControllerEC
             SaveInfo.TourisNames2.Add("Kat Kerbet");
 
             
-        }
-       
+        }      
+
         public static void GroundStationRangeHelper(Vessel v, string GstationName, bool inRangeTF)
         {
             ScreenMessages.PostScreenMessage("Ground Station " + GstationName + "In range? " + inRangeTF, .001f);

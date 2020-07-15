@@ -320,7 +320,6 @@ namespace MissionControllerEC
                         supplyCount++;
                         //Debug.Log("Found Vessel " + v.name + " " + v.vesselType + " Count is: " + supplyCount);
                     }
-                    else { }
                 }
             }
             else

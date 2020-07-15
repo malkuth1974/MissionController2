@@ -157,6 +157,9 @@ namespace MissionControllerEC.MCEContracts
             {
                 return false;
             }
+            int randomChance = Tools.RandomNumber(1, 100);
+            if (randomChance < HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEReapairPercent)
+            { return false; }
             repairTextSelection();
             targetBody = FlightGlobals.Bodies[planetIDX];
             if (targetBody = null)
@@ -406,6 +409,9 @@ namespace MissionControllerEC.MCEContracts
             {
                 return false;
             }
+            int randomChance = Tools.RandomNumber(1, 100);
+            if (randomChance < HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEReapairPercent)
+            { return false; }
             repairStationSelect();
 
             this.AddParameter(new EvaGoal(FlightGlobals.Bodies[planetIDX]), null);

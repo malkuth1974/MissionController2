@@ -88,6 +88,8 @@ namespace MissionControllerEC
         public bool MCEDebugMode = false;
         [GameParameters.CustomParameterUI("MCE Contract Chance For Other Planets?", toolTip = "Chance of Planets other than Kerbin for Satellite Contracts.  Higher Number Less chance!")]
         public int MCESatOwPercentChance = 60;
+        [GameParameters.CustomParameterUI("MCE Contract Repair Chances?", toolTip = "Chance To Get Repair Contracts.  Lower Number More chance!")]
+        public int MCEReapairPercent = 60;
         [GameParameters.CustomIntParameterUI("Max Number Satellite Contracts At Time", maxValue = 5)]
         public int SatelliteContractNumbers = 2;
         [GameParameters.CustomIntParameterUI("Max Number Science Contracts At Time", maxValue = 5)]
