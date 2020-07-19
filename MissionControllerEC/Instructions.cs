@@ -26,6 +26,7 @@ namespace MissionControllerEC
         public float kerbCost, KerbalFlatrate, kerbalMultiplier, RevertTotal;      
         public Vessel vessel;
 
+
         public static int supplyCount;
 
         public static List<SupplyVesselList> SupVes = new List<SupplyVesselList>();
@@ -59,12 +60,12 @@ namespace MissionControllerEC
             //Debug.LogError("MCE Settings Loaded");
         }       
 
-        public void CreateButtons()
+        public void MceCreateButtons()
         {
-            DestroyButtons();
-            if (HighLogic.LoadedScene == GameScenes.SPACECENTER && this.MCEButton == null)
+            if (HighLogic.LoadedScene == GameScenes.SPACECENTER && MCEButton == null)
             {
-                this.MCEButton = ApplicationLauncher.Instance.AddModApplication(
+                MceDestroyButtons();
+                    MCEButton = ApplicationLauncher.Instance.AddModApplication(
                     this.MCEOn,
                     this.MCEOff,
                     null,
@@ -74,12 +75,14 @@ namespace MissionControllerEC
                     ApplicationLauncher.AppScenes.SPACECENTER,
                     texture
                     );
-                //Debug.LogError("Creating MCEButton Buttons");
+                Debug.LogError("Creating MCEButton Buttons");
             }
-            
-            if (HighLogic.LoadedScene == GameScenes.FLIGHT && this.MCERevert == null && HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCERevertAllow)
+            else { Debug.LogError("MCE2 MCE Button Already Loaded"); }
+
+            if (HighLogic.LoadedScene == GameScenes.FLIGHT && MCERevert == null && HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCERevertAllow)
             {
-                this.MCERevert = ApplicationLauncher.Instance.AddModApplication(
+                MceDestroyButtons();
+                    MCERevert = ApplicationLauncher.Instance.AddModApplication(
                     this.RevertPress,
                     this.KillMCePopups,
                     null,
@@ -89,9 +92,9 @@ namespace MissionControllerEC
                     ApplicationLauncher.AppScenes.FLIGHT,
                     texture2
                     );
-                //Debug.LogError("creating MCERevert Buttons");
+                Debug.LogError("creating MCERevert Buttons");
             }
-            else { /*Debug.LogError("MCE2 CreateButtons Already Loaded");*/ }
+            else { Debug.LogError("MCE2 MCERevert Already Loaded"); }
         }
         private void MCEOn()
         {
@@ -103,15 +106,17 @@ namespace MissionControllerEC
             SaveInfo.GUIEnabled = false;
         }
 
-        public void DestroyButtons()
+        public void MceDestroyButtons()
         {
-            if (this.MCEButton != null)
+            if (MCEButton != null)
             {
-                ApplicationLauncher.Instance.RemoveModApplication(this.MCEButton);
+                ApplicationLauncher.Instance.RemoveModApplication(MCEButton);
+                Debug.Log("MCEButton Deleted With MCEDestroyButtons");
             }           
-            if (this.MCERevert != null)
+            if (MCERevert != null)
             {
-                ApplicationLauncher.Instance.RemoveModApplication(this.MCERevert);
+                ApplicationLauncher.Instance.RemoveModApplication(MCERevert);
+                Debug.Log("MCERevert Deleted With MCEDestroyButtons");
             }
             else { /*Debug.Log("MCE destroy buttons failed"); */}
         }
