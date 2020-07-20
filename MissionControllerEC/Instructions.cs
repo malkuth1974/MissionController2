@@ -14,6 +14,7 @@ namespace MissionControllerEC
 {
     public partial class MissionControllerEC
     {
+        #region Variables
         public float resourceCost;
         public float vesselPartCost;
         public float vesseltons;
@@ -34,7 +35,8 @@ namespace MissionControllerEC
         public static List<string> CivName = new List<string>();
 
         Tools.MC2RandomWieghtSystem.Item<int>[] RandomSatelliteContractsCheck;
-        
+        #endregion
+        #region Textures Main Buttons Handling
         public void loadTextures()
         {
             if (texture == null)
@@ -129,7 +131,8 @@ namespace MissionControllerEC
             //Debug.LogError("GuiDestroy Info Save as is:  " + value.ToString());
            
         }
-
+        #endregion
+        #region Methods Etc
         public void CheckRandomSatelliteContractTypes()
         {
             randomSatelliteContractsCheck();
@@ -402,11 +405,11 @@ namespace MissionControllerEC
         //    SaveInfo.OrbitNamesList.Add("Orbit");
         //    SaveInfo.OrbitNamesList.Add("SubTraject");
         //    SaveInfo.OrbitNamesList.Add("Flyby");
-            
+
         //}
-        
+        #endregion
     }
-   
+
     public class RepairVesselsList
     {
         public string vesselName;

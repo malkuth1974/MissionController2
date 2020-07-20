@@ -121,9 +121,10 @@ namespace MissionControllerEC.MCEParameters
                             if (angleCheck)
                             {
                                 base.SetComplete();
+                                MCESatelliteCore.GroundStationLockedText = "Locked";
                                 //Debug.Log("SetComplete Logitude is " + longitude + " Latitude is " + latitude);
                             }
-                            else { }
+                            else { MCESatelliteCore.GroundStationLockedText = "NoLock"; }
                         }
 
                         if (this.State == ParameterState.Complete && freqPass)

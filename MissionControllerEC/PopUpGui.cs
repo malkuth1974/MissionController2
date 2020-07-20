@@ -18,6 +18,7 @@ namespace MissionControllerEC
     
     public partial class MissionControllerEC
     {
+        #region  variables
         CelestialBody targetbody = null;
         public static bool comSatwin = false;
         public static bool supplywin = false;
@@ -30,6 +31,7 @@ namespace MissionControllerEC
         //string KerbalName = "PlaceNameHere";
 
         double revertcost = HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCERevertCost;
+        #endregion
         #region Revert Gui                
         /// <summary>
         /// RevertPress is my early version of a GUI. I kept it this way to show that this is about the easiest way to use PopupDialog version.  But can get very confusing.
@@ -1030,7 +1032,8 @@ namespace MissionControllerEC
             BuildSpaceStatPop_dialg = PopupDialog.SpawnPopupDialog(BuildSpaceStation_Dialg, true, HighLogic.UISkin, false);
 
         }
-#endregion
+        #endregion
+
         internal void KillMCePopups()
         {
             PopupDialog.ClearPopUps();

@@ -110,7 +110,6 @@
     <Compile Include="MCEParameters\ResourcesParameters.cs" />
     <Compile Include="MCEParameters\TimedParameters.cs" />
     <Compile Include="PartModules\VesselMustSurvive.cs" />
-    <Compile Include="PartModules\MCECommunicationsCore.cs" />
     <Compile Include="PartModules\MCELanderResearch.cs" />
     <Compile Include="PartModules\MCEOrbitalScanning.cs" />
     <Compile Include="MissionControllerEC.cs" />

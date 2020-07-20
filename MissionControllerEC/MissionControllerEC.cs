@@ -17,6 +17,7 @@ namespace MissionControllerEC
     [KSPScenario(ScenarioCreationOptions.AddToAllGames, GameScenes.SPACECENTER, GameScenes.EDITOR, GameScenes.FLIGHT, GameScenes.TRACKSTATION)]
     public class MissionControllerData : ScenarioModule
     {
+        #region ScenarioModule Loading and Saving
         // used TacLife Support by Taranis Elsu way of loading Components for the MissionControllerEC Component 
         private readonly List<Component> mcechildren = new List<Component>();
 
@@ -54,16 +55,24 @@ namespace MissionControllerEC
             }
             mcechildren.Clear();
         }
+        #endregion
     }
 
     [KSPAddon(KSPAddon.Startup.Instantly, true)]
     public class CoolUILoader : MonoBehaviour
     {
+        #region Prefab Loading and Handles
         private static GameObject panelPrefab;
 
         public static GameObject PanelPrefab
         {
             get { return panelPrefab; }
+        }
+        private static GameObject panelPrefab2;
+
+        public static GameObject PanelPrefab2
+        {
+            get { return panelPrefab2; }
         }
 
         private void Awake()
@@ -74,20 +83,35 @@ namespace MissionControllerEC
             //The way I was doing this which does seem to work.  But DMagic's method makes much more sense.
             //AssetBundle prefabs = AssetBundle.LoadFromFile(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "mycoolui.ksp"));
             //DMagic's method without the .ksp file extension            
-            AssetBundle prefabs = AssetBundle.LoadFromFile(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "mycoolui.dat"));
-            panelPrefab = prefabs.LoadAsset("MyCoolUiPanel") as GameObject;
-            Debug.Log("MCE CoolUILoader Public Class Fired why?")
-;        }
-    }   
+            AssetBundle prefabs = AssetBundle.LoadFromFile(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "mceuipanels.dat"));
+            panelPrefab = prefabs.LoadAsset("MCERepairPanel") as GameObject;
+
+            AssetBundle prefabs2 = AssetBundle.LoadFromFile(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "mcesatelliteui.dat"));
+            panelPrefab2 = prefabs2.LoadAsset("MCESatelliteHub") as GameObject;
+
+            ;        }
+        #endregion
+    }
 
     [KSPAddon(KSPAddon.Startup.MainMenu, true)]
     public partial class MissionControllerEC : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
     {
+        #region Types + variables
         public static GameObject RepairUICanvas = null;
         public static GameObject RepairText = null;
         public static List<RepairPanel> RepairUIParts = new List<RepairPanel>();
         private static Vector2 Repairdragstart;
         private static Vector2 Repairaltstart;
+
+        public static GameObject SatelliteUICanvas = null;
+        public static GameObject SatFreqText = null;
+        public static GameObject SatTypeText = null;
+        public static GameObject SatModuleText = null;
+        public static GameObject SatGroundLockText = null;
+
+        public static List<MCESatelliteCore> SatelliteUIParts = new List<MCESatelliteCore>();
+        private static Vector2 Satellitedragstart;
+        private static Vector2 Satellitealtstart;
 
         private static Texture2D texture;
         private static Texture2D texture2;
@@ -177,8 +201,8 @@ namespace MissionControllerEC
         private static DialogGUIBase Custom_Contract_Input2;
      
         Settings settings = new Settings("Config.cfg");
-        
-
+        #endregion
+        #region Start/Awake/Instance Stuff
         private static MissionControllerEC Instance
         {
             get
@@ -238,33 +262,33 @@ namespace MissionControllerEC
             Main_popup_dialog = PopupDialog.SpawnPopupDialog(Mainmulti_dialog, true, HighLogic.UISkin, false, "");
             Hide();
             loadTextures();
-            Debug.LogWarning("[MCE] Textrues called OnAwake");
+            //Debug.LogWarning("[MCE] Textrues called OnAwake");
             MceCreateButtons();
-            Debug.LogWarning("[MCE] Buttons called OnAwake");
-            Debug.Log("MCE MissionControllerEC Main Awake called");
+            //Debug.LogWarning("[MCE] Buttons called OnAwake");
+            //Debug.Log("MCE MissionControllerEC Main Awake called");
             //this creates a callback so that whenever the scene is changed we can destroy the UI
             GameEvents.onGameSceneSwitchRequested.Add(OnRepairSceneChange);
-
-            if (Main_popup_dialog = null)
-            {
-                SaveInfo.MainGUIWindowPos = new Vector2(
-                ((Screen.width / 2) + Main_popup_dialog.RTrf.position.x) / Screen.width,
-                    ((Screen.height / 2) + Main_popup_dialog.RTrf.position.y) / Screen.height);
-            }
+            GameEvents.onGameSceneSwitchRequested.Add(OnSatelliteSceneChange);
 
         }
-        #region RepairPanel UI Stuff
+        #endregion
+        #region GUI Events
         //If we don't get rid of the UI, it'll stay where it is indefinitely.  So, every time the scene is changed, we need to get rid of it.
         void OnRepairSceneChange(GameEvents.FromToAction<GameScenes, GameScenes> fromToScenes)
         {
             if (RepairUICanvas != null)
             {
-                Destroy();
+                RepairUIDestroy();
             }
+        }
+        void OnSatelliteSceneChange(GameEvents.FromToAction<GameScenes, GameScenes> fromToScenes)
+        {
+            if (SatelliteUICanvas != null)
+                SatelliteUIDestroy();
         }
 
         //This actually destroys the UI.  But it also goes through the partmodule's toggle buttons and turns them all off.
-        public static void Destroy()
+        public static void RepairUIDestroy()
         {
             RepairUICanvas.DestroyGameObject();
             RepairUICanvas = null;
@@ -273,7 +297,17 @@ namespace MissionControllerEC
                 thisPart.openUI = false;
             }
         }
-
+        public static void SatelliteUIDestroy()
+        {
+            SatelliteUICanvas.DestroyGameObject();
+            SatelliteUICanvas = null;
+            foreach (MCESatelliteCore thisPart in SatelliteUIParts)
+            {
+                thisPart.openSatUI = false;
+            }
+        }
+        #endregion
+        #region GuiShow Codes
         public static void RepairShowGUI()
         {
             if (RepairUICanvas != null)  //if the UI is already showing, don't show another one.
@@ -297,53 +331,216 @@ namespace MissionControllerEC
             RepairToggleButton2.onClick.AddListener(RepairButton2Clicked);
 
             ConfigNode node = new ConfigNode();
-            var thisnode = GetConfig("RepairUI");
+            var thisnode = RepGetConfig("RepairUI");
             float xpos = float.Parse(thisnode.GetValue("x"));
             float ypos = float.Parse(thisnode.GetValue("y"));
             RepairUICanvas.transform.position = new Vector3(xpos, ypos, RepairUICanvas.transform.position.z);
         }
 
+        public static void SatelliteShowGUI()
+        {
+            if (SatelliteUICanvas != null)  //if the UI is already showing, don't show another one.
+                return;
+
+            //Load up the UI and show it
+            SatelliteUICanvas = (GameObject)Instantiate(CoolUILoader.PanelPrefab2);
+            SatelliteUICanvas.transform.SetParent(MainCanvasUtil.MainCanvas.transform);
+            SatelliteUICanvas.AddComponent<MissionControllerEC>();
+
+            //Find the game objects that we gave cool names to in Unity
+            //RepairText = (GameObject)GameObject.Find("RepairText");
+            SatFreqText = (GameObject)GameObject.Find("FreqTextHead");
+            SatTypeText = (GameObject)GameObject.Find("MceSatTypeText");
+            SatModuleText = (GameObject)GameObject.Find("MceSatModulText");
+            SatGroundLockText = (GameObject)GameObject.Find("MceGroundStationText");
+
+
+            GameObject SatFreqButton1 = (GameObject)GameObject.Find("FreqFowardButton");
+            Button SatToggleButton1 = SatFreqButton1.GetComponent<Button>();
+            SatToggleButton1.onClick.AddListener(SatFreqButtonClicked);
+
+            GameObject SatFreqButton2 = (GameObject)GameObject.Find("FreqFowardButton2");
+            Button SatToggleButton2 = SatFreqButton2.GetComponent<Button>();
+            SatToggleButton2.onClick.AddListener(SatFreqButtonClicked2);
+
+            GameObject SatFreqButton3 = (GameObject)GameObject.Find("FreqBackButton");
+            Button SatToggleButton3 = SatFreqButton3.GetComponent<Button>();
+            SatToggleButton3.onClick.AddListener(SatFreqButtonClicked3);
+
+            GameObject SatFreqButton4 = (GameObject)GameObject.Find("FreqBackButton2");
+            Button SatToggleButton4 = SatFreqButton4.GetComponent<Button>();
+            SatToggleButton4.onClick.AddListener(SatFreqButtonClicked4);
+
+            GameObject SatTypeButton1 = (GameObject)GameObject.Find("SatTypeFowardButton");
+            Button SatTypeToggleButton1 = SatTypeButton1.GetComponent<Button>();
+            SatTypeToggleButton1.onClick.AddListener(SatTypeButtonClicked1);
+
+            GameObject SatTypeButton2 = (GameObject)GameObject.Find("SatTypeBackButton");
+            Button SatTypeToggleButton2 = SatTypeButton2.GetComponent<Button>();
+            SatTypeToggleButton2.onClick.AddListener(SatTypeButtonClicked2);
+
+            GameObject SatModButton1 = (GameObject)GameObject.Find("ModuleTypeFowardButton");
+            Button SatModToggleButton1 = SatModButton1.GetComponent<Button>();
+            SatModToggleButton1.onClick.AddListener(SatModButtonClicked1);
+
+            GameObject SatModButton2 = (GameObject)GameObject.Find("ModuleTypeBackButton");
+            Button SatModToggleButton2 = SatModButton2.GetComponent<Button>();
+            SatModToggleButton2.onClick.AddListener(SatModButtonClicked2);
+
+            GameObject SatTransmitButton2 = (GameObject)GameObject.Find("TransmitKeyButton");
+            Button SatTransmitToggleButton2 = SatTransmitButton2.GetComponent<Button>();
+            SatTransmitToggleButton2.onClick.AddListener(SattransmitButtonClicked);
+
+            ConfigNode node = new ConfigNode();
+            var thisnode = SatGetConfig("SatelliteUI");
+            float xpos = float.Parse(thisnode.GetValue("x"));
+            float ypos = float.Parse(thisnode.GetValue("y"));
+            SatelliteUICanvas.transform.position = new Vector3(xpos, ypos, SatelliteUICanvas.transform.position.z);
+        }
+        #endregion
+        #region Gui buttons
         //this is the callback we created for when the toggle button is clicked.
         static void RepairOnToggleClicked()
         {
             RepairPanel rp = new RepairPanel();
             rp.CheckSystems();
             ScreenMessages.PostScreenMessage("You Pressed The Test Button");
-
         }
         static void RepairButton2Clicked()
         {
             RepairPanel rp = new RepairPanel();
             rp.EnableRepair();
             ScreenMessages.PostScreenMessage("You Pressed The Enter Button");
-
+        }
+        static void SatFreqButtonClicked()
+        {
+            float a = MCESatelliteCore.frequencyModulation;
+            float b = .50f;
+            float final = a + b;
+            MCESatelliteCore.frequencyModulation = final;
+            if (MCESatelliteCore.frequencyModulation > 50) { MCESatelliteCore.frequencyModulation = 50; }
+        }
+        static void SatFreqButtonClicked2()
+        {
+            MCESatelliteCore.frequencyModulation++;
+            if (MCESatelliteCore.frequencyModulation > 50) { MCESatelliteCore.frequencyModulation = 50; }
         }
 
+        static void SatFreqButtonClicked3()
+        {
+            float a = MCESatelliteCore.frequencyModulation;
+            float b = .50f;
+            float final = a - b;
+            MCESatelliteCore.frequencyModulation = final;
+            if (MCESatelliteCore.frequencyModulation < 1) { MCESatelliteCore.frequencyModulation = 1; }
+        }
+        static void SatFreqButtonClicked4()
+        {
+            MCESatelliteCore.frequencyModulation--;
+            if (MCESatelliteCore.frequencyModulation < 1) { MCESatelliteCore.frequencyModulation = 1; }
+        }
+        static void SatTypeButtonClicked1()
+        {
+            MCESatelliteCore.sattypenumber++;
+            if (MCESatelliteCore.sattypenumber > 3) { MCESatelliteCore.sattypenumber = 3; }
+        }
+        static void SatTypeButtonClicked2()
+        {
+            MCESatelliteCore.sattypenumber--;
+            if (MCESatelliteCore.sattypenumber < 0) { MCESatelliteCore.sattypenumber = 0; }
+        }
+        static void SatModButtonClicked1()
+        {
+            MCESatelliteCore.moduleTypeChange++;
+            if (MCESatelliteCore.moduleTypeChange > 4) { MCESatelliteCore.moduleTypeChange = 4; }
+        }
+        static void SatModButtonClicked2()
+        {
+            MCESatelliteCore.moduleTypeChange--;
+            if (MCESatelliteCore.moduleTypeChange < 0) { MCESatelliteCore.moduleTypeChange = 0; }
+        }
+        static void SattransmitButtonClicked()
+        {
+            Debug.Log("Hey You Pressed Transmit!");
+            if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel.situation == Vessel.Situations.ORBITING)
+            {
+                MCESatelliteCore.StartDataTransfer = true;
+                MissionControllerEC.SatelliteUIDestroy();
+            }
+            else
+            { ScreenMessages.PostScreenMessage("Not in flight Or Orbit",10f); Debug.Log("You Pressed Transmit Not In Flight"); }
+        }
         //this function is where we update the text component on the UI.
         public static void RepairUpdateText(string message)
         {
             RepairText.GetComponent<Text>().text = message;
         }
-
+        public static void SatFreqUpdateText(string message)
+        {
+            SatFreqText.GetComponent<Text>().text = message;
+        }
+        public static void SatTypeUpdateText(string message)
+        {
+            SatTypeText.GetComponent<Text>().text = message;
+        }
+        public static void SatModTypeUpdateText(string message)
+        {
+            SatModuleText.GetComponent<Text>().text = message;
+        }
+        public static void SatGroundLockUpdateText(string message)
+        {
+            SatGroundLockText.GetComponent<Text>().text = message;
+        }
+        #endregion
+        #region GUI Drag Values
         //this event fires when a drag event begins
         public void OnBeginDrag(PointerEventData data)
         {
-            Repairdragstart = new Vector2(data.position.x - Screen.width / 2, data.position.y - Screen.height / 2);
-            Repairaltstart = RepairUICanvas.transform.position;
+            if (RepairUICanvas != null)
+            {
+                Repairdragstart = new Vector2(data.position.x - Screen.width / 2, data.position.y - Screen.height / 2);
+                Repairaltstart = RepairUICanvas.transform.position;
+            }
+            if (SatelliteUICanvas != null)
+            {
+                Satellitedragstart = new Vector2(data.position.x - Screen.width / 2, data.position.y - Screen.height / 2);
+                Satellitealtstart = SatelliteUICanvas.transform.position;
+            }
+
         }
 
         //this event fires while we're dragging. It's constantly moving the UI to a new position
         public void OnDrag(PointerEventData data)
         {
-            Vector2 dpos = new Vector2(data.position.x - Screen.width / 2, data.position.y - Screen.height / 2);
-            Vector2 dragdist = dpos - Repairdragstart;
-            RepairUICanvas.transform.position = Repairaltstart + dragdist;
+            if (RepairUICanvas != null)
+            {
+                Vector2 dpos = new Vector2(data.position.x - Screen.width / 2, data.position.y - Screen.height / 2);
+                Vector2 dragdist = dpos - Repairdragstart;
+                RepairUICanvas.transform.position = Repairaltstart + dragdist;
+            }
+            if (SatelliteUICanvas != null)
+            {
+                Vector2 satdpos = new Vector2(data.position.x - Screen.width / 2, data.position.y - Screen.height / 2);
+                Vector2 satdragdist = satdpos - Satellitedragstart;
+                SatelliteUICanvas.transform.position = Satellitealtstart + satdragdist;
+            }
+
         }
 
         //this event fires when we let go of the mouse and stop dragging
         public void OnEndDrag(PointerEventData data)
         {
-            SetConfig(RepairUICanvas.transform.position.x, RepairUICanvas.transform.position.y, "RepairUI");
+            if (RepairUICanvas != null)
+            {
+                RepSetConfig(RepairUICanvas.transform.position.x, RepairUICanvas.transform.position.y, "RepairUI");
+                Debug.Log("Saving RepairUI Position");
+            }
+
+            if (SatelliteUICanvas != null)
+            {
+                SatSetConfig(SatelliteUICanvas.transform.position.x, SatelliteUICanvas.transform.position.y, "SatelliteUI");
+                Debug.Log("Saving SatelliteUI Position");
+            }
         }
 
         //This function grabs the position of the UI slider
@@ -367,8 +564,15 @@ namespace MissionControllerEC
         }
 
         #endregion
+        #region Old GUI Code Working On Replacing
         void OnDestroy()
         {
+            if (Main_popup_dialog != null)
+            {
+                SaveInfo.MainGUIWindowPos = new Vector2(
+                ((Screen.width / 2) + Main_popup_dialog.RTrf.position.x) / Screen.width,
+                    ((Screen.height / 2) + Main_popup_dialog.RTrf.position.y) / Screen.height);
+            }
             if (MCEButton != null && HighLogic.LoadedScene != GameScenes.SPACECENTER)
             {
                 ApplicationLauncher.Instance.RemoveModApplication(MCEButton);
@@ -486,16 +690,24 @@ namespace MissionControllerEC
                 Main_popup_dialog.gameObject.SetActive(false);
             }
         }
-
-        static ConfigNode GetConfig(string NodeText)
+        #endregion
+        #region Gui Config Save/Load
+        static ConfigNode RepGetConfig(string NodeText)
         {
             string CurrentNode = NodeText;
             string filePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "MceGUILocation.dat");
             ConfigNode result = ConfigNode.Load(filePath).GetNode(NodeText);
             return result;
         }
+        static ConfigNode SatGetConfig(string NodeText)
+        {
+            string CurrentNode = NodeText;
+            string filePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "MceGUILocation2.dat");
+            ConfigNode result = ConfigNode.Load(filePath).GetNode(NodeText);
+            return result;
+        }
 
-        private static void SetConfig(float x, float y, string NodeText)
+        private static void RepSetConfig(float x, float y, string NodeText)
         {
             string CurrentNode = NodeText;
             string filePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "MceGUILocation.dat");
@@ -506,29 +718,22 @@ namespace MissionControllerEC
             thiscfg.Save(filePath);
         }
 
+        private static void SatSetConfig(float x, float y, string NodeText)
+        {
+            string CurrentNode = NodeText;
+            string filePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "MceGUILocation2.dat");
+            ConfigNode thiscfg = new ConfigNode();
+            var thisnode = thiscfg.AddNode(CurrentNode);
+            thisnode.AddValue("x", x);
+            thisnode.AddValue("y", y);
+            thiscfg.Save(filePath);
+        }
+        #endregion
     }
 
     public class RepairPanel : PartModule
     {
-       
-
-        [KSPField(guiName = "Open Repair Panel", guiActiveEditor = true, guiActive = true, isPersistant = false),
-        UI_Toggle(controlEnabled = true, disabledText = "Closed", enabledText = "Open", invertButton = false, scene = UI_Scene.All)]
-        public bool openUI = false;
-
-        //and a progress bar that we can play with
-        [KSPField(guiName = "Battery Coolant", guiActiveEditor = true, guiActive = true, isPersistant = true),
-        UI_ProgressBar(minValue = 0f, maxValue = 1f, scene = UI_Scene.All)]
-        public float PartUICoolSlider = 0.0f;
-
-        [KSPField(guiName = "Air Pressure Purge", guiActiveEditor = true, guiActive = true, isPersistant = true),
-        UI_ProgressBar(minValue = 0f, maxValue = 1f, scene = UI_Scene.All)]
-        public float PartUICoolSlider2 = 0.0f;
-
-        [KSPField(guiName = "HMI Reset", guiActiveEditor = true, guiActive = true, isPersistant = true),
-        UI_ProgressBar(minValue = 0f, maxValue = 1f, scene = UI_Scene.All)]
-        public float PartUICoolSlider3 = 0.0f;
-
+        #region variables
         [KSPField]
         string DoorAnimation = "mceanim";
 
@@ -549,8 +754,9 @@ namespace MissionControllerEC
 
         public bool startrepair = false;
 
-        int Maxtime = Tools.RandomNumber(30, 100);
+        public bool openUI = false;
 
+        private bool RepairGamewin = false;
 
         public Animation GetDeployDoorAnim
         {
@@ -568,81 +774,124 @@ namespace MissionControllerEC
             GetDeployDoorAnim.Play(DoorAnimation);
         }
 
-        [KSPField(isPersistant = true, guiActive = true, guiName = "Ready To Repair")]
-        public bool readyRep = false;
+        [KSPField(guiName = "Battery Coolant", guiActiveEditor = false, guiActive = false, isPersistant = true),
+        UI_ProgressBar(minValue = 0f, maxValue = 1f, scene = UI_Scene.All)]
+        public float PartUICoolSlider = 0.0f;
 
+        [KSPField(guiName = "Air Pressure Purge", guiActiveEditor = false, guiActive = false, isPersistant = true),
+        UI_ProgressBar(minValue = 0f, maxValue = 1f, scene = UI_Scene.All)]
+        public float PartUICoolSlider2 = 0.0f;
+
+        [KSPField(guiName = "HMI Reset", guiActiveEditor = false, guiActive = false, isPersistant = true),
+        UI_ProgressBar(minValue = 0f, maxValue = 1f, scene = UI_Scene.All)]
+        public float PartUICoolSlider3 = 0.0f;
+
+        [KSPField(isPersistant = true, guiActive = true, guiName = "Ready To Repair")]
+        public static bool readyRep = false;
+
+        #endregion
+        #region Methods
+
+        [KSPEvent(externalToEVAOnly = true, unfocusedRange = 4f, guiActiveUnfocused = true, guiIcon = "Engineer CheckSystems", guiName = "Engineer CheckSystems", active = false)]
         public void CheckSystems()
         {
-            if (HighLogic.LoadedScene == GameScenes.FLIGHT)
-            {
-                List<ProtoCrewMember> protoCrewMembers = FlightGlobals.ActiveVessel.GetVesselCrew();
-                foreach (Experience.ExperienceEffect exp in protoCrewMembers[0].experienceTrait.Effects)
-                {
-                    if (exp.ToString() == "Experience.Effects.RepairSkill")
-                    {
-                        Debug.Log("Current kerbal is a Engineer you have passed");
-                        readyRep = true;
-                        vesselId = this.part.vessel.id.ToString();
-                        vesselName = this.part.vessel.name;
-                        Debug.LogError("Vessel Id For PartModule is " + vesselId + " Name is " + vesselName);
-                        ScreenMessages.PostScreenMessage(Localizer.Format("#autoLOC_MissionController2_1000250"), 10f);          // #autoLOC_MissionController2_1000250 = Your engineer has Prepared the vessel for Repair Open the panel, Then conduct the repair
 
-                    }
-                    else
-                    {
-                        Debug.Log("Current kerbal is NOT an Engineer you don't pass... Bad boy!");
-                        ScreenMessages.PostScreenMessage(Localizer.Format("#autoLOC_MissionController2_1000251"), 10f);     // #autoLOC_MissionController2_1000251 = You need an Engineer to fix this Vessel!
-                    }
-                }
-            }
-            else { ScreenMessages.PostScreenMessage("Hey you can only do this in flight?  How you manage this anyway?"); }
-        }
-
-        public void EnableRepair()
-        {
-            if (HighLogic.LoadedScene == GameScenes.FLIGHT)
+            List<ProtoCrewMember> protoCrewMembers = FlightGlobals.ActiveVessel.GetVesselCrew();
+            foreach (Experience.ExperienceEffect exp in protoCrewMembers[0].experienceTrait.Effects)
             {
-                if (readyRep && currentRepair > 0 && PartUICoolSlider == 0 && PartUICoolSlider2 == 0 && PartUICoolSlider3 == 1)
+                if (exp.ToString() == "Experience.Effects.RepairSkill")
                 {
-                    repair = true;
-                    Debug.Log("repairEnabled");
-                    ScreenMessages.PostScreenMessage(Localizer.Format("#autoLOC_MissionController2_1000252"), 10f);      // #autoLOC_MissionController2_1000252 = Your engineer has repaired this vessel.  Good job!
-                    readyRep = false;
-                }
-                if (readyRep == false)
-                {
-                    ScreenMessages.PostScreenMessage("You have to Have an Engineer Test the Repair Systems.. That means Push the Test button!", 10f);
-                }
-                else { ScreenMessages.PostScreenMessage(Localizer.Format("You Don't Have The Right Combonation Of Sliders, Please Adjust!"), 10f); }
-            }
-            else { ScreenMessages.PostScreenMessage("Hey you can only do this in flight?  How you manage this anyway?"); }
-        }        
-
-        public override void OnStart(StartState state)
-        {
-            //This creates a callback so that whenver the UI_Toggle openUI is clicked, it either opens or closes the main UI
-            Fields[nameof(openUI)].uiControlFlight.onFieldChanged = delegate (BaseField a, System.Object b)
-            {
-                if (MissionControllerEC.RepairUICanvas == null)
-                {
-                    MissionControllerEC.RepairShowGUI(); //if the UI doesn't exist, create one and show it.
-                    PlayOpenAnimation(1, 0);                    
+                    Debug.Log("Current kerbal is a Engineer you have passed");
+                    readyRep = true;                  
+                    Debug.LogError("Vessel Id For PartModule is " + vesselId + " Name is " + vesselName);
+                    ScreenMessages.PostScreenMessage(Localizer.Format("#autoLOC_MissionController2_1000250"), 15f);          // #autoLOC_MissionController2_1000250 = Your engineer has Prepared the vessel for Repair Open the panel, Then conduct the repair
+                    MissionControllerEC.RepairUpdateText("Purge Air System");
                 }
                 else
                 {
-                    MissionControllerEC.Destroy(); //if it does exist. they're closing it so get rid of it.
-                    PlayOpenAnimation(-1, 1);                   
+                    Debug.Log("Current kerbal is NOT an Engineer you don't pass... Bad boy!");
+                    ScreenMessages.PostScreenMessage(Localizer.Format("#autoLOC_MissionController2_1000251"), 15f);      // #autoLOC_MissionController2_1000251 = You need an Engineer to fix this Vessel!
                 }
-            };
-            this.part.force_activate();
+            }
         }
 
+        [KSPEvent(externalToEVAOnly = true, unfocusedRange = 4f, guiActiveUnfocused = true, guiName = "Start Repairs", active = false)]
+        public void EnableRepair()
+        {
+            if (readyRep && currentRepair > 0)
+            {
+                repair = true;
+                Debug.Log("repairEnabled");
+                ScreenMessages.PostScreenMessage(Localizer.Format("#autoLOC_MissionController2_1000252"), 5f);		// #autoLOC_MissionController2_1000252 = Your engineer has repaired this vessel.  Good job!
+                readyRep = false;
+                MissionControllerEC.RepairUpdateText("Repair Complete!!");
+            }
+            else { ScreenMessages.PostScreenMessage(Localizer.Format("#autoLOC_MissionController2_1000253"), 5f); }		// #autoLOC_MissionController2_1000253 = You need an Engineer class kerbal to conduct this repair!
+        }        
+
+        [KSPEvent(externalToEVAOnly = true, unfocusedRange = 4f, guiActiveUnfocused = true, guiName = "Open Door", active = true, guiActiveEditor = false)]
+        public void OpenDoor()
+        {
+            vesselId = this.part.vessel.id.ToString();
+            Debug.Log(vesselId.ToString());
+            vesselName = this.part.vessel.name;
+            Debug.Log(vesselName.ToString());
+            Debug.Log("Vessel Name and ID Got Past This point");
+            Events[Localizer.Format("#autoLOC_MissionController2_1000255")].active = false;		// #autoLOC_MissionController2_1000255 = OpenDoor
+            Events[Localizer.Format("#autoLOC_MissionController2_1000256")].active = true;		// #autoLOC_MissionController2_1000256 = EnableRepair
+            Events[Localizer.Format("#autoLOC_MissionController2_1000257")].active = true;		// #autoLOC_MissionController2_1000257 = closeDoor
+            Events[Localizer.Format("#autoLOC_MissionController2_1000258")].active = true;		// #autoLOC_MissionController2_1000258 = CheckSystems
+            if (MissionControllerEC.RepairUICanvas == null)
+            {
+                MissionControllerEC.RepairShowGUI(); //if the UI doesn't exist, create one and show it.
+                PlayOpenAnimation(1, 0);
+                openUI = true;
+                MissionControllerEC.RepairUpdateText("Press Test Button");
+            }
+            else
+            {
+                MissionControllerEC.RepairUIDestroy(); //if it does exist. they're closing it so get rid of it.
+                PlayOpenAnimation(-1, 1);
+                openUI = false;
+                MissionControllerEC.RepairUpdateText("Press Test Button");
+            }
+        }       
+
+        [KSPEvent(externalToEVAOnly = true, unfocusedRange = 4f, guiActiveUnfocused = true, guiName = "Close Door", active = false, guiActiveEditor = false)]
+        public void closeDoor()
+        {
+            Events[Localizer.Format("#autoLOC_MissionController2_1000259")].active = true;		// #autoLOC_MissionController2_1000259 = OpenDoor
+            Events[Localizer.Format("#autoLOC_MissionController2_1000260")].active = false;		// #autoLOC_MissionController2_1000260 = EnableRepair
+            Events[Localizer.Format("#autoLOC_MissionController2_1000261")].active = false;		// #autoLOC_MissionController2_1000261 = closeDoor
+            Events[Localizer.Format("#autoLOC_MissionController2_1000262")].active = false;		// #autoLOC_MissionController2_1000262 = CheckSystems
+            if (MissionControllerEC.RepairUICanvas == null && RepairGamewin)
+            {
+                MissionControllerEC.RepairShowGUI(); //if the UI doesn't exist, create one and show it.
+                PlayOpenAnimation(1, 0);
+                openUI = true;
+                PartUICoolSlider2 = 0;
+                MissionControllerEC.RepairUpdateText("Press Test Button.");
+            }
+            else
+            {
+                MissionControllerEC.RepairUIDestroy(); //if it does exist. they're closing it so get rid of it.
+                PlayOpenAnimation(-1, 1);
+                openUI = false;
+                MissionControllerEC.RepairUpdateText("Press Test Button..");
+            }
+        }
+        #endregion
+        #region OnStart + Fixed Stuff
+        public override void OnStart(PartModule.StartState state)
+        {            
+            this.part.force_activate();
+        }
 
         public void FixedUpdate()
         {
             //This checks to see if the UI is being shown.  If so, it will update any other CoolUIPm partmodules so that they show the button as being clicked.
             if (MissionControllerEC.RepairUICanvas != null)
-            { openUI = true; }
+            { Events[Localizer.Format("#autoLOC_MissionController2_1000255")].active = false; }
             else
             { return; }  //if not, we don't want to call UI functions because they'll create a null ref.
 
@@ -650,9 +899,367 @@ namespace MissionControllerEC
             PartUICoolSlider = MissionControllerEC.RepairSliderPosition();
             PartUICoolSlider2 = MissionControllerEC.RepairCoolSliderPosition2();
             PartUICoolSlider3 = MissionControllerEC.RepairCoolSliderPosition3();
+
+            if (PartUICoolSlider2 == 1f)
+            {
+                MissionControllerEC.RepairUpdateText("Press Enter");
+                RepairGamewin = true;
+            }
+            else { RepairGamewin = false; }
+
             
-                MissionControllerEC.RepairUpdateText("Reboot The HMI");                
         }
+        #endregion
+    }
+
+    public class MCESatelliteCore : PartModule
+    {
+        #region variables
+        [KSPField(isPersistant = true, guiActive = true)]
+        public static string[] SattypeList = { "Communication", "Navigation", "Weather", "Research" };
+
+        [KSPField(isPersistant = true, guiActive = false)]
+        public static int sattypenumber = 0;
+
+        [KSPField(isPersistant = true, guiActive = true, guiName = "MC PartLocked")]
+        private bool dataLocked = false;
+
+        public bool haveAnimation = false;
+        public string animationName = "None";
+        public static bool StartDataTransfer = false;
+        public static string GroundStationLockedText = "Free Roam";
+
+        public Animation GetSatelliteCoreAnimation
+        {
+            get
+            {
+                return part.FindModelAnimators(animationName)[0];
+            }
+        }
+
+        private void PlaySatelliteCoreAnimation(int speed, float time)
+        {
+            Debug.Log("Running animation for MCESatelliteCore");
+            GetSatelliteCoreAnimation[animationName].speed = speed;
+            GetSatelliteCoreAnimation[animationName].normalizedTime = time;
+            GetSatelliteCoreAnimation.Play(animationName);
+        }
+
+        //Create a copule of cool things for the part UI that we can play with
+        //a button to toggle the UI on and off
+        [KSPField(guiName = "MC Satellite Panel", guiActiveEditor = true, guiActive = true, isPersistant = false),
+        UI_Toggle(controlEnabled = true, disabledText = "Closed", enabledText = "Open", invertButton = false, scene = UI_Scene.All)]
+        public bool openSatUI = false;
+
+        [KSPField(isPersistant = true, guiActive = true, guiActiveEditor = true, guiName = " MC Satellite Type: ")]
+        public string satTypeDisplay = SattypeList[sattypenumber];
+
+        //[KSPField(isPersistant = true, guiActive = true, guiActiveEditor = true, guiName = "MC Satellite Types: ")]
+        //public string satTypeDisplay2 = SattypeList[sattypenumber];
+       
+        //[KSPEvent(guiActive = true, guiActiveEditor = true, guiName = "MC Satellite Type(Choose First)", active = true)]
+        //public void SatTypeSwitch()
+        //{
+        //    if (sattypenumber > 2)
+        //    {
+        //        sattypenumber = 0;
+        //        //satTypeDisplay2 = SattypeList[sattypenumber];
+        //        satTypeDisplay = SattypeList[sattypenumber];
+        //    }
+        //    else
+        //    {
+        //        sattypenumber++;
+        //        Debug.Log("MCE Sat Number Now " + sattypenumber + "  " + SattypeList[sattypenumber]);
+        //        //satTypeDisplay2 = SattypeList[sattypenumber];
+        //        satTypeDisplay = SattypeList[sattypenumber];
+        //    }
+        //}
+
+        [KSPField(isPersistant = true, guiActive = true, guiActiveEditor = true, guiName = "MC Module Type: ")]
+        public string satModuleType = "Select Module Type";
+
+        [KSPField(isPersistant = true, guiActive = false)]
+        public static float frequencyModulation = 1;
+
+        //[KSPField(isPersistant = true, guiActive = true, guiName = "Frequency: ")]
+        //public float frequencyDisplay = 1;
+
+        [KSPField(isPersistant = true, guiActive = false)]
+        public static float moduleTypeChange = 1;
+        #endregion
+        #region Methods And Switches
+        //[KSPEvent(guiActive = true, guiActiveEditor = false, guiName = "MC Push Set Frequency!", active = true)]
+        //public void FreqModSwitch()
+        //{
+        //    MCEParameters.GroundStationPostion gs = new MCEParameters.GroundStationPostion(0);
+        //    frequencyDisplay = frequencyModulation;
+        //    gs.SetGroundStationCheck(frequencyDisplay);
+        //}
+
+        //[KSPEvent(guiActive = false, guiActiveEditor = false, guiName = "MC Module Type(Choose Second)", active = true)]
+        //public void SatModSwitch()
+        //{
+        //    if (moduleType > 3)
+        //    {
+        //        moduleType = 3;
+        //        if (satTypeDisplay == "Communication")
+        //        {
+        //            ModuleTypeSwitch();
+        //        }
+        //        if (satTypeDisplay == "Navigation")
+        //        {
+        //            ModuleTypeSwitch2();
+        //        }
+        //        if (satTypeDisplay == "Weather")
+        //        {
+        //            ModuleTypeSwitch3();
+        //        }
+        //        if (satTypeDisplay == "Research")
+        //        {
+        //            ModuleTypeSwitch4();
+        //        }
+        //    }
+        //    else
+        //    {
+        //        moduleType++;
+        //        Debug.Log("MCE Module Number Now " + moduleType + "  " + satModuleType[(int)moduleType]);
+        //        if (satTypeDisplay == "Communication")
+        //        {
+        //            ModuleTypeSwitch();
+        //        }
+        //        if (satTypeDisplay == "Navigation")
+        //        {
+        //            ModuleTypeSwitch2();
+        //        }
+        //        if (satTypeDisplay == "Weather")
+        //        {
+        //            ModuleTypeSwitch3();
+        //        }
+        //        if (satTypeDisplay == "Research")
+        //        {
+        //            ModuleTypeSwitch4();
+        //        }
+        //    }
+
+        //}
+
+        //[KSPEvent(guiActive = true, guiIcon = "MC Start Data Linkup", guiName = "Start Data Linkup (MC Contracts)", active = true)]
+        public void StartDataMCE()
+        {
+            if (!dataLocked && FlightGlobals.ActiveVessel.situation == Vessel.Situations.ORBITING)
+            {
+                ScreenMessages.PostScreenMessage(Localizer.Format("#autoLOC_MissionController2_1000241"));		// #autoLOC_MissionController2_1000241 = Sending Data Package, This Part core is now disabled and can't be used again
+                //Debug.Log("current sattype is: " + satTypeDisplay + " Current frequency is: " + frequencyDisplay + " Current module type is: " + moduleName);
+                dataStartup();
+                if (haveAnimation)
+                {
+                    PlaySatelliteCoreAnimation(1, 0);
+                    PlaySatelliteCoreAnimation(-1, 1);
+
+                }
+            }
+            else if (dataLocked)
+            {
+                ScreenMessages.PostScreenMessage(Localizer.Format("#autoLOC_MissionController2_1000242"));		// #autoLOC_MissionController2_1000242 = This data package has already been sent.  Only 1 data package can be activated per Module
+                //Debug.Log("current sattype is: " + satTypeDisplay + " Current frequency is: " + frequencyDisplay + " Current module type is: " + moduleName);
+                StartDataTransfer = false;
+            }
+            else
+            {
+                ScreenMessages.PostScreenMessage(Localizer.Format("#autoLOC_MissionController2_1000243"));		// #autoLOC_MissionController2_1000243 = You have to be in orbit to Do a Data Startup
+                //Debug.Log("current sattype is: " + satTypeDisplay + " Current frequency is: " + frequencyDisplay + " Current module type is: " + moduleName);
+                StartDataTransfer = false;
+            }
+        }
+
+        public void dataStartup()
+        {
+            MCEParameters.satelliteCoreCheck sc = new MCEParameters.satelliteCoreCheck(false);
+            sc.SetBoolSatelliteCoreValue(true);
+            sc.SetSatelliteCoreCheck(satTypeDisplay, moduleTypeChange, frequencyModulation);
+            dataLocked = true;
+            StartDataTransfer = false;
+            GroundStationLockedText = "Free Roam";
+            //Debug.Log("DataStartup Fired in PartModule");
+        }
+        private void ModuleTypeSwitch()
+        {
+            switch ((int)moduleTypeChange)
+            {
+                case 1:
+                    satModuleType = "Tv Networks (1)";
+                    break;
+                case 2:
+                    satModuleType = "Phone Systems (2)";
+                    break;
+                case 3:
+                    satModuleType = "Goverment(3)";
+                    break;
+                case 4:
+                    satModuleType = "Deep Space (4)";
+                    break;
+                default:
+                    satModuleType = "Tv Networks (1)";
+                    break;
+            }
+        }
+        private void ModuleTypeSwitch2()
+        {
+            switch ((int)moduleTypeChange)
+            {
+                case 1:
+                    satModuleType = "Civilian GPS(1)";
+                    break;
+                case 2:
+                    satModuleType = "Goverment GPS(2)";
+                    break;
+                case 3:
+                    satModuleType = "Maritime GPS(3)";
+                    break;
+                case 4:
+                    satModuleType = "UAV Operations(4)";
+                    break;
+                default:
+                    satModuleType = "Corperate (4)";
+                    break;
+            }
+        }
+        private void ModuleTypeSwitch3()
+        {
+            switch ((int)moduleTypeChange)
+            {
+                case 1:
+                    satModuleType = "Visible spectrum(1)";
+                    break;
+                case 2:
+                    satModuleType = "Infrared spectrum(2)";
+                    break;
+                case 3:
+                    satModuleType = "Radiation(3)";
+                    break;
+                case 4:
+                    satModuleType = "Radar(4)";
+                    break;
+                default:
+                    satModuleType = "Atmospheric Sounder(4)";
+                    break;
+            }
+        }
+        private void ModuleTypeSwitch4()
+        {
+            switch ((int)moduleTypeChange)
+            {
+                case 1:
+                    satModuleType = "Atmoshperic Studies(1)";
+                    break;
+                case 2:
+                    satModuleType = "Radiation Studies(2)";
+                    break;
+                case 3:
+                    satModuleType = "Zero-G Studies(3)";
+                    break;
+                case 4:
+                    satModuleType = "Bacterial(4)";
+                    break;
+                default:
+                    satModuleType = "Live Specimen(4)";
+                    break;
+            }
+        }
+        #endregion
+        #region Onstart + Fixed
+        public override void OnStart(PartModule.StartState state)
+        {
+            //MCEParameters.GroundStationPostion gs = new MCEParameters.GroundStationPostion(0);
+            //if (satTypeDisplay == "Communication")
+            //{
+            //    ModuleTypeSwitch();
+            //}
+            //else if (satTypeDisplay == "Navigation")
+            //{
+            //    ModuleTypeSwitch2();
+            //}
+            //else if (satTypeDisplay == "Weather")
+            //{
+            //    ModuleTypeSwitch3();
+            //}
+            //else if (satTypeDisplay == "Research")
+            //{
+            //    ModuleTypeSwitch4();
+            //}
+            //frequencyDisplay = frequencyModulation;
+            //satTypeDisplay = SattypeList[sattypenumber];
+            //satTypeDisplay2 = SattypeList[sattypenumber];
+            //gs.SetGroundStationCheck(frequencyModulation);
+
+            //This creates a callback so that whenver the UI_Toggle openUI is clicked, it either opens or closes the main UI
+            if (!dataLocked)
+            {
+                Fields[nameof(openSatUI)].uiControlEditor.onFieldChanged = delegate (BaseField a, System.Object b)
+                {
+                    if (MissionControllerEC.SatelliteUICanvas == null)
+                    {
+                        MissionControllerEC.SatelliteShowGUI(); //if the UI doesn't exist, create one and show it.
+                }
+                    else
+                    {
+                        MissionControllerEC.SatelliteUIDestroy(); //if it does exist. they're closing it so get rid of it.
+                }
+                };
+                Fields[nameof(openSatUI)].uiControlFlight.onFieldChanged = delegate (BaseField a, System.Object b)
+                {
+                    if (MissionControllerEC.SatelliteUICanvas == null)
+                    {
+                        MissionControllerEC.SatelliteShowGUI(); //if the UI doesn't exist, create one and show it.
+                }
+                    else
+                    {
+                        MissionControllerEC.SatelliteUIDestroy(); //if it does exist. they're closing it so get rid of it.
+                }
+                };
+            }
+            else { ScreenMessages.PostScreenMessage("You Are Locked Out Of This System.  Mission Controlled Locked", 10f); }
+        }
+        public void FixedUpdate()
+        {
+            if (openSatUI && !dataLocked)
+            {
+                MissionControllerEC.SatFreqUpdateText(frequencyModulation.ToString());
+                MissionControllerEC.SatTypeUpdateText(satTypeDisplay.ToString());
+                MissionControllerEC.SatModTypeUpdateText(satModuleType.ToString());
+                MissionControllerEC.SatGroundLockUpdateText(GroundStationLockedText);
+                MCEParameters.GroundStationPostion gs = new MCEParameters.GroundStationPostion(0);
+                if (satTypeDisplay == "Communication")
+                {
+                    ModuleTypeSwitch();
+                }
+                else if (satTypeDisplay == "Navigation")
+                {
+                    ModuleTypeSwitch2();
+                }
+                else if (satTypeDisplay == "Weather")
+                {
+                    ModuleTypeSwitch3();
+                }
+                else if (satTypeDisplay == "Research")
+                {
+                    ModuleTypeSwitch4();
+                }
+                //frequencyDisplay = frequencyModulation;
+                satTypeDisplay = SattypeList[sattypenumber];
+                //satTypeDisplay2 = SattypeList[sattypenumber];
+                gs.SetGroundStationCheck(frequencyModulation);
+                if (StartDataTransfer) { StartDataMCE(); }
+
+                //This checks to see if the UI is being shown.  If so, it will update any other CoolUIPm partmodules so that they show the button as being clicked.
+            }
+            if (MissionControllerEC.SatelliteUICanvas != null && !dataLocked)
+            { openSatUI = true; }
+            else
+            { return; }  //if not, we don't want to call UI functions because they'll create a null ref.
+
+        }
+        #endregion
     }
 
     public class MCE_DataStorage : ConfigNodeStorage
