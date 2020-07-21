@@ -175,7 +175,7 @@ namespace MissionControllerEC.MCEContracts
                 targetBody = GetUnreachedTargets();
                 if (targetBody == null)
                 {
-                    Debug.LogWarning("Orbital Research Has No Valid Target bodies contract rejected");
+                    //Debug.LogWarning("Orbital Research Has No Valid Target bodies contract rejected");
                     return false;  //Just incase something bad happens and doesn't match contract is terminated and won't generate.
                 }
             }
@@ -205,7 +205,7 @@ namespace MissionControllerEC.MCEContracts
             Orbit o = FinePrint.Utilities.OrbitUtilities.GenerateOrbit(MissionSeed, targetBody, FinePrint.Utilities.OrbitType.EQUATORIAL,.1, 0, 0);
             //Using Fineprint to double check its own calculations.
             FinePrint.Utilities.OrbitUtilities.ValidateOrbit(MissionSeed, ref o, FinePrint.Utilities.OrbitType.EQUATORIAL, .1, 0);
-            Debug.Log("MCE Orbit Values for satellite Contracts: " + " APA " + o.ApA + " PEA " + o.PeA + " Seed Number " + MissionSeed.ToString());
+            //Debug.Log("MCE Orbit Values for satellite Contracts: " + " APA " + o.ApA + " PEA " + o.PeA + " Seed Number " + MissionSeed.ToString());
 
             if (SaveInfo.SatelliteTypeChoice == 0)  // Using the switch to check which type of contract to load (Random) Repeated for all Satellite types.
             {

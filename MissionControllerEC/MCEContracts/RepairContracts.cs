@@ -142,7 +142,7 @@ namespace MissionControllerEC.MCEContracts
             //Debug.Log(" Repair Contract Totalcontracts " + totalContracts + " - " + " Total Finsihed " + TotalFinished);           
             if (totalContracts >= 1 || !HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings>().RepairContracts)
             {
-                Debug.Log("contract is generated right now terminating Repair Vessel");
+                //Debug.Log("contract is generated right now terminating Repair Vessel");
                 return false;
             }
             //if (SaveInfo.RepairContractGeneratedOn == false)
@@ -339,8 +339,8 @@ namespace MissionControllerEC.MCEContracts
                 vesselID = random.vesselId.ToString();
                 vesselName = random.vesselName.Replace("(unloaded)", "");
                 planetIDX = random.bodyidx;
-                Debug.LogWarning("(repair station)bodyIDX is: " + random.bodyidx);
-                Debug.LogWarning("Random Repair Orbital Station Selected " + random.vesselName + "  " + random.vesselId + "  " + random.MaxApA);
+                //Debug.LogWarning("(repair station)bodyIDX is: " + random.bodyidx);
+                //Debug.LogWarning("Random Repair Orbital Station Selected " + random.vesselName + "  " + random.vesselId + "  " + random.MaxApA);
                 NoVessel = true;
             }
             else { /*Debug.LogError(" Vessel Selection Null, skiped process"); NoVessel = false;*/ }
@@ -388,7 +388,7 @@ namespace MissionControllerEC.MCEContracts
             TotalFinished = ContractSystem.Instance.GetCompletedContracts<MCE_Repair_Station>().Count();
             if (totalContracts >= 1 || !HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings>().RepairContracts)
             {
-                Debug.LogWarning("Total Repair station Contracts is greater then one Repair Contract Not Generated");
+                //Debug.LogWarning("Total Repair station Contracts is greater then one Repair Contract Not Generated");
                 return false;                
             }
             //if (SaveInfo.RepairStationContractGeneratedOn == false)

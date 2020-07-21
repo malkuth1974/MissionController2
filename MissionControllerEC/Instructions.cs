@@ -49,7 +49,7 @@ namespace MissionControllerEC
             {
                 texture2 = new Texture2D(36, 36, TextureFormat.RGBA32, false);
                 texture2.LoadImage(File.ReadAllBytes(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "MCERevert.png")));
-                Debug.LogError("MCE Textures2 Loaded");
+                //Debug.LogError("MCE Textures2 Loaded");
             }           
             else { /*Debug.Log("MCE Textures Already Loaded"); */}
            
@@ -77,9 +77,9 @@ namespace MissionControllerEC
                     ApplicationLauncher.AppScenes.SPACECENTER,
                     texture
                     );
-                Debug.LogError("Creating MCEButton Buttons");
+                //Debug.LogError("Creating MCEButton Buttons");
             }
-            else { Debug.LogError("MCE2 MCE Button Already Loaded"); }
+            else { /*Debug.LogError("MCE2 MCE Button Already Loaded");*/ }
 
             if (HighLogic.LoadedScene == GameScenes.FLIGHT && MCERevert == null && HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCERevertAllow)
             {
@@ -94,9 +94,9 @@ namespace MissionControllerEC
                     ApplicationLauncher.AppScenes.FLIGHT,
                     texture2
                     );
-                Debug.LogError("creating MCERevert Buttons");
+                //Debug.LogError("creating MCERevert Buttons");
             }
-            else { Debug.LogError("MCE2 MCERevert Already Loaded"); }
+            else { /*Debug.LogError("MCE2 MCERevert Already Loaded");*/ }
         }
         private void MCEOn()
         {
@@ -113,12 +113,12 @@ namespace MissionControllerEC
             if (MCEButton != null)
             {
                 ApplicationLauncher.Instance.RemoveModApplication(MCEButton);
-                Debug.Log("MCEButton Deleted With MCEDestroyButtons");
+                //Debug.Log("MCEButton Deleted With MCEDestroyButtons");
             }           
             if (MCERevert != null)
             {
                 ApplicationLauncher.Instance.RemoveModApplication(MCERevert);
-                Debug.Log("MCERevert Deleted With MCEDestroyButtons");
+                //Debug.Log("MCERevert Deleted With MCEDestroyButtons");
             }
             else { /*Debug.Log("MCE destroy buttons failed"); */}
         }
@@ -177,10 +177,10 @@ namespace MissionControllerEC
                     try
                     {
                         ContractSystem.ContractTypes.Remove(typeof(Contracts.Templates.RecoverAsset));
-                        Debug.Log("Removed RescueKerbal Type Contracts from Gererating");
+                        //Debug.Log("Removed RescueKerbal Type Contracts from Gererating");
                     }
 
-                    catch { Debug.LogError("could not run NoRescueKerbalContracts Returned Null"); }
+                    catch { /*Debug.LogError("could not run NoRescueKerbalContracts Returned Null");*/ }
                 }
 
                 if (!HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings2>().FPExplorationContracts && ContractSystem.ContractTypes.Contains(typeof(FinePrint.Contracts.ExplorationContract)))
@@ -188,7 +188,7 @@ namespace MissionControllerEC
                     try
                     {
                         ContractSystem.ContractTypes.Remove(typeof(FinePrint.Contracts.ExplorationContract));
-                        Debug.Log("Removed Exploration Type Contracts");
+                        //Debug.Log("Removed Exploration Type Contracts");
                     }
 
                     catch { Debug.LogError("could not run Exploration Contracts Returned Null"); }
@@ -199,7 +199,7 @@ namespace MissionControllerEC
                     try
                     {
                         ContractSystem.ContractTypes.Remove(typeof(FinePrint.Contracts.CometSampleContract));
-                        Debug.Log("Removed Comet Type Contracts");
+                        //Debug.Log("Removed Comet Type Contracts");
                     }
 
                     catch { Debug.LogError("could not run Comet Contracts Returned Null"); }
@@ -211,7 +211,7 @@ namespace MissionControllerEC
                     try
                     {
                         ContractSystem.ContractTypes.Remove(typeof(FinePrint.Contracts.SatelliteContract));
-                        Debug.Log("Removed FinePrint Satellite Type Contracts from Gererating");
+                        //Debug.Log("Removed FinePrint Satellite Type Contracts from Gererating");
                     }
 
                     catch { Debug.LogError("could not run FinePrint Satellite Returned Null"); }
@@ -221,7 +221,7 @@ namespace MissionControllerEC
                     try
                     {
                         ContractSystem.ContractTypes.Remove(typeof(FinePrint.Contracts.BaseContract));
-                        Debug.Log("Removed FinePrint Satellite Type Contracts from Gererating");
+                        //Debug.Log("Removed FinePrint Satellite Type Contracts from Gererating");
                     }
 
                     catch { Debug.LogError("could not run FinePrint Satellite Returned Null"); }
@@ -231,7 +231,7 @@ namespace MissionControllerEC
                     try
                     {
                         ContractSystem.ContractTypes.Remove(typeof(FinePrint.Contracts.StationContract));
-                        Debug.Log("Removed FinePrint Satellite Type Contracts from Gererating");
+                        //Debug.Log("Removed FinePrint Satellite Type Contracts from Gererating");
                     }
 
                     catch { Debug.LogError("could not run FinePrint Satellite Returned Null"); }
@@ -241,7 +241,7 @@ namespace MissionControllerEC
                     try
                     {
                         ContractSystem.ContractTypes.Remove(typeof(FinePrint.Contracts.ISRUContract));
-                        Debug.Log("Removed FinePrint Satellite Type Contracts from Gererating");
+                        //Debug.Log("Removed FinePrint Satellite Type Contracts from Gererating");
                     }
 
                     catch { Debug.LogError("could not run FinePrint Satellite Returned Null"); }
@@ -251,7 +251,7 @@ namespace MissionControllerEC
                     try
                     {
                         ContractSystem.ContractTypes.Remove(typeof(FinePrint.Contracts.TourismContract));
-                        Debug.Log("Removed FinePrint Satellite Type Contracts from Gererating");
+                        //Debug.Log("Removed FinePrint Satellite Type Contracts from Gererating");
                     }
 
                     catch { Debug.LogError("could not run FinePrint Satellite Returned Null"); }
@@ -261,7 +261,7 @@ namespace MissionControllerEC
                     try
                     {
                         ContractSystem.ContractTypes.Remove(typeof(FinePrint.Contracts.SurveyContract));
-                        Debug.Log("Removed FinePrint Survey Type Contracts from Gererating");
+                        //Debug.Log("Removed FinePrint Survey Type Contracts from Gererating");
                     }
 
                     catch { Debug.LogError("could not run FinePrint Survey Contracts Returned Null"); }
@@ -271,7 +271,7 @@ namespace MissionControllerEC
                     try
                     {
                         ContractSystem.ContractTypes.Remove(typeof(Contracts.Templates.PartTest));
-                        Debug.Log("Removed PartTest Type Contracts from Gererating");
+                        //Debug.Log("Removed PartTest Type Contracts from Gererating");
                     }
 
                     catch { Debug.LogError("could not run NoPartTest Returned Null"); }
@@ -281,7 +281,7 @@ namespace MissionControllerEC
                     try
                     {
                         ContractSystem.ContractTypes.Remove(typeof(Contracts.Templates.GrandTour));
-                        Debug.Log("Removed PartTest Type Contracts from Gererating");
+                        //Debug.Log("Removed PartTest Type Contracts from Gererating");
                     }
 
                     catch { Debug.LogError("could not run NoPartTest Returned Null"); }
@@ -296,7 +296,7 @@ namespace MissionControllerEC
         public void GetRefundCost()
         {
             vessel = FlightGlobals.ActiveVessel;
-            if (vessel == null) { Debug.Log("No Active vessel for Part Calculation"); }
+            if (vessel == null) { /*Debug.Log("No Active vessel for Part Calculation");*/ }
             else
             {
                 foreach (ProtoPartSnapshot pps in vessel.protoVessel.protoPartSnapshots)
@@ -309,7 +309,7 @@ namespace MissionControllerEC
                     
                 }
             }
-            Debug.Log("Revert Cost Of Vessel Is " + RevertTotal);
+            //Debug.Log("Revert Cost Of Vessel Is " + RevertTotal);
         }
 
         public void getSupplyList(bool stationOnly)

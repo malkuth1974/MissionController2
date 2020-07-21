@@ -33,20 +33,20 @@ namespace MissionControllerEC.MCEContracts
             targetBody = GetUnreachedTargets();
             if (targetBody == null)
             {
-                Debug.LogWarning("Orbital Research Has No Valid Target bodies contract rejected");
+                //Debug.LogWarning("Orbital Research Has No Valid Target bodies contract rejected");
                 return false;                
             }
-            Debug.LogWarning("Orbit Research Body is " + targetBody.bodyName);          
+            //Debug.LogWarning("Orbit Research Body is " + targetBody.bodyName);          
             if (!HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings>().OrbitalScienceContracts)
             {
-                Debug.LogWarning("Orbit Research Random Selection is false, contract not Generated.");
+                //Debug.LogWarning("Orbit Research Random Selection is false, contract not Generated.");
                 return false;
             }
             totalContracts = ContractSystem.Instance.GetCurrentContracts<MCE_orbital_Scan_Contract>().Count();
             TotalFinished = ContractSystem.Instance.GetCompletedContracts<MCE_orbital_Scan_Contract>().Count();
             if (totalContracts >= HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().ScienceContractNumbers)
             {
-                Debug.LogWarning("Orbit Research Already Generated, only 1 contract at time please.");
+                //Debug.LogWarning("Orbit Research Already Generated, only 1 contract at time please.");
                 return false;
             }
             
@@ -57,7 +57,7 @@ namespace MissionControllerEC.MCEContracts
             //Using Fineprint to double check its own calculations.
             SeedGenerator = new System.Random(this.MissionSeed);
             FinePrint.Utilities.OrbitUtilities.ValidateOrbit(MissionSeed, ref o, FinePrint.Utilities.OrbitType.EQUATORIAL, .1, 0);
-            Debug.Log("MCE Research Contract Orbit Values: " + " APA " + o.ApA + " PEA " + o.PeA + " Seed Number " + MissionSeed.ToString());
+            //Debug.Log("MCE Research Contract Orbit Values: " + " APA " + o.ApA + " PEA " + o.PeA + " Seed Number " + MissionSeed.ToString());
 
             this.AddParameter(new FinePrint.Contracts.Parameters.SpecificOrbitParameter(FinePrint.Utilities.OrbitType.EQUATORIAL, o.inclination, o.eccentricity, o.semiMajorAxis, o.LAN, o.argumentOfPeriapsis, o.meanAnomalyAtEpoch, o.epoch, targetBody, 4), null);           
             this.orbitresearch2 = this.AddParameter(new OrbialResearchPartCheck(targetBody, missionTime), null);
@@ -185,14 +185,14 @@ namespace MissionControllerEC.MCEContracts
             if (HighLogic.LoadedSceneIsFlight) { return false; }                  
             if (!HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings>().GroundScienceContracts)
             {
-                Debug.LogWarning("Lander Research Contracts random set to false No contract generated.");
+                //Debug.LogWarning("Lander Research Contracts random set to false No contract generated.");
                 return false;
             }
             totalContracts = ContractSystem.Instance.GetCurrentContracts<MCE_Lander_Research_Scan>().Count();
             TotalFinished = ContractSystem.Instance.GetCompletedContracts<MCE_Lander_Research_Scan>().Count();
             if (totalContracts >= HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().ScienceContractNumbers)
             {
-                Debug.LogWarning("Lander Research Already Generated, only 1 contract at time please.");
+                //Debug.LogWarning("Lander Research Already Generated, only 1 contract at time please.");
                 return false;
             }
             amountTime = Tools.RandomNumber(200, 1500);
