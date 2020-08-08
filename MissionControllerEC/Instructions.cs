@@ -24,7 +24,7 @@ namespace MissionControllerEC
         public float vesselResourceTons;
         public int currentContractType = 0;
         public int kerbalNumbers;
-        public float kerbCost, KerbalFlatrate, kerbalMultiplier, RevertTotal;      
+        public float kerbCost, KerbalFlatrate, kerbalMultiplier, RevertTotal, RevertAltitude,RevertOrbit,RevertPlanet;      
         public Vessel vessel;
 
 
@@ -294,9 +294,9 @@ namespace MissionControllerEC
         }
         
         public void GetRefundCost()
-        {
+        {            
             vessel = FlightGlobals.ActiveVessel;
-            if (vessel == null) { /*Debug.Log("No Active vessel for Part Calculation");*/ }
+            if (vessel == null || vessel.situation == Vessel.Situations.PRELAUNCH) { Debug.Log("No Active vessel for Part Calculation"); }
             else
             {
                 foreach (ProtoPartSnapshot pps in vessel.protoVessel.protoPartSnapshots)
@@ -305,11 +305,25 @@ namespace MissionControllerEC
                     ShipConstruction.GetPartCosts(pps, pps.partInfo, out dryCost, out fuelCost);
                     dryCost = dryCost < 0 ? 0 : dryCost;
                     fuelCost = fuelCost < 0 ? 0 : fuelCost;
-                    RevertTotal += dryCost + fuelCost;
-                    
+                    RevertTotal += dryCost + fuelCost;                   
+                }
+                if (vessel.situation == Vessel.Situations.ORBITING)
+                {
+                    Math.Round(RevertOrbit = RevertTotal / 85);
+                    Debug.Log("Revert Orbit = " + RevertOrbit);
+                }
+                if (vessel.altitude <= 10000 & vessel.situation != Vessel.Situations.ORBITING)
+                {
+                    Math.Round(RevertAltitude = RevertTotal / 90);
+                    Debug.Log("Revert Altitude Below 10k = " + RevertAltitude);
+                }
+                if (vessel.altitude > 10001 & vessel.situation != Vessel.Situations.ORBITING)
+                {
+                    Math.Round(RevertAltitude = RevertTotal / 95);
+                    Debug.Log("Revert Altitude Above 10K = " + RevertAltitude);
                 }
             }
-            //Debug.Log("Revert Cost Of Vessel Is " + RevertTotal);
+            Debug.Log("Revert Cost Of Vessel Is " + RevertTotal);
         }
 
         public void getSupplyList(bool stationOnly)
@@ -344,8 +358,14 @@ namespace MissionControllerEC
                 }
             }
         }
-              
-       
+
+        public void SendRevertMessage()
+        {
+            MessageSystem.Message m = new MessageSystem.Message("Revert Charges", "Your Charges For Using Revert System is\n\n" + "Altitude Charge: " + RevertAltitude + "\n\n" + "Orbit Charge: " + RevertOrbit + "\n\n" + " Veseel simulation Cost: " + RevertTotal + "\n\n" + "Total Charges: " + Math.Round(RevertAltitude + RevertOrbit + RevertTotal), MessageSystemButton.MessageButtonColor.ORANGE, MessageSystemButton.ButtonIcons.MESSAGE);
+            MessageSystem.Instance.AddMessage(m);
+
+        }
+
         //public void GetEvaTypeKerbal()
         //{
         //    List<ProtoCrewMember> protoCrewMembers = FlightGlobals.ActiveVessel.GetVesselCrew();

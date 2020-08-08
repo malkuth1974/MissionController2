@@ -48,14 +48,14 @@ namespace MissionControllerEC
                         new DialogGUIFlexibleSpace(),
                         new DialogGUIVerticalLayout(
                             new DialogGUIFlexibleSpace(),
-                            new DialogGUIButton(Localizer.Format("#autoLOC_MCE_RevertToVABCost:$") + Math.Round(revertcost * RevertTotal / 100, 0),
+                            new DialogGUIButton(Localizer.Format("#autoLOC_MCE_RevertToVABCost:$") + Math.Round(revertcost * (RevertTotal + RevertAltitude + RevertOrbit) / 100, 0),
                                 delegate
                                 {                                   
                                     FlightDriver.RevertToPrelaunch(EditorFacility.VAB);
                                     //RevertHalt = true;
                                     RevertHaultSet();                                  
                                 }, 200f, 30.0f, true),
-                            new DialogGUIButton(Localizer.Format("#autoLOC_MCE_RRevertToSPHCost:$") + Math.Round(revertcost * RevertTotal / 100,0),
+                            new DialogGUIButton(Localizer.Format("#autoLOC_MCE_RRevertToSPHCost:$") + Math.Round(revertcost * (RevertTotal + RevertAltitude + RevertOrbit) / 100,0),
                                 delegate
                                 {
                                     FlightDriver.RevertToPrelaunch(EditorFacility.SPH);
@@ -79,10 +79,11 @@ namespace MissionControllerEC
                            new DialogGUIFlexibleSpace(),
                            new DialogGUIVerticalLayout(
                                new DialogGUIFlexibleSpace(),
-                               new DialogGUIButton(Localizer.Format("#autoLOC_MCE_Revert_Total_Cost_Final_Window") + Math.Round(revertcost * RevertTotal / 100, 0), delegate
+                               new DialogGUIButton(Localizer.Format("#autoLOC_MCE_Revert_Total_Cost_Final_Window") + Math.Round(revertcost * (RevertTotal + RevertAltitude + RevertOrbit) / 100, 0), delegate
                                {
-                                   Funding.Instance.AddFunds(- Math.Round(revertcost * RevertTotal / 100, 0), TransactionReasons.Progression);
+                                   Funding.Instance.AddFunds(- Math.Round(revertcost * (RevertTotal + RevertAltitude + RevertOrbit) / 100, 0), TransactionReasons.Progression);
                                    RevertHalt = false;
+                                   SendRevertMessage();
                                }, 200f, 30.0f, true)
                                )),
                        false,

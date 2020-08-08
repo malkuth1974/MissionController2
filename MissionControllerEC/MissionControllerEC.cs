@@ -449,23 +449,39 @@ namespace MissionControllerEC
         }
         static void SatTypeButtonClicked1()
         {
-            MCESatelliteCore.sattypenumber++;
-            if (MCESatelliteCore.sattypenumber > 3) { MCESatelliteCore.sattypenumber = 3; }
+            if (!MCESatelliteCore.ControlsLocked)
+            {
+                MCESatelliteCore.sattypenumber++;
+                if (MCESatelliteCore.sattypenumber > 3) { MCESatelliteCore.sattypenumber = 3; }
+            }
+            else { ScreenMessages.PostScreenMessage("Vessel Has Launced, Controls For Satellite Type And Module Type Are Now Locked!", 15f); }
         }
         static void SatTypeButtonClicked2()
         {
-            MCESatelliteCore.sattypenumber--;
-            if (MCESatelliteCore.sattypenumber < 0) { MCESatelliteCore.sattypenumber = 0; }
+            if (!MCESatelliteCore.ControlsLocked)
+            {
+                MCESatelliteCore.sattypenumber--;
+                if (MCESatelliteCore.sattypenumber < 0) { MCESatelliteCore.sattypenumber = 0; }
+            }
+            else { ScreenMessages.PostScreenMessage("Vessel Has Launced, Controls For Satellite Type And Module Type Are Now Locked!", 15f); }
         }
         static void SatModButtonClicked1()
         {
-            MCESatelliteCore.moduleTypeChange++;
-            if (MCESatelliteCore.moduleTypeChange > 4) { MCESatelliteCore.moduleTypeChange = 4; }
+            if (!MCESatelliteCore.ControlsLocked)
+            {
+                MCESatelliteCore.moduleTypeChange++;
+                if (MCESatelliteCore.moduleTypeChange > 4) { MCESatelliteCore.moduleTypeChange = 4; }
+            }
+            else { ScreenMessages.PostScreenMessage("Vessel Has Launced, Controls For Satellite Type And Module Type Are Now Locked!", 15f); }
         }
         static void SatModButtonClicked2()
         {
-            MCESatelliteCore.moduleTypeChange--;
-            if (MCESatelliteCore.moduleTypeChange < 0) { MCESatelliteCore.moduleTypeChange = 0; }
+            if (!MCESatelliteCore.ControlsLocked)
+            {
+                MCESatelliteCore.moduleTypeChange--;
+                if (MCESatelliteCore.moduleTypeChange < 0) { MCESatelliteCore.moduleTypeChange = 0; }
+            }
+            else { ScreenMessages.PostScreenMessage("Vessel Has Launced, Controls For Satellite Type And Module Type Are Now Locked!", 15f); }
         }
         static void SattransmitButtonClicked()
         {
@@ -772,8 +788,8 @@ namespace MissionControllerEC
 
         public bool openUI = false;
 
-        private bool RepairGamewin = false;
-
+        private bool RepairGamewin = false, GameSlider1 = false, GameSlider2 = false, GameSlider3 = false;
+        private double GameSwitchChange;
         public Animation GetDeployDoorAnim
         {
             get
@@ -821,7 +837,12 @@ namespace MissionControllerEC
                     readyRep = true;                  
                     Debug.LogError("Vessel Id For PartModule is " + vesselId + " Name is " + vesselName);
                     ScreenMessages.PostScreenMessage(Localizer.Format("#autoLOC_MissionController2_1000250"), 15f);          // #autoLOC_MissionController2_1000250 = Your engineer has Prepared the vessel for Repair Open the panel, Then conduct the repair
-                    MissionControllerEC.RepairUpdateText("Purge Air System");
+                    if (GameSlider2)
+                        MissionControllerEC.RepairUpdateText("Purge Air System");
+                    if (GameSlider1)
+                        MissionControllerEC.RepairUpdateText("Purge Battery Coolant");
+                    if (GameSlider3)
+                        MissionControllerEC.RepairUpdateText("Reset The HMI");
                 }
                 else
                 {
@@ -896,15 +917,46 @@ namespace MissionControllerEC
                 MissionControllerEC.RepairUpdateText("Press Test Button..");
             }
         }
+
+        private void GameSwitch()
+        {
+            switch (GameSwitchChange)
+            {
+                case 1:
+                    GameSlider1 = true;
+                    GameSlider2 = false;
+                    GameSlider3 = false;
+                    break;
+                case 2:
+                    GameSlider2 = true;
+                    GameSlider1 = false;
+                    GameSlider3 = false;
+                    break;
+                case 3:
+                    GameSlider3 = true;
+                    GameSlider2 = false;
+                    GameSlider1 = false;
+                    break;
+                default:
+                    GameSlider1 = false;
+                    GameSlider2 = false;
+                    GameSlider3 = false;
+                    break;
+
+            }
+        }
+
         #endregion
         #region OnStart + Fixed Stuff
         public override void OnStart(PartModule.StartState state)
         {            
             this.part.force_activate();
+            GameSwitchChange = Tools.RandomNumber(0, 2);
+            GameSwitch();
         }
 
         public void FixedUpdate()
-        {         
+        {           
             if (MissionControllerEC.RepairUICanvas != null)
             {
                 Events["OpenDoor"].active = false;
@@ -921,7 +973,17 @@ namespace MissionControllerEC
             PartUICoolSlider2 = MissionControllerEC.RepairCoolSliderPosition2();
             PartUICoolSlider3 = MissionControllerEC.RepairCoolSliderPosition3();
 
-            if (PartUICoolSlider2 == 1f)
+            if (PartUICoolSlider == 1f && GameSlider1)
+            {
+                MissionControllerEC.RepairUpdateText("Press Enter");
+                RepairGamewin = true;
+            }
+            if (PartUICoolSlider2 == 1f && GameSlider2)
+            {
+                MissionControllerEC.RepairUpdateText("Press Enter");
+                RepairGamewin = true;
+            }
+            if (PartUICoolSlider3 == 1f && GameSlider3)
             {
                 MissionControllerEC.RepairUpdateText("Press Enter");
                 RepairGamewin = true;
@@ -940,13 +1002,15 @@ namespace MissionControllerEC
         [KSPField(isPersistant = true, guiActive = false)]
         public static int sattypenumber = 0;
 
-        [KSPField(isPersistant = true, guiActive = true, guiName = "MC PartLocked")]
+        [KSPField(isPersistant = true, guiActive = true, guiName = "MC Data Locked")]
         private bool dataLocked = false;
 
         public bool haveAnimation = false;
         public string animationName = "None";
         public static bool StartDataTransfer = false;
         public static string GroundStationLockedText = "Free Roam";
+
+        public static bool ControlsLocked = false;
 
         public Animation GetSatelliteCoreAnimation
         {
@@ -1101,6 +1165,8 @@ namespace MissionControllerEC
                     break;
             }
         }
+        
+       
         #endregion
         #region Onstart + Fixed
         public override void OnStart(PartModule.StartState state)
@@ -1138,33 +1204,38 @@ namespace MissionControllerEC
             { openSatUI = true; }
             else
             { openSatUI = false; return; }
-            if (openSatUI && !dataLocked && MissionControllerEC.SatelliteUICanvas != null)
+            if (HighLogic.LoadedSceneIsEditor || FlightGlobals.ActiveVessel.situation == Vessel.Situations.PRELAUNCH)
             {
-                MissionControllerEC.SatFreqUpdateText(frequencyModulation.ToString());
-                MissionControllerEC.SatTypeUpdateText(satTypeDisplay.ToString());
-                MissionControllerEC.SatModTypeUpdateText(satModuleType.ToString());
-                MissionControllerEC.SatGroundLockUpdateText(GroundStationLockedText);
-                MCEParameters.GroundStationPostion gs = new MCEParameters.GroundStationPostion(0);
-                if (satTypeDisplay == "Communication")
+                if (openSatUI && !dataLocked && MissionControllerEC.SatelliteUICanvas != null)
                 {
-                    ModuleTypeSwitch();
+                    MissionControllerEC.SatTypeUpdateText(satTypeDisplay.ToString());
+                    MissionControllerEC.SatModTypeUpdateText(satModuleType.ToString());
+                    MissionControllerEC.SatGroundLockUpdateText(GroundStationLockedText);
+                    MCEParameters.GroundStationPostion gs = new MCEParameters.GroundStationPostion(0);
+                    if (satTypeDisplay == "Communication")
+                    {
+                        ModuleTypeSwitch();
+                    }
+                    else if (satTypeDisplay == "Navigation")
+                    {
+                        ModuleTypeSwitch2();
+                    }
+                    else if (satTypeDisplay == "Weather")
+                    {
+                        ModuleTypeSwitch3();
+                    }
+                    else if (satTypeDisplay == "Research")
+                    {
+                        ModuleTypeSwitch4();
+                    }
+                    satTypeDisplay = SattypeList[sattypenumber];
+                    gs.SetGroundStationCheck(frequencyModulation);                   
                 }
-                else if (satTypeDisplay == "Navigation")
-                {
-                    ModuleTypeSwitch2();
-                }
-                else if (satTypeDisplay == "Weather")
-                {
-                    ModuleTypeSwitch3();
-                }
-                else if (satTypeDisplay == "Research")
-                {
-                    ModuleTypeSwitch4();
-                }
-                satTypeDisplay = SattypeList[sattypenumber];
-                gs.SetGroundStationCheck(frequencyModulation);
-                if (StartDataTransfer) { StartDataMCE(); }
-            } 
+                ControlsLocked = true;
+            }
+            ControlsLocked = false;
+            MissionControllerEC.SatFreqUpdateText(frequencyModulation.ToString());
+            if (StartDataTransfer) { StartDataMCE(); }
         }
         #endregion
     }
