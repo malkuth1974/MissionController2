@@ -85,10 +85,9 @@ namespace MissionControllerEC.MCEContracts
 
         public void chooseVesselRepairFromList()
         {
-            System.Random rnd = new System.Random();
             if (repairvesselList.Count > 0)
             {
-                RepairVesselsList random = repairvesselList[rnd.Next(repairvesselList.Count)];
+                RepairVesselsList random = repairvesselList[SaveInfo.rnd.Next(repairvesselList.Count)];
                 vesselID = random.vesselId.ToString();
                 vesselName = random.vesselName.Replace("(unloaded)", "");
                 maxApA = random.MaxApA;
@@ -97,7 +96,7 @@ namespace MissionControllerEC.MCEContracts
                 Debug.LogWarning("Random Repair Vessel Selected " + random.vesselName + "  " + random.vesselId + "  " + random.MaxApA);
                 NoVessel = true;
             }
-            else { Debug.LogError(" Vessel Selection Null for repair Contract, skiped process"); NoVessel = false; }
+            else { Debug.LogError(" Vessel Selection Null for repair Contract, skipped process"); NoVessel = false; }
         }
 
         public int totalContracts;
@@ -332,10 +331,9 @@ namespace MissionControllerEC.MCEContracts
 
         public void chooseVesselRepairStationFromList()
         {
-            System.Random rnd = new System.Random();
             if (repairvesselListStations.Count > 0)
             {
-                RepairVesselsList random = repairvesselListStations[rnd.Next(repairvesselListStations.Count)];
+                RepairVesselsList random = repairvesselListStations[SaveInfo.rnd.Next(repairvesselListStations.Count)];
                 vesselID = random.vesselId.ToString();
                 vesselName = random.vesselName.Replace("(unloaded)", "");
                 planetIDX = random.bodyidx;

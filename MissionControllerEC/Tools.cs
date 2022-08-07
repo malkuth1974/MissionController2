@@ -11,7 +11,7 @@ namespace MissionControllerEC
             range1 = Math.Abs(range1);
             range2 = Math.Abs(range2);
             int value = UnityEngine.Random.Range(range1, range2);
-            Debug.LogError("range 1 Is = " + range1 + "Range 2 is = " + range2 + "Total Value is = " + value);            
+            Debug.LogError("range 1 Is = " + range1 + ", Range 2 is = " + range2 + ", Total Value is = " + value);            
             return value;
         }
         public static float FloatRandomNumber(float range1, float range2)
@@ -372,6 +372,7 @@ namespace MissionControllerEC
                 }
             }
 
+#if false
             private static System.Random _randHolder;
             private static System.Random _random
             {
@@ -383,6 +384,7 @@ namespace MissionControllerEC
                     return _randHolder;
                 }
             }
+#endif
 
             public static T PickOne<T>(Item<T>[] p_itens)
             {
@@ -391,7 +393,7 @@ namespace MissionControllerEC
                     return default(T);
                 }
 
-                float __randomizedValue = (float)_random.NextDouble() * (Item<T>.GetTotalWeight(p_itens));
+                float __randomizedValue = (float)SaveInfo.rnd.NextDouble() * (Item<T>.GetTotalWeight(p_itens));
                 float __adding = 0;
                 for (int i = 0; i < p_itens.Length; i++)
                 {

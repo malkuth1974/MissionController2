@@ -1,0 +1,18 @@
+
+	Fixed nullref by MissionControllerEc being instantiated at the MainMenu
+	Fixed MissionControllerEC.Instance returning itself
+	Added the SetDifficultyPreset in the settings CuttomParemeterNode(s)
+	Added window to make the planet selection into a new window
+	Fixed Toolbar button not being cleared after clicking the Exit button
+	Fixed ArgumentOutOfRangeException when no bases or stations available and either the ""Launch Crew to a Station" or "Resupply Resources to a Station" was selected
+	Added check to make sure the count of number of Kerbals/Tourists not go less than the minimum
+	Fixed spelling of "skiped" to "skipped"
+	Added instantiation of System.Random rnd into SaveInfo
+	Removed all other local "System.Random rnd"
+	Removed all references to SeedGenerator since it wasn't used anywhere
+	Disabled the _random in the Tools.cs
+	Replaced the one reference to _random with SafeInfo.rnd
+	Fixed spelling of Satellie  to Satellite in Debug.Log statements
+	Fixed spelling of OnDestroye to OnDestroy in MissionControllerEC
+	Removed old paragraph from README.md regarding 64 bit KSP
+	Disabled the MCEDebugMode in the Settings page, since it wasn't being used anywhere

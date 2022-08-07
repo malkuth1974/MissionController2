@@ -19,6 +19,7 @@ namespace MissionControllerEC
         public override string DisplaySection { get { return "MissionControllerEC"; } }
         public override int SectionOrder { get { return 1; } }
         public override bool HasPresets { get { return true; } }
+        public override void SetDifficultyPreset(GameParameters.Preset preset)        { }
 
         [GameParameters.CustomParameterUI("MCE Satellite Contracts Enabled?", toolTip = "Do you want to play MCE Satellite Missions These use the MCE Part Cores.")]
         public bool SatelliteContracts = true;
@@ -43,6 +44,8 @@ namespace MissionControllerEC
         public override string DisplaySection { get { return "MissionControllerEC"; } }
         public override int SectionOrder { get { return 2; } }
         public override bool HasPresets { get { return true; } }
+        public override void SetDifficultyPreset(GameParameters.Preset preset) { }
+
 
         [GameParameters.CustomParameterUI("Rescue Kerbal Contracts Enabled?", toolTip = "Do you want to play the default rescue kerbal contracts?")]
         public bool RescueKerbalContracts = true;
@@ -77,15 +80,18 @@ namespace MissionControllerEC
         public override string DisplaySection { get { return "MissionControllerEC"; } }
         public override int SectionOrder { get { return 3; } }
         public override bool HasPresets { get { return true; } }
+        public override void SetDifficultyPreset(GameParameters.Preset preset) { }
 
         [GameParameters.CustomParameterUI("MCE Revert Cost Enabled?", toolTip = "Do you want to be charged when using revert?")]
         public bool MCERevertAllow = true;
         [GameParameters.CustomIntParameterUI("Revert Cost",maxValue =100)]
         public int MCERevertCost = 10;
         [GameParameters.CustomParameterUI("MCE Vessel Must Surviv Enabled?", toolTip = "If vessel is destroyed in MCE contract you will fail?")]
-        public bool VesselMustSurvive = true;       
+        public bool VesselMustSurvive = true;
+#if false
         [GameParameters.CustomParameterUI("MCE Debug Mode Enabled?", toolTip = "Debug mode becomes available in MCE Menu Icon (Cheats)?")]
         public bool MCEDebugMode = false;
+#endif
         [GameParameters.CustomParameterUI("MCE Contract Chance For Other Planets?", toolTip = "Chance of Planets other than Kerbin for Satellite Contracts.  Higher Number Less chance!")]
         public int MCESatOwPercentChance = 60;
         [GameParameters.CustomParameterUI("MCE Contract Repair Chances?", toolTip = "Chance To Get Repair Contracts.  Lower Number More chance!")]

@@ -89,11 +89,13 @@ namespace MissionControllerEC
             AssetBundle prefabs2 = AssetBundle.LoadFromFile(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "mcesatelliteui.dat"));
             panelPrefab2 = prefabs2.LoadAsset("MCESatelliteHub") as GameObject;
 
-            ;        }
+            ;
+        }
         #endregion
     }
 
-    [KSPAddon(KSPAddon.Startup.MainMenu, true)]
+    //[KSPAddon(KSPAddon.Startup.MainMenu, true)]
+    [KSPAddon(KSPAddon.Startup.SpaceCentre, true)]
     public partial class MissionControllerEC : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
     {
         #region Types + variables
@@ -115,8 +117,8 @@ namespace MissionControllerEC
 
         private static Texture2D texture;
         private static Texture2D texture2;
-        private static ApplicationLauncherButton MCEButton;
-        private static ApplicationLauncherButton MCERevert;        
+        internal static ApplicationLauncherButton MCEButton;
+        internal static ApplicationLauncherButton MCERevert;
         private int id = new System.Random().Next(int.MaxValue);
         public static bool RevertHalt = false;
         // Special thanks to Magico13 Of Kerbal Construction Time for showing me how to Get Scenario Persistance.
@@ -170,6 +172,7 @@ namespace MissionControllerEC
         private static DialogGUIBase Custom_Contract_Button1;
         private static DialogGUIBase Custom_Contract_Button2;
         private static DialogGUIBase Custom_Contract_Button3;
+        private static DialogGUIBase Custom_Contract_Button3a;
         private static DialogGUIBase Custom_Contract_Button4;
         private static DialogGUIBase Custom_Contract_Button5;
         private static DialogGUIBase Custom_Contract_Button6;
@@ -177,12 +180,13 @@ namespace MissionControllerEC
         private static DialogGUIBase Custom_Contract_Button8;
         private static DialogGUIBase Custom_Contract_Button9;
         private static DialogGUIBase Custom_Contract_Button10;
+        private static DialogGUIBase Custom_Contract_Button10a;
         private static DialogGUIBase Custom_Contract_Button11;
         private static DialogGUIBase Custom_Contract_Button12;
         private static DialogGUIBase Custom_Contract_Button13;
 
         private static DialogGUIToggleButton Custom_Contract_Toggle2;
-          
+
 
         private static DialogGUIBox Custom_Contract_GuiBox1;
         private static DialogGUIBox Custom_Contract_GuiBox2;
@@ -199,57 +203,62 @@ namespace MissionControllerEC
 
         private static DialogGUIBase Custom_Contract_Input;
         private static DialogGUIBase Custom_Contract_Input2;
-     
+
         Settings settings = new Settings("Config.cfg");
         #endregion
         #region Start/Awake/Instance Stuff
-        private static MissionControllerEC Instance
+        public static MissionControllerEC Instance
         {
             get
             {
-                return Instance;
+                return instance;
+                //return Instance;
             }
         }
 
         public MissionControllerEC()
-        {           
+        {
             instance = this;
             Allocate();
         }
 
-    void Start()
-    {
-            ProtoScenarioModule scenario = HighLogic.CurrentGame.scenarios.Find(s => s.moduleName == typeof(MissionControllerData).Name);
-            DictCount = settings.SupplyResourceList.Count();          
-            if (scenario == null)
+        void Start()
         {
-            try
+            Debug.Log("MissionControllerEC.Start()");
+
+            if (HighLogic.CurrentGame == null)
+                return;
+            ProtoScenarioModule scenario = HighLogic.CurrentGame.scenarios.Find(s => s.moduleName == typeof(MissionControllerData).Name);
+            DictCount = settings.SupplyResourceList.Count();
+            if (scenario == null)
             {
-                HighLogic.CurrentGame.AddProtoScenarioModule(typeof(MissionControllerData), new GameScenes[] { GameScenes.FLIGHT, GameScenes.SPACECENTER, GameScenes.EDITOR, GameScenes.TRACKSTATION });
-                Debug.LogWarning("[MCE] Adding InternalModule scenario to game '" + HighLogic.CurrentGame.Title + "'");                  
+                try
+                {
+                    HighLogic.CurrentGame.AddProtoScenarioModule(typeof(MissionControllerData), new GameScenes[] { GameScenes.FLIGHT, GameScenes.SPACECENTER, GameScenes.EDITOR, GameScenes.TRACKSTATION });
+                    Debug.LogWarning("[MCE] Adding InternalModule scenario to game '" + HighLogic.CurrentGame.Title + "'");
                     // the game will add this scenario to the appropriate persistent file on save from now on
                 }
-            catch (ArgumentException ae)
-            {
-                Debug.LogException(ae);
+                catch (ArgumentException ae)
+                {
+                    Debug.LogException(ae);
+                }
+                catch
+                {
+                    Debug.LogWarning("[MCE] Unknown failure while adding scenario.");
+                }
             }
-            catch
+            else
             {
-                Debug.LogWarning("[MCE] Unknown failure while adding scenario.");
+                if (!scenario.targetScenes.Contains(GameScenes.SPACECENTER))
+                    scenario.targetScenes.Add(GameScenes.SPACECENTER);
+                if (!scenario.targetScenes.Contains(GameScenes.FLIGHT))
+                    scenario.targetScenes.Add(GameScenes.FLIGHT);
+                if (!scenario.targetScenes.Contains(GameScenes.EDITOR))
+                    scenario.targetScenes.Add(GameScenes.EDITOR);
+                if (!scenario.targetScenes.Contains(GameScenes.TRACKSTATION))
+                    scenario.targetScenes.Add(GameScenes.TRACKSTATION);
             }
         }
-        else
-        {
-            if (!scenario.targetScenes.Contains(GameScenes.SPACECENTER))
-                scenario.targetScenes.Add(GameScenes.SPACECENTER);
-            if (!scenario.targetScenes.Contains(GameScenes.FLIGHT))
-                scenario.targetScenes.Add(GameScenes.FLIGHT);
-            if (!scenario.targetScenes.Contains(GameScenes.EDITOR))
-                scenario.targetScenes.Add(GameScenes.EDITOR);
-            if (!scenario.targetScenes.Contains(GameScenes.TRACKSTATION))
-                scenario.targetScenes.Add(GameScenes.TRACKSTATION);
-        }
-    }
 
         public void Awake()
         {
@@ -259,20 +268,21 @@ namespace MissionControllerEC
             GameEvents.Contract.onContractsLoaded.Add(this.onContractLoaded);
             getSupplyList(false);
             // create popup dialog and hide it
+            if (Mainmulti_dialog == null)
+                return;
             Main_popup_dialog = PopupDialog.SpawnPopupDialog(Mainmulti_dialog, true, HighLogic.UISkin, false, "");
             Hide();
             loadTextures();
             //Debug.LogWarning("[MCE] Textrues called OnAwake");
             MceCreateButtons();
             //Debug.LogWarning("[MCE] Buttons called OnAwake");
-            //Debug.Log("MCE MissionControllerEC Main Awake called");
+            Debug.Log("MCE MissionControllerEC Main Awake called");
             //this creates a callback so that whenever the scene is changed we can destroy the UI
             GameEvents.onGameSceneSwitchRequested.Add(OnRepairSceneChange);
             GameEvents.onGameSceneSwitchRequested.Add(OnSatelliteSceneChange);
-
         }
-        #endregion
-        #region GUI Events
+#endregion
+#region GUI Events
         //If we don't get rid of the UI, it'll stay where it is indefinitely.  So, every time the scene is changed, we need to get rid of it.
         void OnRepairSceneChange(GameEvents.FromToAction<GameScenes, GameScenes> fromToScenes)
         {
@@ -306,8 +316,8 @@ namespace MissionControllerEC
                 thisPart.openSatUI = false;
             }
         }
-        #endregion
-        #region GuiShow Codes
+#endregion
+#region GuiShow Codes
         public static void RepairShowGUI()
         {
             if (RepairUICanvas != null)  //if the UI is already showing, don't show another one.
@@ -322,7 +332,7 @@ namespace MissionControllerEC
             RepairText = (GameObject)GameObject.Find("RepairText");
 
             //This is a button so we need to create a callback for when it gets clicked on
-            GameObject RepaircheckToggle = (GameObject)GameObject.Find("TestButton");            
+            GameObject RepaircheckToggle = (GameObject)GameObject.Find("TestButton");
             Button RepairtoggleButton = RepaircheckToggle.GetComponent<Button>();
             RepairtoggleButton.onClick.AddListener(RepairOnToggleClicked);
 
@@ -405,8 +415,8 @@ namespace MissionControllerEC
             float ypos = float.Parse(thisnode.GetValue("y"));
             SatelliteUICanvas.transform.position = new Vector3(xpos, ypos, SatelliteUICanvas.transform.position.z);
         }
-        #endregion
-        #region Gui buttons
+#endregion
+#region Gui buttons
         //this is the callback we created for when the toggle button is clicked.
         static void RepairOnToggleClicked()
         {
@@ -491,7 +501,7 @@ namespace MissionControllerEC
                 MCESatelliteCore.StartDataTransfer = true;
             }
             else
-            { ScreenMessages.PostScreenMessage("Not in flight Or Orbit",10f); Debug.Log("You Pressed Transmit Not In Flight"); }
+            { ScreenMessages.PostScreenMessage("Not in flight Or Orbit", 10f); Debug.Log("You Pressed Transmit Not In Flight"); }
         }
         static void RepExitButton2Clicked()
         {
@@ -523,8 +533,8 @@ namespace MissionControllerEC
         {
             SatGroundLockText.GetComponent<Text>().text = message;
         }
-        #endregion
-        #region GUI Drag Values
+#endregion
+#region GUI Drag Values
         //this event fires when a drag event begins
         public void OnBeginDrag(PointerEventData data)
         {
@@ -595,10 +605,11 @@ namespace MissionControllerEC
             return thisSlider.value;
         }
 
-        #endregion
-        #region Old GUI Code Working On Replacing
+#endregion
+#region Old GUI Code Working On Replacing
         void OnDestroy()
         {
+            Debug.Log("MissionControllerEC.OnDestroy");
             if (Main_popup_dialog != null)
             {
                 SaveInfo.MainGUIWindowPos = new Vector2(
@@ -614,19 +625,19 @@ namespace MissionControllerEC
             {
                 ApplicationLauncher.Instance.RemoveModApplication(MCERevert);
                 Debug.LogError("[MCE] Revert OnDestroyed called");
-            }           
-            
-            GameEvents.Contract.onContractsLoaded.Remove(this.onContractLoaded);          
-           instance = null;
-            Debug.Log("MCE MissioniControllerEC Main OnDestroye Called");
+            }
+
+            GameEvents.Contract.onContractsLoaded.Remove(this.onContractLoaded);
+            instance = null;
+            Debug.Log("MCE MissioniControllerEC Main OnDestroy Called");
 
             try
             {
                 Main_popup_dialog.Dismiss();
             }
             catch { Debug.Log("MCE Main_Popup_dialog already loaded"); }
-                     
-            Main_popup_dialog = null;         
+
+            Main_popup_dialog = null;
         }
         private void Update()
         {
@@ -638,13 +649,13 @@ namespace MissionControllerEC
             else if (SaveInfo.GUIEnabled && !visible)
             {
                 Show();
-            }           
+            }
         }
-        
+
         private void Allocate()
         {
             if (SaveInfo.MainGUIWindowPos.x <= 0 || SaveInfo.MainGUIWindowPos.y <= 0)
-                SaveInfo.MainGUIWindowPos = new Vector2(0.5f, 0.5f);           
+                SaveInfo.MainGUIWindowPos = new Vector2(0.5f, 0.5f);
 
             CustomSat_button = new DialogGUIButton(Localizer.Format("Send Satellite To Space"), delegate
             {
@@ -663,12 +674,12 @@ namespace MissionControllerEC
                 CrewTransferContract();
                 SaveInfo.GUIEnabled = false;
             }, delegate { return true; }, button_width, button_height, false, MCEGuiElements.ButtonMenuMainSyle);
-           
+
             CustomSupply_button = new DialogGUIButton(Localizer.Format("Resupply Resources To A Station"), delegate
             {
                 TransferContract();
                 SaveInfo.GUIEnabled = false;
-              
+
             }, delegate { return true; }, button_width, button_height, false, MCEGuiElements.ButtonMenuMainSyle);
             BuildStation_button = new DialogGUIButton(Localizer.Format("Build A Space Station"), delegate
             {
@@ -689,6 +700,7 @@ namespace MissionControllerEC
             Main_Exit_button = new DialogGUIButton(Localizer.Format("Exit Finance Contract Builder"), delegate
             {
                 SaveInfo.GUIEnabled = false;
+                MCEButton.SetFalse();
                 onContractLoaded();
             }, delegate { return true; }, button_width, button_height, false, MCEGuiElements.ButtonMenuMainSyle);
 
@@ -722,8 +734,8 @@ namespace MissionControllerEC
                 Main_popup_dialog.gameObject.SetActive(false);
             }
         }
-        #endregion
-        #region Gui Config Save/Load
+#endregion
+#region Gui Config Save/Load
         static ConfigNode RepGetConfig(string NodeText)
         {
             string CurrentNode = NodeText;
@@ -760,12 +772,12 @@ namespace MissionControllerEC
             thisnode.AddValue("y", y);
             thiscfg.Save(filePath);
         }
-        #endregion
+#endregion
     }
 
     public class RepairPanel : PartModule
     {
-        #region variables
+#region variables
         [KSPField]
         string DoorAnimation = "mceanim";
 
@@ -821,8 +833,8 @@ namespace MissionControllerEC
         [KSPField(isPersistant = true, guiActive = true, guiName = "Ready To Repair")]
         public static bool readyRep = false;
 
-        #endregion
-        #region Methods
+#endregion
+#region Methods
 
         [KSPEvent(externalToEVAOnly = true, unfocusedRange = 4f, guiActiveUnfocused = true, guiIcon = "Engineer CheckSystems", guiName = "Engineer CheckSystems", active = false)]
         public void CheckSystems()
@@ -834,7 +846,7 @@ namespace MissionControllerEC
                 if (exp.ToString() == "Experience.Effects.RepairSkill")
                 {
                     Debug.Log("Current kerbal is a Engineer you have passed");
-                    readyRep = true;                  
+                    readyRep = true;
                     Debug.LogError("Vessel Id For PartModule is " + vesselId + " Name is " + vesselName);
                     ScreenMessages.PostScreenMessage(Localizer.Format("#autoLOC_MissionController2_1000250"), 15f);          // #autoLOC_MissionController2_1000250 = Your engineer has Prepared the vessel for Repair Open the panel, Then conduct the repair
                     if (GameSlider2)
@@ -864,7 +876,7 @@ namespace MissionControllerEC
                 MissionControllerEC.RepairUpdateText("Repair Complete!!");
             }
             else { ScreenMessages.PostScreenMessage(Localizer.Format("#autoLOC_MissionController2_1000253"), 5f); }		// #autoLOC_MissionController2_1000253 = You need an Engineer class kerbal to conduct this repair!
-        }        
+        }
 
         [KSPEvent(externalToEVAOnly = true, unfocusedRange = 4f, guiActiveUnfocused = true, guiName = "Open Door", active = true, guiActiveEditor = false)]
         public void OpenDoor()
@@ -892,18 +904,18 @@ namespace MissionControllerEC
                 openUI = false;
                 MissionControllerEC.RepairUpdateText("Press Test Button");
             }
-        }       
+        }
 
         [KSPEvent(externalToEVAOnly = true, unfocusedRange = 4f, guiActiveUnfocused = true, guiName = "Close Door", active = false, guiActiveEditor = false)]
         public void closeDoor()
         {
             Events["OpenDoor"].active = true;
             Events["EnableRepair"].active = false;
-            Events["closeDoor"].active = false;	
+            Events["closeDoor"].active = false;
             Events["CheckSystems"].active = false;
             if (MissionControllerEC.RepairUICanvas == null && RepairGamewin)
             {
-                MissionControllerEC.RepairShowGUI(); 
+                MissionControllerEC.RepairShowGUI();
                 PlayOpenAnimation(1, 0);
                 openUI = true;
                 PartUICoolSlider2 = 0;
@@ -911,7 +923,7 @@ namespace MissionControllerEC
             }
             else
             {
-                MissionControllerEC.RepairUIDestroy(); 
+                MissionControllerEC.RepairUIDestroy();
                 PlayOpenAnimation(-1, 1);
                 openUI = false;
                 MissionControllerEC.RepairUpdateText("Press Test Button..");
@@ -946,17 +958,17 @@ namespace MissionControllerEC
             }
         }
 
-        #endregion
-        #region OnStart + Fixed Stuff
+#endregion
+#region OnStart + Fixed Stuff
         public override void OnStart(PartModule.StartState state)
-        {            
+        {
             this.part.force_activate();
             GameSwitchChange = Tools.RandomNumber(0, 2);
             GameSwitch();
         }
 
         public void FixedUpdate()
-        {           
+        {
             if (MissionControllerEC.RepairUICanvas != null)
             {
                 Events["OpenDoor"].active = false;
@@ -967,7 +979,7 @@ namespace MissionControllerEC
                 Events["OpenDoor"].active = true;
                 Events["closeDoor"].active = false;
                 return;
-            } 
+            }
 
             PartUICoolSlider = MissionControllerEC.RepairSliderPosition();
             PartUICoolSlider2 = MissionControllerEC.RepairCoolSliderPosition2();
@@ -988,14 +1000,14 @@ namespace MissionControllerEC
                 MissionControllerEC.RepairUpdateText("Press Enter");
                 RepairGamewin = true;
             }
-            else { RepairGamewin = false; }            
+            else { RepairGamewin = false; }
         }
-        #endregion
+#endregion
     }
 
     public class MCESatelliteCore : PartModule
     {
-        #region variables
+#region variables
         [KSPField(isPersistant = true, guiActive = true)]
         public static string[] SattypeList = { "Communication", "Navigation", "Weather", "Research" };
 
@@ -1027,30 +1039,30 @@ namespace MissionControllerEC
             GetSatelliteCoreAnimation[animationName].normalizedTime = time;
             GetSatelliteCoreAnimation.Play(animationName);
         }
-       
+
         [KSPField(guiName = "MC Satellite Panel", guiActiveEditor = true, guiActive = true, isPersistant = false),
         UI_Toggle(controlEnabled = true, disabledText = "Closed", enabledText = "Open", invertButton = false, scene = UI_Scene.All)]
         public bool openSatUI = false;
 
         [KSPField(isPersistant = true, guiActive = true, guiActiveEditor = true, guiName = " MC Satellite Type: ")]
-        public string satTypeDisplay = SattypeList[sattypenumber];     
+        public string satTypeDisplay = SattypeList[sattypenumber];
 
         [KSPField(isPersistant = true, guiActive = true, guiActiveEditor = true, guiName = "MC Module Type: ")]
         public string satModuleType = "Select Module Type";
 
         [KSPField(isPersistant = true, guiActive = false)]
         public static float frequencyModulation = 1;
-        
+
         [KSPField(isPersistant = true, guiActive = false)]
         public static float moduleTypeChange = 1;
-        #endregion
-        #region Methods And Switches
-       
+#endregion
+#region Methods And Switches
+
         public void StartDataMCE()
         {
             if (!dataLocked && FlightGlobals.ActiveVessel.situation == Vessel.Situations.ORBITING)
             {
-                ScreenMessages.PostScreenMessage(Localizer.Format("#autoLOC_MissionController2_1000241"),10f);		// #autoLOC_MissionController2_1000241 = Sending Data Package, This Part core is now disabled and can't be used again
+                ScreenMessages.PostScreenMessage(Localizer.Format("#autoLOC_MissionController2_1000241"), 10f);		// #autoLOC_MissionController2_1000241 = Sending Data Package, This Part core is now disabled and can't be used again
                 dataStartup();
                 if (haveAnimation)
                 {
@@ -1061,12 +1073,12 @@ namespace MissionControllerEC
             }
             else if (dataLocked)
             {
-                ScreenMessages.PostScreenMessage(Localizer.Format("#autoLOC_MissionController2_1000242"),10f);		// #autoLOC_MissionController2_1000242 = This data package has already been sent.  Only 1 data package can be activated per Module
+                ScreenMessages.PostScreenMessage(Localizer.Format("#autoLOC_MissionController2_1000242"), 10f);		// #autoLOC_MissionController2_1000242 = This data package has already been sent.  Only 1 data package can be activated per Module
                 StartDataTransfer = false;
             }
             else
             {
-                ScreenMessages.PostScreenMessage(Localizer.Format("#autoLOC_MissionController2_1000243"),10f);		// #autoLOC_MissionController2_1000243 = You have to be in orbit to Do a Data Startup
+                ScreenMessages.PostScreenMessage(Localizer.Format("#autoLOC_MissionController2_1000243"), 10f);		// #autoLOC_MissionController2_1000243 = You have to be in orbit to Do a Data Startup
                 StartDataTransfer = false;
             }
         }
@@ -1165,12 +1177,12 @@ namespace MissionControllerEC
                     break;
             }
         }
-        
-       
-        #endregion
-        #region Onstart + Fixed
+
+
+#endregion
+#region Onstart + Fixed
         public override void OnStart(PartModule.StartState state)
-        {           
+        {
             if (!dataLocked)
             {
                 Fields[nameof(openSatUI)].uiControlEditor.onFieldChanged = delegate (BaseField a, System.Object b)
@@ -1178,22 +1190,22 @@ namespace MissionControllerEC
                     if (MissionControllerEC.SatelliteUICanvas == null)
                     {
                         MissionControllerEC.SatelliteShowGUI(); //if the UI doesn't exist, create one and show it.
-                }
+                    }
                     else
                     {
                         MissionControllerEC.SatelliteUIDestroy(); //if it does exist. they're closing it so get rid of it.
-                }
+                    }
                 };
                 Fields[nameof(openSatUI)].uiControlFlight.onFieldChanged = delegate (BaseField a, System.Object b)
                 {
                     if (MissionControllerEC.SatelliteUICanvas == null)
                     {
                         MissionControllerEC.SatelliteShowGUI(); //if the UI doesn't exist, create one and show it.
-                }
+                    }
                     else
                     {
                         MissionControllerEC.SatelliteUIDestroy(); //if it does exist. they're closing it so get rid of it.
-                }
+                    }
                 };
             }
             else { ScreenMessages.PostScreenMessage("You Are Locked Out Of This System.  Mission Controlled Locked", 10f); }
@@ -1229,7 +1241,7 @@ namespace MissionControllerEC
                         ModuleTypeSwitch4();
                     }
                     satTypeDisplay = SattypeList[sattypenumber];
-                    gs.SetGroundStationCheck(frequencyModulation);                   
+                    gs.SetGroundStationCheck(frequencyModulation);
                 }
                 ControlsLocked = true;
             }
@@ -1237,20 +1249,20 @@ namespace MissionControllerEC
             MissionControllerEC.SatFreqUpdateText(frequencyModulation.ToString());
             if (StartDataTransfer) { StartDataMCE(); }
         }
-        #endregion
+#endregion
     }
 
     public class MCE_DataStorage : ConfigNodeStorage
-    {        
-        [Persistent]public bool ComSatOn = false;        
-              
-        [Persistent]public string supplyVesselName = "None";
-        [Persistent]public string supplyVesselId = "none";
-        [Persistent]public string supplyResource = "none";
-        [Persistent]public string supplyContractName = "none";
-        [Persistent]public int supplybodyIDX;
-        [Persistent]public bool supplyContractOn = false;
-        [Persistent]public double supplyResAmount = 0;
+    {
+        [Persistent] public bool ComSatOn = false;
+
+        [Persistent] public string supplyVesselName = "None";
+        [Persistent] public string supplyVesselId = "none";
+        [Persistent] public string supplyResource = "none";
+        [Persistent] public string supplyContractName = "none";
+        [Persistent] public int supplybodyIDX;
+        [Persistent] public bool supplyContractOn = false;
+        [Persistent] public double supplyResAmount = 0;
 
         [Persistent] public int LandingOrbitCrew;
         [Persistent] public string LandingOrbitDescription = "Place Title Here";
@@ -1261,37 +1273,37 @@ namespace MissionControllerEC
         [Persistent] public bool OrbitCiviliansOn = false;
         [Persistent] public int LandingOrbitCivilians = 0;
 
-        [Persistent]public string crewtransfername = "crew transfer";
-        [Persistent]public string crewvesname = "none";
-        [Persistent]public string crewvesId = "none";
-        [Persistent]public int crewamount = 0;
-        [Persistent]public double crewtime = 0;
-        [Persistent]public int crewbodyIDX = 0;
-        [Persistent]public bool crewcontracton = false;
-        [Persistent]public bool crewCiviliansOn = false;
+        [Persistent] public string crewtransfername = "crew transfer";
+        [Persistent] public string crewvesname = "none";
+        [Persistent] public string crewvesId = "none";
+        [Persistent] public int crewamount = 0;
+        [Persistent] public double crewtime = 0;
+        [Persistent] public int crewbodyIDX = 0;
+        [Persistent] public bool crewcontracton = false;
+        [Persistent] public bool crewCiviliansOn = false;
         [Persistent] public string transfercrewDesc = "Place Description Here";
         [Persistent] public int transferTouristAmount = 0;
 
-        [Persistent]public bool noOrbitalContract = false;
-        [Persistent]public bool noLandingContract = false;
-        [Persistent]public bool noSatelliteContract = false;
-        [Persistent]public bool noRepairContract = false;
-        [Persistent]public bool noOrbitalPeriodContract = false;
-        [Persistent]public bool noHistoricContracts = false;
-        [Persistent]public bool noCivilianContracts = false;
+        [Persistent] public bool noOrbitalContract = false;
+        [Persistent] public bool noLandingContract = false;
+        [Persistent] public bool noSatelliteContract = false;
+        [Persistent] public bool noRepairContract = false;
+        [Persistent] public bool noOrbitalPeriodContract = false;
+        [Persistent] public bool noHistoricContracts = false;
+        [Persistent] public bool noCivilianContracts = false;
 
-        [Persistent]internal bool com_Sat_Start_Building = false;
-        [Persistent]internal double com_Sat_maxOrbP = 70000;
-        [Persistent]internal double com_Sat_minOrbP = 0;
-        [Persistent]internal string com_Sat_contractName = "Deliever COMSAT Satellite";
-        [Persistent]internal int com_Sat_bodyNumber = 1;
-        [Persistent]internal bool hardcoreOn = true;
-        
-        [Persistent]internal double savedroverLat = 0;
-        [Persistent]internal double savedroverlong = 0;
-        [Persistent]internal bool roverislanded = false;
-        [Persistent]internal string roversName = "Rover Name";
-        [Persistent]internal int roverBody = 6;
+        [Persistent] internal bool com_Sat_Start_Building = false;
+        [Persistent] internal double com_Sat_maxOrbP = 70000;
+        [Persistent] internal double com_Sat_minOrbP = 0;
+        [Persistent] internal string com_Sat_contractName = "Deliever COMSAT Satellite";
+        [Persistent] internal int com_Sat_bodyNumber = 1;
+        [Persistent] internal bool hardcoreOn = true;
+
+        [Persistent] internal double savedroverLat = 0;
+        [Persistent] internal double savedroverlong = 0;
+        [Persistent] internal bool roverislanded = false;
+        [Persistent] internal string roversName = "Rover Name";
+        [Persistent] internal int roverBody = 6;
 
         [Persistent] internal string satConDescript = "Place Contract Description Here";
         [Persistent] internal string ResourceTransferConDescript = "Place Contract Description Here";
@@ -1299,8 +1311,8 @@ namespace MissionControllerEC
         public override void OnDecodeFromConfigNode()
         {
             SaveInfo.SatelliteConDesc = satConDescript;
-            SaveInfo.ResourceTransferConDesc = ResourceTransferConDescript;                 
-            SaveInfo.SatContractReady = ComSatOn;          
+            SaveInfo.ResourceTransferConDesc = ResourceTransferConDescript;
+            SaveInfo.SatContractReady = ComSatOn;
             SaveInfo.ComSateContractOn = com_Sat_Start_Building;
             SaveInfo.comSatmaxOrbital = com_Sat_maxOrbP;
             SaveInfo.comSatminOrbital = com_Sat_minOrbP;
@@ -1317,7 +1329,7 @@ namespace MissionControllerEC
             SaveInfo.TransferCrewDesc = transfercrewDesc;
             SaveInfo.transferTouristTrue = crewCiviliansOn;
             SaveInfo.transferTouristAmount = transferTouristAmount;
-           
+
             SaveInfo.SupplyVesName = supplyVesselName;
             SaveInfo.SupplyVesId = supplyVesselId;
             SaveInfo.ResourceName = supplyResource;
@@ -1334,19 +1346,19 @@ namespace MissionControllerEC
             SaveInfo.OrbitLandingOn = OrbitLandingOn;
             SaveInfo.OrbitAllowCivs = OrbitCiviliansOn;
             SaveInfo.LandingOrbitCivilians = LandingOrbitCivilians;
-                     
+
             SaveInfo.SavedRoverLat = savedroverLat;
             SaveInfo.savedRoverLong = savedroverlong;
             SaveInfo.RoverLanded = roverislanded;
             SaveInfo.RoverName = roversName;
-            SaveInfo.RoverBody = roverBody;                
+            SaveInfo.RoverBody = roverBody;
         }
 
         public override void OnEncodeToConfigNode()
         {
             satConDescript = SaveInfo.SatelliteConDesc;
-            ResourceTransferConDescript = SaveInfo.ResourceTransferConDesc;              
-            ComSatOn = SaveInfo.SatContractReady;            
+            ResourceTransferConDescript = SaveInfo.ResourceTransferConDesc;
+            ComSatOn = SaveInfo.SatContractReady;
 
             com_Sat_Start_Building = SaveInfo.ComSateContractOn;
             com_Sat_maxOrbP = SaveInfo.comSatmaxOrbital;
@@ -1364,7 +1376,7 @@ namespace MissionControllerEC
             crewCiviliansOn = SaveInfo.transferTouristTrue;
             transfercrewDesc = SaveInfo.TransferCrewDesc;
             transferTouristAmount = SaveInfo.transferTouristAmount;
-           
+
 
             supplyVesselName = SaveInfo.SupplyVesName;
             supplyVesselId = SaveInfo.SupplyVesId;
@@ -1388,9 +1400,9 @@ namespace MissionControllerEC
             savedroverlong = SaveInfo.savedRoverLong;
             roverislanded = SaveInfo.RoverLanded;
             roversName = SaveInfo.RoverName;
-            roverBody = SaveInfo.RoverBody;            
+            roverBody = SaveInfo.RoverBody;
         }
-    
+
 
     }
 }
