@@ -81,11 +81,11 @@ namespace MissionControllerEC.MCEParameters
             if (vessel.isActiveVessel)
             {
                 int currentcrew = FlightGlobals.ActiveVessel.GetCrewCount();
-                //Debug.LogError("Current crew is " + currentcrew + " crew can't be over " + crewCount);
+                //Log.Error("Current crew is " + currentcrew + " crew can't be over " + crewCount);
                 if (currentcrew >= crewCount && currentcrew != 0)
                 {
                     base.SetComplete();
-                    //Debug.Log("Passed Crew Check");
+                    //Log.Info("Passed Crew Check");
                 }
                 else { }
                 if (crewCount == 0 && currentcrew == 0 )

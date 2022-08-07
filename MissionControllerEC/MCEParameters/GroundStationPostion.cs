@@ -4,6 +4,7 @@ using Contracts;
 using KSP;
 using KSPAchievements;
 using KSP.Localization;
+using static MissionControllerEC.RegisterToolbar;
 
 namespace MissionControllerEC.MCEParameters
 {
@@ -36,7 +37,7 @@ namespace MissionControllerEC.MCEParameters
             this.longitude = longitudeValue;
             this.latitude = latitudeValue;
             this.frequency = coreFreq;
-            //Debug.LogError("frequency is now set to " + frequency + " from " + coreFreq);
+            //Log.Error("frequency is now set to " + frequency + " from " + coreFreq);
             this.PolarRegionLock = polarLock;
             wp = new FinePrint.Waypoint();
         }
@@ -122,7 +123,7 @@ namespace MissionControllerEC.MCEParameters
                             {
                                 base.SetComplete();
                                 MCESatelliteCore.GroundStationLockedText = "Locked";
-                                //Debug.Log("SetComplete Logitude is " + longitude + " Latitude is " + latitude);
+                                //Log.Info("SetComplete Logitude is " + longitude + " Latitude is " + latitude);
                             }
                             else { MCESatelliteCore.GroundStationLockedText = "NoLock"; }
                         }
@@ -150,20 +151,20 @@ namespace MissionControllerEC.MCEParameters
             }
             else
             {
-                //Debug.Log("Event fired for OnSatelliteChanged! In GroundStation Parameter");
+                //Log.Info("Event fired for OnSatelliteChanged! In GroundStation Parameter");
             }
         }
 
         public GroundStationPostion(float a)
         {
             SetGroundStationCheck(a);
-            //Debug.Log("GroundStation Event Fired with float " + a);
+            //Log.Info("GroundStation Event Fired with float " + a);
         }
         public void SetGroundStationCheck(float Freq)
         {
             checkFrequency = Freq;
             OnSatelliteChanged();
-            //Debug.Log("GroundStation Frequency set to " + checkFrequency);
+            //Log.Info("GroundStation Frequency set to " + checkFrequency);
         }
         private void FlightReady()
         {
@@ -181,7 +182,7 @@ namespace MissionControllerEC.MCEParameters
             Vector3 groundStationUpVec = (groundStation - v.mainBody.position);
             Vector3 groundToVesselVec = (v.rootPart.transform.position - groundStation);
             float angle = Vector3.Angle(groundToVesselVec, groundStationUpVec);
-            //Debug.Log("MCE GroundStation Angle: " + angle + " Vessel Height is: " + v.heightFromSurface);
+            //Log.Info("MCE GroundStation Angle: " + angle + " Vessel Height is: " + v.heightFromSurface);
             return angle;          
         }
         
@@ -213,11 +214,11 @@ namespace MissionControllerEC.MCEParameters
                 }
                 catch (ArgumentOutOfRangeException r)
                 {
-                    Debug.LogError(r.Message + " " + r.Source);
+                    Log.Error(r.Message + " " + r.Source);
                 }
                 catch (Exception e)
                 {
-                    Debug.LogError(e.Message + " " + e.Source);
+                    Log.Error(e.Message + " " + e.Source);
                 }
             }
             if (HighLogic.LoadedScene == GameScenes.TRACKSTATION)
@@ -243,11 +244,11 @@ namespace MissionControllerEC.MCEParameters
                         }
                         catch (ArgumentOutOfRangeException r)
                         {
-                            Debug.LogError(r.Message + " " + r.Source);
+                            Log.Error(r.Message + " " + r.Source);
                         }
                         catch (Exception e)
                         {
-                            Debug.LogError(e.Message + " " + e.Source);
+                            Log.Error(e.Message + " " + e.Source);
                         }
                     }
                     else { }
@@ -433,11 +434,11 @@ namespace MissionControllerEC.MCEParameters
                 }
                 catch (ArgumentOutOfRangeException r)
                 {
-                    Debug.LogError(r.Message + " " + r.Source);
+                    Log.Error(r.Message + " " + r.Source);
                 }
                 catch (Exception e)
                 {
-                    Debug.LogError(e.Message + " " + e.Source);
+                    Log.Error(e.Message + " " + e.Source);
                 }
             }
             if (HighLogic.LoadedScene == GameScenes.TRACKSTATION)
@@ -463,11 +464,11 @@ namespace MissionControllerEC.MCEParameters
                         }
                         catch (ArgumentOutOfRangeException r)
                         {
-                            Debug.LogError(r.Message + " " + r.Source);
+                            Log.Error(r.Message + " " + r.Source);
                         }
                         catch (Exception e)
                         {
-                            Debug.LogError(e.Message + " " + e.Source);
+                            Log.Error(e.Message + " " + e.Source);
                         }
                     }
                     else { }
@@ -637,11 +638,11 @@ namespace MissionControllerEC.MCEParameters
                 }
                 catch (ArgumentOutOfRangeException r)
                 {
-                    Debug.LogError(r.Message + " " + r.Source);
+                    Log.Error(r.Message + " " + r.Source);
                 }
                 catch (Exception e)
                 {
-                    Debug.LogError(e.Message + " " + e.Source);
+                    Log.Error(e.Message + " " + e.Source);
                 }
             }
             if (HighLogic.LoadedScene == GameScenes.TRACKSTATION)
@@ -667,11 +668,11 @@ namespace MissionControllerEC.MCEParameters
                         }
                         catch (ArgumentOutOfRangeException r)
                         {
-                            Debug.LogError(r.Message + " " + r.Source);
+                            Log.Error(r.Message + " " + r.Source);
                         }
                         catch (Exception e)
                         {
-                            Debug.LogError(e.Message + " " + e.Source);
+                            Log.Error(e.Message + " " + e.Source);
                         }
                     }
                     else { }

@@ -12,7 +12,246 @@
 	Removed all references to SeedGenerator since it wasn't used anywhere
 	Disabled the _random in the Tools.cs
 	Replaced the one reference to _random with SafeInfo.rnd
-	Fixed spelling of Satellie  to Satellite in Debug.Log statements
+	Fixed spelling of Satellie  to Satellite in Log.Info statements
 	Fixed spelling of OnDestroye to OnDestroy in MissionControllerEC
 	Removed old paragraph from README.md regarding 64 bit KSP
 	Disabled the MCEDebugMode in the Settings page, since it wasn't being used anywhere
+
+	Replaced all "Debug." statements with the equivilent "Log." from SpaceTuxLibrary to reduce noise in the log
+	Modified BodySelection.cs to use the ClickThroughBlocker
+	Replaced code to add and remove the stock toolbar buttons with the ToolbarController
+	Added local build scripts
+	Added pre/post build actions to build the assembly info and to run the deploy script
+	Added InstallChecker
+	Added AssemblyVersion.tt
+	Reorganized release directory
+		Moved data into PluginData
+		Moved toolbar images into PluginData
+		Moved DLL into Plugins
+		Modified code to load files correctly
+
+
+Original Mod Changelog
+Mission Controller 3.1.3.0
+
+1. Fixed an Issue with Frequencies not updated in flight, without reloading flight scene.
+2. Changed Satellite Contracts to completely use Default KSP Orbits + Orbit checks.. This results in much more variety and accuracy in readings. Also, should make all satellite contracts 100% fool proof in Types of orbits. Meaning 100% compatible with any type of mod planets or Increased size of the game world.
+3. Added the ability for all satellite contracts to have a % chance to be launched to another Body other than Kerbin.  You must first visit other Planetary bodies (IE Discover) before contracts will be able to be sent.. IE Mun,Minmus,Duna etc.  Only Kerbin based Contracts will have ground stations though.  
+2. Changed Orbital Research Orbits same as satellite. Same reason.
+3. All these changes has made the average Orbital Height much higher for all missions. Making them a little more difficult. Increased payout of Contracts to compensate for this.
+4. Added new ModuleManger .cfg patch file that was made by KnotaiG.  Now all probes including modded ones will have MCESatelliteCore added to them. Allowing
+all of them to be used as MCE Probes.
+
+Mission Controller 3.1.2.0
+1. Added ability to change Probe MCE settings in flight.  Its strange but only easy fix I could find to allow other mods like Hangar mod + Extra-planetary launch pads to be able to launch MCE probes.  The probe can only still be used once though.. So once you transmit you contract settings, the probe settings is no longer under your control.
+2. Up the Contract Payout multiplier from 3X to a max of 10X.  This should allow for better payouts for larger type worlds with bigger planets.  For instance a Navigation contract at KSP default size at 10X low orbits now pay about 600K.. So should be enough to compensate.
+3. Fixed Revert cost not showing.  At some point I did a quick fix on this that I forgot about that disabled it.  So now revert cost again are % of total ship cost + fuel.  you can set the Multiplier for this in In game settings.. Default is 10% of cost of the vessel to Revert.
+4. Fixed Issues with Repair Contract Payouts. They should be much better payouts at higher orbits now.
+
+Mission Controller 3.1.1.0
+
+1. Added First Stages of A Manual To KSP you can find it in the Mission Controller Folder called "Mission Controller Manual"  This is first stage of maybe adding
+in game manual.  If someone wants to help with this it be great!  Added Directions for How To Do Mission Controller Satellite Contracts, How To Change Module + Satellie + Frequencies in VAB for Satellite Contracts and how to Finish Mission Controller Satellite Contracts in Game!  More to come soon.
+
+2. Redid the UI for Changing Module Types, Satellite Types when Doing Mission Controller Satellite Contracts.  Much easier now to select and read what your chaning when selecting Satellite Types and Module Type in the VAB when Setting up for these types of contracts!  Module and Satellite types are now Push Buttons when you right click on any Non Manned Probes.  All probes are in vanilla game are Populated with Mission Controller Modules using Module Manager.  You can add your own Modded probes via Module Manage by using the "MCESatelliteCore".  Example located in MCEProbePatch.cfg in Parts Menu of Mission Controller.
+
+Mission Controller 3.1
+1. Update for KSP 1.10
+
+Mission Controller 3.0  Finance Missions Update (Custom Contracts)
+
+KSP 1.8 Update For Mission Controller.
+1. No longer have Historical Missions in this version of Mission Controller.
+2. Custom Contracts have been renamed to Finance Contracts.  Use these to have companies finance your own Missions.. Want to build a station on Mun?  Well fill out the contract for Building stations, and send it to the companies to Bid on.. Someone will offer you a contract soon for your Mission!
+3. Added new Finance Contracts (work in progress, will add more)
+4. Did a lot of work on Satellite contracts.  And SVM20 helped me fix the random altitude for all planets, including modded ones and modded universes like RSS etc..  So hopefully no more contracts that hit the atmoshpere of planets!
+5. Work on the UI and got rid of old refrences to code that does not exist anymore.  Including the Older Historical Missions.
+6. Reworked the Research Contracts for Orbit Scanning and Lander Scanning.
+7. Repair Contract Reworked to actaully show up again. (seems this one has to be fixed all the time).  Using KSP randomness now for this mission instead of custom code.
+8. Updated code for KSP 8.0 Using NetCode 4 etc, and all new refrences for Unity.
+
+This update is still a work in progress.. If you see any issues (and you will) please report them via either the Forum page (page me) or Github issues.  
+
+
+2.0.4.1
+1. Fixed spam for Core Freq change, and slowdown issue after accepting contract.
+
+2.0.4.0
+1. updated for KSP 1.6
+2. No longer have MCE core parts, the Default KSP Automated cores now have the Fuction built into them all.  All core parts depriciated.
+
+1.Recompiled for KSP 1.4 and 1.5.
+2.Updated MINI AVC with Linuxgurugamers newest version.
+https://forum.kerbalspaceprogram.com/index.php?/topic/173126-141-ksp-avc-add-on-version-checker-plugin-120-miniavc/
+
+Version 2.0.1 Released.
+
+1. Removed Orbit helper from Mission Controller.  This feature is available in other mods like Kerbal Engineer, and MechJeb.. No need for any more spam.
+2. Updated for KSP 1.4.2. 
+3. Fixed links in the AVC module for this forum page.
+
+Please note there is a bug in 1.4.2 thats adding Contract Spam.  This is not connected to Mission Controller or any other mod.  It happens it Vanilla too.  Please don't report these to me because your sending me on a wild goose chase I can't fix, nor have time for.. Thanks.
+
+
+You can download the new version from the front page.
+
+Mission Controller 2.0 In-Game Contract Builder Edition is ready!!
+1. Redid the Windows and options for Older custom contracts. Enjoy the new better to see UI.
+2. Added Civilians to some of the Custom Contracts.  Now bring civilians with you.  And yes they show up just like the stock game contracts.
+3. Rebalanced the mission payouts.  They now pay a little less.  But don't worry they still pretty good.  And to help the payouts the better your reputation the more you will get payed.
+4. Othter small bug fixes.
+5. Add back in AVC Version Checker for Version 2.0.
+
+Missio Controller 1.6.1 Update For KSP 1.4.1 (And Making History Expansion)
+1.ixed an issue where you would get strange Heights that were still within a planets atmosphere for Contracts in Modded worlds were the world is bigger 2.than Standard Kerbal. IE.. RSS, 10X Kerbin etc... Should be much better now.
+3.Fixed issue where MCE was not detecting Transmitters via RemoteTech changing default Coms.
+4.Fixed wording in the Custom Contract for Crew Numbers.
+5.Fixed issue with Custom Landing/Orbit contract window not coming up.
+6.Compiled For KSP 1.4.1 and Making History Expansion Pack.
+
+Mission Controller 1.5.0 Update.
+1. Fixed crash issue with KSP 1.3.1 update.
+
+Mission Controller 1.4.5 Update.
+1. Fixed a bug where MCE Buttons would not show up on New games, and sometimes older games. If this problem persist please report it to me ASAP.
+you might get duplicate buttons when you load up the New version. Once you do a scene transition IE from SpaceCenter to VAB this should correct itself.. And never come back.. If does Report please.
+
+Mission Controller 1.4.4.0 Update.
+1. New Gui Using the new Untity Assets and Kerbal Space Program PopupGui
+2. All settings are now located in KSP settings menu. (Intergrated)
+3. New Custom Contract Land and orbit. (This is first step towards a new type of custom contract)
+4. Repair Contracts no longer use MCE random.  You should get them more often now using KSP Contract weight system.
+5. Started the first stage of Localization.
+6. MCE Revert is back.  Use this revert for a non cheaty version that now cost you a % of your ship cost to use.  Can be turned off/On in settings.
+7. Other minor fixes to other Contracts.  I have also started converting MCE Contract Paramenters and contracts to using any new Default Paramenters that Mirror my old versions.  
+
+Mission Controller 1.4.1.0 Update.
+1. Fixed Research Core Science Not working.
+2. Fixed Weather Core Science Not working.
+
+Mission Controller 1.4.0.3 Update.
+
+1. updated for KSP 1.2.
+2. Changed out a good portion of the Satellite contracts to use the
+default KSP Orbit Goal, instead of the old MC2 AP and PE goals.
+Now you get KSP orbit in game Representation of orbits, just like the
+default Satellite contracts.
+3. The Communication Core has a 2nd role as Direct Communications link. Equal to the Communotron-16.
+4. The navigation Core has a 2nd role as a Relay Communications Link. Equal to the HG-5 Relay System.
+5. The Communication Core and Navigation core are now located in the Communications Tab.
+6. The Weather Core, Research Core, Mass Spectrometry Tube, Ionization Chamber are located in the Science Tab.
+7. The Repair Panel is still located in the Utility Tab.
+8. The weather Core can now do science, and give you science points.
+
+Version 1.3.7 For KSP 1.12
+1.Recompiled for KSP 1.12 with AVC Updated.
+2.Fixed an Apollo-Duna fail load on TargetBody4.
+3.Fixed KEOSync Orbits for Satellite network contract. Should have the right values now.
+4.Fixed Rover Waypoint Drive Contract showing up multiple times in contract list.
+
+
+version 1.3.6 For KSP 1.11
+1. Fixed issue with some more errors in Contract Save and Load configs.
+2. Fixed issue with lower res games having issues with GUI Screens. (hopefully).
+
+[b]Version 1.3.4 (KSP 1.1 Update)[/b]
+
+1.Fixed the issues with APA and PEA in most contracts I hope. 
+2.Only the Satellite Network Contracts have a set value for KEOSync orbits now.. All other contracts can have random values to help spice it up a little. 
+3.Messed a little with the randomness of Repair Contracts. 
+4.Worded some of the missions a little different. 
+5.MCE should work with RS and other Solar System modification mods that change the size of kerbin and other bodies.
+6.Adjusted some prices to make Contract Payouts a little less
+7. Increased Repair Contracts again.
+8. Fixed a few mission Description problems
+9. fixed a lot of possible NRE issues, especially at part load and MCE modules.
+11. .fixed an issue with Repair contracts and a possible NRE when the Check for Repair Part doesn't pass.
+12. .fixed issues Up to and including all Apollo Historic missions I could find. I still have more work to do on finding any issues with the later historic missions.
+13. .Searched for in code errors that have been around and trying to squash them. These don't cause many problems in game but might help reduce More NRE issues.
+14. Added new contract Land Rover, and Drive Rover.  This is a WIP project and might not work totally correctly yet.  But the mission has two parts, Land your rover on (Duna is only planet this release) specific waypoint.  The waypoint is represented in the Map view during the game.  You do have a small margin or error for the LZ.  But you have to be pretty close when landing the rover.  The next part is a 2nd contract that adds a new waypoint for you to drive your rover to.  This one is pretty self explanatory.  Again this contract is a WIP.  I have not had much time to test it out and any possible issues.  I will continue to work on it as I get time though.
+15. Added Mini AVC to Mission Controller to help control possible version conflicts.
+
+
+[B]version 1.26[/B] 
+Fixed issue where Repair Contracts not showing. Had to get rid of the ability to choose your own Chance percentage in config file.  This is a quick fix to get them to show up again until I can look into changing this later.
+
+[B]Version 1.25[/B]
+
+1. Fixed the Great potatoes Bug mystery.  Satellite contracts had a strange requirement for a Potato?  This was not an intentional feature.  What happened was that I have always used a default mission objective from default KSP contracts.  That is the satellite has Power and is new.. This was from the fineprint contracts that ship with the game now.  When 1.05 for KSP came out the contract. Parameters for fine print were MOVED to a new location and some renamed.  I found what I though was the new name for Satellite has power and is new.. But I guess it is not the case.  Sorry for lack of checking on that one, that part is my fault.
+
+2. I  raised the default error of margin for APA and PEA from 1000 to 5000.
+
+3. Shipped the up-to-date config file with new version.  The older version had an older config file.. Was not a big deal the config file rewrites itself if its not correct, but still rather have the right one for you can edit the config file before starting for the first time.
+
+
+[B]Version 1.24[/B]
+1.05 compatible changed a few things that made MC2 not work right in 1.05 of KSP.  All should be good now.
+
+[B]Version 1.22[/B]
+
+1.Fixed the Issue with Low and High Frequencies not being able to be selected.
+2.Added a Margin Of Error for Low and High APA values in config file.
+3.Added Payment Modifier in the Config File for contracts.
+4.Satellite Contracts should no longer have random parts for Mission Controller.
+
+[B]Version 1.2 Released[/B]
+1. Completely redid satellite contracts. Satellite contracts now require new parts! They are also very different and use Frequencies to communicate with ground stations to complete contracts. Most missions require KeoStation Orbit and to keep target ground stations in line of sight at all times.
+2. Single delivery Contract Missions.
+3. Network Contracts: Construct a 6 satellite network above kerbin. This is the big daddy contract of MCE. Pays well, but takes time and knowledge to complete.
+4. Lots of code clean up no more Kerbal Insurance. (out of scope for this mod now)
+5. Brand new Parts for satellite contracts. Communication Core, Navigation Core, Weather Core, and Research Core. Check the forum page for info on new contracts and how to complete them. In game explanation is also pretty thorough if you don't like to read. LOL.
+
+[B]Version 1.21 Released[/B]
+1. Fixed the duplication bug of Historical Contracts.  Only 1 should show up now in your contract list.
+
+[B]Version 1.12.3 [/B]
+
+1.  All part textures converted to DDS format.
+2. Fixed Apollo-Duna Orbital Mission Transmit Science from ground.  Suppose to be transmit science from Space.
+3. Fixed payout for Apollo-Duna Orbital Mission.  Was way to much.
+4. Fixed Apollo-Duna payout for Build Station.  Was way to much.
+5. Other small fixes forgot about.
+
+With this update make sure to delete your Old MissionControllerEC folder completely.  Or you will get duplicate part textures!  DDS and PNG.  Bad idea.
+[B]Version 1.12.2[/B]
+
+1. Removed the need for any future RSS config files. Mission Controller 2 will figure out the Orbits of all bodies on its own.. (I hope)
+2. Removed Civilian Contracts.
+3. Fixed Repair Contracts. The contracts no longer have SpareParts as requirement. (forgot to remove last time)
+4. Fixed Repair Contracts. The descriptions for the contracts now should read new method for Repairs.
+5. Did a small pass on some of the contract payouts. This might take awhile as I get a look at what contracts are paying and bring more changes.
+6. Removed some other legacy code no longer used.
+7. Added Supplies From USI Life support to the Custom Resupply Contract.
+
+ChangLog 1.12.1
+
+1. KSP 1.0 Version compatible.
+2. No more hire Cost (1.0 has it)
+3. Civilian Contracts Turned off (possibly removed next version since 1.0 has civ contracts)
+4. No more in editor Parts reader (1.0 has some sort of System)
+5. No more dependencies. (you only need mission controller now to run MC).
+6. Another Revamp of Repair Missions. No longer require SpareParts or any type of resource. All you need now is a Kerbal Engineer to fix satellites. Or stations.
+7. Added Apollo 17 (Minmus)
+8. Added new expanded Apollo Missions with 9 new single contracts covering the Set up and landing on Duna.
+9. Rewrote the Orbit Research and Landing Research Contracts to be more NASA Like.
+10-. The parts have had a overhall pass and renamed. They reflect Real World Early Tech found on early Probes. Orbital Research Is now Ionization Chamber and LanderResearch is Mass Spectrometry Tube. (will be save friendly transfer)
+11. Most other contracts that remain have been been made more Realistic in explanations.. Like historical missions.
+[B]Version 1.11.0 Mission Controller For .90.[/B]
+
+Please delete your whole MissionControllerEC folder before installing this update.
+
+1. Added 2 new Historic Contracts Covering the United States TIROS Program (Television Infrared Observation Satellite) (3 Contracts)
+  And the United States Mariner Program. Mariner 2 (Eve) Mariner 4 (Duna) Mariner 10 (Eve and Moho) and Renamed Mariner 11 and 12 (Voyager 1 To Jool System).
+2. Added the ability to Add your own resources to the Station supply Contracts.  These Resources can be changed or added in the config file. What it looks like.
+[CODE]
+SupplyResourceList
+	{
+		Item = LiquidFuel
+		Item = Oxidizer
+		Item = MonoPropellant
+		Item = XenonGas
+		Item = Food
+		Item = Water
+		Item = Oxygen
+		Item = Kibbal
+	}

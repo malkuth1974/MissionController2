@@ -10,6 +10,7 @@ using KSPAchievements;
 using MissionControllerEC.MCEParameters;
 using MissionControllerEC.PartModules;
 using KSP.Localization;
+using static MissionControllerEC.RegisterToolbar;
 
 namespace MissionControllerEC.MCEContracts
 {
@@ -42,13 +43,13 @@ namespace MissionControllerEC.MCEContracts
                             if (vs.vesselType == VesselType.Probe)
                             {
                                 repairvesselList.Add(new RepairVesselsList(vs.vesselName, vs.id.ToString(), vs.orbit.ApA, vs.mainBody.flightGlobalsIndex));
-                                Debug.Log("Added Vessel " + vs.name + " To repair list for selection.");
+                                Log.Info("Added Vessel " + vs.name + " To repair list for selection.");
                             }
                             else
-                            { /*Debug.Log("No satellites found with a Repair panel, Skiping satellite repair Contracts");*/ }
+                            { /*Log.Info("No satellites found with a Repair panel, Skiping satellite repair Contracts");*/ }
                         }
                         else
-                        { /*Debug.Log("Could not find any repair panels on vessel type satellites.  Make sure your placing repair panels on your satellites.");*/ }
+                        { /*Log.Info("Could not find any repair panels on vessel type satellites.  Make sure your placing repair panels on your satellites.");*/ }
                     }
                 }
             }
@@ -63,10 +64,10 @@ namespace MissionControllerEC.MCEContracts
                 {
                     originalName = vs.vesselName;
                     vs.vesselName = vs.vesselName.Replace(originalName, originalName + "(Repair)");
-                    Debug.Log("vessel original name is " + originalName + "new name " + vs.vesselName);
+                    Log.Info("vessel original name is " + originalName + "new name " + vs.vesselName);
                 }
                 else
-                    Debug.Log("Vessel ID does not match for repair contract");
+                    Log.Info("Vessel ID does not match for repair contract");
             }
         }
 
@@ -79,7 +80,7 @@ namespace MissionControllerEC.MCEContracts
                     vs.vesselName = vs.vesselName.Replace("(Repair)", "");
                 }
                 else
-                    Debug.Log("could not find vessel name to change back.  Have to manually change it back.  Possible when docked name can't be changed since vessel doesn't exist while docked");
+                    Log.Info("could not find vessel name to change back.  Have to manually change it back.  Possible when docked name can't be changed since vessel doesn't exist while docked");
             }
         }
 
@@ -96,7 +97,7 @@ namespace MissionControllerEC.MCEContracts
                 Debug.LogWarning("Random Repair Vessel Selected " + random.vesselName + "  " + random.vesselId + "  " + random.MaxApA);
                 NoVessel = true;
             }
-            else { Debug.LogError(" Vessel Selection Null for repair Contract, skipped process"); NoVessel = false; }
+            else { Log.Error(" Vessel Selection Null for repair Contract, skipped process"); NoVessel = false; }
         }
 
         public int totalContracts;
@@ -138,10 +139,10 @@ namespace MissionControllerEC.MCEContracts
             }
             totalContracts = ContractSystem.Instance.GetCurrentContracts<MCE_Repair_Goal>().Count();
             TotalFinished = ContractSystem.Instance.GetCompletedContracts<MCE_Repair_Goal>().Count();
-            //Debug.Log(" Repair Contract Totalcontracts " + totalContracts + " - " + " Total Finsihed " + TotalFinished);           
+            //Log.Info(" Repair Contract Totalcontracts " + totalContracts + " - " + " Total Finsihed " + TotalFinished);           
             if (totalContracts >= 1 || !HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings>().RepairContracts)
             {
-                //Debug.Log("contract is generated right now terminating Repair Vessel");
+                //Log.Info("contract is generated right now terminating Repair Vessel");
                 return false;
             }
             //if (SaveInfo.RepairContractGeneratedOn == false)
@@ -316,12 +317,12 @@ namespace MissionControllerEC.MCEContracts
                             }
                             else
                             {
-                                //Debug.Log("Could not find station with a repair panel, if you want these types of contracts place a repair panel anywhere on your station.");
+                                //Log.Info("Could not find station with a repair panel, if you want these types of contracts place a repair panel anywhere on your station.");
                             }
                         }
                         else
                         {
-                            //Debug.Log("Could not find station with a repair panel, if you want these types of contracts place a repair panel anywhere on your station.");
+                            //Log.Info("Could not find station with a repair panel, if you want these types of contracts place a repair panel anywhere on your station.");
                         }
                     }
                 }
@@ -341,7 +342,7 @@ namespace MissionControllerEC.MCEContracts
                 //Debug.LogWarning("Random Repair Orbital Station Selected " + random.vesselName + "  " + random.vesselId + "  " + random.MaxApA);
                 NoVessel = true;
             }
-            else { /*Debug.LogError(" Vessel Selection Null, skiped process"); NoVessel = false;*/ }
+            else { /*Log.Error(" Vessel Selection Null, skiped process"); NoVessel = false;*/ }
         }
 
         public int totalContracts;

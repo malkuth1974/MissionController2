@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using static MissionControllerEC.RegisterToolbar;
 
 namespace MissionControllerEC
 {
@@ -11,7 +12,7 @@ namespace MissionControllerEC
             range1 = Math.Abs(range1);
             range2 = Math.Abs(range2);
             int value = UnityEngine.Random.Range(range1, range2);
-            Debug.LogError("range 1 Is = " + range1 + ", Range 2 is = " + range2 + ", Total Value is = " + value);            
+            Log.Error("range 1 Is = " + range1 + ", Range 2 is = " + range2 + ", Total Value is = " + value);            
             return value;
         }
         public static float FloatRandomNumber(float range1, float range2)
@@ -26,7 +27,7 @@ namespace MissionControllerEC
             double NLatitude = BaseLatitude;
             int NegMaxDistance = 0 - MaxDistance;
             BaseLatitude = NLatitude + UnityEngine.Random.Range(MaxDistance, NegMaxDistance);
-            //Debug.Log("Base Latitude is: " + NLatitude + "New Value is: " + BaseLatitude);
+            //Log.Info("Base Latitude is: " + NLatitude + "New Value is: " + BaseLatitude);
             return BaseLatitude;
         }
        
@@ -147,7 +148,7 @@ namespace MissionControllerEC
                     newKerb.rosterStatus = ProtoCrewMember.RosterStatus.Available;
                     newKerb.ChangeName(name2);
                     TestCivs++;
-                    //Debug.Log("MCE Created Civilian " + newKerb.name + " " + newKerb.gender);
+                    //Log.Info("MCE Created Civilian " + newKerb.name + " " + newKerb.gender);
                 }
             }
 
@@ -167,7 +168,7 @@ namespace MissionControllerEC
                     newKerb.rosterStatus = ProtoCrewMember.RosterStatus.Available;
                     newKerb.ChangeName(name2);
                     TestCivs++;
-                    //Debug.Log("MCE Created Civilian " + newKerb.name + " " + newKerb.gender);
+                    //Log.Info("MCE Created Civilian " + newKerb.name + " " + newKerb.gender);
                 }
             }
 
@@ -182,7 +183,7 @@ namespace MissionControllerEC
             foreach (string name2 in SaveInfo.TourisNames)
             {
                 HighLogic.CurrentGame.CrewRoster.Remove(name2);
-                //Debug.Log("MCE Removed Civilian " + name2);
+                //Log.Info("MCE Removed Civilian " + name2);
             }
         }
         public static void CivilianGoHome2()
@@ -192,7 +193,7 @@ namespace MissionControllerEC
             foreach (string name2 in SaveInfo.TourisNames2)
             {               
                 HighLogic.CurrentGame.CrewRoster.Remove(name2);
-                //Debug.Log("MCE Removed Civilian " + name2);
+                //Log.Info("MCE Removed Civilian " + name2);
             }
         }
       
@@ -335,7 +336,7 @@ namespace MissionControllerEC
                 cb = FlightGlobals.Bodies[bodyID];
                 if (cb == null)
                     {
-                        //Debug.LogError("Celestrial Body is null from Node Load have to load Backup Value " + backupDefault);
+                        //Log.Error("Celestrial Body is null from Node Load have to load Backup Value " + backupDefault);
                         value = backupDefault;
                     }
                     else

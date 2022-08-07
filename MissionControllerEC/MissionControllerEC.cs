@@ -10,6 +10,9 @@ using System.Reflection;
 using KSP.UI.Screens;
 using System.IO;
 
+using ToolbarControl_NS;
+using static MissionControllerEC.RegisterToolbar;
+
 
 namespace MissionControllerEC
 {
@@ -83,10 +86,10 @@ namespace MissionControllerEC
             //The way I was doing this which does seem to work.  But DMagic's method makes much more sense.
             //AssetBundle prefabs = AssetBundle.LoadFromFile(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "mycoolui.ksp"));
             //DMagic's method without the .ksp file extension            
-            AssetBundle prefabs = AssetBundle.LoadFromFile(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "mceuipanels.dat"));
+            AssetBundle prefabs = AssetBundle.LoadFromFile(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "../PluginData/mceuipanels.dat"));
             panelPrefab = prefabs.LoadAsset("MCERepairPanel") as GameObject;
 
-            AssetBundle prefabs2 = AssetBundle.LoadFromFile(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "mcesatelliteui.dat"));
+            AssetBundle prefabs2 = AssetBundle.LoadFromFile(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "../PluginData/mcesatelliteui.dat"));
             panelPrefab2 = prefabs2.LoadAsset("MCESatelliteHub") as GameObject;
 
             ;
@@ -117,8 +120,12 @@ namespace MissionControllerEC
 
         private static Texture2D texture;
         private static Texture2D texture2;
-        internal static ApplicationLauncherButton MCEButton;
-        internal static ApplicationLauncherButton MCERevert;
+        //internal static ApplicationLauncherButton MCEButton;
+        //internal static ApplicationLauncherButton MCERevert;
+
+        internal static ToolbarControl toolbarControl_MCEButton;
+        internal static ToolbarControl toolbarControl_MCERevert;
+
         private int id = new System.Random().Next(int.MaxValue);
         public static bool RevertHalt = false;
         // Special thanks to Magico13 Of Kerbal Construction Time for showing me how to Get Scenario Persistance.
@@ -224,7 +231,7 @@ namespace MissionControllerEC
 
         void Start()
         {
-            Debug.Log("MissionControllerEC.Start()");
+            Log.Info("MissionControllerEC.Start()");
 
             if (HighLogic.CurrentGame == null)
                 return;
@@ -276,7 +283,7 @@ namespace MissionControllerEC
             //Debug.LogWarning("[MCE] Textrues called OnAwake");
             MceCreateButtons();
             //Debug.LogWarning("[MCE] Buttons called OnAwake");
-            Debug.Log("MCE MissionControllerEC Main Awake called");
+            Log.Info("MCE MissionControllerEC Main Awake called");
             //this creates a callback so that whenever the scene is changed we can destroy the UI
             GameEvents.onGameSceneSwitchRequested.Add(OnRepairSceneChange);
             GameEvents.onGameSceneSwitchRequested.Add(OnSatelliteSceneChange);
@@ -495,13 +502,13 @@ namespace MissionControllerEC
         }
         static void SattransmitButtonClicked()
         {
-            Debug.Log("Hey You Pressed Transmit!");
+            Log.Info("Hey You Pressed Transmit!");
             if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel.situation == Vessel.Situations.ORBITING)
             {
                 MCESatelliteCore.StartDataTransfer = true;
             }
             else
-            { ScreenMessages.PostScreenMessage("Not in flight Or Orbit", 10f); Debug.Log("You Pressed Transmit Not In Flight"); }
+            { ScreenMessages.PostScreenMessage("Not in flight Or Orbit", 10f); Log.Info("You Pressed Transmit Not In Flight"); }
         }
         static void RepExitButton2Clicked()
         {
@@ -575,13 +582,13 @@ namespace MissionControllerEC
             if (RepairUICanvas != null)
             {
                 RepSetConfig(RepairUICanvas.transform.position.x, RepairUICanvas.transform.position.y, "RepairUI");
-                Debug.Log("Saving RepairUI Position");
+                Log.Info("Saving RepairUI Position");
             }
 
             if (SatelliteUICanvas != null)
             {
                 SatSetConfig(SatelliteUICanvas.transform.position.x, SatelliteUICanvas.transform.position.y, "SatelliteUI");
-                Debug.Log("Saving SatelliteUI Position");
+                Log.Info("Saving SatelliteUI Position");
             }
         }
 
@@ -609,33 +616,36 @@ namespace MissionControllerEC
 #region Old GUI Code Working On Replacing
         void OnDestroy()
         {
-            Debug.Log("MissionControllerEC.OnDestroy");
+            Log.Info("MissionControllerEC.OnDestroy");
             if (Main_popup_dialog != null)
             {
                 SaveInfo.MainGUIWindowPos = new Vector2(
                 ((Screen.width / 2) + Main_popup_dialog.RTrf.position.x) / Screen.width,
                     ((Screen.height / 2) + Main_popup_dialog.RTrf.position.y) / Screen.height);
             }
+
+#if false
             if (MCEButton != null && HighLogic.LoadedScene != GameScenes.SPACECENTER)
             {
                 ApplicationLauncher.Instance.RemoveModApplication(MCEButton);
-                Debug.LogError("[MCE] Button OnDestroyed called");
+                Log.Error("[MCE] Button OnDestroyed called");
             }
             if (MCERevert != null && !HighLogic.LoadedSceneIsFlight)
             {
                 ApplicationLauncher.Instance.RemoveModApplication(MCERevert);
-                Debug.LogError("[MCE] Revert OnDestroyed called");
+                Log.Error("[MCE] Revert OnDestroyed called");
             }
+#endif
 
             GameEvents.Contract.onContractsLoaded.Remove(this.onContractLoaded);
             instance = null;
-            Debug.Log("MCE MissioniControllerEC Main OnDestroy Called");
+            Log.Info("MCE MissioniControllerEC Main OnDestroy Called");
 
             try
             {
                 Main_popup_dialog.Dismiss();
             }
-            catch { Debug.Log("MCE Main_Popup_dialog already loaded"); }
+            catch { Log.Info("MCE Main_Popup_dialog already loaded"); }
 
             Main_popup_dialog = null;
         }
@@ -700,7 +710,8 @@ namespace MissionControllerEC
             Main_Exit_button = new DialogGUIButton(Localizer.Format("Exit Finance Contract Builder"), delegate
             {
                 SaveInfo.GUIEnabled = false;
-                MCEButton.SetFalse();
+                //MCEButton.SetFalse();
+                toolbarControl_MCEButton.SetFalse();
                 onContractLoaded();
             }, delegate { return true; }, button_width, button_height, false, MCEGuiElements.ButtonMenuMainSyle);
 
@@ -739,14 +750,14 @@ namespace MissionControllerEC
         static ConfigNode RepGetConfig(string NodeText)
         {
             string CurrentNode = NodeText;
-            string filePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "MceGUILocation.dat");
+            string filePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "../PluginData/MceGUILocation.dat");
             ConfigNode result = ConfigNode.Load(filePath).GetNode(NodeText);
             return result;
         }
         static ConfigNode SatGetConfig(string NodeText)
         {
             string CurrentNode = NodeText;
-            string filePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "MceGUILocation2.dat");
+            string filePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "../PluginData/MceGUILocation2.dat");
             ConfigNode result = ConfigNode.Load(filePath).GetNode(NodeText);
             return result;
         }
@@ -754,7 +765,7 @@ namespace MissionControllerEC
         private static void RepSetConfig(float x, float y, string NodeText)
         {
             string CurrentNode = NodeText;
-            string filePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "MceGUILocation.dat");
+            string filePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "../PluginData/MceGUILocation.dat");
             ConfigNode thiscfg = new ConfigNode();
             var thisnode = thiscfg.AddNode(CurrentNode);
             thisnode.AddValue("x", x);
@@ -765,7 +776,7 @@ namespace MissionControllerEC
         private static void SatSetConfig(float x, float y, string NodeText)
         {
             string CurrentNode = NodeText;
-            string filePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "MceGUILocation2.dat");
+            string filePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "../PluginData/MceGUILocation2.dat");
             ConfigNode thiscfg = new ConfigNode();
             var thisnode = thiscfg.AddNode(CurrentNode);
             thisnode.AddValue("x", x);
@@ -845,9 +856,9 @@ namespace MissionControllerEC
             {
                 if (exp.ToString() == "Experience.Effects.RepairSkill")
                 {
-                    Debug.Log("Current kerbal is a Engineer you have passed");
+                    Log.Info("Current kerbal is a Engineer you have passed");
                     readyRep = true;
-                    Debug.LogError("Vessel Id For PartModule is " + vesselId + " Name is " + vesselName);
+                    Log.Error("Vessel Id For PartModule is " + vesselId + " Name is " + vesselName);
                     ScreenMessages.PostScreenMessage(Localizer.Format("#autoLOC_MissionController2_1000250"), 15f);          // #autoLOC_MissionController2_1000250 = Your engineer has Prepared the vessel for Repair Open the panel, Then conduct the repair
                     if (GameSlider2)
                         MissionControllerEC.RepairUpdateText("Purge Air System");
@@ -858,7 +869,7 @@ namespace MissionControllerEC
                 }
                 else
                 {
-                    Debug.Log("Current kerbal is NOT an Engineer you don't pass... Bad boy!");
+                    Log.Info("Current kerbal is NOT an Engineer you don't pass... Bad boy!");
                     ScreenMessages.PostScreenMessage(Localizer.Format("#autoLOC_MissionController2_1000251"), 15f);      // #autoLOC_MissionController2_1000251 = You need an Engineer to fix this Vessel!
                 }
             }
@@ -870,7 +881,7 @@ namespace MissionControllerEC
             if (readyRep && currentRepair > 0)
             {
                 repair = true;
-                Debug.Log("repairEnabled");
+                Log.Info("repairEnabled");
                 ScreenMessages.PostScreenMessage(Localizer.Format("#autoLOC_MissionController2_1000252"), 5f);		// #autoLOC_MissionController2_1000252 = Your engineer has repaired this vessel.  Good job!
                 readyRep = false;
                 MissionControllerEC.RepairUpdateText("Repair Complete!!");
@@ -882,10 +893,10 @@ namespace MissionControllerEC
         public void OpenDoor()
         {
             vesselId = this.part.vessel.id.ToString();
-            Debug.Log(vesselId.ToString());
+            Log.Info(vesselId.ToString());
             vesselName = this.part.vessel.name;
-            Debug.Log(vesselName.ToString());
-            Debug.Log("Vessel Name and ID Got Past This point");
+            Log.Info(vesselName.ToString());
+            Log.Info("Vessel Name and ID Got Past This point");
             Events["OpenDoor"].active = false;
             Events["EnableRepair"].active = true;
             Events["closeDoor"].active = true;
@@ -1034,7 +1045,7 @@ namespace MissionControllerEC
 
         private void PlaySatelliteCoreAnimation(int speed, float time)
         {
-            Debug.Log("Running animation for MCESatelliteCore");
+            Log.Info("Running animation for MCESatelliteCore");
             GetSatelliteCoreAnimation[animationName].speed = speed;
             GetSatelliteCoreAnimation[animationName].normalizedTime = time;
             GetSatelliteCoreAnimation.Play(animationName);

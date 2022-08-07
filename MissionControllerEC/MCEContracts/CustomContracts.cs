@@ -10,6 +10,7 @@ using System.Text;
 using KSPAchievements;
 using MissionControllerEC.MCEParameters;
 using KSP.Localization;
+using static MissionControllerEC.RegisterToolbar;
 
 namespace MissionControllerEC.MCEContracts
 {
@@ -305,7 +306,7 @@ namespace MissionControllerEC.MCEContracts
             targetBody = FlightGlobals.Bodies[SaveInfo.LandingOrbitIDX];
             if (targetBody == null)
             {
-                Debug.LogError("Could not find TargetBody for Custom Landing Orbit contract!!");
+                Log.Error("Could not find TargetBody for Custom Landing Orbit contract!!");
                 return false;
             }
 
@@ -679,7 +680,7 @@ namespace MissionControllerEC.MCEContracts
             targetBody = FlightGlobals.Bodies[SaveInfo.BuildSpaceStationIDX];
             if (targetBody == null)
             {
-                Debug.LogError("Could not find TargetBody for Build Station contract!!");
+                Log.Error("Could not find TargetBody for Build Station contract!!");
                 return false;
             }
 

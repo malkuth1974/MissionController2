@@ -7,9 +7,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MissionControllerEC", "Miss
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{95DD9367-F930-4CE2-888F-DCFEA6E50F16}"
 	ProjectSection(SolutionItems) = preProject
+		buildRelease.bat = buildRelease.bat
 		ChangeLog.txt = ChangeLog.txt
+		deploy.bat = deploy.bat
+		jenkins.txt = jenkins.txt
 		LICENSE.md = LICENSE.md
 		MCECopyrights.txt = MCECopyrights.txt
+		MissionController3.0.version = MissionController3.0.version
 		README.md = README.md
 		TestVersionReadMe.md = TestVersionReadMe.md
 	EndProjectSection

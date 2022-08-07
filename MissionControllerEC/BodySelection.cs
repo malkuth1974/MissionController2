@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+using ClickThroughFix;
+
 namespace MissionControllerEC
 {
     internal class BodySelection:MonoBehaviour
@@ -77,8 +79,6 @@ namespace MissionControllerEC
         static Vector2 sitesScrollPosition;
         static BodyTypeFilter  filter = BodyTypeFilter.ALL;
 
-        GUIStyle buttonLeft;
-        bool initted = false;
 
         const string indent = "     ";
         void Start()
@@ -90,14 +90,7 @@ namespace MissionControllerEC
 
         void OnGUI()
         {
-            GUI.skin = HighLogic.Skin;
-            if (!initted)
-            {
-                initted = true;
-                buttonLeft = new GUIStyle(GUI.skin.button);
-                buttonLeft.alignment = TextAnchor.MiddleLeft;
-            }
-            win = GUILayout.Window(activeWinID, win, BodySelectionWin, "Body Selection"); //, LifeSupportDisplay.layoutOptions);
+            win = ClickThruBlocker.GUILayoutWindow(activeWinID, win, BodySelectionWin, "Body Selection"); //, LifeSupportDisplay.layoutOptions);
         }
 
         void BodySelectionWin(int id)
@@ -138,7 +131,7 @@ namespace MissionControllerEC
                             CelestialBody parent = b.orbit != null && b.orbit.referenceBody != null ? b.orbit.referenceBody : null;
                             if (parent != null && parent.isStar)
                             {
-                                if (GUILayout.Button(indent + b.bodyName, buttonLeft))
+                                if (GUILayout.Button(indent + b.bodyName, RegisterToolbar.buttonLeft))
                                 {
                                     selectedBody = b;
                                     SetSelectedbody(selectedBody);
@@ -146,7 +139,7 @@ namespace MissionControllerEC
                             }
                             else
                             {
-                                if (GUILayout.Button(indent + "   |--> " + b.bodyName, buttonLeft))
+                                if (GUILayout.Button(indent + "   |--> " + b.bodyName, RegisterToolbar.buttonLeft))
                                 {
                                     selectedBody = b;
                                     SetSelectedbody(selectedBody);
@@ -155,7 +148,7 @@ namespace MissionControllerEC
                         }
                         else
                         {
-                            if (GUILayout.Button(indent + b.bodyName, buttonLeft))
+                            if (GUILayout.Button(indent + b.bodyName, RegisterToolbar.buttonLeft))
                             {
                                 selectedBody = b;
                                 SetSelectedbody(selectedBody);

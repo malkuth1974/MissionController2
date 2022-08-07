@@ -1,0 +1,28 @@
+Mission Controller 3.1.3.0
+
+1. Fixed an Issue with Frequencies not updated in flight, without reloading flight scene.
+2. Changed Satellite Conracts to completely use Default KSP Orbits + Orbit checks.. This results in much more variety and accuracy in readings. Also, should make all satellite contracts 100% fool proof in Types of orbits. Meaning 100% compatible with any type of mod planets or Increased size of the game world.
+2. Changed Orbital Research Orbits same as satellite. Same reason.
+3. All these changes has made the average Orital Height much higher for all missions. Making them a little more difficult. Increased payout of Contracts to compensate for this.
+4. Added new ModuleManger .cfg patch file that was made by KnotaiG.  Now all probes including modded ones will have MCESatelliteCore added to them. Allowing
+all of them to be used as MCE Probes.
+
+
+Mission Controller 3.1.2.0
+1. Added ability to change Probe MCE settings in flight.  Its strange but only easy fix I could find to allow other mods like Hangar mod + Extraplanetary launch pads to be able to launch MCE probes.  The probe can only still be used once though.. So once you transmit you contract settings, the probe settings is no longer under your control.
+2. Up the Contract Payout muliplier from 3X to a max of 10X.  This should allow for better payouts for larger type worlds with bigger planets.  For instance a Navigation contract at KSP default size at 10X low orbits now pay about 600K.. So should be enough to compensate.
+3. Fixed Revert cost not showing.  At some point I did a quick fix on this that I forgot about that disabled it.  So now revert cost again are % of total ship cost + fuel.  you can set the Multipier for this in In game settings.. Default is 10% of cost of the vessel to Revert.
+
+Mission Controller 3.1.1.0
+
+1. Added First Stages of A Manual To KSP you can find it in the Mission Controller Folder called "Mission Controller Manual"  This is first stage of maybe adding
+in game manual.  If someone wants to help with this it be great!  Added Directions for How To Do Mission Controller Satellite Contracts, How To Change Module + Satellie + Frequencies in VAB for Satellite Contracts and how to Finish Mission Controller Satellite Contracts in Game!  More to come soon.
+
+2. Redid the UI for Changing Module Types, Satellite Types when Doing Mission Controller Satellite Contracts.  Much easier now to select and read what your chaning when selecting Satellite Types and Module Type in the VAB when Setting up for these types of contracts!  Module and Satellite types are now Push Buttons when you right click on any Non Manned Probes.  All probes are in vanilla game are Populated with Mission Controller Modules using Module Manager.  You can add your own Modded probes via Module Manage by using the "MCESatelliteCore".  Example located in MCEProbePatch.cfg in Parts Menu of Mission Controller.
+
+Mission Controller 3.1
+
+Updated For KSP 1.10.
+
+Changes:
+1. Bug fixes etc.
