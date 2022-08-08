@@ -25,7 +25,7 @@ rem README is the readme file
 
 set GAMEDIR=Missioncontroller
 set GAMEDATA="GameData\"
-set VERSIONFILE=%GAMEDIR%.version
+set VERSIONFILE=%GAMEDIR%3.0.version
 set LICENSE=LICENSE.md
 set README=README.md
 

@@ -118,11 +118,13 @@ namespace MissionControllerEC
         private static Vector2 Satellitedragstart;
         private static Vector2 Satellitealtstart;
 
+#if false
         private static Texture2D texture;
         private static Texture2D texture2;
-        //internal static ApplicationLauncherButton MCEButton;
-        //internal static ApplicationLauncherButton MCERevert;
 
+        internal static ApplicationLauncherButton MCEButton;
+        internal static ApplicationLauncherButton MCERevert;
+#endif
         internal static ToolbarControl toolbarControl_MCEButton;
         internal static ToolbarControl toolbarControl_MCERevert;
 
@@ -212,8 +214,8 @@ namespace MissionControllerEC
         private static DialogGUIBase Custom_Contract_Input2;
 
         Settings settings = new Settings("Config.cfg");
-        #endregion
-        #region Start/Awake/Instance Stuff
+#endregion
+#region Start/Awake/Instance Stuff
         public static MissionControllerEC Instance
         {
             get
@@ -279,7 +281,7 @@ namespace MissionControllerEC
                 return;
             Main_popup_dialog = PopupDialog.SpawnPopupDialog(Mainmulti_dialog, true, HighLogic.UISkin, false, "");
             Hide();
-            loadTextures();
+            //loadTextures();
             //Debug.LogWarning("[MCE] Textrues called OnAwake");
             MceCreateButtons();
             //Debug.LogWarning("[MCE] Buttons called OnAwake");

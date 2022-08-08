@@ -39,7 +39,8 @@ namespace MissionControllerEC
 
         Tools.MC2RandomWieghtSystem.Item<int>[] RandomSatelliteContractsCheck;
         #endregion
-        #region Textures Main Buttons Handling
+#region Textures Main Buttons Handling
+#if false
         public void loadTextures()
         {
             if (texture == null)
@@ -57,6 +58,7 @@ namespace MissionControllerEC
             else { /*Log.Info("MCE Textures Already Loaded"); */}
            
         }
+#endif
 
         public void loadFiles()
         {           
