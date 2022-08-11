@@ -84,5 +84,7 @@ namespace MissionControllerEC
 
         public static Dictionary<int, string> CustOrbLnd =
             new Dictionary<int, string>();
-    }   
+
+        public static System.Random rnd = new System.Random();
+    }
 }

@@ -4,6 +4,7 @@ using Contracts;
 using KSP;
 using KSPAchievements;
 using KSP.Localization;
+using static MissionControllerEC.RegisterToolbar;
 
 namespace MissionControllerEC.MCEParameters
 {
@@ -92,16 +93,16 @@ namespace MissionControllerEC.MCEParameters
             if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel)
             {
 
-                Debug.LogError("Does: " + targetDockingID + " = " + action.from.vessel.id.ToString());
-                Debug.LogError("Or Does: " + targetDockingID + " = " + action.to.vessel.id.ToString());
-                Debug.LogError("Does: " + targetDockingName + " = " + action.from.vessel.vesselName);
-                Debug.LogError("Or Does: " + targetDockingName + " = " + action.to.vessel.vesselName);
+                Log.Error("Does: " + targetDockingID + " = " + action.from.vessel.id.ToString());
+                Log.Error("Or Does: " + targetDockingID + " = " + action.to.vessel.id.ToString());
+                Log.Error("Does: " + targetDockingName + " = " + action.from.vessel.vesselName);
+                Log.Error("Or Does: " + targetDockingName + " = " + action.to.vessel.vesselName);
                 
-                Debug.LogError("Docked FROM: " + action.from.vessel.vesselName);
-                Debug.LogError("Docked TO: " + action.to.vessel.vesselName);
+                Log.Error("Docked FROM: " + action.from.vessel.vesselName);
+                Log.Error("Docked TO: " + action.to.vessel.vesselName);
                               
-                Debug.LogError("Docked FROM ID: " + action.from.vessel.id.ToString());
-                Debug.LogError("Docked TO ID: " + action.to.vessel.id.ToString());
+                Log.Error("Docked FROM ID: " + action.from.vessel.id.ToString());
+                Log.Error("Docked TO ID: " + action.to.vessel.id.ToString());
 
                 if (targetDockingID == action.from.vessel.id.ToString() || targetDockingID == action.to.vessel.id.ToString() || targetDockingName == action.from.vessel.vesselName || targetDockingName == action.to.vessel.vesselName)
                 {

@@ -5,6 +5,7 @@ using KSP;
 using KSPAchievements;
 using MissionControllerEC.PartModules;
 using KSP.Localization;
+using static MissionControllerEC.RegisterToolbar;
 
 namespace MissionControllerEC.MCEParameters
 {
@@ -229,7 +230,7 @@ namespace MissionControllerEC.MCEParameters
             {
                 SavedOriginalID = ShipVesselID;
             }
-            //Debug.LogError("Does ID's Match? " + ShipVesselID+ " and " + RepairPanel.vesselId + " Backup " + SavedOriginalID);
+            //Log.Error("Does ID's Match? " + ShipVesselID+ " and " + RepairPanel.vesselId + " Backup " + SavedOriginalID);
             if (ShipVesselID == RepairPanel.vesselId || SavedOriginalID == RepairPanel.vesselId)
             {
                 if (RepairPanel.repair)
@@ -245,21 +246,21 @@ namespace MissionControllerEC.MCEParameters
         {
             if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel)
             {
-                Debug.LogError("Docked FROM: " + action.from.vessel.vesselName);
-                Debug.LogError("Docked TO: " + action.to.vessel.vesselName);
+                Log.Error("Docked FROM: " + action.from.vessel.vesselName);
+                Log.Error("Docked TO: " + action.to.vessel.vesselName);
 
-                Debug.LogError("Docked TO Type Vessel: " + action.to.vessel.vesselType);
+                Log.Error("Docked TO Type Vessel: " + action.to.vessel.vesselType);
 
-                Debug.LogError("Docked FROM ID: " + action.from.vessel.id.ToString());
-                Debug.LogError("Docked TO ID: " + action.to.vessel.id.ToString());
+                Log.Error("Docked FROM ID: " + action.from.vessel.id.ToString());
+                Log.Error("Docked TO ID: " + action.to.vessel.id.ToString());
 
                 if (action.from.vessel.id.ToString() == ShipVesselID || action.to.vessel.id.ToString() == ShipVesselID)
                 {
-                    Debug.Log("saved vessel Id Changed to new docking ID for vessel " + ShipName);
+                    Log.Info("saved vessel Id Changed to new docking ID for vessel " + ShipName);
                     ShipVesselID = action.from.vessel.id.ToString();
                     SavedOriginalID = action.to.vessel.id.ToString();
                 }
-                else Debug.Log("Docked to vessel was not repair vessel, no ID change needed");
+                else Log.Info("Docked to vessel was not repair vessel, no ID change needed");
             }
             else { }
         }
@@ -356,16 +357,16 @@ namespace MissionControllerEC.MCEParameters
         {
             if (SatelliteCalled == true)
             {
-                Debug.Log("Satellite Called Checking If satellite has modules");
+                Log.Info("Satellite Called Checking If satellite has modules");
                 if (testSatType == satType)
                 {
-                    Debug.Log("Satellite Type matches " + satType);
+                    Log.Info("Satellite Type matches " + satType);
                     if (testModuleType == Moduletype)
                     {
-                        Debug.Log("Satellite Module Matches " + Moduletype);
+                        Log.Info("Satellite Module Matches " + Moduletype);
                         if (testFreq == frequency)
                         {
-                            Debug.Log("Satellite Frequency matches " + frequency);
+                            Log.Info("Satellite Frequency matches " + frequency);
                             base.SetComplete();
                             SatelliteCalled = false;
                             APReady = true;
@@ -373,17 +374,17 @@ namespace MissionControllerEC.MCEParameters
                         }
                         else 
                         {
-                            Debug.Log("Satellite Frequency Failed " + frequency); 
+                            Log.Info("Satellite Frequency Failed " + frequency); 
                         }
                     }
                     else 
                     {
-                        Debug.Log("Satellite Module Failed " + Moduletype); 
+                        Log.Info("Satellite Module Failed " + Moduletype); 
                     }
                 }
                 else 
                 {
-                    Debug.Log("Satellite Type Failed " + satType);
+                    Log.Info("Satellite Type Failed " + satType);
                 }
             }
             else
@@ -399,7 +400,7 @@ namespace MissionControllerEC.MCEParameters
             }
             else
             {
-                //Debug.Log("Event fired for OnBoolCharged! In SatelliteCoreCheck Parameter");
+                //Log.Info("Event fired for OnBoolCharged! In SatelliteCoreCheck Parameter");
             }
         }
         protected virtual void OnSatelliteChanged()
@@ -410,18 +411,18 @@ namespace MissionControllerEC.MCEParameters
             }
             else
             {
-                //Debug.Log("Event fired for OnSatelliteChanged! In SatelliteCoreCheck Parameter");
+                //Log.Info("Event fired for OnSatelliteChanged! In SatelliteCoreCheck Parameter");
             }
         }
 
         public satelliteCoreCheck(bool n) 
         {
-            //Debug.Log("EventTest Fired with Bool Value " + n + " In SatelliteCoreCheck Parameter");
+            //Log.Info("EventTest Fired with Bool Value " + n + " In SatelliteCoreCheck Parameter");
             SetBoolSatelliteCoreValue(n);
         }        
         public satelliteCoreCheck(string a, float b, float c)
         {
-            //Debug.Log("EventTest Fired with string " + a + "Float " + b + "float " + c + "In SatelliteCoreCheck Parameter");
+            //Log.Info("EventTest Fired with string " + a + "Float " + b + "float " + c + "In SatelliteCoreCheck Parameter");
             SetSatelliteCoreCheck(a, b, c);
         }
         // SetBoolSatelliteCoreValue Communicates Between Parameter and Part Module.
@@ -429,7 +430,7 @@ namespace MissionControllerEC.MCEParameters
         {
             SatelliteCalled = n;
             OnBoolChanged();
-            //Debug.Log("Called Bool is now " + n + " In SatelliteCoreCheck Parameter");
+            //Log.Info("Called Bool is now " + n + " In SatelliteCoreCheck Parameter");
         }
         //SetSatelliteCoreCheck Communicates Between Parameter and Part Module.
         public void SetSatelliteCoreCheck(string satType, float ModuleType, float Freq)
@@ -438,19 +439,19 @@ namespace MissionControllerEC.MCEParameters
             testModuleType = ModuleType;
             testFreq = Freq;
             OnSatelliteChanged();
-            //Debug.Log("Satellite Values In Parameters Now Set to string " + satType + "Float " + ModuleType + "float " + Freq + "In SatelliteCoreCheck Parameter");
+            //Log.Info("Satellite Values In Parameters Now Set to string " + satType + "Float " + ModuleType + "float " + Freq + "In SatelliteCoreCheck Parameter");
         }
         public void SetApaBoolSatelliteCoreValue(bool n)
         {
             APReady = n;
             OnBoolChanged();
-            //Debug.Log("ApA Bool is now " + n + " In SatelliteCoreCheck Parameter");
+            //Log.Info("ApA Bool is now " + n + " In SatelliteCoreCheck Parameter");
         }
         public void SetPeABoolSatelliteCoreValue(bool n)
         {
             PEReady = n;
             OnBoolChanged();
-            //Debug.Log("PeA Bool is now " + n + " In SatelliteCoreCheck Parameter");
+            //Log.Info("PeA Bool is now " + n + " In SatelliteCoreCheck Parameter");
         }
           
     }
@@ -559,7 +560,7 @@ namespace MissionControllerEC.MCEParameters
                             if (diff > missionTime)
                             {
                                 base.SetComplete();
-                                Debug.Log("Time Completed");
+                                Log.Info("Time Completed");
                             }
                             else { }
                         }
@@ -583,7 +584,7 @@ namespace MissionControllerEC.MCEParameters
         {
             savedTime = Planetarium.GetUniversalTime();
             setTime = false;
-            Debug.Log("Time countdown has been set");
+            Log.Info("Time countdown has been set");
         }
 
 
@@ -689,7 +690,7 @@ namespace MissionControllerEC.MCEParameters
                             if (diff > missionTime)
                             {
                                 base.SetComplete();
-                                Debug.Log("Time Completed");
+                                Log.Info("Time Completed");
                             }
                             else { }
                         }
@@ -705,7 +706,7 @@ namespace MissionControllerEC.MCEParameters
         {
             savedTime = Planetarium.GetUniversalTime();
             setTime = false;
-            Debug.Log("Time countdown has been set");
+            Log.Info("Time countdown has been set");
         }
         public void flightReady()
         {

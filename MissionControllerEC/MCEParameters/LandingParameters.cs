@@ -4,6 +4,7 @@ using Contracts;
 using KSP;
 using KSPAchievements;
 using KSP.Localization;
+using static MissionControllerEC.RegisterToolbar;
 
 namespace MissionControllerEC.MCEParameters
 {
@@ -66,7 +67,7 @@ namespace MissionControllerEC.MCEParameters
                     if (HighLogic.LoadedSceneIsFlight && (FlightGlobals.ActiveVessel.situation == Vessel.Situations.LANDED || FlightGlobals.ActiveVessel.situation == Vessel.Situations.SPLASHED) && this.state == ParameterState.Incomplete)
                     {
                         Landing(FlightGlobals.ActiveVessel);
-                        //Debug.Log("Wet and dry landing accepted for contract");
+                        //Log.Info("Wet and dry landing accepted for contract");
                     }
                     else { }
                 }
@@ -75,7 +76,7 @@ namespace MissionControllerEC.MCEParameters
                     if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel.situation == Vessel.Situations.LANDED && FlightGlobals.ActiveVessel.situation != Vessel.Situations.SPLASHED && this.state == ParameterState.Incomplete)
                     {
                         Landing(FlightGlobals.ActiveVessel);
-                        //Debug.Log("only dry landing accepted for this contract");
+                        //Log.Info("only dry landing accepted for this contract");
                     }
                     else { }
                 }
@@ -114,7 +115,7 @@ namespace MissionControllerEC.MCEParameters
                 // strange that the eventReport comes up null when launching a vessel, I can't check against this event launch.  Always comes up NUll?
             }
             else
-                Debug.LogError("Vessel is not classified as new vessel and was launched before current contract was accepted. " + " Vessel Name: " + FlightGlobals.ActiveVessel.name + " Launch Date: " + FlightGlobals.ActiveVessel.launchTime);
+                Log.Error("Vessel is not classified as new vessel and was launched before current contract was accepted. " + " Vessel Name: " + FlightGlobals.ActiveVessel.name + " Launch Date: " + FlightGlobals.ActiveVessel.launchTime);
         }
     }
     class BiomLandingParameters : ContractParameter
@@ -186,7 +187,7 @@ namespace MissionControllerEC.MCEParameters
                     if (HighLogic.LoadedSceneIsFlight && (FlightGlobals.ActiveVessel.situation == Vessel.Situations.LANDED || FlightGlobals.ActiveVessel.situation == Vessel.Situations.SPLASHED) && this.state == ParameterState.Incomplete)
                         {
                             Landing(FlightGlobals.ActiveVessel);
-                            //Debug.Log("Wet and dry landing accepted for contract");
+                            //Log.Info("Wet and dry landing accepted for contract");
                         }
                     else { }
                 }
@@ -195,7 +196,7 @@ namespace MissionControllerEC.MCEParameters
                     if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel.situation == Vessel.Situations.LANDED && FlightGlobals.ActiveVessel.situation != Vessel.Situations.SPLASHED && this.state == ParameterState.Incomplete)
                         {
                             Landing(FlightGlobals.ActiveVessel);
-                            //Debug.Log("only dry landing accepted for this contract");
+                            //Log.Info("only dry landing accepted for this contract");
                         }
                     else { }
                 }
@@ -244,7 +245,7 @@ namespace MissionControllerEC.MCEParameters
                 // strange that the eventReport comes up null when launching a vessel, I can't check against this event launch.  Always comes up NUll?
             }
             else
-                Debug.LogError("Vessel is not classified as new vessel and was launched before current contract was accepted. " + " Vessel Name: " + FlightGlobals.ActiveVessel.name + " Launch Date: " + FlightGlobals.ActiveVessel.launchTime);
+                Log.Error("Vessel is not classified as new vessel and was launched before current contract was accepted. " + " Vessel Name: " + FlightGlobals.ActiveVessel.name + " Launch Date: " + FlightGlobals.ActiveVessel.launchTime);
         }
     }
 
@@ -313,7 +314,7 @@ namespace MissionControllerEC.MCEParameters
                             currentLat = FlightGlobals.ActiveVessel.latitude;
                             currentLon = FlightGlobals.ActiveVessel.longitude;
                             Landing(FlightGlobals.ActiveVessel);
-                            //Debug.Log("Wet and dry landing accepted for contract");
+                            //Log.Info("Wet and dry landing accepted for contract");
                         }
                     else { }
                 }
@@ -324,7 +325,7 @@ namespace MissionControllerEC.MCEParameters
                             currentLat = FlightGlobals.ActiveVessel.latitude;
                             currentLon = FlightGlobals.ActiveVessel.longitude;
                             Landing(FlightGlobals.ActiveVessel);
-                            //Debug.Log("only dry landing accepted for this contract");
+                            //Log.Info("only dry landing accepted for this contract");
                         }
                     else { }
                 }

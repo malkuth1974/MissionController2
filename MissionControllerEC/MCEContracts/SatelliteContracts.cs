@@ -9,6 +9,7 @@ using System.Text;
 using KSPAchievements;
 using MissionControllerEC.MCEParameters;
 using KSP.Localization;
+using static MissionControllerEC.RegisterToolbar;
 
 namespace MissionControllerEC.MCEContracts
 {
@@ -16,7 +17,7 @@ namespace MissionControllerEC.MCEContracts
     {
         #region fields
         Settings st = new Settings("Config.cfg");
-        MissionControllerEC mc = new MissionControllerEC();
+        MissionControllerEC mc; // = new MissionControllerEC();
         CelestialBody targetBody = Planetarium.fetch.Home;            
         public int crewCount = 0, partAmount = 1, scipartamount = 1, scipartcount = 1, trackStationNumber = 0, PolarStationNumber = 0;
         public bool techUnlocked = false;
@@ -31,8 +32,17 @@ namespace MissionControllerEC.MCEContracts
         public string contractNotes = "none";
         public string satTitlestring = "none";
         public string contractSynops = "none";
-        System.Random SeedGenerator;
         #endregion
+
+        public  MCE_Satellite_Contracts()
+        {
+            mc = MissionControllerEC.Instance;
+            if (mc == null)
+            {
+                Log.Info("MCE_Satellite_Contracts allocating MissionControllerED");
+                mc = new MissionControllerEC();
+            }
+        }
         #region switch 1      
         public void SatTypeValue()
         {
@@ -180,8 +190,7 @@ namespace MissionControllerEC.MCEContracts
                 }
             }
             //Setting up the ground stations (random)
-            System.Random rnd = new System.Random();
-            int stationNumber = rnd.Next(1,4);
+            int stationNumber = SaveInfo.rnd.Next(1,4);
             SetTrackStationNumber(stationNumber);
             mc.CheckRandomSatelliteContractTypes();
             
@@ -190,12 +199,11 @@ namespace MissionControllerEC.MCEContracts
             
             // Setting up the Satellite types/Freq/Modules
             SatTypeValue();
-            int frequencyTest = rnd.Next(12, 40);
+            int frequencyTest = SaveInfo.rnd.Next(12, 40);
             frequency = (float)frequencyTest - .5f;
-            moduletype = rnd.Next(1, 4);
+            moduletype = SaveInfo.rnd.Next(1, 4);
 
             //Just the random seed number used for Orbits in fineprint.. Effects Random Nubmers for Altitudes...
-            SeedGenerator = new System.Random(this.MissionSeed);
             //Random Diffuculty for alltitude.
 
             //Finding the Min Orbit Height for the Contract payout later.
@@ -205,7 +213,7 @@ namespace MissionControllerEC.MCEContracts
             Orbit o = FinePrint.Utilities.OrbitUtilities.GenerateOrbit(MissionSeed, targetBody, FinePrint.Utilities.OrbitType.EQUATORIAL,.1, 0, 0);
             //Using Fineprint to double check its own calculations.
             FinePrint.Utilities.OrbitUtilities.ValidateOrbit(MissionSeed, ref o, FinePrint.Utilities.OrbitType.EQUATORIAL, .1, 0);
-            //Debug.Log("MCE Orbit Values for satellite Contracts: " + " APA " + o.ApA + " PEA " + o.PeA + " Seed Number " + MissionSeed.ToString());
+            //Log.Info("MCE Orbit Values for satellite Contracts: " + " APA " + o.ApA + " PEA " + o.PeA + " Seed Number " + MissionSeed.ToString());
 
             if (SaveInfo.SatelliteTypeChoice == 0)  // Using the switch to check which type of contract to load (Random) Repeated for all Satellite types.
             {
@@ -396,22 +404,22 @@ namespace MissionControllerEC.MCEContracts
             if (o.ApA < minSMA + 500000)
             {
                 base.SetFunds(2500 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 30000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 30000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
-                Debug.Log("Satellie Contract Base Pay Less than Type 1of4");
+                Log.Info("Satellite Contract Base Pay Less than Type 1of4");
             }
             if (o.ApA > minSMA + 500000 && o.ApA < minSMA + 800000)
             {
                 base.SetFunds(5500 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 65000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 65000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
-                Debug.Log("Satellie Contract Base Pay Less than Type 2of4");
+                Log.Info("Satellite Contract Base Pay Less than Type 2of4");
             }
             if (o.ApA > minSMA + 800000 && o.ApA < minSMA + 2000000)
             {
                 base.SetFunds(10500 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 75000* HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 75000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
-                Debug.Log("Satellie Contract Base Pay Less than Type 3of4");
+                Log.Info("Satellite Contract Base Pay Less than Type 3of4");
             }
             else
             {               
                  base.SetFunds(12500 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 95000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 95000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
-                Debug.Log("Satellie Contract Base Pay Less than Type 4of4");
+                Log.Info("Satellite Contract Base Pay Less than Type 4of4");
             }
 
             base.SetReputation(15, 30, targetBody);
@@ -454,7 +462,7 @@ namespace MissionControllerEC.MCEContracts
             SaveInfo.SatelliteContractType = "None";
             SaveInfo.SatelliteContractModule = 0;
             SaveInfo.SatelliteContractFrequency = -1;
-            //Debug.Log("values for satellites have been reset");
+            //Log.Info("values for satellites have been reset");
             return Localizer.Format("#autoLOC_MissionController2_1000147") + " " + satType + " " + Localizer.Format("#autoLOC_MissionController2_1000148") + " " + targetBody.bodyName;		// #autoLOC_MissionController2_1000147 = You have successfully delivered our 		// #autoLOC_MissionController2_1000148 =  satellite to orbit around 
         }
 
@@ -530,6 +538,7 @@ namespace MissionControllerEC.MCEContracts
         #endregion
 
     }
+
     public class EarlyContracts : Contract
     {
         Settings settings = new Settings("config.cfg");

@@ -1,6 +1,7 @@
 ﻿using System;
 using KSP;
 using UnityEngine;
+using static MissionControllerEC.RegisterToolbar;
 
 namespace MissionControllerEC
 { 
@@ -179,7 +180,7 @@ namespace MissionControllerEC
             }
             catch (Exception ex)
             {
-                Debug.LogError(ex.Message);
+                Log.Error(ex.Message);
                 //Logging and return value?                    
                 return new ConfigNode(this.GetType().Name);
             }
@@ -216,7 +217,7 @@ namespace MissionControllerEC
         [System.Diagnostics.Conditional("DEBUG")]
         internal static void LogFormatted_DebugOnly(String Message, params object[] strParams)
         {
-            LogFormatted("DEBUG: " + Message, strParams);
+            Log.Info("DEBUG: " + Message, strParams);
         }
 
         /// <summary>
@@ -230,7 +231,7 @@ namespace MissionControllerEC
             String strMessageLine = String.Format("{0},{2},{1}",
                 DateTime.Now, Message,
                 _AssemblyName);                                           // This adds our standardised wrapper to each line
-            UnityEngine.Debug.Log(strMessageLine);                        // And this puts it in the log
+            Log.Error(strMessageLine);                        // And this puts it in the log
         }
 
         #endregion

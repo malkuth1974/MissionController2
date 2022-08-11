@@ -50,7 +50,4 @@ your Settings in game, so this should not be a big deal. Its highly recomended! 
 
 place the MissionControllerEC folder into you KerbalSpaceProgram/GameData folder. 
 
-Note on 64 Bit. I test MCE in 64 bit and play it fine. But when I add more mods to my games, things go bad for 64 bit KSP. 
-I highly suggest you play a massive modded KSP in 32 bit only! If it doesn't work in
-64 Bit Go To 32Bit. Thank you.
 

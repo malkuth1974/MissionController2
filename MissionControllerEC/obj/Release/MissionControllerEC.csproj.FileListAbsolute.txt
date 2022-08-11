@@ -1,0 +1,12 @@
+D:\Users\jbb\github\MissionController2\MissionControllerEC\bin\release\MissionControllerEC.dll
+D:\Users\jbb\github\MissionController2\MissionControllerEC\bin\release\MissionControllerEC.pdb
+D:\Users\jbb\github\MissionController2\MissionControllerEC\obj\Release\MissionControllerEC.csproj.CoreCompileInputs.cache
+D:\Users\jbb\github\MissionController2\MissionControllerEC\obj\Release\MissionControllerEC.dll
+D:\Users\jbb\github\MissionController2\MissionControllerEC\obj\Release\MissionControllerEC.pdb
+D:\Users\jbb\github\MissionController2\MissionControllerEC\bin\release\ClickThroughBlocker.dll
+D:\Users\jbb\github\MissionController2\MissionControllerEC\bin\release\KSP_Log.dll
+D:\Users\jbb\github\MissionController2\MissionControllerEC\bin\release\SpaceTuxUtility.dll
+D:\Users\jbb\github\MissionController2\MissionControllerEC\bin\release\ToolbarControl.dll
+D:\Users\jbb\github\MissionController2\MissionControllerEC\bin\release\ClickThroughBlocker.pdb
+D:\Users\jbb\github\MissionController2\MissionControllerEC\obj\Release\MissionControllerEC.csproj.CopyComplete
+D:\Users\jbb\github\MissionController2\MissionControllerEC\obj\Release\MissionControllerEC.csproj.AssemblyReference.cache

@@ -4,6 +4,7 @@ using Contracts;
 using KSP;
 using KSPAchievements;
 using KSP.Localization;
+using static MissionControllerEC.RegisterToolbar;
 
 namespace MissionControllerEC.MCEParameters
 {
@@ -34,7 +35,7 @@ namespace MissionControllerEC.MCEParameters
                 GameEvents.onFlightReady.Add(flightReady);
                 GameEvents.onVesselChange.Add(vesselChange);
                 updated = true;
-                Debug.LogError("Events fired for Keep Vessel Alive Build");
+                Log.Error("Events fired for Keep Vessel Alive Build");
             }
         }
         protected override void OnUnregister()
@@ -44,7 +45,7 @@ namespace MissionControllerEC.MCEParameters
                 GameEvents.onCrash.Remove(vesselDestroyed);
                 GameEvents.onFlightReady.Remove(flightReady);
                 GameEvents.onVesselChange.Remove(vesselChange);
-                Debug.LogError("Events fired for Keep Vessel Alive Debuild");
+                Log.Error("Events fired for Keep Vessel Alive Debuild");
             }
         }
         protected override void OnUpdate()
@@ -83,11 +84,11 @@ namespace MissionControllerEC.MCEParameters
             if (er.origin != null && er.origin.vessel == FlightGlobals.ActiveVessel)
             {
                 VesselAlive = false;
-                Debug.LogError("Vessel Recorded as destroyed in contract vessleAlive = " + er.origin.vessel.name);
+                Log.Error("Vessel Recorded as destroyed in contract vessleAlive = " + er.origin.vessel.name);
             }
             else
             {
-                Debug.LogError("Vessel is Not active vessel, VesselMustSurvive Event closed: " + er.origin.vessel.name);
+                Log.Error("Vessel is Not active vessel, VesselMustSurvive Event closed: " + er.origin.vessel.name);
             }
         }      
         public void flightReady()
