@@ -247,7 +247,7 @@ namespace MissionControllerEC
               {
                   if (bodySelWin == null)
                   {
-                      BodySelection.StartBodySelection(ComSatContract);
+                      BodySelection.StartBodySelection(ComSatContract, comsat:true);
 
                       SaveInfo.CustomSatWindowPos = new Vector2(
                                   ((Screen.width / 2) + customSatPop_dialg.RTrf.position.x) / Screen.width,
@@ -850,7 +850,7 @@ namespace MissionControllerEC
               {
                   if (bodySelWin == null)
                   {
-                      BodySelection.StartBodySelection(LandingOrbitCustomContract);
+                      BodySelection.StartBodySelection(LandingOrbitCustomContract, landingOrbit:true);
 
                       SaveInfo.CustomLandingOrbitWinPos = new Vector2(
                       ((Screen.width / 2) + customLandOrbit_dialg.RTrf.position.x) / Screen.width,
@@ -1073,7 +1073,7 @@ namespace MissionControllerEC
                   {
                       if (bodySelWin == null)
                       {
-                          BodySelection.StartBodySelection(BuildSpaceStation);
+                          BodySelection.StartBodySelection(BuildSpaceStation, buildSpaceStation:true);
 
                           SaveInfo.CustomBuildStationWinPos = new Vector2(
                           ((Screen.width / 2) + BuildSpaceStatPop_dialg.RTrf.position.x) / Screen.width,

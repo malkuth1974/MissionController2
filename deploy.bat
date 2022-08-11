@@ -9,7 +9,7 @@ rem    but not always
 
 set H=%KSPDIR%
 
-set H=R:\KSP_1.12.3_Career-MissionController-JNSQ
+rem set H=R:\KSP_1.12.3_Career-MissionController-JNSQ
 
 set GAMEDIR=Missioncontroller
 set GAMEDATA="GameData"
@@ -25,4 +25,4 @@ copy /Y %VERSIONFILE% %GAMEDATA%\%GAMEDIR%
 xcopy /y /s /I %GAMEDATA%\%GAMEDIR% "%H%\GameData\%GAMEDIR%"
 xcopy /y /s /I %GAMEDATA%\%GAMEDIR% "%DP0%\GameData\%GAMEDIR%"
 
-pause
+rem pause

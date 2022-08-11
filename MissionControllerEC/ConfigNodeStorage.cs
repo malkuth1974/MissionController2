@@ -114,14 +114,14 @@ namespace MissionControllerEC
                 }
                 else
                 {
-                    LogFormatted("File could not be found to load({0})", fileFullName);
+                    LogFormattedError("File could not be found to load({0})", fileFullName);
                     blnReturn = false;
                 }
             }
             catch (Exception ex)
             {
-                LogFormatted("Failed to Load ConfigNode from file({0})-Error:{1}", fileFullName, ex.Message);
-                LogFormatted("Storing old config - {0}", fileFullName + ".err-" + string.Format("ddMMyyyy-HHmmss", DateTime.Now));
+                LogFormattedError("Failed to Load ConfigNode from file({0})-Error:{1}", fileFullName, ex.Message);
+                LogFormattedError("Storing old config - {0}", fileFullName + ".err-" + string.Format("ddMMyyyy-HHmmss", DateTime.Now));
                 System.IO.File.Copy(fileFullName, fileFullName + ".err-" + string.Format("ddMMyyyy-HHmmss", DateTime.Now),true);
                 blnReturn = false;
             }
@@ -159,7 +159,7 @@ namespace MissionControllerEC
             }
             catch (Exception ex)
             {
-                LogFormatted("Failed to Save ConfigNode to file({0})-Error:{1}", fileFullName, ex.Message);
+                LogFormattedError("Failed to Save ConfigNode to file({0})-Error:{1}", fileFullName, ex.Message);
                 blnReturn = false;
             }
             return blnReturn;
@@ -225,7 +225,7 @@ namespace MissionControllerEC
         /// </summary>
         /// <param name="Message">Text to be printed - can be formatted as per String.format</param>
         /// <param name="strParams">Objects to feed into a String.format</param>
-        internal static void LogFormatted(String Message, params object[] strParams)
+        internal static void LogFormattedError(String Message, params object[] strParams)
         {
             Message = String.Format(Message, strParams);                  // This fills the params into the message
             String strMessageLine = String.Format("{0},{2},{1}",

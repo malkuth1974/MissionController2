@@ -19,11 +19,19 @@ namespace MissionControllerEC
             MOONS
         }
 
-        static internal void StartBodySelection(CallBackFunction c)
+        static internal void StartBodySelection(CallBackFunction c, bool comsat = false, bool landingOrbit = false,
+            bool buildSpaceStation = false)
         {
             callback = c;
             GameObject gameObject = new GameObject();
             MissionControllerEC.bodySelWin = gameObject.AddComponent<BodySelection>();
+
+            if (comsat)
+                selectedBody = FlightGlobals.Bodies[SaveInfo.comSatBodyName];
+            if (landingOrbit)
+                selectedBody = FlightGlobals.Bodies[SaveInfo.LandingOrbitIDX];
+            if (buildSpaceStation)
+                selectedBody = FlightGlobals.Bodies[SaveInfo.BuildSpaceStationIDX];
         }
 
         List<CelestialBody> GetAllowableBodies(BodyTypeFilter filter = BodyTypeFilter.ALL)
@@ -73,7 +81,7 @@ namespace MissionControllerEC
         static int activeWinID = 353465756;
         static Rect win = new Rect(100,100, 300, 600);
         static List<CelestialBody> celestialBodies = new List<CelestialBody>();
-        CelestialBody selectedBody;
+        static CelestialBody selectedBody;
         int originalcomSatBodyName, originalLandingOrbitIDX, originalBuildSpaceStationIDX;
 
         static Vector2 sitesScrollPosition;
@@ -90,6 +98,7 @@ namespace MissionControllerEC
 
         void OnGUI()
         {
+            GUI.skin = HighLogic.Skin;
             win = ClickThruBlocker.GUILayoutWindow(activeWinID, win, BodySelectionWin, "Body Selection"); //, LifeSupportDisplay.layoutOptions);
         }
 
@@ -118,7 +127,12 @@ namespace MissionControllerEC
                     celestialBodies.Clear();
                 }
             }
+            using (new GUILayout.HorizontalScope())
+            {
+                GUILayout.Label("Currently selected body:");
+                GUILayout.TextField(selectedBody.bodyDisplayName.Substring(0, selectedBody.bodyDisplayName.Length-2));
 
+            }
             using (new GUILayout.VerticalScope())
             {
                 sitesScrollPosition = GUILayout.BeginScrollView(sitesScrollPosition);
@@ -139,7 +153,9 @@ namespace MissionControllerEC
                             }
                             else
                             {
-                                if (GUILayout.Button(indent + "   |--> " + b.bodyName, RegisterToolbar.buttonLeft))
+                                string prefix;
+                                prefix = indent + "   |--> ";
+                                if (GUILayout.Button(prefix + b.bodyName, RegisterToolbar.buttonLeft))
                                 {
                                     selectedBody = b;
                                     SetSelectedbody(selectedBody);
@@ -160,7 +176,7 @@ namespace MissionControllerEC
                 GUILayout.EndScrollView();
                 using (new GUILayout.HorizontalScope())
                 {
-                    if (GUILayout.Button("Close"))
+                    if (GUILayout.Button("Accept"))
                     {
                         MissionControllerEC.bodySelWin = null;
                         Destroy(this);
@@ -178,6 +194,7 @@ namespace MissionControllerEC
             }
             GUI.DragWindow();
         }
+
 
         void SetSelectedbody(CelestialBody selectedBody)
         {
