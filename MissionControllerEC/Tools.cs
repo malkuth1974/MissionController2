@@ -12,7 +12,7 @@ namespace MissionControllerEC
             range1 = Math.Abs(range1);
             range2 = Math.Abs(range2);
             int value = UnityEngine.Random.Range(range1, range2);
-            Log.Error("range 1 Is = " + range1 + ", Range 2 is = " + range2 + ", Total Value is = " + value);            
+            Log.Info("range 1 Is = " + range1 + ", Range 2 is = " + range2 + ", Total Value is = " + value);            
             return value;
         }
         public static float FloatRandomNumber(float range1, float range2)

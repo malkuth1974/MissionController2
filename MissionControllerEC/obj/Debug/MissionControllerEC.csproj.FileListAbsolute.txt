@@ -54,3 +54,4 @@ D:\Users\jbb\github\MissionController2\MissionControllerEC\bin\debug\SpaceTuxUti
 D:\Users\jbb\github\MissionController2\MissionControllerEC\bin\debug\ToolbarControl.dll
 D:\Users\jbb\github\MissionController2\MissionControllerEC\bin\debug\ClickThroughBlocker.pdb
 D:\Users\jbb\github\MissionController2\MissionControllerEC\obj\Debug\MissionControllerEC.csproj.CopyComplete
+D:\Users\jbb\github\MissionController2\MissionControllerEC\obj\Debug\MissionControllerEC.csproj.AssemblyReference.cache

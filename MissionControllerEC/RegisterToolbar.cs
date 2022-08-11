@@ -66,7 +66,7 @@ namespace MissionControllerEC
                 GUI.skin = HighLogic.Skin;
 
                 initted = true;
-                buttonLeft = new GUIStyle(GUI.skin.button);
+                buttonLeft = new GUIStyle(GUI.skin.label);
                 buttonLeft.alignment = TextAnchor.MiddleLeft;
 
             }

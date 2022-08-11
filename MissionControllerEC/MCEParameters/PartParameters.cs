@@ -246,13 +246,13 @@ namespace MissionControllerEC.MCEParameters
         {
             if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel)
             {
-                Log.Error("Docked FROM: " + action.from.vessel.vesselName);
-                Log.Error("Docked TO: " + action.to.vessel.vesselName);
+                Log.Info("Docked FROM: " + action.from.vessel.vesselName);
+                Log.Info("Docked TO: " + action.to.vessel.vesselName);
 
-                Log.Error("Docked TO Type Vessel: " + action.to.vessel.vesselType);
+                Log.Info("Docked TO Type Vessel: " + action.to.vessel.vesselType);
 
-                Log.Error("Docked FROM ID: " + action.from.vessel.id.ToString());
-                Log.Error("Docked TO ID: " + action.to.vessel.id.ToString());
+                Log.Info("Docked FROM ID: " + action.from.vessel.id.ToString());
+                Log.Info("Docked TO ID: " + action.to.vessel.id.ToString());
 
                 if (action.from.vessel.id.ToString() == ShipVesselID || action.to.vessel.id.ToString() == ShipVesselID)
                 {
