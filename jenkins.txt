@@ -34,7 +34,7 @@
 2:MissionControllerEC,MissionControllerEC/MissionControllerEC.csproj,MissionController3.0.version,GameData/MissionController/Plugins
 
 # 3:SOURCEFILE, DESTDIR
-3:MissionController3.0.version,GameData/MissionController
+3:MissionController3.0.version,GameData/Missioncontroller
 #3:LICENSE.md,GameData/KerbalHotSeat
 #3:README.md,GameData/KerbalHotSeat
 
