@@ -13,7 +13,7 @@ rem set H=R:\KSP_1.12.3_Career-MissionController-JNSQ
 
 set GAMEDIR=Missioncontroller
 set GAMEDATA="GameData"
-set VERSIONFILE=%GAMEDIR%.version
+set VERSIONFILE=%GAMEDIR%3.version
 
 set DP0=r:\dp0\kspdev
 
