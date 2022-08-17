@@ -71,48 +71,19 @@ namespace MissionControllerEC
         {
             if (HighLogic.LoadedScene == GameScenes.SPACECENTER && toolbarControl_MCEButton == null)
             {
-#if false
-                MceDestroyButtons();
-                    MCEButton = ApplicationLauncher.Instance.AddModApplication(
-                    this.MCEOn,
-                    this.MCEOff,
-                    null,
-                    null,
-                    null,
-                    null,
-                    ApplicationLauncher.AppScenes.SPACECENTER,
-                    texture
-                    );
-#endif
                 toolbarControl_MCEButton = gameObject.AddComponent<ToolbarControl>();
-                toolbarControl_MCEButton.AddToAllToolbars(this.MCEOn,
-                    this.MCEOff,
+                toolbarControl_MCEButton.AddToAllToolbars(MCEOn,
+                    MCEOff,
                     ApplicationLauncher.AppScenes.SPACECENTER,
                     MODID,
                      "MCESpacecenter_Button",
                      "Missioncontroller/PluginData/MCEStockToolbar",
                      "Missioncontroller/PluginData/MCEStockToolbar-24",
                     MODNAME);
-
-                //Log.Error("Creating MCEButton Buttons");
             }
-            else { /*Log.Error("MCE2 MCE Button Already Loaded");*/ }
 
             if (HighLogic.LoadedScene == GameScenes.FLIGHT && toolbarControl_MCERevert == null && HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCERevertAllow)
             {
-#if false
-                MceDestroyButtons();
-                    MCERevert = ApplicationLauncher.Instance.AddModApplication(
-                    this.RevertPress,
-                    this.KillMCePopups,
-                    null,
-                    null,
-                    null,
-                    null,
-                    ApplicationLauncher.AppScenes.FLIGHT,
-                    texture2
-                    );
-#endif
                 toolbarControl_MCERevert = gameObject.AddComponent<ToolbarControl>();
                 toolbarControl_MCERevert.AddToAllToolbars(this.RevertPress,
                     this.KillMCePopups,
@@ -125,7 +96,6 @@ namespace MissionControllerEC
 
                 //Log.Error("creating MCERevert Buttons");
             }
-            else { /*Log.Error("MCE2 MCERevert Already Loaded");*/ }
         }
         private void MCEOn()
         {

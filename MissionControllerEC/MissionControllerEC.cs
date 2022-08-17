@@ -221,7 +221,6 @@ namespace MissionControllerEC
             get
             {
                 return instance;
-                //return Instance;
             }
         }
 

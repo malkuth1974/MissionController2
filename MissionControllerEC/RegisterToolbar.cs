@@ -33,9 +33,9 @@ namespace MissionControllerEC
         {
             if (Log == null)
 #if DEBUG
-                Log = new Log("MissionControllerED", Log.LEVEL.INFO);
+                Log = new Log("MissionControllerEC", Log.LEVEL.INFO);
 #else
-                Log = new Log("MissionControllerED", Log.LEVEL.ERROR);
+                Log = new Log("MissionControllerEC", Log.LEVEL.ERROR);
 #endif
             GameEvents.onGameSceneLoadRequested.Add(onGameSceneLoadRequested);
 

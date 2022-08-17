@@ -1,8 +1,7 @@
 {
   "NAME": "Mission Controller 3.0",
-  "URL": "http://ksp.spacetux.net/MissionController",
+  "URL": "http://ksp.spacetux.net/MissionController3.0",
   "DOWNLOAD": "https://forum.kerbalspaceprogram.com/index.php?/topic/40183-*",
-  "CHANGE_LOG_URL": "https://forum.kerbalspaceprogram.com/index.php?/topic/40183-*",
   "VERSION": {
     "MAJOR": 3,
     "MINOR": 3,

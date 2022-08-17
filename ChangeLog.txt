@@ -1,4 +1,6 @@
+Changelog
 
+3.3.0
 	Fixed nullref by MissionControllerEc being instantiated at the MainMenu
 	Fixed MissionControllerEC.Instance returning itself
 	Added the SetDifficultyPreset in the settings CuttomParemeterNode(s)
