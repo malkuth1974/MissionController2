@@ -813,7 +813,7 @@ namespace MissionControllerEC
         public bool openUI = false;
 
         private bool RepairGamewin = false, GameSlider1 = false, GameSlider2 = false, GameSlider3 = false;
-        private double GameSwitchChange;
+        private int GameSwitchChange;
         public Animation GetDeployDoorAnim
         {
             get

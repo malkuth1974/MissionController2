@@ -38,6 +38,7 @@ Changelog
 		SpaceTuxLibrary
 
 	Cleaned up some more log spam
+	Changed GameSwitchChange from double to int, since it is only used in a single switch 
 
 
 Original Mod Changelog
