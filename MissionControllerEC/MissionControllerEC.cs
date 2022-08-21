@@ -118,13 +118,6 @@ namespace MissionControllerEC
         private static Vector2 Satellitedragstart;
         private static Vector2 Satellitealtstart;
 
-#if false
-        private static Texture2D texture;
-        private static Texture2D texture2;
-
-        internal static ApplicationLauncherButton MCEButton;
-        internal static ApplicationLauncherButton MCERevert;
-#endif
         internal static ToolbarControl toolbarControl_MCEButton;
         internal static ToolbarControl toolbarControl_MCERevert;
 
@@ -150,7 +143,7 @@ namespace MissionControllerEC
 
         public static GUIStyle StyleBold, styleBlueBold, styleGreenBold;
 
-        private static MissionControllerEC instance = null;
+        //private static MissionControllerEC instance = null;
 
         private static bool visible = false;
 
@@ -214,8 +207,9 @@ namespace MissionControllerEC
         private static DialogGUIBase Custom_Contract_Input2;
 
         Settings settings = new Settings("Config.cfg");
-#endregion
+        #endregion
 #region Start/Awake/Instance Stuff
+#if false
         public static MissionControllerEC Instance
         {
             get
@@ -223,10 +217,10 @@ namespace MissionControllerEC
                 return instance;
             }
         }
-
+#endif
         public MissionControllerEC()
         {
-            instance = this;
+            //instance = this;
             Allocate();
         }
 
@@ -639,7 +633,10 @@ namespace MissionControllerEC
 #endif
 
             GameEvents.Contract.onContractsLoaded.Remove(this.onContractLoaded);
-            instance = null;
+            GameEvents.onGameSceneSwitchRequested.Remove(OnRepairSceneChange);
+            GameEvents.onGameSceneSwitchRequested.Remove(OnSatelliteSceneChange);
+
+            //instance = null;
             Log.Info("MCE MissioniControllerEC Main OnDestroy Called");
 
             try

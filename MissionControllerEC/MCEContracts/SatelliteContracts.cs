@@ -17,7 +17,7 @@ namespace MissionControllerEC.MCEContracts
     {
         #region fields
         Settings st = new Settings("Config.cfg");
-        MissionControllerEC mc; // = new MissionControllerEC();
+        //MissionControllerEC mc; // = new MissionControllerEC();
         CelestialBody targetBody = Planetarium.fetch.Home;            
         public int crewCount = 0, partAmount = 1, scipartamount = 1, scipartcount = 1, trackStationNumber = 0, PolarStationNumber = 0;
         public bool techUnlocked = false;
@@ -36,14 +36,16 @@ namespace MissionControllerEC.MCEContracts
 
         public  MCE_Satellite_Contracts()
         {
+#if false
             mc = MissionControllerEC.Instance;
             if (mc == null)
             {
                 Log.Info("MCE_Satellite_Contracts allocating MissionControllerED");
                 mc = new MissionControllerEC();
             }
+#endif
         }
-        #region switch 1      
+#region switch 1      
         public void SatTypeValue()
         {
        
@@ -117,8 +119,8 @@ namespace MissionControllerEC.MCEContracts
             }
             
         }
-        #endregion 
-        #region Switch 2
+#endregion
+#region Switch 2
         public void SetTrackStationNumber(int value)
         {
             switch (value)
@@ -158,8 +160,8 @@ namespace MissionControllerEC.MCEContracts
                     break;
             }
         }
-        #endregion
-        #region ContractGenerate
+#endregion
+#region ContractGenerate
         ContractParameter OnDestroy;
         
         protected override bool Generate()
@@ -192,7 +194,7 @@ namespace MissionControllerEC.MCEContracts
             //Setting up the ground stations (random)
             int stationNumber = SaveInfo.rnd.Next(1,4);
             SetTrackStationNumber(stationNumber);
-            mc.CheckRandomSatelliteContractTypes();
+            MissionControllerEC.CheckRandomSatelliteContractTypes();
             
             //Just checking to make sure the player has the Tech to do these contracts.
             bool parttechUnlock = ResearchAndDevelopment.GetTechnologyState("advConstruction") == RDTech.State.Available;
@@ -425,8 +427,8 @@ namespace MissionControllerEC.MCEContracts
             base.SetReputation(15, 30, targetBody);
             return true;
         }
-        #endregion
-        #region ContractOverrides
+#endregion
+#region ContractOverrides
         public override bool CanBeCancelled()
         {
             return true;
@@ -535,7 +537,7 @@ namespace MissionControllerEC.MCEContracts
             }
             return null;
         }
-        #endregion
+#endregion
 
     }
 

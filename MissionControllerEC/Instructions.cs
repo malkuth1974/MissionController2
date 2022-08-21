@@ -37,7 +37,7 @@ namespace MissionControllerEC
 
         public static List<string> CivName = new List<string>();
 
-        Tools.MC2RandomWieghtSystem.Item<int>[] RandomSatelliteContractsCheck;
+        static Tools.MC2RandomWieghtSystem.Item<int>[] RandomSatelliteContractsCheck;
         #endregion
 #region Textures Main Buttons Handling
 #if false
@@ -133,14 +133,14 @@ namespace MissionControllerEC
         }
 #endregion
 #region Methods Etc
-        public void CheckRandomSatelliteContractTypes()
+        public static void CheckRandomSatelliteContractTypes()
         {
             randomSatelliteContractsCheck();
             SaveInfo.SatelliteTypeChoice = Tools.MC2RandomWieghtSystem.PickOne<int>(RandomSatelliteContractsCheck);
             //Debug.LogWarning("Satellite Type Chosen Is Number " + SaveInfo.SatelliteTypeChoice);         
         }
       
-        public void randomSatelliteContractsCheck()
+        public static void randomSatelliteContractsCheck()
         {
             RandomSatelliteContractsCheck = new Tools.MC2RandomWieghtSystem.Item<int>[6];
             RandomSatelliteContractsCheck[0] = new Tools.MC2RandomWieghtSystem.Item<int>();

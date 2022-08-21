@@ -1,5 +1,10 @@
 Changelog
 
+3.3.0.1
+	Added removal of the onGameSwitchRequested events to the OnDestroy method
+	Removed need for static Instance by making two methods in instructions.cs anda variable static
+	Removed need for the SatelliteContracts.cs to instantiate a MissionControllerEC class
+
 3.3.0
 	Fixed nullref by MissionControllerEc being instantiated at the MainMenu
 	Fixed MissionControllerEC.Instance returning itself
