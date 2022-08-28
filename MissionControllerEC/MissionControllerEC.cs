@@ -183,6 +183,7 @@ namespace MissionControllerEC
         private static DialogGUIBase Custom_Contract_Button9;
         private static DialogGUIBase Custom_Contract_Button10;
         private static DialogGUIBase Custom_Contract_Button10a;
+        private static DialogGUIBase Custom_Contract_Button10b;
         private static DialogGUIBase Custom_Contract_Button11;
         private static DialogGUIBase Custom_Contract_Button12;
         private static DialogGUIBase Custom_Contract_Button13;
@@ -667,39 +668,44 @@ namespace MissionControllerEC
 
             CustomSat_button = new DialogGUIButton(Localizer.Format("Send Satellite To Space"), delegate
             {
+                SaveInfo.InitSaveInfo();
                 ComSatContract();
                 SaveInfo.GUIEnabled = false;
             }, delegate { return true; }, button_width, button_height, false, MCEGuiElements.ButtonMenuMainSyle);
 
             CustomLandOrbit_button = new DialogGUIButton(Localizer.Format("Send A Crew To Orbit Or Landing"), delegate
             {
+                SaveInfo.InitSaveInfo();
                 LandingOrbitCustomContract();
                 SaveInfo.GUIEnabled = false;
             }, delegate { return true; }, button_width, button_height, false, MCEGuiElements.ButtonMenuMainSyle);
 
             CustomCrew_button = new DialogGUIButton(Localizer.Format("Launch Crew To A Station"), delegate
             {
+                SaveInfo.InitSaveInfo();
                 CrewTransferContract();
                 SaveInfo.GUIEnabled = false;
             }, delegate { return true; }, button_width, button_height, false, MCEGuiElements.ButtonMenuMainSyle);
 
             CustomSupply_button = new DialogGUIButton(Localizer.Format("Resupply Resources To A Station"), delegate
             {
-                TransferContract();
+                SaveInfo.InitSaveInfo();
+                ResourceTransferContract();
                 SaveInfo.GUIEnabled = false;
-
             }, delegate { return true; }, button_width, button_height, false, MCEGuiElements.ButtonMenuMainSyle);
+
             BuildStation_button = new DialogGUIButton(Localizer.Format("Build A Space Station"), delegate
             {
-                BuildSpaceStation()
-;
+                SaveInfo.InitSaveInfo();
+                BuildSpaceStation();
                 SaveInfo.GUIEnabled = false;
             }, delegate { return true; }, button_width, button_height, false, MCEGuiElements.ButtonMenuMainSyle);
+
             BuildBase_button = new DialogGUIButton(Localizer.Format("WithDraw Contract Offers (ALL) Clears Current Contracts"), delegate
             {
                 SaveInfo.OrbitLandingOn = false;
                 SaveInfo.BuildSpaceStationOn = false;
-                SaveInfo.ComSateContractOn = false;
+                SaveInfo.ComSatContractOn = false;
                 SaveInfo.crewContractOn = false;
                 SaveInfo.supplyContractOn = false;
                 SaveInfo.GUIEnabled = false;
@@ -1322,7 +1328,7 @@ namespace MissionControllerEC
             SaveInfo.SatelliteConDesc = satConDescript;
             SaveInfo.ResourceTransferConDesc = ResourceTransferConDescript;
             SaveInfo.SatContractReady = ComSatOn;
-            SaveInfo.ComSateContractOn = com_Sat_Start_Building;
+            SaveInfo.ComSatContractOn = com_Sat_Start_Building;
             SaveInfo.comSatmaxOrbital = com_Sat_maxOrbP;
             SaveInfo.comSatminOrbital = com_Sat_minOrbP;
             SaveInfo.ComSatContractName = com_Sat_contractName;
@@ -1369,7 +1375,7 @@ namespace MissionControllerEC
             ResourceTransferConDescript = SaveInfo.ResourceTransferConDesc;
             ComSatOn = SaveInfo.SatContractReady;
 
-            com_Sat_Start_Building = SaveInfo.ComSateContractOn;
+            com_Sat_Start_Building = SaveInfo.ComSatContractOn;
             com_Sat_maxOrbP = SaveInfo.comSatmaxOrbital;
             com_Sat_minOrbP = SaveInfo.comSatminOrbital;
             com_Sat_contractName = SaveInfo.ComSatContractName;

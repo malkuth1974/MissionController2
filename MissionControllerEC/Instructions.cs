@@ -65,36 +65,61 @@ namespace MissionControllerEC
             if (settings.FileExists) { settings.Load(); settings.Save(); }
             else { settings.Save(); settings.Load(); }
             //Log.Error("MCE Settings Loaded");
-        }       
+        }
 
+        public enum Modes2
+        {
+            SANDBOX = 0,
+            CAREER = 1,
+            SCENARIO = 2,
+            SCENARIO_NON_RESUMABLE = 3,
+            SCIENCE_SANDBOX = 4,
+            MISSION = 5,
+            MISSION_BUILDER = 6
+        }
         public void MceCreateButtons()
         {
-            if (HighLogic.LoadedScene == GameScenes.SPACECENTER && toolbarControl_MCEButton == null)
+            if (HighLogic.CurrentGame.Mode == Game.Modes.CAREER || HighLogic.CurrentGame.Mode == Game.Modes.SCIENCE_SANDBOX)
             {
-                toolbarControl_MCEButton = gameObject.AddComponent<ToolbarControl>();
-                toolbarControl_MCEButton.AddToAllToolbars(MCEOn,
-                    MCEOff,
-                    ApplicationLauncher.AppScenes.SPACECENTER,
-                    MODID,
-                     "MCESpacecenter_Button",
-                     "Missioncontroller/PluginData/MCEStockToolbar",
-                     "Missioncontroller/PluginData/MCEStockToolbar-24",
-                    MODNAME);
-            }
+                if (HighLogic.LoadedScene == GameScenes.SPACECENTER && toolbarControl_MCEButton == null)
+                {
+                    toolbarControl_MCEButton = gameObject.AddComponent<ToolbarControl>();
+                    toolbarControl_MCEButton.AddToAllToolbars(MCEOn,
+                        MCEOff,
+                        ApplicationLauncher.AppScenes.SPACECENTER,
+                        MODID,
+                         "MCESpacecenter_Button",
+                         "Missioncontroller/PluginData/MCEStockToolbar",
+                         "Missioncontroller/PluginData/MCEStockToolbar-24",
+                        MODNAME);
+                }
 
-            if (HighLogic.LoadedScene == GameScenes.FLIGHT && toolbarControl_MCERevert == null && HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCERevertAllow)
+                if (HighLogic.LoadedScene == GameScenes.FLIGHT && toolbarControl_MCERevert == null && HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCERevertAllow)
+                {
+                    toolbarControl_MCERevert = gameObject.AddComponent<ToolbarControl>();
+                    toolbarControl_MCERevert.AddToAllToolbars(this.RevertPress,
+                        this.KillMCePopups,
+                        ApplicationLauncher.AppScenes.FLIGHT,
+                        MODID,
+                         "MCEFlight_Button",
+                         Path.Combine("Missioncontroller/PluginData/MCERevert"),
+                         Path.Combine("Missioncontroller/PluginData/MCERevert-24"),
+                        MODNAME);
+
+                    //Log.Error("creating MCERevert Buttons");
+                }
+            } else
             {
-                toolbarControl_MCERevert = gameObject.AddComponent<ToolbarControl>();
-                toolbarControl_MCERevert.AddToAllToolbars(this.RevertPress,
-                    this.KillMCePopups,
-                    ApplicationLauncher.AppScenes.FLIGHT,
-                    MODID,
-                     "MCEFlight_Button",
-                     Path.Combine("Missioncontroller/PluginData/MCERevert"),
-                     Path.Combine("Missioncontroller/PluginData/MCERevert-24"),
-                    MODNAME);
-
-                //Log.Error("creating MCERevert Buttons");
+                if (toolbarControl_MCERevert != null)
+                {
+                    Destroy(toolbarControl_MCERevert);
+                    toolbarControl_MCERevert = null;
+                }
+                if (toolbarControl_MCEButton != null)
+                {
+                    Destroy(toolbarControl_MCEButton);
+                    toolbarControl_MCEButton = null;
+                }
             }
         }
         private void MCEOn()

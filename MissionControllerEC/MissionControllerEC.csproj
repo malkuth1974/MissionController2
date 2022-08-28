@@ -62,10 +62,14 @@
     </Compile>
     <Compile Include="BodySelection.cs" />
     <Compile Include="ConfigNodeStorage.cs" />
+    <Compile Include="MCEContracts\CC-BuildComNetwork.cs" />
     <Compile Include="InstallChecker.cs" />
+    <Compile Include="MCEContracts\CC-CustomCrewTransfer.cs" />
+    <Compile Include="MCEContracts\CC-CustomLandingOrbit.cs" />
+    <Compile Include="MCEContracts\CC-CustomSupply.cs" />
     <Compile Include="MCEGuiElements.cs" />
     <Compile Include="IntergratedSettings.cs" />
-    <Compile Include="MCEContracts\CustomContracts.cs" />
+    <Compile Include="MCEContracts\CC-CustomBuildStation.cs" />
     <Compile Include="MCEContracts\RepairContracts.cs" />
     <Compile Include="MCEContracts\RoverContracts.cs" />
     <Compile Include="MCEContracts\SatelliteContracts.cs" />
@@ -83,7 +87,12 @@
     <Compile Include="PartModules\MCELanderResearch.cs" />
     <Compile Include="PartModules\MCEOrbitalScanning.cs" />
     <Compile Include="MissionControllerEC.cs" />
-    <Compile Include="PopUpGui.cs" />
+    <Compile Include="PopUpGUI\Popup-BuildSpaceStation.cs" />
+    <Compile Include="PopUpGUI\Popup-ComSatContract.cs" />
+    <Compile Include="PopUpGUI\Popup-CrewTransferContract.cs" />
+    <Compile Include="PopUpGUI\Popup-LandingOrbitCustomContract.cs" />
+    <Compile Include="PopUpGUI\Popup-ResourceTransferContract.cs" />
+    <Compile Include="PopUpGUI\PopUpGui.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RegisterToolbar.cs" />
     <Compile Include="SaveInfo.cs" />

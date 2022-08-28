@@ -1,9 +1,18 @@
 Changelog
 
-3.3.0.1
+
+3.3.0.1  
+	Disabled the mod in non-career and non-science games
+	Fixed canceling revert left button enabled, requiring 2 clicks next time
 	Added removal of the onGameSwitchRequested events to the OnDestroy method
 	Removed need for static Instance by making two methods in instructions.cs anda variable static
 	Removed need for the SatelliteContracts.cs to instantiate a MissionControllerEC class
+	Seperated code for each customContract into it's own file,
+	Separated code for each PopUpGUI into it's own file
+	Added Transmit/Exit button to all dialogs
+	Added check to only have the transmit buttons enabled when data is filled out
+	Added check for orbit height to be at least 1000m above atmosphere (or surface if no atmo)
+
 
 3.3.0
 	Fixed nullref by MissionControllerEc being instantiated at the MainMenu
