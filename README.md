@@ -6,19 +6,21 @@ MissionController 2 is the successor to the original Mission Controller.  Once K
 
 ##New Contract Types:
 
-*NEW 1.07 Civilian tours, bring civilian Kerbals on low Orbit tour of Kerbin.
-*Deliver Satellite for A company (build your own)
-*Repair Missions using the repair partts and dedicated repair panel.
-*Lander Research Mission
-*Orbital Research Mission
-*Custom ComSat contract that you can change the values to help suit your Remote Tech Needs.
-*Custom supply contract that you can use to supply your stations with fuel, food, oxygen, etc. your choice, your contracts!
-*NEW 1.06 Custom Crew Supply Contract. Supply those stations and bases with crew. Allows choice of station and amount of crew and the time on station for contract.
-*8 Historical contracts based on the United States and Soviet space race. (More to come)
-*New 1.06 New SkyLab 4 new contracts covering the launch and operation of Americas first Space Station SkyLab.
+*1. You can Build your own contracts in game using the Mission Controller Mission Builder.. All in game.  Want to send 6 kerbals to Duna?  Well make a contract and than send it to the Finance committee and see a company pick up your mission and pay you!
 
-##Hire kerbals and Death Insurance. 
-Kerbals cost money now.  And if they die on duty you must pay a Insurance fee for that death.
+*2. Satellite missions.  Mission Controller has its own satellite missions that give you a lot more investment into doing them.  Set up your satellites to your customers demands..  Than launch them into space, if you set up your satellite correctly you get paid!  The missions themselves include many tpyes, including Setting up a Network of Satellites.
+
+*3. Mission controller has its own science parts!  Ion Scanner and Spectrometer Scanner.  And a Repair panel.
+
+*4. Repair Contracts.  Sending up all those satellites and than forgetting them?  Well mission controller fixes this issue by giving you repair contracts from customers to fix deployed satellites.  
+
+*5. Repair Station contracts: Those stations also can have issues arise.. Now you can get contracts to EVA on your station to conduct repairs.. Just like real life NASA and International Space Station!
+
+*6. Rover Missions + Early Campaign missions to help offset early game.
+
+*7. Disable vanilla Contracts for they don't show up, to help clean up your contracts.. Than bring them back later if you want!
+
+*8. Revert have you down.. Does it feel like cheating?  Well mission controller has its own revert button that cost you money to use.. Don't feel guilty about using revert ever again.  Its based off % cost of your total vessel cost!
 
 ##Mission Controller Non Cheat Revert Button
 
@@ -48,7 +50,4 @@ your Settings in game, so this should not be a big deal. Its highly recomended! 
 
 place the MissionControllerEC folder into you KerbalSpaceProgram/GameData folder. 
 
-Note on 64 Bit. I test MCE in 64 bit and play it fine. But when I add more mods to my games, things go bad for 64 bit KSP. 
-I highly suggest you play a massive modded KSP in 32 bit only! If it doesn't work in
-64 Bit Go To 32Bit. Thank you.
 
