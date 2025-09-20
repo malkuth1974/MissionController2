@@ -4,6 +4,7 @@ using Contracts;
 using KSP;
 using KSPAchievements;
 using KSP.Localization;
+using static MissionControllerEC.RegisterToolbar;
 
 namespace MissionControllerEC.MCEParameters
 {
@@ -388,10 +389,10 @@ namespace MissionControllerEC.MCEParameters
         {
             if ( FlightGlobals.ActiveVessel.launchTime > this.Root.DateAccepted)
             {
-                Debug.Log("Time Vessel Id Matches?: " + action.from.vessel.id.ToString() + " " + vesselID);
-                Debug.Log("Time Vessel Id Matches?: " + action.to.vessel.id.ToString() + " " + vesselID);
-                Debug.Log("Time Vessel Name Matches?: " + action.from.vessel.vesselName + " " + vesselName);
-                Debug.Log("Time Vessel Name Matches?: " + action.to.vessel.vesselName + " " + vesselName);
+                Log.Info("Time Vessel Id Matches?: " + action.from.vessel.id.ToString() + " " + vesselID);
+                Log.Info("Time Vessel Id Matches?: " + action.to.vessel.id.ToString() + " " + vesselID);
+                Log.Info("Time Vessel Name Matches?: " + action.from.vessel.vesselName + " " + vesselName);
+                Log.Info("Time Vessel Name Matches?: " + action.to.vessel.vesselName + " " + vesselName);
                 if (vesselID == action.from.vessel.id.ToString() || vesselID == action.to.vessel.id.ToString() || vesselName == action.from.vessel.vesselName || vesselName == action.to.vessel.vesselName)
                 {
                     ScreenMessages.PostScreenMessage("Vessel docked, time started");

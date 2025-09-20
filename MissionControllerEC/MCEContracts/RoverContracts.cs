@@ -12,12 +12,10 @@ using KSP.Localization;
 
 namespace MissionControllerEC.MCEContracts
 {
-    public class RoverContracts : Contract
+    public class MCE_Rover_Contracts : Contract
     {
-        private double RcLatitude = 0;
-        private double RcLongitude = 0;
-        public int totalContracts;
-        public int TotalFinished;
+        private double RcLatitude = 0, RcLongitude = 0;
+        public int totalContracts, TotalFinished;
         private string WheelModule = "ModuleWheelBase";
         CelestialBody targetBody;
 
@@ -43,8 +41,8 @@ namespace MissionControllerEC.MCEContracts
         protected override bool Generate()
         {
             if (HighLogic.LoadedSceneIsFlight) { return false; }
-            totalContracts = ContractSystem.Instance.GetCurrentContracts<RoverContracts>().Count();
-            TotalFinished = ContractSystem.Instance.GetCompletedContracts<RoverContracts>().Count();
+            totalContracts = ContractSystem.Instance.GetCurrentContracts<MCE_Rover_Contracts>().Count();
+            TotalFinished = ContractSystem.Instance.GetCompletedContracts<MCE_Rover_Contracts>().Count();
 
             if (totalContracts >= 1)
             {
@@ -71,7 +69,7 @@ namespace MissionControllerEC.MCEContracts
             this.AddParameter(new GetCrewCount(0), null);
             base.SetExpiry(3f, 10f);
             base.SetDeadlineYears(3f, targetBody);
-            base.SetFunds(1500, 40000, 50000, targetBody);
+            base.SetFunds(25000, 125000, 125000, targetBody);
             base.SetReputation(10, 20, targetBody);
             base.SetScience(2, targetBody);
             return true;

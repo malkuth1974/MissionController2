@@ -33,3 +33,25 @@ C:\Steam\steamapps\common\Kerbal Space Program\GameData\MissionControllerEC\Miss
 C:\Steam\steamapps\common\Kerbal Space Program\GameData\MissionControllerEC\MissionControllerEC.pdb
 C:\KSPFolder\Kerbal Space ProgramTest\GameData\MissionControllerEC\MissionControllerEC.dll
 C:\KSPFolder\Kerbal Space ProgramTest\GameData\MissionControllerEC\MissionControllerEC.pdb
+C:\KSPFolder\MissionController2\MissionControllerEC\obj\Debug\MissionControllerEC.csprojAssemblyReference.cache
+C:\KSPFolder\MissionController2\MissionControllerEC\obj\Debug\MissionControllerEC.csproj.CopyComplete
+C:\Users\malku\OneDrive\Documents\GitHub\Kerbal Space ProgramTest\GameData\MissionControllerEC\MissionControllerEC.dll
+C:\Users\malku\OneDrive\Documents\GitHub\Kerbal Space ProgramTest\GameData\MissionControllerEC\MissionControllerEC.pdb
+C:\Users\malku\OneDrive\Documents\GitHub\MissionController2\MissionControllerEC\obj\Debug\MissionControllerEC.csprojAssemblyReference.cache
+C:\Users\malku\OneDrive\Documents\GitHub\MissionController2\MissionControllerEC\obj\Debug\MissionControllerEC.csproj.CoreCompileInputs.cache
+C:\Users\malku\OneDrive\Documents\GitHub\MissionController2\MissionControllerEC\obj\Debug\MissionControllerEC.dll
+C:\Users\malku\OneDrive\Documents\GitHub\MissionController2\MissionControllerEC\obj\Debug\MissionControllerEC.pdb
+C:\Steam\steamapps\common\Kerbal Space Program\GameData\Missioncontroller\MissionControllerEC.dll
+C:\Steam\steamapps\common\Kerbal Space Program\GameData\Missioncontroller\MissionControllerEC.pdb
+D:\Users\jbb\github\MissionController2\MissionControllerEC\bin\debug\MissionControllerEC.dll
+D:\Users\jbb\github\MissionController2\MissionControllerEC\bin\debug\MissionControllerEC.pdb
+D:\Users\jbb\github\MissionController2\MissionControllerEC\obj\Debug\MissionControllerEC.csproj.CoreCompileInputs.cache
+D:\Users\jbb\github\MissionController2\MissionControllerEC\obj\Debug\MissionControllerEC.dll
+D:\Users\jbb\github\MissionController2\MissionControllerEC\obj\Debug\MissionControllerEC.pdb
+D:\Users\jbb\github\MissionController2\MissionControllerEC\bin\debug\ClickThroughBlocker.dll
+D:\Users\jbb\github\MissionController2\MissionControllerEC\bin\debug\KSP_Log.dll
+D:\Users\jbb\github\MissionController2\MissionControllerEC\bin\debug\SpaceTuxUtility.dll
+D:\Users\jbb\github\MissionController2\MissionControllerEC\bin\debug\ToolbarControl.dll
+D:\Users\jbb\github\MissionController2\MissionControllerEC\bin\debug\ClickThroughBlocker.pdb
+D:\Users\jbb\github\MissionController2\MissionControllerEC\obj\Debug\MissionControllerEC.csproj.CopyComplete
+D:\Users\jbb\github\MissionController2\MissionControllerEC\obj\Debug\MissionControllerEC.csproj.AssemblyReference.cache

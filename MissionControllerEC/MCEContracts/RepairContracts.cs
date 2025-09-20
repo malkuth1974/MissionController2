@@ -10,17 +10,17 @@ using KSPAchievements;
 using MissionControllerEC.MCEParameters;
 using MissionControllerEC.PartModules;
 using KSP.Localization;
+using static MissionControllerEC.RegisterToolbar;
 
 namespace MissionControllerEC.MCEContracts
 {
     #region Repair Goal Contract
-    public class RepairGoal : Contract
+    public class MCE_Repair_Goal : Contract
     {
         Settings st = new Settings("Config.cfg");
         CelestialBody targetBody = null;
         public int planetIDX = 1;
-        public string vesselID;
-        public string vesselName;
+        public string vesselID, vesselName;
         public bool NoVessel = false;
         public string titleName = "Repair Vessel ";
         public double maxApA;
@@ -43,13 +43,13 @@ namespace MissionControllerEC.MCEContracts
                             if (vs.vesselType == VesselType.Probe)
                             {
                                 repairvesselList.Add(new RepairVesselsList(vs.vesselName, vs.id.ToString(), vs.orbit.ApA, vs.mainBody.flightGlobalsIndex));
-                                Debug.Log("Added Vessel " + vs.name + " To repair list for selection.");
+                                Log.Info("Added Vessel " + vs.name + " To repair list for selection.");
                             }
                             else
-                            { /*Debug.Log("No satellites found with a Repair panel, Skiping satellite repair Contracts");*/ }
+                            { /*Log.Info("No satellites found with a Repair panel, Skiping satellite repair Contracts");*/ }
                         }
                         else
-                        { /*Debug.Log("Could not find any repair panels on vessel type satellites.  Make sure your placing repair panels on your satellites.");*/ }
+                        { /*Log.Info("Could not find any repair panels on vessel type satellites.  Make sure your placing repair panels on your satellites.");*/ }
                     }
                 }
             }
@@ -64,10 +64,10 @@ namespace MissionControllerEC.MCEContracts
                 {
                     originalName = vs.vesselName;
                     vs.vesselName = vs.vesselName.Replace(originalName, originalName + "(Repair)");
-                    Debug.Log("vessel original name is " + originalName + "new name " + vs.vesselName);
+                    Log.Info("vessel original name is " + originalName + "new name " + vs.vesselName);
                 }
                 else
-                    Debug.Log("Vessel ID does not match for repair contract");
+                    Log.Info("Vessel ID does not match for repair contract");
             }
         }
 
@@ -80,16 +80,15 @@ namespace MissionControllerEC.MCEContracts
                     vs.vesselName = vs.vesselName.Replace("(Repair)", "");
                 }
                 else
-                    Debug.Log("could not find vessel name to change back.  Have to manually change it back.  Possible when docked name can't be changed since vessel doesn't exist while docked");
+                    Log.Info("could not find vessel name to change back.  Have to manually change it back.  Possible when docked name can't be changed since vessel doesn't exist while docked");
             }
         }
 
         public void chooseVesselRepairFromList()
         {
-            System.Random rnd = new System.Random();
             if (repairvesselList.Count > 0)
             {
-                RepairVesselsList random = repairvesselList[rnd.Next(repairvesselList.Count)];
+                RepairVesselsList random = repairvesselList[SaveInfo.rnd.Next(repairvesselList.Count)];
                 vesselID = random.vesselId.ToString();
                 vesselName = random.vesselName.Replace("(unloaded)", "");
                 maxApA = random.MaxApA;
@@ -98,7 +97,10 @@ namespace MissionControllerEC.MCEContracts
                 Debug.LogWarning("Random Repair Vessel Selected " + random.vesselName + "  " + random.vesselId + "  " + random.MaxApA);
                 NoVessel = true;
             }
-            else { Debug.LogError(" Vessel Selection Null for repair Contract, skiped process"); NoVessel = false; }
+            else 
+            { 
+                Log.Info(" Vessel Selection Null for repair Contract, skipped process"); NoVessel = false; 
+            }
         }
 
         public int totalContracts;
@@ -109,22 +111,22 @@ namespace MissionControllerEC.MCEContracts
             switch (randomString)
             {
                 case 0:
-                    repairSynopsysText ="A section of the satellite has started to leak a small amount of fuel.  You are to EVA to the satellites repair panel and conduct repairs.";
+                    repairSynopsysText = "A section of the satellite has started to leak a small amount of fuel.  You are to EVA to the satellites repair panel and conduct repairs.";
                     break;
                 case 1:
-                    repairSynopsysText ="A small bus switch that controls the Satellites heating unit has malfunctioned.  EVA to the Repair Panel and try to bypass the switch with its backup.";
+                    repairSynopsysText = "A small bus switch that controls the Satellites heating unit has malfunctioned.  EVA to the Repair Panel and try to bypass the switch with its backup.";
                     break;
                 case 2:
-                    repairSynopsysText ="After launch of the satellite, ground control operators noticed a software glitch in the satellites operating system.  EVA to the Repair Panel to update the software.";
+                    repairSynopsysText = "After launch of the satellite, ground control operators noticed a software glitch in the satellites operating system.  EVA to the Repair Panel to update the software.";
                     break;
                 case 3:
-                    repairSynopsysText =" A small fragment dislodged one of the solar panel housing units.  The solar panel is considered lost and needs to be disengaged from the satellite systems.  EVA to the Repair Panel to start repairs.";
+                    repairSynopsysText = " A small fragment dislodged one of the solar panel housing units.  The solar panel is considered lost and needs to be disengaged from the satellite systems.  EVA to the Repair Panel to start repairs.";
                     break;
                 case 4:
-                    repairSynopsysText ="The port side ABS unit has malfunctioned on this satellite.  EVA to the Repair Panel and conduct repairs to replace the defective component.";
+                    repairSynopsysText = "The port side ABS unit has malfunctioned on this satellite.  EVA to the Repair Panel and conduct repairs to replace the defective component.";
                     break;
                 case 5:
-                    repairSynopsysText ="Ground control operators noticed that the pitch control of the satellite sometimes fires off for no reason.  Satellite TV users are getting upset that they are losing satellite reception.  EVA to the Repair Panel to correct the issue.";
+                    repairSynopsysText = "Ground control operators noticed that the pitch control of the satellite sometimes fires off for no reason.  Satellite TV users are getting upset that they are losing satellite reception.  EVA to the Repair Panel to correct the issue.";
                     break;
                 case 6:
                     repairSynopsysText = "Ground control operators noticed that the pitch control of the satellite sometimes fires off for no reason.  Satellite TV users are getting upset that they are losing satellite reception.  EVA to the Repair Panel to correct the issue.";
@@ -133,17 +135,17 @@ namespace MissionControllerEC.MCEContracts
         }
 
         protected override bool Generate()
-        {           
+        {
             if (HighLogic.LoadedSceneIsFlight)
             {
                 return false;
             }
-            totalContracts = ContractSystem.Instance.GetCurrentContracts<RepairGoal>().Count();
-            TotalFinished = ContractSystem.Instance.GetCompletedContracts<RepairGoal>().Count();
-            //Debug.Log(" Repair Contract Totalcontracts " + totalContracts + " - " + " Total Finsihed " + TotalFinished);           
+            totalContracts = ContractSystem.Instance.GetCurrentContracts<MCE_Repair_Goal>().Count();
+            TotalFinished = ContractSystem.Instance.GetCompletedContracts<MCE_Repair_Goal>().Count();
+            //Log.Info(" Repair Contract Totalcontracts " + totalContracts + " - " + " Total Finsihed " + TotalFinished);           
             if (totalContracts >= 1 || !HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings>().RepairContracts)
             {
-                Debug.Log("contract is generated right now terminating Repair Vessel");
+                //Log.Info("contract is generated right now terminating Repair Vessel");
                 return false;
             }
             //if (SaveInfo.RepairContractGeneratedOn == false)
@@ -158,6 +160,9 @@ namespace MissionControllerEC.MCEContracts
             {
                 return false;
             }
+            int randomChance = Tools.RandomNumber(1, 100);
+            if (randomChance < HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEReapairPercent)
+            { return false; }
             repairTextSelection();
             targetBody = FlightGlobals.Bodies[planetIDX];
             if (targetBody = null)
@@ -165,25 +170,25 @@ namespace MissionControllerEC.MCEContracts
                 targetBody = Planetarium.fetch.Home;
             }
 
-            if (maxApA <= 120000)
+            if (maxApA < 120000)
             {
-                base.SetFunds(20000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 71000f * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 150000f * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
+                base.SetFunds(20000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 115000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 115000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
                 base.SetReputation(20f, 25f, targetBody);
             }
-            if (maxApA > 120000 && maxApA <= 1000000)
+            if (maxApA > 120000 && maxApA < 1000000)
             {
-                base.SetFunds(25000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 95000f * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 210000f * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
-                base.SetReputation(20f, 25f, targetBody);
+                base.SetFunds(25000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 120000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 120000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
+                base.SetReputation(24f, 28f, targetBody);
             }
-            if (maxApA > 30000)
+            if (maxApA > 1000000)
             {
-                base.SetFunds(2500 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 35000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 35000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
-                base.SetReputation(20f, 25f, targetBody);
+                base.SetFunds(35000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 125000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 125000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
+                base.SetReputation(26f, 30f, targetBody);
             }
 
             this.repairgoal2 = this.AddParameter(new RepairPanelPartCheck(titleName, vesselID, vesselName), null);
             repairgoal2.SetFunds(8000, targetBody);
-            repairgoal2.SetReputation(10, targetBody);                    
+            repairgoal2.SetReputation(10, targetBody);
             base.SetExpiry(1f, 3f);
             base.SetDeadlineYears(1f, targetBody);
 
@@ -247,7 +252,7 @@ namespace MissionControllerEC.MCEContracts
             Tools.ContractLoadCheck(node, ref vesselID, "Default", vesselID, "VesselID");
             Tools.ContractLoadCheck(node, ref vesselName, "Vessel Name Not Loaded", vesselName, "VesselName");
             Tools.ContractLoadCheck(node, ref titleName, "Title Name Not Loaded", titleName, "titlename");
-            Tools.ContractLoadCheck(node, ref maxApA, 300000, maxApA, "maxapa");            
+            Tools.ContractLoadCheck(node, ref maxApA, 300000, maxApA, "maxapa");
             Tools.ContractLoadCheck(node, ref Ctitle, "Title Not Loaded", Ctitle, "ctitle");
             Tools.ContractLoadCheck(node, ref randomString, 1, randomString, "randomstring");
             Tools.ContractLoadCheck(node, ref NoVessel, false, NoVessel, "novessel");
@@ -260,7 +265,7 @@ namespace MissionControllerEC.MCEContracts
             node.AddValue("VesselID", vesselID);
             node.AddValue("VesselName", vesselName);
             node.AddValue("titlename", titleName);
-            node.AddValue("maxapa", maxApA);            
+            node.AddValue("maxapa", maxApA);
             node.AddValue("ctitle", Ctitle);
             node.AddValue("novessel", NoVessel);
             node.AddValue("randomstring", randomString);
@@ -282,7 +287,7 @@ namespace MissionControllerEC.MCEContracts
     }
     #endregion  
     #region Repair Station Contract
-    public class RepairStation : Contract
+    public class MCE_Repair_Station : Contract
     {
         Settings st = new Settings("Config.cfg");
         CelestialBody targetBody = null;
@@ -290,7 +295,7 @@ namespace MissionControllerEC.MCEContracts
         public string vesselID;
         public string vesselName;
         public bool NoVessel = false;
-        public string titleName = "Test";        
+        public string titleName = "Test";
         public string stationRepSynopse = "None";
         ContractParameter repairgoal2;
         public string Ctitle = "To Repair Station You must have at Least ";
@@ -310,38 +315,37 @@ namespace MissionControllerEC.MCEContracts
                         {
                             if (vs.vesselType == VesselType.Station)
                             {
-                                repairvesselListStations.Add(new RepairVesselsList(vs.vesselName, vs.id.ToString(), vs.orbit.ApA, vs.mainBody.flightGlobalsIndex)); 
-                           
+                                repairvesselListStations.Add(new RepairVesselsList(vs.vesselName, vs.id.ToString(), vs.orbit.ApA, vs.mainBody.flightGlobalsIndex));
+
                             }
                             else
                             {
-                                //Debug.Log("Could not find station with a repair panel, if you want these types of contracts place a repair panel anywhere on your station.");
+                                //Log.Info("Could not find station with a repair panel, if you want these types of contracts place a repair panel anywhere on your station.");
                             }
                         }
                         else
                         {
-                            //Debug.Log("Could not find station with a repair panel, if you want these types of contracts place a repair panel anywhere on your station.");
+                            //Log.Info("Could not find station with a repair panel, if you want these types of contracts place a repair panel anywhere on your station.");
                         }
                     }
                 }
             }
-                                                   
+
         }
 
         public void chooseVesselRepairStationFromList()
         {
-            System.Random rnd = new System.Random();
             if (repairvesselListStations.Count > 0)
             {
-                RepairVesselsList random = repairvesselListStations[rnd.Next(repairvesselListStations.Count)];
+                RepairVesselsList random = repairvesselListStations[SaveInfo.rnd.Next(repairvesselListStations.Count)];
                 vesselID = random.vesselId.ToString();
                 vesselName = random.vesselName.Replace("(unloaded)", "");
                 planetIDX = random.bodyidx;
-                Debug.LogWarning("(repair station)bodyIDX is: " + random.bodyidx);
-                Debug.LogWarning("Random Repair Orbital Station Selected " + random.vesselName + "  " + random.vesselId + "  " + random.MaxApA);
+                //Debug.LogWarning("(repair station)bodyIDX is: " + random.bodyidx);
+                //Debug.LogWarning("Random Repair Orbital Station Selected " + random.vesselName + "  " + random.vesselId + "  " + random.MaxApA);
                 NoVessel = true;
             }
-            else { /*Debug.LogError(" Vessel Selection Null, skiped process"); NoVessel = false;*/ }
+            else { /*Log.Error(" Vessel Selection Null, skiped process"); NoVessel = false;*/ }
         }
 
         public int totalContracts;
@@ -352,42 +356,42 @@ namespace MissionControllerEC.MCEContracts
             switch (randomString)
             {
                 case 0:
-                    stationRepSynopse ="A solar panel section overloaded last night.  We shut down a small area of the panel, but you need to reprogram the system to compensate for the new energy output.";
+                    stationRepSynopse = "A solar panel section overloaded last night.  We shut down a small area of the panel, but you need to reprogram the system to compensate for the new energy output.";
                     break;
                 case 1:
-                    stationRepSynopse ="The four Main Bus Switching Units (MBSUs), control the routing of power from the the solar array wings to the rest of Station " + vesselName + "." +
+                    stationRepSynopse = "The four Main Bus Switching Units (MBSUs), control the routing of power from the the solar array wings to the rest of Station " + vesselName + "." +
                     " Yesterday MBSU-1, while still routing power correctly, ceased responding.  We need you to reset the system from the Repair Panel.";
                     break;
                 case 2:
-                    stationRepSynopse ="An incorrect command sequence caused the current altitude maintenance rocket control system to misfire during an altitude re-boost maneuver.  Fix the issue by using the Repair Panel outside.";
+                    stationRepSynopse = "An incorrect command sequence caused the current altitude maintenance rocket control system to misfire during an altitude re-boost maneuver.  Fix the issue by using the Repair Panel outside.";
                     break;
                 case 3:
-                    stationRepSynopse ="There is a failure in Cooling Loop A (starboard side).  One of two external cooling loops failed, leaving the station with only half of its normal cooling capacity and zero redundancy in some systems.  The repair panel can be used to adjust for this issue and get the system back online.";
+                    stationRepSynopse = "There is a failure in Cooling Loop A (starboard side).  One of two external cooling loops failed, leaving the station with only half of its normal cooling capacity and zero redundancy in some systems.  The repair panel can be used to adjust for this issue and get the system back online.";
                     break;
                 case 4:
-                    stationRepSynopse ="A replacement sequential shunt unit (SSU) for a 3A power system needs to be powered up so it can start to help the station's power situation.  Conduct an EVA, locate the Repair Panel, and perform the operations.";
+                    stationRepSynopse = "A replacement sequential shunt unit (SSU) for a 3A power system needs to be powered up so it can start to help the station's power situation.  Conduct an EVA, locate the Repair Panel, and perform the operations.";
                     break;
                 case 5:
-                    stationRepSynopse =" You need to Replace a failed Space-to-Ground Transmitter Receiver Controller and the Mobile Base Camera Light Pan-Tilt Assembly near the Repair panel.  Conduct an EVA, locate the Repair Panel, and perform the repairs.";
+                    stationRepSynopse = " You need to Replace a failed Space-to-Ground Transmitter Receiver Controller and the Mobile Base Camera Light Pan-Tilt Assembly near the Repair panel.  Conduct an EVA, locate the Repair Panel, and perform the repairs.";
                     break;
                 case 6:
-                    stationRepSynopse =" fuel leak has been detected!  We have isolated the leak from Mission Control but the system needs recalibrated to return to normal operation.  Conduct an EVA, locate the Repair Panel, and fix the issue.";
+                    stationRepSynopse = " fuel leak has been detected!  We have isolated the leak from Mission Control but the system needs recalibrated to return to normal operation.  Conduct an EVA, locate the Repair Panel, and fix the issue.";
                     break;
             }
         }
 
         protected override bool Generate()
-        {          
+        {
             if (HighLogic.LoadedSceneIsFlight)
             {
                 return false;
             }
-            totalContracts = ContractSystem.Instance.GetCurrentContracts<RepairStation>().Count();
-            TotalFinished = ContractSystem.Instance.GetCompletedContracts<RepairStation>().Count();
+            totalContracts = ContractSystem.Instance.GetCurrentContracts<MCE_Repair_Station>().Count();
+            TotalFinished = ContractSystem.Instance.GetCompletedContracts<MCE_Repair_Station>().Count();
             if (totalContracts >= 1 || !HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings>().RepairContracts)
             {
-                Debug.LogWarning("Total Repair station Contracts is greater then one Repair Contract Not Generated");
-                return false;                
+                //Debug.LogWarning("Total Repair station Contracts is greater then one Repair Contract Not Generated");
+                return false;
             }
             //if (SaveInfo.RepairStationContractGeneratedOn == false)
             //{
@@ -407,6 +411,9 @@ namespace MissionControllerEC.MCEContracts
             {
                 return false;
             }
+            int randomChance = Tools.RandomNumber(1, 100);
+            if (randomChance < HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEReapairPercent)
+            { return false; }
             repairStationSelect();
 
             this.AddParameter(new EvaGoal(FlightGlobals.Bodies[planetIDX]), null);
@@ -465,13 +472,13 @@ namespace MissionControllerEC.MCEContracts
         }
 
         protected override void OnLoad(ConfigNode node)
-        {                     
+        {
             Tools.ContractLoadCheck(node, ref planetIDX, 1, planetIDX, "planetIDX");
             Tools.ContractLoadCheck(node, ref vesselID, "Default", vesselID, "VesselID");
             Tools.ContractLoadCheck(node, ref vesselName, "Woops Default Loaded", vesselName, "VesselName");
-            Tools.ContractLoadCheck(node, ref titleName, "Woops Default Loaded", titleName, "titlename");            
+            Tools.ContractLoadCheck(node, ref titleName, "Woops Default Loaded", titleName, "titlename");
             Tools.ContractLoadCheck(node, ref Ctitle, "Woops Default Loaded", Ctitle, "ctitle");
-            Tools.ContractLoadCheck(node, ref randomString, 1,randomString,"randomstring");
+            Tools.ContractLoadCheck(node, ref randomString, 1, randomString, "randomstring");
             Tools.ContractLoadCheck(node, ref NoVessel, false, NoVessel, "novessel");
             Tools.ContractLoadCheck(node, ref stationRepSynopse, "Synopse Not loaded", stationRepSynopse, "stationsynop");
             targetBody = FlightGlobals.Bodies[planetIDX];
@@ -481,7 +488,7 @@ namespace MissionControllerEC.MCEContracts
             node.AddValue("planetIDX", planetIDX);
             node.AddValue("VesselID", vesselID);
             node.AddValue("VesselName", vesselName);
-            node.AddValue("titlename", titleName);           
+            node.AddValue("titlename", titleName);
             node.AddValue("ctitle", Ctitle);
             node.AddValue("randomstring", randomString);
             node.AddValue("novessel", NoVessel);
@@ -497,7 +504,7 @@ namespace MissionControllerEC.MCEContracts
                 return false;
         }
     }
-    #endregion  
-    
+    #endregion
+
 
 }

@@ -14,19 +14,17 @@ using KSP.Localization;
 namespace MissionControllerEC.MCEContracts
 {      
     #region OrbitalScan Contract
-    public class OrbitalScanContract : Contract
+    public class MCE_orbital_Scan_Contract : Contract
     {
         Settings st = new Settings("Config.cfg");
         CelestialBody targetBody = null;
-        int crewCount = 0;
         public double testpos = 0;
+        int crewCount = 0;
         string partName = "Ionization Chamber";
         int partNumber = 1;
         double missionTime = 0;
-        public int totalContracts = 0;
-        public int TotalFinished = 0;
-        ContractParameter orbitresearch1;
-        ContractParameter orbitresearch2;
+        public int totalContracts = 0, TotalFinished = 0;
+        public ContractParameter orbitresearch2;
 
         protected override bool Generate()
         {           
@@ -34,27 +32,32 @@ namespace MissionControllerEC.MCEContracts
             targetBody = GetUnreachedTargets();
             if (targetBody == null)
             {
-                Debug.LogWarning("Orbital Research Has No Valid Target bodies contract rejected");
+                //Debug.LogWarning("Orbital Research Has No Valid Target bodies contract rejected");
                 return false;                
             }
-            Debug.LogWarning("Orbit Research Body is " + targetBody.bodyName);          
+            //Debug.LogWarning("Orbit Research Body is " + targetBody.bodyName);          
             if (!HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings>().OrbitalScienceContracts)
             {
-                Debug.LogWarning("Orbit Research Random Selection is false, contract not Generated.");
+                //Debug.LogWarning("Orbit Research Random Selection is false, contract not Generated.");
                 return false;
             }
-            totalContracts = ContractSystem.Instance.GetCurrentContracts<OrbitalScanContract>().Count();
-            TotalFinished = ContractSystem.Instance.GetCompletedContracts<OrbitalScanContract>().Count();
+            totalContracts = ContractSystem.Instance.GetCurrentContracts<MCE_orbital_Scan_Contract>().Count();
+            TotalFinished = ContractSystem.Instance.GetCompletedContracts<MCE_orbital_Scan_Contract>().Count();
             if (totalContracts >= HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().ScienceContractNumbers)
             {
-                Debug.LogWarning("Orbit Research Already Generated, only 1 contract at time please.");
+                //Debug.LogWarning("Orbit Research Already Generated, only 1 contract at time please.");
                 return false;
             }
+            
             missionTime = Tools.RandomNumber(200, 1500);
-            this.orbitresearch1 = this.AddParameter(new InOrbitGoal(targetBody), null);
-            orbitresearch1.SetFunds(4000, targetBody);
-            orbitresearch1.SetReputation(3, targetBody);
-            orbitresearch1.SetScience(2, targetBody);
+
+            // Build New orbits Using KSP Build Orbits.. Simple inclanations becuase of ground stations
+            Orbit o = FinePrint.Utilities.OrbitUtilities.GenerateOrbit(MissionSeed, targetBody, FinePrint.Utilities.OrbitType.EQUATORIAL, .1, 0, 0);
+            //Using Fineprint to double check its own calculations.
+            FinePrint.Utilities.OrbitUtilities.ValidateOrbit(MissionSeed, ref o, FinePrint.Utilities.OrbitType.EQUATORIAL, .1, 0);
+            //Log.Info("MCE Research Contract Orbit Values: " + " APA " + o.ApA + " PEA " + o.PeA + " Seed Number " + MissionSeed.ToString());
+
+            this.AddParameter(new FinePrint.Contracts.Parameters.SpecificOrbitParameter(FinePrint.Utilities.OrbitType.EQUATORIAL, o.inclination, o.eccentricity, o.semiMajorAxis, o.LAN, o.argumentOfPeriapsis, o.meanAnomalyAtEpoch, o.epoch, targetBody, 4), null);           
             this.orbitresearch2 = this.AddParameter(new OrbialResearchPartCheck(targetBody, missionTime), null);
             orbitresearch2.SetFunds(5000, targetBody);
             orbitresearch2.SetReputation(5, targetBody);
@@ -66,7 +69,7 @@ namespace MissionControllerEC.MCEContracts
             base.SetScience(5f, targetBody);
             base.SetDeadlineYears(3f, targetBody);
             base.SetReputation(5f, 3f, targetBody);
-            base.SetFunds(6000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 41500 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 55000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
+            base.SetFunds(8000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 90000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 90000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
 
             return true;
         }
@@ -119,7 +122,7 @@ namespace MissionControllerEC.MCEContracts
             Tools.ContractLoadCheck(node, ref crewCount, 1, crewCount, "crewcount");
             Tools.ContractLoadCheck(node, ref partName, "Orbital Research Scanner", partName, "partname");
             Tools.ContractLoadCheck(node, ref partNumber, 1, partNumber, "maxcount");
-            Tools.ContractLoadCheck(node, ref missionTime, 10000, missionTime, "missiontime");
+            Tools.ContractLoadCheck(node, ref missionTime, 10000, missionTime, "missiontime");           
 
         }
         protected override void OnSave(ConfigNode node)
@@ -129,7 +132,7 @@ namespace MissionControllerEC.MCEContracts
             node.AddValue("crewcount", crewCount);
             node.AddValue("partname", partName);
             node.AddValue("maxcount", partNumber);
-            node.AddValue("missiontime", missionTime);
+            node.AddValue("missiontime", missionTime);          
         }
 
         public override bool MeetRequirements()
@@ -161,7 +164,7 @@ namespace MissionControllerEC.MCEContracts
     }
     #endregion
     #region Lander Scanning Contract
-    public class LanderResearchScan : Contract
+    public class MCE_Lander_Research_Scan : Contract
     {
         Settings st = new Settings("Config.cfg");
         CelestialBody targetBody = null;
@@ -180,14 +183,14 @@ namespace MissionControllerEC.MCEContracts
             if (HighLogic.LoadedSceneIsFlight) { return false; }                  
             if (!HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings>().GroundScienceContracts)
             {
-                Debug.LogWarning("Lander Research Contracts random set to false No contract generated.");
+                //Debug.LogWarning("Lander Research Contracts random set to false No contract generated.");
                 return false;
             }
-            totalContracts = ContractSystem.Instance.GetCurrentContracts<LanderResearchScan>().Count();
-            TotalFinished = ContractSystem.Instance.GetCompletedContracts<LanderResearchScan>().Count();
+            totalContracts = ContractSystem.Instance.GetCurrentContracts<MCE_Lander_Research_Scan>().Count();
+            TotalFinished = ContractSystem.Instance.GetCompletedContracts<MCE_Lander_Research_Scan>().Count();
             if (totalContracts >= HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().ScienceContractNumbers)
             {
-                Debug.LogWarning("Lander Research Already Generated, only 1 contract at time please.");
+                //Debug.LogWarning("Lander Research Already Generated, only 1 contract at time please.");
                 return false;
             }
             amountTime = Tools.RandomNumber(200, 1500);
@@ -215,7 +218,7 @@ namespace MissionControllerEC.MCEContracts
             base.SetScience(15f, targetBody);
             base.SetDeadlineYears(3f, targetBody);
             base.SetReputation(35f, 11f, targetBody);
-            base.SetFunds(5000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 40000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 50000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
+            base.SetFunds(15000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 110000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 110000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
 
             return true;
         }

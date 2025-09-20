@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<KSPBundleDefinition xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" UrlName="mcesatelliteui" Name="mcesatelliteui" CreatedTime="-8586063288559704330">
+  <Author />
+  <Info />
+  <Assets>
+    <Asset Name="MCESatelliteHub" Path="Assets/UiExport/MCESatelliteHub.prefab" Type="GameObject" Url="UiExport/MCESatelliteHub" AutoLoad="false" />
+  </Assets>
+  <Dependencies />
+</KSPBundleDefinition>

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -9,40 +9,46 @@ using System.Text;
 using KSPAchievements;
 using MissionControllerEC.MCEParameters;
 using KSP.Localization;
+using static MissionControllerEC.RegisterToolbar;
 
 namespace MissionControllerEC.MCEContracts
 {
-    public class SatelliteContracts : Contract
+    public class MCE_Satellite_Contracts : Contract
     {
+        #region fields
         Settings st = new Settings("Config.cfg");
-        MissionControllerEC mc = new MissionControllerEC();
-        CelestialBody targetBody = Planetarium.fetch.Home;      
-        public double contractAMA = 0;
-        public double contractINC = 0;
-        public double contractAOP = 0;
-        public int crewCount = 0;
+        //MissionControllerEC mc; // = new MissionControllerEC();
+        CelestialBody targetBody = Planetarium.fetch.Home;            
+        public int crewCount = 0, partAmount = 1, scipartamount = 1, scipartcount = 1, trackStationNumber = 0, PolarStationNumber = 0;
         public bool techUnlocked = false;
-        public float frequency = 0;
-        public float moduletype = 0;
-        public int partAmount = 1;
+        public float frequency = 0, moduletype = 0;
         public string partName = "Repair Panel";
         public string SatTypeName = "Communications";
-        public int scipartamount = 1;
-        public int scipartcount = 1;
         public string TOSName = Localizer.Format("#autoLOC_MissionController2_1000095");              		// #autoLOC_MissionController2_1000095 = We need this amount of time to conduct our studies\n 
-        public int totalContracts;
-        public int TotalFinished;
-        private int trackStationNumber = 0;
-        private int PolarStationNumber = 0;
+        public int totalContracts, TotalFinished;
         public string StationName = "None";
         public string satType = "None";
         public string satStoryDef = "none";
         public string contractNotes = "none";
         public string satTitlestring = "none";
         public string contractSynops = "none";
-              
+        #endregion
+
+        public  MCE_Satellite_Contracts()
+        {
+#if false
+            mc = MissionControllerEC.Instance;
+            if (mc == null)
+            {
+                Log.Info("MCE_Satellite_Contracts allocating MissionControllerED");
+                mc = new MissionControllerEC();
+            }
+#endif
+        }
+#region switch 1      
         public void SatTypeValue()
         {
+       
             switch (SaveInfo.SatelliteTypeChoice)
             {
                 case 0:
@@ -111,8 +117,10 @@ namespace MissionControllerEC.MCEContracts
                     contractSynops = Localizer.Format("#autoLOC_MissionController2_1000142");		// #autoLOC_MissionController2_1000142 = Set up all satellite cores with right frequencies.  All cores have a different set of frequencies to adjust in each vessel.  Failure to do this will result in having to launch more vessels.
                     break;
             }
-            //Debug.Log("MCE satType Mission Is " + satType);
+            
         }
+#endregion
+#region Switch 2
         public void SetTrackStationNumber(int value)
         {
             switch (value)
@@ -152,78 +160,115 @@ namespace MissionControllerEC.MCEContracts
                     break;
             }
         }
-                               
+#endregion
+#region ContractGenerate
         ContractParameter OnDestroy;
         
         protected override bool Generate()
-        {                                 
+        {
             if (HighLogic.LoadedSceneIsFlight) { return false; }
             if (!HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings>().SatelliteContracts)
-            {              
+            {
                 return false;
             }
-            totalContracts = ContractSystem.Instance.GetCurrentContracts<SatelliteContracts>().Count();
-            TotalFinished = ContractSystem.Instance.GetCompletedContracts<SatelliteContracts>().Count();
+            totalContracts = ContractSystem.Instance.GetCurrentContracts<MCE_Satellite_Contracts>().Count();
+            TotalFinished = ContractSystem.Instance.GetCompletedContracts<MCE_Satellite_Contracts>().Count();
 
             if (totalContracts >= HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().SatelliteContractNumbers)
             {
                 return false;
             }
-            System.Random rnd = new System.Random();
-            int stationNumber = rnd.Next(1,4);
+            
+            //New random Planet the contract will select.. It checks first to see if player has visited.. If not cannont get a Sat contract to planet until you do.
+            int randomTargetBody;
+            randomTargetBody = Tools.RandomNumber(1, 100);
+            if (randomTargetBody > HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCESatOwPercentChance)  // Higher the number the Lower chance to get a planet other than kerbin
+            {
+                targetBody = GetUnreachedTargets();
+                if (targetBody == null)
+                {
+                    //Debug.LogWarning("Orbital Research Has No Valid Target bodies contract rejected");
+                    return false;  //Just incase something bad happens and doesn't match contract is terminated and won't generate.
+                }
+            }
+            //Setting up the ground stations (random)
+            int stationNumber = SaveInfo.rnd.Next(1,4);
             SetTrackStationNumber(stationNumber);
-            mc.CheckRandomSatelliteContractTypes();
-            float OrbitRandomMult = Tools.RandomNumber(1, 5);
-                                                  
+            MissionControllerEC.CheckRandomSatelliteContractTypes();
+            
+            //Just checking to make sure the player has the Tech to do these contracts.
             bool parttechUnlock = ResearchAndDevelopment.GetTechnologyState("advConstruction") == RDTech.State.Available;
-                                             
+            
+            // Setting up the Satellite types/Freq/Modules
             SatTypeValue();
-            int frequencyTest = rnd.Next(12, 40);
+            int frequencyTest = SaveInfo.rnd.Next(12, 40);
             frequency = (float)frequencyTest - .5f;
-            moduletype = rnd.Next(1, 4);
-            Double AtmoDepth = targetBody.atmosphereDepth;
-            if (SaveInfo.SatelliteTypeChoice == 0)
-            {               
-                contractAMA = Tools.RandomNumber((int)AtmoDepth, (int)AtmoDepth + 25000) *10 ;
-                contractINC = 0;
-                contractAOP = Tools.getAOPCalc(contractAMA, 2.1);
+            moduletype = SaveInfo.rnd.Next(1, 4);
+
+            //Just the random seed number used for Orbits in fineprint.. Effects Random Nubmers for Altitudes...
+            //Random Diffuculty for alltitude.
+
+            //Finding the Min Orbit Height for the Contract payout later.
+            double minSMA = FinePrint.Utilities.CelestialUtilities.GetMinimumOrbitalDistance(targetBody, 2f);  
+            
+            //Build New orbits Using KSP Build Orbits.. Simple inclanations becuase of ground stations           
+            Orbit o = FinePrint.Utilities.OrbitUtilities.GenerateOrbit(MissionSeed, targetBody, FinePrint.Utilities.OrbitType.EQUATORIAL,.1, 0, 0);
+            //Using Fineprint to double check its own calculations.
+            FinePrint.Utilities.OrbitUtilities.ValidateOrbit(MissionSeed, ref o, FinePrint.Utilities.OrbitType.EQUATORIAL, .1, 0);
+            //Log.Info("MCE Orbit Values for satellite Contracts: " + " APA " + o.ApA + " PEA " + o.PeA + " Seed Number " + MissionSeed.ToString());
+
+            if (SaveInfo.SatelliteTypeChoice == 0)  // Using the switch to check which type of contract to load (Random) Repeated for all Satellite types.
+            {
+
                 SatTypeName = "Communication";               
 
                 int randomPolar;
                 randomPolar = Tools.RandomNumber(1, 100);
                 if (randomPolar > 75)
                 {
+                    //Have To Rebuild Orbit for Polar.. Still pretty simple no real inclination changes yet because of ground stations.
+                    o = FinePrint.Utilities.OrbitUtilities.GenerateOrbit(MissionSeed, targetBody, FinePrint.Utilities.OrbitType.POLAR, .4, 1, 1);
+                    FinePrint.Utilities.OrbitUtilities.ValidateOrbit(MissionSeed, ref o, FinePrint.Utilities.OrbitType.POLAR, .1, 0);
+
                     stationNumber = Tools.RandomNumber(5, 6);
-                    SetTrackStationNumber(stationNumber);                    
-                    this.AddParameter(new FinePrint.Contracts.Parameters.SpecificOrbitParameter(FinePrint.Utilities.OrbitType.EQUATORIAL, 90, .01, contractAMA, 99, contractAOP, 1, 0, targetBody, 3), null);
-                    this.AddParameter(new GroundStationPostion(StationName, trackStationNumber, PolarStationNumber, frequency,true), null);
+                    SetTrackStationNumber(stationNumber);
+                    this.AddParameter(new FinePrint.Contracts.Parameters.SpecificOrbitParameter(FinePrint.Utilities.OrbitType.POLAR,o.inclination,o.eccentricity,o.semiMajorAxis,o.LAN,o.argumentOfPeriapsis,o.meanAnomalyAtEpoch,o.epoch, targetBody, 3), null);
+                    if (randomTargetBody < HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCESatOwPercentChance)  // We don't want a Ground station Parameter for anything other than Kerbin.  
+                    {
+                        this.AddParameter(new GroundStationPostion(StationName, trackStationNumber, PolarStationNumber, frequency, true), null);
+                    }
                     base.prestige = ContractPrestige.Exceptional;
                 }
                 else
-                {                  
-                    this.AddParameter(new FinePrint.Contracts.Parameters.SpecificOrbitParameter(FinePrint.Utilities.OrbitType.EQUATORIAL, contractINC, .01, contractAMA, 99, contractAOP, 1, 0, targetBody, 4), null);
-                    this.AddParameter(new GroundStationPostion(StationName, trackStationNumber, PolarStationNumber, frequency, false), null);
+                {
+                    //This is default Orbit that is Equatorial in nature. Uses default orbit and does not have to be rebuilt.  Repeats this pattern for all Satellite Types
+                    this.AddParameter(new FinePrint.Contracts.Parameters.SpecificOrbitParameter(FinePrint.Utilities.OrbitType.EQUATORIAL, o.inclination, o.eccentricity, o.semiMajorAxis, o.LAN, o.argumentOfPeriapsis, o.meanAnomalyAtEpoch, o.epoch, targetBody, 4), null);
+                    if (randomTargetBody < HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCESatOwPercentChance)
+                    {
+                        this.AddParameter(new GroundStationPostion(StationName, trackStationNumber, PolarStationNumber, frequency, false), null);
+                    }
                 }
-                this.AddParameter(new satelliteCoreCheck(SatTypeName, frequency, moduletype, targetBody), null);                
+                this.AddParameter(new satelliteCoreCheck(SatTypeName, frequency, moduletype, targetBody), null);     //The satellite core check make sure all match.           
             }
             else if (SaveInfo.SatelliteTypeChoice == 1)
             {
                 SatTypeName = "Weather";
-                contractAMA = Tools.RandomNumber((int)AtmoDepth, (int)AtmoDepth + 10000) * 10;
-                contractINC = Tools.RandomNumber(-8, 8);
-                contractAOP = Tools.getAOPCalc(contractAMA, 2.1);
+                
                 int randomPolar;
                 randomPolar = Tools.RandomNumber(1, 100);
                 if (randomPolar > 70)
                 {
-                    contractAMA = Tools.RandomNumber((int)AtmoDepth, (int)AtmoDepth + 10000) * 10;
-                    contractINC = 90;                  
-                    this.AddParameter(new FinePrint.Contracts.Parameters.SpecificOrbitParameter(FinePrint.Utilities.OrbitType.EQUATORIAL, 90, .01, contractAMA, 99, contractAOP, 1, 0, targetBody, 3), null);
+                    o = FinePrint.Utilities.OrbitUtilities.GenerateOrbit(MissionSeed, targetBody, FinePrint.Utilities.OrbitType.POLAR, .2, 1, 1);
+                    FinePrint.Utilities.OrbitUtilities.ValidateOrbit(MissionSeed, ref o, FinePrint.Utilities.OrbitType.POLAR, .1, 0);
+
+                    this.AddParameter(new FinePrint.Contracts.Parameters.SpecificOrbitParameter(FinePrint.Utilities.OrbitType.POLAR, o.inclination, o.eccentricity, o.semiMajorAxis, o.LAN, o.argumentOfPeriapsis, o.meanAnomalyAtEpoch, o.epoch, targetBody, 3), null);
                     this.AddParameter(new satelliteCoreCheck(SatTypeName, frequency, moduletype, targetBody), null);
                 }
                 else
-                {                  
-                    this.AddParameter(new FinePrint.Contracts.Parameters.SpecificOrbitParameter(FinePrint.Utilities.OrbitType.EQUATORIAL, contractINC, .01, contractAMA, 99, contractAOP, 1, 0, targetBody, 6), null);
+                {
+                    o = FinePrint.Utilities.OrbitUtilities.GenerateOrbit(MissionSeed, targetBody, FinePrint.Utilities.OrbitType.POLAR, .2, 1, 1);
+                    FinePrint.Utilities.OrbitUtilities.ValidateOrbit(MissionSeed, ref o, FinePrint.Utilities.OrbitType.POLAR, .1, 0);
+                    this.AddParameter(new FinePrint.Contracts.Parameters.SpecificOrbitParameter(FinePrint.Utilities.OrbitType.RANDOM, o.inclination, o.eccentricity, o.semiMajorAxis, o.LAN, o.argumentOfPeriapsis, o.meanAnomalyAtEpoch, o.epoch, targetBody, 4), null);
                     this.AddParameter(new satelliteCoreCheck(SatTypeName, frequency, moduletype, targetBody), null);
                 }
             }
@@ -231,23 +276,30 @@ namespace MissionControllerEC.MCEContracts
             else if (SaveInfo.SatelliteTypeChoice == 2)
             {
                 SatTypeName = "Navigation";
-                contractAMA = Tools.RandomNumber((int)AtmoDepth, (int)AtmoDepth + 17000) * 10;
-                contractINC = 0;
-                contractAOP = Tools.getAOPCalc(contractAMA, 2.1);
+               
                 int randomPolar;
                 randomPolar = Tools.RandomNumber(1, 100);
                 if (randomPolar > 75)
                 {
+                    o = FinePrint.Utilities.OrbitUtilities.GenerateOrbit(MissionSeed, targetBody, FinePrint.Utilities.OrbitType.POLAR, .1, 0, 0);
+                    FinePrint.Utilities.OrbitUtilities.ValidateOrbit(MissionSeed, ref o, FinePrint.Utilities.OrbitType.POLAR, .1, 0);
                     stationNumber = Tools.RandomNumber(5, 6);
-                    SetTrackStationNumber(stationNumber);                  
-                    this.AddParameter(new FinePrint.Contracts.Parameters.SpecificOrbitParameter(FinePrint.Utilities.OrbitType.EQUATORIAL, 90, .01, contractAMA, 99, contractAOP, 1, 0, targetBody, 3), null);                    
-                    this.AddParameter(new GroundStationPostion(StationName, trackStationNumber, PolarStationNumber, frequency, true), null);
+                    SetTrackStationNumber(stationNumber);
+                    this.AddParameter(new FinePrint.Contracts.Parameters.SpecificOrbitParameter(FinePrint.Utilities.OrbitType.POLAR, o.inclination, o.eccentricity, o.semiMajorAxis, o.LAN, o.argumentOfPeriapsis, o.meanAnomalyAtEpoch, o.epoch, targetBody, 3), null);
+                    if (randomTargetBody < HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCESatOwPercentChance)
+                    {
+                        this.AddParameter(new GroundStationPostion(StationName, trackStationNumber, PolarStationNumber, frequency, true), null);
+                    }
                     base.prestige = ContractPrestige.Exceptional;
                 }
                 else
-                {                  
-                    this.AddParameter(new FinePrint.Contracts.Parameters.SpecificOrbitParameter(FinePrint.Utilities.OrbitType.EQUATORIAL, contractINC, .01, contractAMA, 99, contractAOP, 1, 0, targetBody, 3), null);
-                    this.AddParameter(new GroundStationPostion(StationName, trackStationNumber, PolarStationNumber, frequency, false), null);
+                {
+                    
+                    this.AddParameter(new FinePrint.Contracts.Parameters.SpecificOrbitParameter(FinePrint.Utilities.OrbitType.EQUATORIAL, o.inclination, o.eccentricity, o.semiMajorAxis, o.LAN, o.argumentOfPeriapsis, o.meanAnomalyAtEpoch, o.epoch, targetBody, 4), null);
+                    if (randomTargetBody < HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCESatOwPercentChance)
+                    {
+                        this.AddParameter(new GroundStationPostion(StationName, trackStationNumber, PolarStationNumber, frequency, false), null);
+                    }
                 }
                 this.AddParameter(new satelliteCoreCheck(SatTypeName, frequency, moduletype, targetBody), null);
                 
@@ -256,28 +308,30 @@ namespace MissionControllerEC.MCEContracts
             else if (SaveInfo.SatelliteTypeChoice == 3)
             {
                 SatTypeName = "Research";
-                contractAMA = Tools.RandomNumber((int)AtmoDepth, (int)AtmoDepth + 17000) * 10;
-                contractINC = Tools.RandomNumber(-10, 10);
-                contractAOP = Tools.getAOPCalc(contractAMA, 2.3);
+
                 int randomPolar;
+                int randomResearchPlanet;
                 randomPolar = Tools.RandomNumber(1, 100);
+                randomResearchPlanet = Tools.RandomNumber(1, 100);
                 if (randomPolar > 90)
                 {
-                    this.AddParameter(new FinePrint.Contracts.Parameters.SpecificOrbitParameter(FinePrint.Utilities.OrbitType.EQUATORIAL, 90, .01, contractAMA, 99, contractAOP, 1, 0, targetBody, 3), null);
+                    o = FinePrint.Utilities.OrbitUtilities.GenerateOrbit(MissionSeed, targetBody, FinePrint.Utilities.OrbitType.POLAR, .1, 2, 2);
+                    FinePrint.Utilities.OrbitUtilities.ValidateOrbit(MissionSeed, ref o, FinePrint.Utilities.OrbitType.POLAR, .1, 0);
+                    this.AddParameter(new FinePrint.Contracts.Parameters.SpecificOrbitParameter(FinePrint.Utilities.OrbitType.POLAR, o.inclination, o.eccentricity, o.semiMajorAxis, o.LAN, o.argumentOfPeriapsis, o.meanAnomalyAtEpoch, o.epoch, targetBody, 3), null);
                 }
                 else
                 {
-                    this.AddParameter(new FinePrint.Contracts.Parameters.SpecificOrbitParameter(FinePrint.Utilities.OrbitType.EQUATORIAL, contractINC, .01, contractAMA, 99, contractAOP, 1, 0, targetBody, 3), null);
+                    o = FinePrint.Utilities.OrbitUtilities.GenerateOrbit(MissionSeed, targetBody, FinePrint.Utilities.OrbitType.RANDOM, .1, 2, 2);
+                    FinePrint.Utilities.OrbitUtilities.ValidateOrbit(MissionSeed, ref o, FinePrint.Utilities.OrbitType.POLAR, .1, 0);
+                    this.AddParameter(new FinePrint.Contracts.Parameters.SpecificOrbitParameter(FinePrint.Utilities.OrbitType.RANDOM, o.inclination, o.eccentricity, o.semiMajorAxis, o.LAN, o.argumentOfPeriapsis, o.meanAnomalyAtEpoch, o.epoch, targetBody, 4), null);
                 }
                 this.AddParameter(new satelliteCoreCheck(SatTypeName, frequency, moduletype, targetBody), null);
             }
-            else if (SaveInfo.SatelliteTypeChoice == 4)
+            else if (SaveInfo.SatelliteTypeChoice == 4 && randomTargetBody < HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCESatOwPercentChance)
             {
-                contractAMA = Tools.RandomNumber((int)AtmoDepth, (int)AtmoDepth + 120000) * 10; ;  //Needs Fixing
-                contractINC = 0;
-                contractAOP = Tools.getAOPCalc(contractAMA, 2);
-                SatTypeName = "Communication";
-                this.AddParameter(new FinePrint.Contracts.Parameters.SpecificOrbitParameter(FinePrint.Utilities.OrbitType.EQUATORIAL, contractINC, .01, contractAMA, 99, contractAOP, 1, 0, targetBody, 3), null);
+               
+                SatTypeName = "Communication";              
+                this.AddParameter(new FinePrint.Contracts.Parameters.SpecificOrbitParameter(FinePrint.Utilities.OrbitType.EQUATORIAL, o.inclination, o.eccentricity, o.semiMajorAxis, o.LAN, o.argumentOfPeriapsis, o.meanAnomalyAtEpoch, o.epoch, targetBody, 4), null);
                 if (frequency >= 50)
                 {
                     frequency = -10;
@@ -301,13 +355,11 @@ namespace MissionControllerEC.MCEContracts
                 Network6.SetFunds(32000, 32000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
                 this.AddParameter(new GroundStationPostion("South Pole Station", 0, -89, frequency + 5, true), null);
             }
-            else if (SaveInfo.SatelliteTypeChoice == 5)
+            else if (SaveInfo.SatelliteTypeChoice == 5 && randomTargetBody < HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCESatOwPercentChance)
             {
-                contractAMA = Tools.RandomNumber((int)AtmoDepth, (int)AtmoDepth + 120000) * 10; ;  //Needs Fixing
-                contractINC = 0;
-                contractAOP = Tools.getAOPCalc(contractAMA, 2);
+              
                 SatTypeName = "Navigation";
-                this.AddParameter(new FinePrint.Contracts.Parameters.SpecificOrbitParameter(FinePrint.Utilities.OrbitType.EQUATORIAL, contractINC, .01, contractAMA, 99, contractAOP, 1, 0, targetBody, 3), null);
+                this.AddParameter(new FinePrint.Contracts.Parameters.SpecificOrbitParameter(FinePrint.Utilities.OrbitType.EQUATORIAL, o.inclination, o.eccentricity, o.semiMajorAxis, o.LAN, o.argumentOfPeriapsis, o.meanAnomalyAtEpoch, o.epoch, targetBody, 4), null);
                 if (frequency >= 50)
                 {
                     frequency = -10;
@@ -340,9 +392,7 @@ namespace MissionControllerEC.MCEContracts
             if (parttechUnlock)
             {
                 this.AddParameter(new PartGoal(partName, "Small Repair Panel", partAmount, true), null);
-            }
-            //this.AddParameter(new GetCrewCount(crewCount), null);
-            //this.AddParameter(new FinePrint.Contracts.Parameters.VesselSystemsParameter(), null);
+            }           
             if (HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().VesselMustSurvive == true)
             {
                 this.OnDestroy = this.AddParameter(new VesselMustSurvive(), null);
@@ -351,11 +401,34 @@ namespace MissionControllerEC.MCEContracts
 
             base.SetExpiry(3f, 10f);
             base.SetDeadlineYears(3f, targetBody);
-            base.SetFunds(2500 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 40000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 40000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
+
+            // Simple Height check for Contract Payouts.  Sure I could do it better.. But it seems to work.
+            if (o.ApA < minSMA + 500000)
+            {
+                base.SetFunds(2500 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 30000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 30000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
+                Log.Info("Satellite Contract Base Pay Less than Type 1of4");
+            }
+            if (o.ApA > minSMA + 500000 && o.ApA < minSMA + 800000)
+            {
+                base.SetFunds(5500 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 65000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 65000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
+                Log.Info("Satellite Contract Base Pay Less than Type 2of4");
+            }
+            if (o.ApA > minSMA + 800000 && o.ApA < minSMA + 2000000)
+            {
+                base.SetFunds(10500 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 75000* HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 75000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
+                Log.Info("Satellite Contract Base Pay Less than Type 3of4");
+            }
+            else
+            {               
+                 base.SetFunds(12500 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 95000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 95000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
+                Log.Info("Satellite Contract Base Pay Less than Type 4of4");
+            }
+
             base.SetReputation(15, 30, targetBody);
             return true;
         }
-
+#endregion
+#region ContractOverrides
         public override bool CanBeCancelled()
         {
             return true;
@@ -391,7 +464,7 @@ namespace MissionControllerEC.MCEContracts
             SaveInfo.SatelliteContractType = "None";
             SaveInfo.SatelliteContractModule = 0;
             SaveInfo.SatelliteContractFrequency = -1;
-            //Debug.Log("values for satellites have been reset");
+            //Log.Info("values for satellites have been reset");
             return Localizer.Format("#autoLOC_MissionController2_1000147") + " " + satType + " " + Localizer.Format("#autoLOC_MissionController2_1000148") + " " + targetBody.bodyName;		// #autoLOC_MissionController2_1000147 = You have successfully delivered our 		// #autoLOC_MissionController2_1000148 =  satellite to orbit around 
         }
 
@@ -404,9 +477,7 @@ namespace MissionControllerEC.MCEContracts
             Tools.ContractLoadCheck(node, ref scipartamount, 1, scipartamount, "sciamount");           
             Tools.ContractLoadCheck(node, ref TOSName, "Default", TOSName, "tosname");                     
             Tools.ContractLoadCheck(node, ref moduletype, 30, moduletype, "moduletype");
-            Tools.ContractLoadCheck(node, ref frequency, 1, frequency, "frequency");
-            Tools.ContractLoadCheck(node, ref contractAMA, 71000, contractAMA, "ApA");           
-            Tools.ContractLoadCheck(node, ref contractINC, 70500, contractINC, "PeA");
+            Tools.ContractLoadCheck(node, ref frequency, 1, frequency, "frequency");           
             Tools.ContractLoadCheck(node, ref satType, "Communication", satType, "sattype");
             Tools.ContractLoadCheck(node, ref satStoryDef, "None Loaded", satStoryDef, "satstory");
             Tools.ContractLoadCheck(node, ref contractNotes, "No load", contractNotes, "satnote");
@@ -416,7 +487,6 @@ namespace MissionControllerEC.MCEContracts
             Tools.ContractLoadCheck(node, ref trackStationNumber, 106, trackStationNumber, "tracknumber");
             Tools.ContractLoadCheck(node, ref PolarStationNumber, 0, PolarStationNumber, "polarstation");
             Tools.ContractLoadCheck(node, ref StationName, "Did Not Load", StationName, "stationname");
-            Tools.ContractLoadCheck(node, ref contractAOP, 99, contractAOP, "contractAOP");
 
         }
         protected override void OnSave(ConfigNode node)
@@ -432,9 +502,7 @@ namespace MissionControllerEC.MCEContracts
             node.AddValue("sciamount", scipartamount);
             node.AddValue("tosname", TOSName);           
             node.AddValue("moduletype", moduletype);
-            node.AddValue("frequency", frequency);
-            node.AddValue("ApA",contractAMA);          
-            node.AddValue("PeA",contractINC);
+            node.AddValue("frequency", frequency);            
             node.AddValue("sattype", satType);
             node.AddValue("satstory", satStoryDef);
             node.AddValue("satnote", contractNotes);
@@ -443,7 +511,6 @@ namespace MissionControllerEC.MCEContracts
             node.AddValue("tracknumber", trackStationNumber);
             node.AddValue("polarstation", PolarStationNumber);
             node.AddValue("stationname", StationName);
-            node.AddValue("contractAOP", contractAOP);
         }
 
         //for testing purposes
@@ -456,9 +523,24 @@ namespace MissionControllerEC.MCEContracts
             else
                 return false;
         }
-
+        protected static CelestialBody GetUnreachedTargets()
+        {
+            var bodies = Contract.GetBodies_Reached(true, false);
+            if (bodies != null)
+            {
+                if (bodies.Count > 0)
+                    return bodies[UnityEngine.Random.Range(0, bodies.Count)];
+            }
+            else
+            {
+                return null;
+            }
+            return null;
+        }
+#endregion
 
     }
+
     public class EarlyContracts : Contract
     {
         Settings settings = new Settings("config.cfg");
@@ -573,8 +655,7 @@ namespace MissionControllerEC.MCEContracts
             return Localizer.Format("#autoLOC_MissionController2_1000156") + " " + targetBody.bodyName + ". " + BiomeName + " " + Localizer.Format("#autoLOC_MissionController2_1000157");		// #autoLOC_MissionController2_1000156 = Land at specific Body and Biome we Request 		// #autoLOC_MissionController2_1000157 =  Then collect science.
         }
         protected override string MessageCompleted()
-        {
-            SaveInfo.Luna16Done = true;
+        {          
             return Localizer.Format("#autoLOC_MissionController2_1000158");		// #autoLOC_MissionController2_1000158 = Great job landing at the biome we specified.  The science we have gathered will help us in the future to bring kerbals deeper into our solar system!
         }
 

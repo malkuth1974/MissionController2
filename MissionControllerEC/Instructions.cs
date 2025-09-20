@@ -8,13 +8,16 @@ using System.Reflection;
 using Contracts;
 using KSP.UI.Screens;
 using Contracts.Parameters;
-//using MissionControllerEC.MCEContracts;
+
+using ToolbarControl_NS;
+using static MissionControllerEC.RegisterToolbar;
 
 
 namespace MissionControllerEC
 {
     public partial class MissionControllerEC
     {
+        #region Variables
         public float resourceCost;
         public float vesselPartCost;
         public float vesseltons;
@@ -23,14 +26,10 @@ namespace MissionControllerEC
         public bool showMiniTons = false;
         public float vesselResourceTons;
         public int currentContractType = 0;
-
         public int kerbalNumbers;
-        public float kerbCost;
-        public float KerbalFlatrate;
-        public float kerbalMultiplier;
+        public float kerbCost, KerbalFlatrate, kerbalMultiplier, RevertTotal, RevertAltitude,RevertOrbit,RevertPlanet;      
+        public Vessel vessel;
 
-        public float temp;
-        public float temp2;
 
         public static int supplyCount;
 
@@ -38,69 +37,91 @@ namespace MissionControllerEC
 
         public static List<string> CivName = new List<string>();
 
-        Tools.MC2RandomWieghtSystem.Item<int>[] RandomRepairContractsCheck;
-        Tools.MC2RandomWieghtSystem.Item<int>[] RandomSatelliteContractsCheck;
-        
+        static Tools.MC2RandomWieghtSystem.Item<int>[] RandomSatelliteContractsCheck;
+        #endregion
+#region Textures Main Buttons Handling
+#if false
         public void loadTextures()
         {
             if (texture == null)
             {
                 texture = new Texture2D(36, 36, TextureFormat.RGBA32, false);
                 texture.LoadImage(File.ReadAllBytes(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "MCEStockToolbar.png")));
-                Debug.LogError("MCE Textures Loaded");
+                //Log.Error("MCE Textures Loaded");
             }
             if (texture2 == null)
             {
                 texture2 = new Texture2D(36, 36, TextureFormat.RGBA32, false);
                 texture2.LoadImage(File.ReadAllBytes(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "MCERevert.png")));
-                Debug.LogError("MCE Textures2 Loaded");
+                //Log.Error("MCE Textures2 Loaded");
             }           
-            else { Debug.Log("MCE Textures Already Loaded"); }
+            else { /*Log.Info("MCE Textures Already Loaded"); */}
            
         }
+#endif
 
         public void loadFiles()
         {           
             if (settings.FileExists) { settings.Load(); settings.Save(); }
             else { settings.Save(); settings.Load(); }
-            Debug.LogError("MCE Settings Loaded");
-        }       
-
-        public void CreateButtons()
-        {
-            DestroyButtons();
-            if (HighLogic.LoadedScene == GameScenes.SPACECENTER && this.MCEButton == null)
-            {
-                this.MCEButton = ApplicationLauncher.Instance.AddModApplication(
-                    this.MCEOn,
-                    this.MCEOff,
-                    null,
-                    null,
-                    null,
-                    null,
-                    ApplicationLauncher.AppScenes.SPACECENTER,
-                    texture
-                    );
-                Debug.LogError("Creating MCEButton Buttons");
-            }
-            
-            if (HighLogic.LoadedScene == GameScenes.FLIGHT && this.MCERevert == null && HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCERevertAllow)
-            {
-                this.MCERevert = ApplicationLauncher.Instance.AddModApplication(
-                    this.RevertPress,
-                    this.KillMCePopups,
-                    null,
-                    null,
-                    null,
-                    null,
-                    ApplicationLauncher.AppScenes.FLIGHT,
-                    texture2
-                    );
-                Debug.LogError("creating MCERevert Buttons");
-            }
-            else { Debug.LogError("MCE2 CreateButtons Already Loaded"); }
+            //Log.Error("MCE Settings Loaded");
         }
 
+        public enum Modes2
+        {
+            SANDBOX = 0,
+            CAREER = 1,
+            SCENARIO = 2,
+            SCENARIO_NON_RESUMABLE = 3,
+            SCIENCE_SANDBOX = 4,
+            MISSION = 5,
+            MISSION_BUILDER = 6
+        }
+        public void MceCreateButtons()
+        {
+            if (HighLogic.CurrentGame.Mode == Game.Modes.CAREER || HighLogic.CurrentGame.Mode == Game.Modes.SCIENCE_SANDBOX)
+            {
+                if (HighLogic.LoadedScene == GameScenes.SPACECENTER && toolbarControl_MCEButton == null)
+                {
+                    toolbarControl_MCEButton = gameObject.AddComponent<ToolbarControl>();
+                    toolbarControl_MCEButton.AddToAllToolbars(MCEOn,
+                        MCEOff,
+                        ApplicationLauncher.AppScenes.SPACECENTER,
+                        MODID,
+                         "MCESpacecenter_Button",
+                         "Missioncontroller/PluginData/MCEStockToolbar",
+                         "Missioncontroller/PluginData/MCEStockToolbar-24",
+                        MODNAME);
+                }
+
+                if (HighLogic.LoadedScene == GameScenes.FLIGHT && toolbarControl_MCERevert == null && HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCERevertAllow)
+                {
+                    toolbarControl_MCERevert = gameObject.AddComponent<ToolbarControl>();
+                    toolbarControl_MCERevert.AddToAllToolbars(this.RevertPress,
+                        this.KillMCePopups,
+                        ApplicationLauncher.AppScenes.FLIGHT,
+                        MODID,
+                         "MCEFlight_Button",
+                         Path.Combine("Missioncontroller/PluginData/MCERevert"),
+                         Path.Combine("Missioncontroller/PluginData/MCERevert-24"),
+                        MODNAME);
+
+                    //Log.Error("creating MCERevert Buttons");
+                }
+            } else
+            {
+                if (toolbarControl_MCERevert != null)
+                {
+                    Destroy(toolbarControl_MCERevert);
+                    toolbarControl_MCERevert = null;
+                }
+                if (toolbarControl_MCEButton != null)
+                {
+                    Destroy(toolbarControl_MCEButton);
+                    toolbarControl_MCEButton = null;
+                }
+            }
+        }
         private void MCEOn()
         {
             SaveInfo.GUIEnabled = true;
@@ -111,93 +132,40 @@ namespace MissionControllerEC
             SaveInfo.GUIEnabled = false;
         }
 
-        //private void revertOff()
-        //{
-        //    MCE_ScenarioStartup.ShowPopUpWindow3 = false;
-        //    RevertPress();
-        //}
-        //private void revertOn()
-        //{
-        //    //MCE_ScenarioStartup.ShowPopUpWindow3 = true;
-        //    RevertPress();
-        //}
-        public void DestroyButtons()
+#if false
+        public void MceDestroyButtons()
         {
-            if (this.MCEButton != null)
+            if (MCEButton != null)
             {
-                ApplicationLauncher.Instance.RemoveModApplication(this.MCEButton);
+                ApplicationLauncher.Instance.RemoveModApplication(MCEButton);
+                //Log.Info("MCEButton Deleted With MCEDestroyButtons");
             }           
-            if (this.MCERevert != null)
+            if (MCERevert != null)
             {
-                ApplicationLauncher.Instance.RemoveModApplication(this.MCERevert);
+                ApplicationLauncher.Instance.RemoveModApplication(MCERevert);
+                //Log.Info("MCERevert Deleted With MCEDestroyButtons");
             }
-            else { Debug.Log("MCE destroy buttons failed"); }
+            else { /*Log.Info("MCE destroy buttons failed"); */}
         }
-        
+#endif
         public void GuiDestroy(Vector2 value, PopupDialog popupinfo)
         {            
             value = new Vector2(
                 ((Screen.width / 2) + popupinfo.RTrf.position.x) / Screen.width,
                 ((Screen.height / 2) + popupinfo.RTrf.position.y) / Screen.height);
-            Debug.LogError("GuiDestroy Info Save as is:  " + value.ToString());
-            //popupinfo.Dismiss();
-            //popupinfo = null;
-        }
-               
-        //public void CheckRepairContractTypes(GameScenes gs)
-        //{
-        //    randomContractsCheck();
-        //    currentContractType = Tools.MC2RandomWieghtSystem.PickOne<int>(RandomRepairContractsCheck);
-        //    Debug.LogWarning("Checking for Random Contracts Now MCE");
-        //    if (currentContractType == 0)
-        //    {
-        //        SaveInfo.RepairContractGeneratedOn = false;               
-        //        SaveInfo.RepairStationContractGeneratedOn = false;
-        //        Debug.Log("No Repair Type contracts at this time");
-        //    }            
-        //    else if (currentContractType == 1)
-        //    {
-        //        SaveInfo.RepairContractGeneratedOn = true;             
-        //        SaveInfo.RepairStationContractGeneratedOn = false;
-        //        Debug.Log("Repair Contract Selected");
-        //    }
-        //    else if (currentContractType == 2)
-        //    {
-        //        SaveInfo.RepairContractGeneratedOn = false;
-        //        SaveInfo.RepairStationContractGeneratedOn = true;
-        //        Debug.Log("RepairStation Contract Selected");
-        //    }           
-        //    else
-        //    {
-        //        Debug.LogWarning("MCE failed to load random contract Check, defaulting");
-        //    }
-        //}
-
-        public void CheckRandomSatelliteContractTypes()
-        {
-            randomSatelliteContractsCheck();
-            SaveInfo.SatelliteTypeChoice = Tools.MC2RandomWieghtSystem.PickOne<int>(RandomSatelliteContractsCheck); 
-            //Debug.LogWarning("Satellite Type Chosen Is Number " + SaveInfo.SatelliteTypeChoice);         
-        }
-
-        public void randomContractsCheck()
-        {
-            RandomRepairContractsCheck = new Tools.MC2RandomWieghtSystem.Item<int>[3];
-            RandomRepairContractsCheck[0] = new Tools.MC2RandomWieghtSystem.Item<int>();
-            RandomRepairContractsCheck[0].weight = 10;
-            RandomRepairContractsCheck[0].value = 0;
-
-            RandomRepairContractsCheck[1] = new Tools.MC2RandomWieghtSystem.Item<int>();
-            RandomRepairContractsCheck[1].weight = 55;
-            RandomRepairContractsCheck[1].value = 1;
-
-            RandomRepairContractsCheck[2] = new Tools.MC2RandomWieghtSystem.Item<int>();
-            RandomRepairContractsCheck[2].weight = 35;
-            RandomRepairContractsCheck[2].value = 2;
+            //Log.Error("GuiDestroy Info Save as is:  " + value.ToString());
            
         }
-
-        public void randomSatelliteContractsCheck()
+#endregion
+#region Methods Etc
+        public static void CheckRandomSatelliteContractTypes()
+        {
+            randomSatelliteContractsCheck();
+            SaveInfo.SatelliteTypeChoice = Tools.MC2RandomWieghtSystem.PickOne<int>(RandomSatelliteContractsCheck);
+            //Debug.LogWarning("Satellite Type Chosen Is Number " + SaveInfo.SatelliteTypeChoice);         
+        }
+      
+        public static void randomSatelliteContractsCheck()
         {
             RandomSatelliteContractsCheck = new Tools.MC2RandomWieghtSystem.Item<int>[6];
             RandomSatelliteContractsCheck[0] = new Tools.MC2RandomWieghtSystem.Item<int>();
@@ -222,109 +190,167 @@ namespace MissionControllerEC
 
             RandomSatelliteContractsCheck[5] = new Tools.MC2RandomWieghtSystem.Item<int>();
             RandomSatelliteContractsCheck[5].weight = 5;
-            RandomSatelliteContractsCheck[5].value = 5; 
-        } 
-        public void onvesselRoll(ShipConstruct sc)
-        {
-            sc.GetShipCosts(out temp, out temp2);
-        }          
+            RandomSatelliteContractsCheck[5].value = 5;
+        }
 
         public void onContractLoaded()
-        {           
-            if (!HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings2>().RescueKerbalContracts && ContractSystem.ContractTypes.Contains(typeof(Contracts.Templates.RecoverAsset)))          
+        {
+            if (HighLogic.LoadedScene == GameScenes.SPACECENTER)
             {
-                try
+                if (!HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings2>().RescueKerbalContracts && ContractSystem.ContractTypes.Contains(typeof(Contracts.Templates.RecoverAsset)))
                 {
-                    ContractSystem.ContractTypes.Remove(typeof(Contracts.Templates.RecoverAsset));
-                    Debug.Log("Removed RescueKerbal Type Contracts from Gererating");
+                    try
+                    {
+                        ContractSystem.ContractTypes.Remove(typeof(Contracts.Templates.RecoverAsset));
+                        //Log.Info("Removed RescueKerbal Type Contracts from Gererating");
+                    }
+
+                    catch { /*Log.Error("could not run NoRescueKerbalContracts Returned Null");*/ }
                 }
 
-                catch { Debug.LogError("could not run NoRescueKerbalContracts Returned Null");}
+                if (!HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings2>().FPExplorationContracts && ContractSystem.ContractTypes.Contains(typeof(FinePrint.Contracts.ExplorationContract)))
+                {
+                    try
+                    {
+                        ContractSystem.ContractTypes.Remove(typeof(FinePrint.Contracts.ExplorationContract));
+                        //Log.Info("Removed Exploration Type Contracts");
+                    }
+
+                    catch { Log.Error("could not run Exploration Contracts Returned Null"); }
+                }
+
+                if (!HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings2>().FPCometGo && ContractSystem.ContractTypes.Contains(typeof(FinePrint.Contracts.CometSampleContract)))
+                {
+                    try
+                    {
+                        ContractSystem.ContractTypes.Remove(typeof(FinePrint.Contracts.CometSampleContract));
+                        //Log.Info("Removed Comet Type Contracts");
+                    }
+
+                    catch { Log.Error("could not run Comet Contracts Returned Null"); }
+                }
+
+
+                if (!HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings2>().FPSatelliteContracts && ContractSystem.ContractTypes.Contains(typeof(FinePrint.Contracts.SatelliteContract)))
+                {
+                    try
+                    {
+                        ContractSystem.ContractTypes.Remove(typeof(FinePrint.Contracts.SatelliteContract));
+                        //Log.Info("Removed FinePrint Satellite Type Contracts from Gererating");
+                    }
+
+                    catch { Log.Error("could not run FinePrint Satellite Returned Null"); }
+                }
+                if (!HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings2>().FPBaseContracts && ContractSystem.ContractTypes.Contains(typeof(FinePrint.Contracts.BaseContract)))
+                {
+                    try
+                    {
+                        ContractSystem.ContractTypes.Remove(typeof(FinePrint.Contracts.BaseContract));
+                        //Log.Info("Removed FinePrint Satellite Type Contracts from Gererating");
+                    }
+
+                    catch { Log.Error("could not run FinePrint Satellite Returned Null"); }
+                }
+                if (!HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings2>().FPStationContracts && ContractSystem.ContractTypes.Contains(typeof(FinePrint.Contracts.StationContract)))
+                {
+                    try
+                    {
+                        ContractSystem.ContractTypes.Remove(typeof(FinePrint.Contracts.StationContract));
+                        //Log.Info("Removed FinePrint Satellite Type Contracts from Gererating");
+                    }
+
+                    catch { Log.Error("could not run FinePrint Satellite Returned Null"); }
+                }
+                if (!HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings2>().FPISRUContracts && ContractSystem.ContractTypes.Contains(typeof(FinePrint.Contracts.ISRUContract)))
+                {
+                    try
+                    {
+                        ContractSystem.ContractTypes.Remove(typeof(FinePrint.Contracts.ISRUContract));
+                        //Log.Info("Removed FinePrint Satellite Type Contracts from Gererating");
+                    }
+
+                    catch { Log.Error("could not run FinePrint Satellite Returned Null"); }
+                }
+                if (!HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings2>().FPTouricsmContracts && ContractSystem.ContractTypes.Contains(typeof(FinePrint.Contracts.TourismContract)))
+                {
+                    try
+                    {
+                        ContractSystem.ContractTypes.Remove(typeof(FinePrint.Contracts.TourismContract));
+                        //Log.Info("Removed FinePrint Satellite Type Contracts from Gererating");
+                    }
+
+                    catch { Log.Error("could not run FinePrint Satellite Returned Null"); }
+                }
+                if (!HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings2>().FPSurveyContracts && ContractSystem.ContractTypes.Contains(typeof(FinePrint.Contracts.SurveyContract)))
+                {
+                    try
+                    {
+                        ContractSystem.ContractTypes.Remove(typeof(FinePrint.Contracts.SurveyContract));
+                        //Log.Info("Removed FinePrint Survey Type Contracts from Gererating");
+                    }
+
+                    catch { Log.Error("could not run FinePrint Survey Contracts Returned Null"); }
+                }
+                if (!HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings2>().PartTestContracts && ContractSystem.ContractTypes.Contains(typeof(Contracts.Templates.PartTest)))
+                {
+                    try
+                    {
+                        ContractSystem.ContractTypes.Remove(typeof(Contracts.Templates.PartTest));
+                        //Log.Info("Removed PartTest Type Contracts from Gererating");
+                    }
+
+                    catch { Log.Error("could not run NoPartTest Returned Null"); }
+                }
+                if (!HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings2>().FPGrandTourContracts && ContractSystem.ContractTypes.Contains(typeof(Contracts.Templates.GrandTour)))
+                {
+                    try
+                    {
+                        ContractSystem.ContractTypes.Remove(typeof(Contracts.Templates.GrandTour));
+                        //Log.Info("Removed PartTest Type Contracts from Gererating");
+                    }
+
+                    catch { Log.Error("could not run NoPartTest Returned Null"); }
+                }
+                Log.Info("MCE Remove Contracts loaded");
             }
-            if (!HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings2>().FPSatelliteContracts && ContractSystem.ContractTypes.Contains(typeof(FinePrint.Contracts.SatelliteContract)))
-            {
-                try
-                {
-                    ContractSystem.ContractTypes.Remove(typeof(FinePrint.Contracts.SatelliteContract));
-                    Debug.Log("Removed FinePrint Satellite Type Contracts from Gererating");
-                }
+            else { Log.Info("MCE Debug Log, No Contracts Loaded at this time, need Game Save Loaded"); }
 
-                catch { Debug.LogError("could not run FinePrint Satellite Returned Null"); }
-            }
-            if (!HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings2>().FPBaseContracts && ContractSystem.ContractTypes.Contains(typeof(FinePrint.Contracts.BaseContract)))
-            {
-                try
-                {
-                    ContractSystem.ContractTypes.Remove(typeof(FinePrint.Contracts.BaseContract));
-                    Debug.Log("Removed FinePrint Satellite Type Contracts from Gererating");
-                }
-
-                catch { Debug.LogError("could not run FinePrint Satellite Returned Null"); }
-            }
-            if (!HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings2>().FPStationContracts && ContractSystem.ContractTypes.Contains(typeof(FinePrint.Contracts.StationContract)))
-            {
-                try
-                {
-                    ContractSystem.ContractTypes.Remove(typeof(FinePrint.Contracts.StationContract));
-                    Debug.Log("Removed FinePrint Satellite Type Contracts from Gererating");
-                }
-
-                catch { Debug.LogError("could not run FinePrint Satellite Returned Null"); }
-            }
-            if (!HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings2>().FPISRUContracts && ContractSystem.ContractTypes.Contains(typeof(FinePrint.Contracts.ISRUContract)))
-            {
-                try
-                {
-                    ContractSystem.ContractTypes.Remove(typeof(FinePrint.Contracts.ISRUContract));
-                    Debug.Log("Removed FinePrint Satellite Type Contracts from Gererating");
-                }
-
-                catch { Debug.LogError("could not run FinePrint Satellite Returned Null"); }
-            }
-            if (!HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings2>().FPTouricsmContracts && ContractSystem.ContractTypes.Contains(typeof(FinePrint.Contracts.TourismContract)))
-            {
-                try
-                {
-                    ContractSystem.ContractTypes.Remove(typeof(FinePrint.Contracts.TourismContract));
-                    Debug.Log("Removed FinePrint Satellite Type Contracts from Gererating");
-                }
-
-                catch { Debug.LogError("could not run FinePrint Satellite Returned Null"); }
-            }
-            if (!HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings2>().FPSurveyContracts && ContractSystem.ContractTypes.Contains(typeof(FinePrint.Contracts.SurveyContract)))
-            {
-                try
-                {
-                    ContractSystem.ContractTypes.Remove(typeof(FinePrint.Contracts.SurveyContract));
-                    Debug.Log("Removed FinePrint Survey Type Contracts from Gererating");
-                }
-
-                catch { Debug.LogError("could not run FinePrint Survey Contracts Returned Null"); }
-            }            
-            if (!HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings2>().PartTestContracts && ContractSystem.ContractTypes.Contains(typeof(Contracts.Templates.PartTest)))
-            {
-                try
-                {
-                    ContractSystem.ContractTypes.Remove(typeof(Contracts.Templates.PartTest));
-                    Debug.Log("Removed PartTest Type Contracts from Gererating");
-                }
-
-                catch { Debug.LogError("could not run NoPartTest Returned Null"); }
-            }
-            if (!HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings2>().FPGrandTourContracts && ContractSystem.ContractTypes.Contains(typeof(Contracts.Templates.GrandTour)))
-            {
-                try
-                {
-                    ContractSystem.ContractTypes.Remove(typeof(Contracts.Templates.GrandTour));
-                    Debug.Log("Removed PartTest Type Contracts from Gererating");
-                }
-
-                catch { Debug.LogError("could not run NoPartTest Returned Null"); }
-            }
             
-            Debug.Log("MCE Remove Contracts loaded"); 
-        }    
-                                   
+        }
+        
+        public void GetRefundCost()
+        {            
+            vessel = FlightGlobals.ActiveVessel;
+            if (vessel == null || vessel.situation == Vessel.Situations.PRELAUNCH) { Log.Info("No Active vessel for Part Calculation"); }
+            else
+            {
+                foreach (ProtoPartSnapshot pps in vessel.protoVessel.protoPartSnapshots)
+                {
+                    float dryCost, fuelCost;
+                    ShipConstruction.GetPartCosts(pps, pps.partInfo, out dryCost, out fuelCost);
+                    dryCost = dryCost < 0 ? 0 : dryCost;
+                    fuelCost = fuelCost < 0 ? 0 : fuelCost;
+                    RevertTotal += dryCost + fuelCost;                   
+                }
+                if (vessel.situation == Vessel.Situations.ORBITING)
+                {
+                    Math.Round(RevertOrbit = RevertTotal / 85);
+                    Log.Info("Revert Orbit = " + RevertOrbit);
+                }
+                if (vessel.altitude <= 10000 & vessel.situation != Vessel.Situations.ORBITING)
+                {
+                    Math.Round(RevertAltitude = RevertTotal / 90);
+                    Log.Info("Revert Altitude Below 10k = " + RevertAltitude);
+                }
+                if (vessel.altitude > 10001 & vessel.situation != Vessel.Situations.ORBITING)
+                {
+                    Math.Round(RevertAltitude = RevertTotal / 95);
+                    Log.Info("Revert Altitude Above 10K = " + RevertAltitude);
+                }
+            }
+            Log.Info("Revert Cost Of Vessel Is " + RevertTotal);
+        }
+
         public void getSupplyList(bool stationOnly)
         {
             bool boolStation = stationOnly;
@@ -339,9 +365,8 @@ namespace MissionControllerEC
                     {
                         SupVes.Add(new SupplyVesselList(v.name.Replace("(unloaded)", ""), v.id.ToString(), v.mainBody));
                         supplyCount++;
-                        //Debug.Log("Found Vessel " + v.name + " " + v.vesselType + " Count is: " + supplyCount);
+                        //Log.Info("Found Vessel " + v.name + " " + v.vesselType + " Count is: " + supplyCount);
                     }
-                    else { }
                 }
             }
             else
@@ -352,46 +377,42 @@ namespace MissionControllerEC
                     {
                         SupVes.Add(new SupplyVesselList(v.name.Replace("(unloaded)", ""), v.id.ToString(), v.mainBody));
                         supplyCount++;
-                        //Debug.Log("Found Vessel " + v.name + " " + v.vesselType + " Count is: " + supplyCount);
+                        //Log.Info("Found Vessel " + v.name + " " + v.vesselType + " Count is: " + supplyCount);
                     }
                     else { }
                 }
             }
         }
-              
-        public void GetLatandLonDefault(Vessel vessel)
-        {
-            double LatValue;
-            LatValue = vessel.latitude;
-            double LonValue;
-            LonValue = vessel.longitude;
 
-            SaveInfo.apolloLandingLat = LatValue;
+        public void SendRevertMessage()
+        {
+            MessageSystem.Message m = new MessageSystem.Message("Revert Charges", "Your Charges For Using Revert System is\n\n" + "Altitude Charge: " + RevertAltitude + "\n\n" + "Orbit Charge: " + RevertOrbit + "\n\n" + " Veseel simulation Cost: " + RevertTotal + "\n\n" + "Total Charges: " + Math.Round(RevertAltitude + RevertOrbit + RevertTotal), MessageSystemButton.MessageButtonColor.ORANGE, MessageSystemButton.ButtonIcons.MESSAGE);
+            MessageSystem.Instance.AddMessage(m);
 
-            SaveInfo.apolloLandingLon = LonValue;
         }
-        public void GetEvaTypeKerbal()
-        {
-            List<ProtoCrewMember> protoCrewMembers = FlightGlobals.ActiveVessel.GetVesselCrew();
-            foreach (Experience.ExperienceEffect exp in protoCrewMembers[0].experienceTrait.Effects)
-            {
-                if (exp.ToString() == "Experience.Effects.RepairSkill")
-                {
-                    Debug.Log("Current kerbal is a Engineer you have passed");
-                }
-                else
-                {
-                    Debug.Log("Current kerbal is NOT an Engineer you don't pass... Bad boy!");
-                }
-            }
-        }
-        public void SetVesselLaunchCurrentTime()
-        {
-            Debug.Log("Old LaunchTime was: " + Tools.ConvertDays(FlightGlobals.ActiveVessel.launchTime));
-            double currentTime = Planetarium.GetUniversalTime();
-            FlightGlobals.ActiveVessel.launchTime = currentTime;
-            Debug.Log("New LaunchTime Is: " + Tools.ConvertDays(FlightGlobals.ActiveVessel.launchTime));
-        }
+
+        //public void GetEvaTypeKerbal()
+        //{
+        //    List<ProtoCrewMember> protoCrewMembers = FlightGlobals.ActiveVessel.GetVesselCrew();
+        //    foreach (Experience.ExperienceEffect exp in protoCrewMembers[0].experienceTrait.Effects)
+        //    {
+        //        if (exp.ToString() == "Experience.Effects.RepairSkill")
+        //        {
+        //            Log.Info("Current kerbal is a Engineer you have passed");
+        //        }
+        //        else
+        //        {
+        //            Log.Info("Current kerbal is NOT an Engineer you don't pass... Bad boy!");
+        //        }
+        //    }
+        //}
+        //public void SetVesselLaunchCurrentTime()
+        //{
+        //    Log.Info("Old LaunchTime was: " + Tools.ConvertDays(FlightGlobals.ActiveVessel.launchTime));
+        //    double currentTime = Planetarium.GetUniversalTime();
+        //    FlightGlobals.ActiveVessel.launchTime = currentTime;
+        //    Log.Info("New LaunchTime Is: " + Tools.ConvertDays(FlightGlobals.ActiveVessel.launchTime));
+        //}
         public void GetContractList()
         {
             if (ContractSystem.Instance != null)
@@ -408,32 +429,32 @@ namespace MissionControllerEC
             }
             else
             {
-                Debug.Log("Contract Instance Not found, list not loading");
+                //Log.Info("Contract Instance Not found, list not loading");
             }  
             if (ProgressTracking.Instance != null)
             {
                 
             }         
         }
-        public void GetLongAndLat(Vessel v)
-        {
-            double longitude;
-            double latitude;
-            longitude = v.longitude;
-            latitude = v.latitude;
-            Debug.LogError("Current longitude is " + longitude + " Current latitude is " + latitude);
-        }
-        public void setOrbitLandNodes()
-        {
-            SaveInfo.OrbitNamesList.Add("Landing");
-            SaveInfo.OrbitNamesList.Add("Orbit");
-            SaveInfo.OrbitNamesList.Add("SubTraject");
-            SaveInfo.OrbitNamesList.Add("Flyby");
-            
-        }
-        
+        //public void GetLongAndLat(Vessel v)
+        //{
+        //    double longitude;
+        //    double latitude;
+        //    longitude = v.longitude;
+        //    latitude = v.latitude;
+        //    Log.Error("Current longitude is " + longitude + " Current latitude is " + latitude);
+        //}
+        //public void setOrbitLandNodes()
+        //{
+        //    SaveInfo.OrbitNamesList.Add("Landing");
+        //    SaveInfo.OrbitNamesList.Add("Orbit");
+        //    SaveInfo.OrbitNamesList.Add("SubTraject");
+        //    SaveInfo.OrbitNamesList.Add("Flyby");
+
+        //}
+#endregion
     }
-   
+
     public class RepairVesselsList
     {
         public string vesselName;
@@ -480,5 +501,5 @@ namespace MissionControllerEC
             this.ContractDisabled = ContDisabled;
         }
         
-    }    
+    }   
 }

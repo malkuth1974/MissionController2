@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Text;
 using UnityEngine;
 using System;
+using KSP.UI.Screens;
 
 namespace MissionControllerEC
 {
@@ -18,11 +19,8 @@ namespace MissionControllerEC
         public override string DisplaySection { get { return "MissionControllerEC"; } }
         public override int SectionOrder { get { return 1; } }
         public override bool HasPresets { get { return true; } }
+        public override void SetDifficultyPreset(GameParameters.Preset preset)        { }
 
-        [GameParameters.CustomParameterUI("Historic Mission Enabled?", toolTip = "Do you want to play historical Missions?")]
-        public bool HistoricalContracts = true;
-        [GameParameters.CustomParameterUI("Apollo Extra Mission Enabled?", toolTip = "If playing apollo Historical Contracts Do you want Fictional Missions after 17?")]
-        public bool ApolloExtraContent = true;
         [GameParameters.CustomParameterUI("MCE Satellite Contracts Enabled?", toolTip = "Do you want to play MCE Satellite Missions These use the MCE Part Cores.")]
         public bool SatelliteContracts = true;
         [GameParameters.CustomParameterUI("MCE Orbital Science Contracts Enabled?", toolTip = "These are contracts that use the MCE part Ionization Chamber.")]
@@ -46,27 +44,33 @@ namespace MissionControllerEC
         public override string DisplaySection { get { return "MissionControllerEC"; } }
         public override int SectionOrder { get { return 2; } }
         public override bool HasPresets { get { return true; } }
+        public override void SetDifficultyPreset(GameParameters.Preset preset) { }
+
 
         [GameParameters.CustomParameterUI("Rescue Kerbal Contracts Enabled?", toolTip = "Do you want to play the default rescue kerbal contracts?")]
         public bool RescueKerbalContracts = true;
         [GameParameters.CustomParameterUI("Part Test Contracts Enabled?", toolTip = "Do you want to play the default part test contracts?")]
         public bool PartTestContracts = true;
-        [GameParameters.CustomParameterUI("Fine Print Satellite Contracts", toolTip = "Do you want to play the default satellite contracts?")]
+        [GameParameters.CustomParameterUI("KSP Defualt Satellite Contracts", toolTip = "Do you want to play the default satellite contracts?")]
         public bool FPSatelliteContracts = true;
-        [GameParameters.CustomParameterUI("Fine Print Survey Contracts", toolTip = "Do you want to play the default survey contracts?")]
+        [GameParameters.CustomParameterUI("Exploration Contracts", toolTip = "Do you want to play the default Exploration contracts?")]
+        public bool FPExplorationContracts = true;
+        [GameParameters.CustomParameterUI("Comet Contracts", toolTip = "Do you want to play the default Comet contracts?")]
+        public bool FPCometGo = true;
+        [GameParameters.CustomParameterUI("Survey Contracts", toolTip = "Do you want to play the default survey contracts?")]
         public bool FPSurveyContracts = true;
-        [GameParameters.CustomParameterUI("Fine Print Station Contracts", toolTip = "Do you want to play the default Station Build contracts?")]
+        [GameParameters.CustomParameterUI("Station Contracts", toolTip = "Do you want to play the default Station Build contracts?")]
         public bool FPStationContracts = true;
-        [GameParameters.CustomParameterUI("Fine Print Base Contracts", toolTip = "Do you want to play the default Base Build contracts?")]
+        [GameParameters.CustomParameterUI("Base Contracts", toolTip = "Do you want to play the default Base Build contracts?")]
         public bool FPBaseContracts = true;
-        [GameParameters.CustomParameterUI("Fine Print ISRU Contracts", toolTip = "Do you want to play the default ISRU contracts?")]
+        [GameParameters.CustomParameterUI("ISRU Contracts", toolTip = "Do you want to play the default ISRU contracts?")]
         public bool FPISRUContracts = true;
-        [GameParameters.CustomParameterUI("Fine Print Tourism Contracts", toolTip = "Do you want to play the default Tourism Ridealong contracts?")]
+        [GameParameters.CustomParameterUI("Tourism Contracts", toolTip = "Do you want to play the default Tourism Ridealong contracts?")]
         public bool FPTouricsmContracts = true;
         [GameParameters.CustomParameterUI("Grand Tour Contracts", toolTip = "Do you want to play the default Grand Tour contracts?")]
         public bool FPGrandTourContracts = true;
-       
-      
+
+
     }
     public class MCE_IntergratedSettings3 : GameParameters.CustomParameterNode
     {
@@ -76,6 +80,7 @@ namespace MissionControllerEC
         public override string DisplaySection { get { return "MissionControllerEC"; } }
         public override int SectionOrder { get { return 3; } }
         public override bool HasPresets { get { return true; } }
+        public override void SetDifficultyPreset(GameParameters.Preset preset) { }
 
         [GameParameters.CustomParameterUI("MCE Revert Cost Enabled?", toolTip = "Do you want to be charged when using revert?")]
         public bool MCERevertAllow = true;
@@ -83,15 +88,19 @@ namespace MissionControllerEC
         public int MCERevertCost = 10;
         [GameParameters.CustomParameterUI("MCE Vessel Must Surviv Enabled?", toolTip = "If vessel is destroyed in MCE contract you will fail?")]
         public bool VesselMustSurvive = true;
-        //[GameParameters.CustomParameterUI("MCE Flight Help Readout?", toolTip = "This is very simple APA,PEA, Readout, not needed if you have Another Mod that gives you these readouts?")]
-        //public bool MCEReadoutHelpAllow = false;
+#if false
         [GameParameters.CustomParameterUI("MCE Debug Mode Enabled?", toolTip = "Debug mode becomes available in MCE Menu Icon (Cheats)?")]
         public bool MCEDebugMode = false;
+#endif
+        [GameParameters.CustomParameterUI("MCE Contract Chance For Other Planets?", toolTip = "Chance of Planets other than Kerbin for Satellite Contracts.  Higher Number Less chance!")]
+        public int MCESatOwPercentChance = 60;
+        [GameParameters.CustomParameterUI("MCE Contract Repair Chances?", toolTip = "Chance To Get Repair Contracts.  Lower Number More chance!")]
+        public int MCEReapairPercent = 60;
         [GameParameters.CustomIntParameterUI("Max Number Satellite Contracts At Time", maxValue = 5)]
         public int SatelliteContractNumbers = 2;
         [GameParameters.CustomIntParameterUI("Max Number Science Contracts At Time", maxValue = 5)]
         public int ScienceContractNumbers= 1;
-        [GameParameters.CustomFloatParameterUI("MCE Contract Payout Multiplier", maxValue = 3)]
+        [GameParameters.CustomFloatParameterUI("MCE Contract Payout Multiplier", maxValue = 10)]
         public float MCEContractPayoutMult = 1;
         [GameParameters.CustomIntParameterUI("Orbit Margin Error Contracts", maxValue = 10000)]
         public int MCEErrorOrbits = 5000;
