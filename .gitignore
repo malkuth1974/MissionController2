@@ -233,3 +233,6 @@ $RECYCLE.BIN/
 *.dll
 *.pdb
 .vs
+MissionControllerEC/obj/Release/MissionControllerEC.csproj.FileListAbsolute.txt
+*.cache
+.vs/MissionControllerEC/v17/.suo
