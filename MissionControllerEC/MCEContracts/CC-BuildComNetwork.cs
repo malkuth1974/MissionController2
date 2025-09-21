@@ -1,16 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
-using Contracts;
-using Contracts.Parameters;
-using KSP.UI.Screens;
-using KSP;
-using System.Text;
-using KSPAchievements;
-using MissionControllerEC.MCEParameters;
+﻿using Contracts;
 using KSP.Localization;
-using static MissionControllerEC.RegisterToolbar;
+using KSP.UI.Screens;
+using MissionControllerEC.MCEParameters;
+using System.Linq;
+using static SpaceCenterCrew;
 
 namespace MissionControllerEC.MCEContracts
 {
@@ -24,6 +17,9 @@ namespace MissionControllerEC.MCEContracts
         public string partName = "Repair Panel";
         public bool StartNetwork;
         public int totalContracts, TotalFinished, crewCount = 0, partAmount = 1;
+        ContractParameter Orbittime;
+        public double sattime;
+
 
 
         protected override bool Generate()
@@ -48,11 +44,17 @@ namespace MissionControllerEC.MCEContracts
             MinOrb = SaveInfo.comSatminOrbital;
             double minorb2 = SaveInfo.comSatmaxOrbital - 1000;
             MaxOrb = SaveInfo.comSatmaxOrbital;
+            sattime = Tools.RandomNumber(1000,8000);
+            double timemultiplier = Tools.ConvertDays(sattime);
+
+            this.Orbittime = this.AddParameter(new TimeCountdownOrbits(targetBody, sattime,true),null);
+            Orbittime.SetFunds(Tools.RandomNumber(600, 900) * (float)timemultiplier, targetBody);
+            Orbittime.SetReputation(3, targetBody);
 
             this.AddParameter(new ApAOrbitGoal(targetBody, MaxOrb, "Equatorial"), null);
             this.AddParameter(new PeAOrbitGoal(targetBody, minorb2, "Equatorail"), null);
             this.AddParameter(new Inclination(targetBody, MinOrb), null);
-
+            
             if (parttechUnlock)
             {
                 this.AddParameter(new PartGoal(partName, "Small Repair Panel", partAmount, true), null);
@@ -61,9 +63,8 @@ namespace MissionControllerEC.MCEContracts
             base.SetExpiry(3f, 15f);
             base.SetDeadlineYears(1f, targetBody);
             base.SetReputation(25f, 40f, targetBody);
-            base.SetFunds(12000f * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 75000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 75000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);
-
-            return true;
+            base.SetFunds(12000f * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 75000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, 75000 * HighLogic.CurrentGame.Parameters.CustomParams<MCE_IntergratedSettings3>().MCEContractPayoutMult, targetBody);       
+                return true;
         }
 
         public override bool CanBeCancelled()
@@ -115,6 +116,7 @@ namespace MissionControllerEC.MCEContracts
         protected override void OnLoad(ConfigNode node)
         {
             Tools.ContractLoadCheck(node, ref targetBody, Planetarium.fetch.Home, targetBody, "targetBody");
+            Tools.ContractLoadCheck(node, ref sattime, 1000, sattime, "Time");
             Tools.ContractLoadCheck(node, ref MaxOrb, 71000, MaxOrb, "aPa");
             Tools.ContractLoadCheck(node, ref MinOrb, 70500, MinOrb, "pEa");
             Tools.ContractLoadCheck(node, ref crewCount, 1, crewCount, "crewcount");
@@ -136,6 +138,7 @@ namespace MissionControllerEC.MCEContracts
             node.AddValue("partname", partName);
             node.AddValue("contractplayername", ContractPlayerName);
             node.AddValue("contractAOP", contractAOP);
+            node.AddValue("Time", sattime);
         }
 
         public override bool MeetRequirements()

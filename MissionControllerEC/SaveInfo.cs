@@ -40,6 +40,7 @@ namespace MissionControllerEC
         public static bool crewContractOn = false;
         public static int crewAmount = 0;
         public static double crewTime = 0;
+        public static double sattime = 0;
         public static string crewTransferName = "uninitialized";
         public static int transferTouristAmount = 0;
         public static bool transferTouristTrue = false;

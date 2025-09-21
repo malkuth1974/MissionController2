@@ -1,30 +1,39 @@
-﻿using System;
-using UnityEngine;
-using Contracts;
+﻿using Contracts;
+using Contracts.Predicates;
 using KSP;
-using KSPAchievements;
 using KSP.Localization;
+using KSPAchievements;
+using MCE_KacWrapper;
+using MissionControllerEC;
+using MissionControllerEC.MCEParameters;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 using static MissionControllerEC.RegisterToolbar;
 
 namespace MissionControllerEC.MCEParameters
 {
+    
     #region Time Countdown Orbits
     public class TimeCountdownOrbits : ContractParameter
     {
-        public CelestialBody targetBody;
-
-        private double diff;
+        public CelestialBody targetBody;        
+        private double diff = 0;
         private double savedTime;
         private double missionTime;
         private string contractTimeTitle = "Reach Orbit and stay for amount of Time Specified: ";
         private string vesselID = "none";
+        private bool kacCheck = false;
+        private Contract contractRoot;
 
         private bool PreFlightCheck = false;
 
         private bool setTime = true;
         private bool timebool = false;
 
-        private bool AllChildOff = false;
+        private bool AllChildOff = false;       
       
         public TimeCountdownOrbits()
         {
@@ -42,7 +51,7 @@ namespace MissionControllerEC.MCEParameters
             this.targetBody = target;
             this.missionTime = Mtime;
             this.contractTimeTitle = title;
-            this.AllChildOff = true;
+            this.AllChildOff = true;          
         }
                
         protected override string GetHashString()
@@ -52,25 +61,62 @@ namespace MissionControllerEC.MCEParameters
         protected override string GetTitle()
         {
             return contractTimeTitle + Tools.formatTime(missionTime);
-        }      
+        }
+
+        protected override void OnRegister()
+        {
+            base.OnRegister();
+            contractRoot = this.Root;
+        }
 
         protected override void OnUpdate()
         {
             if (Root.ContractState == Contract.State.Active)
             {
-                if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel.orbit.referenceBody.Equals(targetBody))                   
+                // Look for your orbit goal parameters without LINQ
+                ApAOrbitGoal apAParam = null;
+                PeAOrbitGoal peAParam = null;
+
+                foreach (ContractParameter param in contractRoot.AllParameters)
+                {
+                    if (param is ApAOrbitGoal a) apAParam = a;
+                    if (param is PeAOrbitGoal p) peAParam = p;
+                }
+
+                if (FlightGlobals.ActiveVessel.orbit.referenceBody.Equals(targetBody))
                 {
                     if (FlightGlobals.ActiveVessel.situation == Vessel.Situations.ORBITING)
-                    {                     
-                            CheckIfOrbit(FlightGlobals.ActiveVessel);                                               
+                    {
+                        CheckIfOrbit(FlightGlobals.ActiveVessel);
                     }
                     else { }
                 }
+                if (apAParam != null && peAParam != null && apAParam.State == ParameterState.Complete && peAParam.State == ParameterState.Complete)
+                {
+                    timeCountDown();
+                }
                 else { }
-                timeCountDown(); 
             }
             else { }
 
+        }
+        private IEnumerable<T> GetChildren<T>(ContractParameter parent) where T : ContractParameter
+        {
+            var contractParent = parent as ContractParameter;
+            if (contractParent == null) yield break;
+
+            foreach (ContractParameter child in contractParent.GetType().GetProperty("Children",
+            System.Reflection.BindingFlags.NonPublic |
+            System.Reflection.BindingFlags.Instance |
+            System.Reflection.BindingFlags.FlattenHierarchy)
+            .GetValue(contractParent) as IEnumerable<ContractParameter>)
+            {
+                if (child is T tParam)
+                    yield return tParam;
+
+                foreach (var nested in GetChildren<T>(child))
+                    yield return nested;
+            }
         }
         protected override void OnLoad(ConfigNode node)
         {
@@ -115,26 +161,45 @@ namespace MissionControllerEC.MCEParameters
         }
         public void timeCountDown()
         {
-            if (!setTime)
+            if (!KACWrapper.APIReady)
             {
-                diff = Planetarium.GetUniversalTime() - savedTime;
-                if (HighLogic.LoadedSceneIsFlight &&  FlightGlobals.ActiveVessel.id.ToString() == vesselID)
+                Log.Warning("MCE tried to load the KAC Alarm but failed");
+                if (!setTime)
                 {
-                    ScreenMessages.PostScreenMessage("Time Left To Complete: " + Tools.formatTime(missionTime - diff), .001f);
-                }
+                    diff = Planetarium.GetUniversalTime() - savedTime;
+                    if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel.id.ToString() == vesselID)
+                    {
+                        ScreenMessages.PostScreenMessage(
+                        "Time Left To Complete: " + Tools.formatTime(missionTime - diff),
+                        .001f
+                        );
+                    }
 
-                if (diff > missionTime)
-                {
-                    base.SetComplete();
+                    if (diff > missionTime)
+                        base.SetComplete();
                 }
-                else { }
             }
-            else { }
+            else
+            {
+                
+                    
+                    if (HighLogic.LoadedSceneIsFlight && FlightGlobals.ActiveVessel.id.ToString() == vesselID && kacCheck == false)
+                    {
+                        diff = Planetarium.GetUniversalTime() + missionTime;
+                        KACHelper.CreateAlarmMC2(contractTimeTitle, diff);
+                        kacCheck = true;
+                        Log.Info("KacAlarm Loade" + contractTimeTitle + "  " + missionTime + " " + kacCheck);                 
+                    }
+                if (Planetarium.GetUniversalTime() > diff)
+                base.SetComplete();
+                
+            }
         }
         public void contractSetTime()
         {
             savedTime = Planetarium.GetUniversalTime();
             setTime = false;
+
         }
         public void flightReady()
         {
@@ -231,35 +296,39 @@ namespace MissionControllerEC.MCEParameters
 
         private void CheckIfLanded(Vessel vessel)
         {
-            if (!setTime)
+            if (!KACWrapper.APIReady)
             {
-                diff = Planetarium.GetUniversalTime() - savedTime;
-                if (HighLogic.LoadedSceneIsFlight && vessel.id.ToString() == vesselID)
+                if (!setTime)
                 {
-                    ScreenMessages.PostScreenMessage(Localizer.Format("#autoLOC_MissionController2_1000238") + " " + Tools.formatTime(missionTime - diff), .001f);		// #autoLOC_MissionController2_1000238 = Time Left To Complete: 
-                }
+                    diff = Planetarium.GetUniversalTime() - savedTime;
+                    if (HighLogic.LoadedSceneIsFlight && vessel.id.ToString() == vesselID)
+                    {
+                        ScreenMessages.PostScreenMessage(
+                        "Time Left To Complete: " + Tools.formatTime(missionTime - diff),
+                        .001f
+                        );
+                    }
 
-                if (diff > missionTime)
+                    if (diff > missionTime)
+                        base.SetComplete();
+                }
+                else if (hasToBeNewVessel && setTime)
                 {
-                    base.SetComplete();
+                    if (HighLogic.LoadedSceneIsFlight && vessel.launchTime > this.Root.DateAccepted)
+                    {
+                        contractSetTime();
+                        vesselID = vessel.id.ToString();
+                    }
                 }
             }
-            else if (hasToBeNewVessel && setTime)
+            else
             {
-                if (HighLogic.LoadedSceneIsFlight && vessel.launchTime > this.Root.DateAccepted)
+                if (setTime)
                 {
+                    KACHelper.CreateAlarmMC2(contractTimeTitle, missionTime);
                     contractSetTime();
-                    vesselID = vessel.id.ToString();
-                }             
-            }
-            else if (!hasToBeNewVessel && setTime)
-            {
-                if (HighLogic.LoadedSceneIsFlight)
-                {
-                    contractSetTime();
-                    vesselID = vessel.id.ToString();
                 }
-            }            
+            }
         }
         public void contractSetTime()
         {
@@ -284,15 +353,18 @@ namespace MissionControllerEC.MCEParameters
         private double diff;
         private double savedTime;
         private double missionTime;
-        private string contractTimeTitle = "Reach Orbit and stay for amount of Time Specified: ";
+        private string contractTimeTitle = "Dock With Station To Start Timer and wait ";
         private string vesselID = "none";
         private string vesselName = "none";
+        private Contract contractRoot;
 
         private bool PreFlightCheck = false;
+        private bool kacCheck = false;
 
         private bool setTime = true;
         private bool timebool = false;
         private bool updated = false;
+
 
         public TimeCountdownDocking()
         {
@@ -332,7 +404,7 @@ namespace MissionControllerEC.MCEParameters
 
         protected override void OnRegister()
         {
-
+            contractRoot = this.Root;
             updated = false;
             if (Root.ContractState == Contract.State.Active)
             {
@@ -352,9 +424,40 @@ namespace MissionControllerEC.MCEParameters
 
         protected override void OnUpdate()
         {
-            if (Root.ContractState == Contract.State.Active)
+            if (Root.ContractState != Contract.State.Active)
+                return;
+            // Look for your orbit goal parameters without LINQ
+            TargetDockingGoal targetDockingGoal = null;
+           
+            foreach (ContractParameter param in contractRoot.AllParameters)
+            {
+                if (param is TargetDockingGoal p) targetDockingGoal = p;
+            }
+            // all the extra code just to make this behave and launch correctly.
+            if (targetDockingGoal != null && targetDockingGoal.State == ParameterState.Complete)
+            {
                 timeCountDown();
+            }
             else { }
+        }
+        private IEnumerable<T> GetChildren<T>(ContractParameter parent) where T : ContractParameter
+        {
+            //had to dig deep to get to the children for I can see if parameters are complete.  Allows to control when OnTime launches
+            var contractParent = parent as ContractParameter;
+            if (contractParent == null) yield break;
+
+            foreach (ContractParameter child in contractParent.GetType().GetProperty("Children",
+            System.Reflection.BindingFlags.NonPublic |
+            System.Reflection.BindingFlags.Instance |
+            System.Reflection.BindingFlags.FlattenHierarchy)
+            .GetValue(contractParent) as IEnumerable<ContractParameter>)
+            {
+                if (child is T tParam)
+                    yield return tParam;
+
+                foreach (var nested in GetChildren<T>(child))
+                    yield return nested;
+            }
         }
         protected override void OnLoad(ConfigNode node)
         {           
@@ -407,21 +510,40 @@ namespace MissionControllerEC.MCEParameters
         }
         public void timeCountDown()
         {
-            if (!setTime)
+            if (!KACWrapper.APIReady)
             {
-                diff = Planetarium.GetUniversalTime() - savedTime;
-                if (HighLogic.LoadedSceneIsFlight && (FlightGlobals.ActiveVessel.id.ToString() == vesselID || FlightGlobals.ActiveVessel.vesselName == vesselName))
+                if (!setTime)
                 {
-                    ScreenMessages.PostScreenMessage("Time Left To Complete: " + Tools.formatTime(missionTime - diff), .001f);
-                }
+                    // Old code in case KAC is not installed on players game
+                    diff = Planetarium.GetUniversalTime() - savedTime;
+                    if (HighLogic.LoadedSceneIsFlight &&
+                    (FlightGlobals.ActiveVessel.id.ToString() == vesselID || FlightGlobals.ActiveVessel.vesselName == vesselName))
+                    {
+                        ScreenMessages.PostScreenMessage(
+                        "Time Left To Complete: " + Tools.formatTime(missionTime - diff),
+                        .001f
+                        );
+                    }
 
-                if (diff > missionTime)
-                {
-                    base.SetComplete();
+                    if (diff > missionTime)
+                        base.SetComplete();
                 }
-                else { }
             }
-            else { }
+            else
+            {
+                // new code that uses KAC to do the countdown, much cleaner than the old code, doesn't flood screen.
+                if (HighLogic.LoadedSceneIsFlight && kacCheck == false)
+                {
+                    diff = Planetarium.GetUniversalTime() + missionTime;
+                    Log.Info("Mission Time Set By MCE IS " + missionTime);
+                    KACHelper.CreateAlarmMC2(contractTimeTitle, diff);
+                    kacCheck = true;
+                    Log.Info("KacAlarm Loade" + contractTimeTitle + "  " + missionTime + " " + kacCheck);
+                }
+                // Final Check if Kac Countdown is done to end contract para.
+                if (Planetarium.GetUniversalTime() > diff)
+                    base.SetComplete();
+            }
         }
         public void contractSetTime()
         {

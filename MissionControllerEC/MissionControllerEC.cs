@@ -1,16 +1,16 @@
 ﻿
+using KSP.Localization;
+using KSP.UI.Screens;
+using MCE_KacWrapper;
 using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using ToolbarControl_NS;
+using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using UnityEngine;
-using System.Linq;
-using System.Collections.Generic;
-using KSP.Localization;
-using System.Reflection;
-using KSP.UI.Screens;
-using System.IO;
-
-using ToolbarControl_NS;
 using static MissionControllerEC.RegisterToolbar;
 
 
@@ -77,6 +77,8 @@ namespace MissionControllerEC
         {
             get { return panelPrefab2; }
         }
+
+
 
         private void Awake()
         {
@@ -260,6 +262,13 @@ namespace MissionControllerEC
                     scenario.targetScenes.Add(GameScenes.EDITOR);
                 if (!scenario.targetScenes.Contains(GameScenes.TRACKSTATION))
                     scenario.targetScenes.Add(GameScenes.TRACKSTATION);
+            }
+
+            KACWrapper.InitKACWrapper();
+            if (KACWrapper.APIReady)
+            {
+                //MCE KACWrapper Loaded
+                Debug.Log(KACWrapper.KAC.Alarms.Count);
             }
         }
 
