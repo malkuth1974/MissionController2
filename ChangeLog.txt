@@ -1,5 +1,9 @@
 Changelog
 
+3.4.0.1
+	Added Kerbal Alarm Clock Timers to Custom Contract Orbit and Crew Transfer
+	Added Abitily for MCE to go to default timers if KAC not installed
+
 
 3.3.0.1  
 	Disabled the mod in non-career and non-science games
