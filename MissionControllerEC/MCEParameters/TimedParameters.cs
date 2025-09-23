@@ -129,12 +129,13 @@ namespace MissionControllerEC.MCEParameters
             Tools.ContractLoadCheck(node, ref vesselID, "Defaults Loaded", vesselID, "vesid");
             Tools.ContractLoadCheck(node, ref PreFlightCheck, false, PreFlightCheck, "preflightcheck");
             Tools.ContractLoadCheck(node, ref AllChildOff, false, AllChildOff, "AllChildOff");
+            Tools.ContractLoadCheck(node, ref kacCheck, false, kacCheck, "kacCheck");
         }
         protected override void OnSave(ConfigNode node)
         {
             int bodyID = targetBody.flightGlobalsIndex;
             node.AddValue("targetBody", bodyID);
-
+            node.AddValue("kacCheck", kacCheck);
             node.AddValue("savedtime", savedTime);
             node.AddValue("missiontime", missionTime);
             node.AddValue("diff", diff);
@@ -470,12 +471,13 @@ namespace MissionControllerEC.MCEParameters
             Tools.ContractLoadCheck(node, ref vesselID, "Defaults Loaded", vesselID, "vesid");
             Tools.ContractLoadCheck(node, ref vesselName, "None", vesselName, "name2");
             Tools.ContractLoadCheck(node, ref PreFlightCheck, false, PreFlightCheck, "preflightcheck");
+            Tools.ContractLoadCheck(node, ref kacCheck, false, kacCheck, "kacCheck");
         }
         protected override void OnSave(ConfigNode node)
         {
             int bodyID = targetBody.flightGlobalsIndex;
             node.AddValue("targetBody", bodyID);
-
+            node.AddValue("kacCheck", kacCheck);
             node.AddValue("savedtime", savedTime);
             node.AddValue("missiontime", missionTime);
             node.AddValue("diff", diff);
