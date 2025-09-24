@@ -1,4 +1,9 @@
 Changelog
+3.4.0.4
+	Finished the old coding of Custom Contract Selection for Planetary bodies for all the other
+	Custom contracts that allow you to select Planetary bodies you want to have the contract assigned to.
+	Was already done for SatContracts.  Finished for the rest.  Now all extra Mod Planets are available to player
+	as choice.
 
 3.4.0.3
 	Added KAC timer to Orbital Scan Contracts.

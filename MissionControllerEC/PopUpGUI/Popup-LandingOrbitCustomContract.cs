@@ -25,6 +25,7 @@ namespace MissionControllerEC
             //getSupplyList(false);            
             //SaveInfo.SupplyBodyIDX = SupVes[count].body.flightGlobalsIndex;
             int MaxTouristInContract = 6;
+            int targetbodyNum = FlightGlobals.Bodies.Count();
             targetbody = FlightGlobals.Bodies[SaveInfo.LandingOrbitIDX];
 
             Custom_Contract_Button1 = new DialogGUIButton(Localizer.Format("#autoLOC_MCE_Button_Exit_Label"), () =>
@@ -77,7 +78,7 @@ namespace MissionControllerEC
                 delegate
                 {
                     SaveInfo.LandingOrbitIDX--;
-                    if (SaveInfo.LandingOrbitIDX < 1 || SaveInfo.LandingOrbitIDX > 16)
+                    if (SaveInfo.LandingOrbitIDX < 1 || SaveInfo.LandingOrbitIDX > targetbodyNum)
                     {
                         SaveInfo.LandingOrbitIDX = 1;
                     }
@@ -114,7 +115,7 @@ namespace MissionControllerEC
                 delegate
                 {
                     SaveInfo.LandingOrbitIDX++;
-                    if (SaveInfo.LandingOrbitIDX < 1 || SaveInfo.LandingOrbitIDX > 16)
+                    if (SaveInfo.LandingOrbitIDX < 1 || SaveInfo.LandingOrbitIDX > targetbodyNum)
                     {
                         SaveInfo.LandingOrbitIDX = 1;
                     }

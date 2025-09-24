@@ -22,6 +22,7 @@ namespace MissionControllerEC
         #region Lets Build Space Station
         internal void BuildSpaceStation()
         {
+            int targetbodyNum = FlightGlobals.Bodies.Count;
             targetbody = FlightGlobals.Bodies[SaveInfo.BuildSpaceStationIDX];
 
             Custom_Contract_Button1 = new DialogGUIButton(Localizer.Format("#autoLOC_MCE_Button_Exit_Label"), () =>
@@ -64,7 +65,7 @@ namespace MissionControllerEC
                 delegate
                 {
                     SaveInfo.BuildSpaceStationIDX--;
-                    if (SaveInfo.BuildSpaceStationIDX < 1 || SaveInfo.BuildSpaceStationIDX > 16)
+                    if (SaveInfo.BuildSpaceStationIDX < 1 || SaveInfo.BuildSpaceStationIDX > targetbodyNum)
                     {
                         SaveInfo.BuildSpaceStationIDX = 1;
                     }
@@ -103,7 +104,7 @@ namespace MissionControllerEC
                 delegate
                 {
                     SaveInfo.BuildSpaceStationIDX++;
-                    if (SaveInfo.BuildSpaceStationIDX < 1 || SaveInfo.BuildSpaceStationIDX > 16)
+                    if (SaveInfo.BuildSpaceStationIDX < 1 || SaveInfo.BuildSpaceStationIDX > targetbodyNum)
                     {
                         SaveInfo.BuildSpaceStationIDX = 1;
                     }
