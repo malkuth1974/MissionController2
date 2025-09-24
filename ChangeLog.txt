@@ -1,5 +1,8 @@
 Changelog
 
+3.4.0.3
+	Added KAC timer to Orbital Scan Contracts.
+
 3.4.0.2
 	Added Save Nodes for KacCheck in all instances that it is used which stops
 	KAC alarm from being duplicated if player exits game and comes back in while countdown 

@@ -1,10 +1,11 @@
-﻿using System;
-using UnityEngine;
-using Contracts;
+﻿using Contracts;
 using KSP;
-using KSPAchievements;
-using MissionControllerEC.PartModules;
 using KSP.Localization;
+using KSPAchievements;
+using MCE_KacWrapper;
+using MissionControllerEC.PartModules;
+using System;
+using UnityEngine;
 using static MissionControllerEC.RegisterToolbar;
 
 namespace MissionControllerEC.MCEParameters
@@ -465,7 +466,7 @@ namespace MissionControllerEC.MCEParameters
         private double diff;
         private double savedTime;
         private double missionTime;
-
+        private bool kacCheck = false;
         private bool setTime = true;
         private bool updated = false;
 
@@ -551,7 +552,7 @@ namespace MissionControllerEC.MCEParameters
                             contractSetTime();
                         }
 
-                        if (!setTime)
+                        if (!KACWrapper.APIReady && !setTime)
                         {
                             diff = Planetarium.GetUniversalTime() - savedTime;
 
@@ -564,6 +565,15 @@ namespace MissionControllerEC.MCEParameters
                             }
                             else { }
                         }
+                        if (KACWrapper.APIReady && !setTime && kacCheck == false)
+                        {
+
+                            diff = Planetarium.GetUniversalTime() + missionTime;
+                            KACHelper.CreateAlarmMC2("Wait For Time TO End Orbital Research", diff);
+                            kacCheck = true;                            
+                        }
+                        if (Planetarium.GetUniversalTime() > diff && kacCheck)
+                            base.SetComplete();
                         else { }
                     }
                     else { }
